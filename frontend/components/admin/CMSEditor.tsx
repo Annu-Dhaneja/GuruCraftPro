@@ -50,9 +50,12 @@ const ImageUploadField = ({ value, onChange }: { value: string, onChange: (v: st
     const formData = new FormData();
     formData.append("file", file);
 
-    try {
+      const token = localStorage.getItem("token");
       const res = await fetch(getApiUrl("/api/v1/cms/upload-image"), {
         method: "POST",
+        headers: {
+          "Authorization": `Bearer ${token}`
+        },
         body: formData,
       });
 
@@ -129,9 +132,12 @@ export function CMSEditor({
   const [status, setStatus] = useState("");
 
   useEffect(() => {
-    setLoading(true);
-    setError(null);
-    fetch(getApiUrl(`/api/v1/cms/${segment}`))
+    const token = localStorage.getItem("token");
+    fetch(getApiUrl(`/api/v1/cms/${segment}`), {
+      headers: {
+        "Authorization": `Bearer ${token}`
+      }
+    })
       .then(res => {
         if (!res.ok) throw new Error(`Server returned ${res.status}`);
         return res.json();
@@ -148,11 +154,14 @@ export function CMSEditor({
   }, [segment]);
 
   const handleSave = async () => {
-    setStatus("Saving...");
+    const token = localStorage.getItem("token");
     try {
       const res = await fetch(getApiUrl(`/api/v1/cms/${segment}`), {
         method: "PUT",
-        headers: { "Content-Type": "application/json" },
+        headers: { 
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`
+        },
         body: JSON.stringify(data)
       });
       if (res.ok) {

@@ -1,7 +1,7 @@
 from fastapi import APIRouter, HTTPException, UploadFile, File, Depends
 from sqlalchemy.orm import Session
 from typing import Dict, Any, Optional
-from core import database, models
+from core import database, models, auth
 import os
 import shutil
 import uuid
@@ -12,14 +12,23 @@ from services.cms import cms_service
 router = APIRouter()
 
 @router.get("/{segment}", summary="Get CMS Content Segment")
-def get_segment_content(segment: str, db: Session = Depends(database.get_db)):
+def get_segment_content(
+    segment: str, 
+    db: Session = Depends(database.get_db),
+    current_user: models.User = Depends(auth.get_current_user)
+):
     """
     Retrieve dynamic content for a specific segment from the database.
     """
     return cms_service.get_content(db, segment)
 
 @router.put("/{segment}", summary="Update CMS Content Segment")
-def update_segment_content(segment: str, content: Dict[str, Any], db: Session = Depends(database.get_db)):
+def update_segment_content(
+    segment: str, 
+    content: Dict[str, Any], 
+    db: Session = Depends(database.get_db),
+    current_user: models.User = Depends(auth.get_current_user)
+):
     """
     Update dynamic content for a specific segment in the database.
     """
@@ -27,7 +36,10 @@ def update_segment_content(segment: str, content: Dict[str, Any], db: Session = 
     return {"status": "success", "message": f"{segment.capitalize()} content updated successfully", "content": updated_content}
 
 @router.get("/stats", summary="Get Admin Dashboard Stats")
-def get_dashboard_stats(db: Session = Depends(database.get_db)):
+def get_dashboard_stats(
+    db: Session = Depends(database.get_db),
+    current_user: models.User = Depends(auth.get_current_user)
+):
     """
     Retrieve overview statistics for the admin dashboard.
     """
@@ -71,7 +83,11 @@ def list_media(db: Session = Depends(database.get_db)):
     return db.query(Media).order_by(Media.uploaded_at.desc()).all()
 
 @router.post("/upload-image", summary="Upload Image for CMS")
-async def upload_image(file: UploadFile = File(...), db: Session = Depends(database.get_db)):
+async def upload_image(
+    file: UploadFile = File(...), 
+    db: Session = Depends(database.get_db),
+    current_user: models.User = Depends(auth.get_current_user)
+):
     """
     Upload an image file that the Admin UI can use.
     The file is saved directly into the Next.js public/images/admin_uploads directory.

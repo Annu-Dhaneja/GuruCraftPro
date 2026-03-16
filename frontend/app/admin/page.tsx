@@ -22,7 +22,12 @@ export default function AdminDashboardPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch(getApiUrl("/api/v1/cms/stats"))
+    const token = localStorage.getItem("token");
+    fetch(getApiUrl("/api/v1/cms/stats"), {
+      headers: {
+        "Authorization": `Bearer ${token}`
+      }
+    })
       .then(res => res.json())
       .then(data => {
         setStats(data);
