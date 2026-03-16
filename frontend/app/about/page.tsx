@@ -14,6 +14,8 @@ import { TrustSection } from "@/components/about/TrustSection";
 import { AboutCTA } from "@/components/about/AboutCTA";
 import { Footer } from "@/components/footer/Footer";
 
+export const dynamic = 'force-dynamic';
+
 export default async function AboutPage() {
     let aboutData: any = {};
     try {

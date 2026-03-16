@@ -13,6 +13,8 @@ import { ServiceFAQ } from "@/components/services/ServiceFAQ";
 import { ServicesCTA } from "@/components/services/ServicesCTA";
 import { Footer } from "@/components/footer/Footer";
 
+export const dynamic = 'force-dynamic';
+
 export default async function ServicesPage() {
     let servicesData: any = {};
     try {

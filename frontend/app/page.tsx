@@ -9,7 +9,6 @@
  * - Minimalist and premium aesthetic
  * - Focus on typography and whitespace
  * - Subtle animations and gradients for depth
- */
 import { Hero } from "@/components/home/Hero";
 import { TrustStrip } from "@/components/home/TrustStrip";
 import { ServiceCategoryRail } from "@/components/portfolio/ServiceCategoryRail";
@@ -25,6 +24,8 @@ import { AboutSection } from "@/components/home/AboutSection";
 import { BlogPreview } from "@/components/home/BlogPreview";
 import { FinalCTA } from "@/components/home/FinalCTA";
 import { Footer } from "@/components/footer/Footer";
+
+export const dynamic = 'force-dynamic';
 
 export default async function Home() {
   // Fetch dynamic home page data from the backend
