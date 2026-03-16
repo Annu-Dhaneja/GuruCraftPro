@@ -25,6 +25,7 @@ import { AboutSection } from "@/components/home/AboutSection";
 import { BlogPreview } from "@/components/home/BlogPreview";
 import { FinalCTA } from "@/components/home/FinalCTA";
 import { Footer } from "@/components/footer/Footer";
+import { getApiUrl } from "@/lib/utils";
 
 export const dynamic = 'force-dynamic';
 
@@ -32,7 +33,7 @@ export default async function Home() {
   // Fetch dynamic home page data from the backend
   let homeData: any = {};
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8000'}/api/v1/cms/home`, { 
+    const res = await fetch(getApiUrl("/api/v1/cms/home"), { 
       cache: 'no-store' // Keep it dynamic
     });
     if (res.ok) {

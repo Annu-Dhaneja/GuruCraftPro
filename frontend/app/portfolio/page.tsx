@@ -12,6 +12,7 @@ import { Footer } from "@/components/footer/Footer";
 
 import { ServiceCategoryRail } from "@/components/portfolio/ServiceCategoryRail";
 import { Suspense } from "react";
+import { getApiUrl } from "@/lib/utils";
 
 export const dynamic = 'force-dynamic';
 
@@ -19,7 +20,7 @@ export default async function PortfolioPage() {
     let portfolioData: any = { categories: ["All"], projects: [] };
     
     try {
-        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8000'}/api/v1/cms/portfolio`, {
+        const res = await fetch(getApiUrl("/api/v1/cms/portfolio"), {
             cache: 'no-store'
         });
         if (res.ok) {

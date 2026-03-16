@@ -13,13 +13,14 @@ import { ServicesPreview } from "@/components/about/ServicesPreview";
 import { TrustSection } from "@/components/about/TrustSection";
 import { AboutCTA } from "@/components/about/AboutCTA";
 import { Footer } from "@/components/footer/Footer";
+import { getApiUrl } from "@/lib/utils";
 
 export const dynamic = 'force-dynamic';
 
 export default async function AboutPage() {
     let aboutData: any = {};
     try {
-        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8000'}/api/v1/cms/about`, {
+        const res = await fetch(getApiUrl("/api/v1/cms/about"), {
             cache: 'no-store'
         });
         if (res.ok) {
