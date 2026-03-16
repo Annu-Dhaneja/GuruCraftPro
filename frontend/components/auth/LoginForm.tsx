@@ -39,7 +39,12 @@ export function LoginForm() {
                 window.location.href = "/admin"; // Redirect to overview for stability
             } else {
                 const errData = await res.json();
-                setError(errData.detail || "Login failed. Please check your credentials.");
+                const detail = errData.detail;
+                if (typeof detail === 'object' && detail !== null) {
+                    setError(detail.error || detail.msg || JSON.stringify(detail));
+                } else {
+                    setError(detail || "Login failed. Please check your credentials.");
+                }
             }
         } catch (err) {
             setError("Could not connect to the server.");

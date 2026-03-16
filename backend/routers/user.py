@@ -32,13 +32,10 @@ async def login_for_access_token(
         tb = traceback.format_exc()
         print(f"LOGIN_ERROR: {str(e)}")
         print(tb)
+        error_msg = f"Login Error: {str(e)}"
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail={
-                "error": str(e),
-                "traceback": tb,
-                "msg": "Temporary diagnostic traceback enabled"
-            }
+            detail=error_msg
         )
 
 @router.get("/users", summary="List All Administrative Users")
