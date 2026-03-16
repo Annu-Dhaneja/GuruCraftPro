@@ -292,15 +292,15 @@ export default function AdminHomePage() {
           <div className="flex-1 bg-slate-900/50 backdrop-blur-xl border border-white/10 rounded-2xl p-8 shadow-2xl ring-1 ring-white/5 animate-in fade-in slide-in-from-bottom-4 duration-500">
 
             {/* Hero Tab */}
-            {activeTab === "hero" && data.hero && (
+            {activeTab === "hero" && data?.hero && (
               <div className="space-y-8 animate-in fade-in">
                 <h2 className="text-2xl font-bold mb-8 text-indigo-300">Hero Experience</h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                  <div><InputLabel>Annoucement Badge</InputLabel><Input value={data.hero.badge} onChange={(v) => handleNestedChange("hero", "badge", v)} /></div>
-                  <div><InputLabel>Headline Prefix</InputLabel><Input value={data.hero.headline_prefix} onChange={(v) => handleNestedChange("hero", "headline_prefix", v)} /></div>
-                  <div><InputLabel>Headline Highlight</InputLabel><Input value={data.hero.headline_highlight} onChange={(v) => handleNestedChange("hero", "headline_highlight", v)} /></div>
-                  <div><InputLabel>Headline Suffix</InputLabel><Input value={data.hero.headline_suffix} onChange={(v) => handleNestedChange("hero", "headline_suffix", v)} /></div>
-                  <div className="md:col-span-2"><InputLabel>Detailed Subheadline</InputLabel><Input value={data.hero.subheadline} isRich onChange={(v) => handleNestedChange("hero", "subheadline", v)} /></div>
+                  <div><InputLabel>Annoucement Badge</InputLabel><Input value={data.hero?.badge} onChange={(v) => handleNestedChange("hero", "badge", v)} /></div>
+                  <div><InputLabel>Headline Prefix</InputLabel><Input value={data.hero?.headline_prefix} onChange={(v) => handleNestedChange("hero", "headline_prefix", v)} /></div>
+                  <div><InputLabel>Headline Highlight</InputLabel><Input value={data.hero?.headline_highlight} onChange={(v) => handleNestedChange("hero", "headline_highlight", v)} /></div>
+                  <div><InputLabel>Headline Suffix</InputLabel><Input value={data.hero?.headline_suffix} onChange={(v) => handleNestedChange("hero", "headline_suffix", v)} /></div>
+                  <div className="md:col-span-2"><InputLabel>Detailed Subheadline</InputLabel><Input value={data.hero?.subheadline} isRich onChange={(v) => handleNestedChange("hero", "subheadline", v)} /></div>
                 </div>
               </div>
             )}
@@ -310,10 +310,10 @@ export default function AdminHomePage() {
               <div className="space-y-8 animate-in fade-in">
                 <h2 className="text-xl font-semibold mb-6 pb-2 border-b border-border">Trust Strip Stats</h2>
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-                  {(data.trust_strip.stats || []).map((stat: any, i: number) => (
+                  {(data?.trust_strip?.stats || []).map((stat: any, i: number) => (
                     <div key={i} className="bg-muted/30 p-4 rounded-lg space-y-4 border border-border">
-                      <div><InputLabel>Label</InputLabel><Input value={stat.label} onChange={(v) => handleArrayChange("trust_strip", "stats", i, "label", v)} /></div>
-                      <div><InputLabel>Value</InputLabel><Input value={stat.value} onChange={(v) => handleArrayChange("trust_strip", "stats", i, "value", v)} /></div>
+                      <div><InputLabel>Label</InputLabel><Input value={stat?.label} onChange={(v) => handleArrayChange("trust_strip", "stats", i, "label", v)} /></div>
+                      <div><InputLabel>Value</InputLabel><Input value={stat?.value} onChange={(v) => handleArrayChange("trust_strip", "stats", i, "value", v)} /></div>
                     </div>
                   ))}
                 </div>

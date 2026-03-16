@@ -129,11 +129,11 @@ export default function AdminDashboardPage() {
                 <div key={sub.id} className="p-6 flex items-center justify-between hover:bg-white/5 transition-colors group">
                   <div className="flex items-center gap-5">
                     <div className="w-12 h-12 rounded-2xl bg-white/5 flex items-center justify-center font-bold text-indigo-400 border border-white/5">
-                      {sub.name.charAt(0)}
+                      {sub?.name?.charAt(0) || "U"}
                     </div>
                     <div>
-                      <h4 className="text-white font-bold group-hover:text-indigo-400 transition-colors uppercase tracking-tight">{sub.name}</h4>
-                      <p className="text-muted-foreground text-xs font-medium">{sub.type} — {new Date(sub.date).toLocaleDateString()}</p>
+                      <h4 className="text-white font-bold group-hover:text-indigo-400 transition-colors uppercase tracking-tight">{sub?.name || "Unknown"}</h4>
+                      <p className="text-muted-foreground text-xs font-medium">{sub?.type || "Inquiry"} — {sub?.date ? new Date(sub.date).toLocaleDateString() : "Recent"}</p>
                     </div>
                   </div>
                   <Button variant="ghost" size="sm" className="text-indigo-400 hover:text-indigo-300 hover:bg-indigo-500/10 font-bold" asChild>

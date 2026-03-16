@@ -25,7 +25,7 @@ export function Navbar() {
     }, []);
 
     // Function to check if we should show the navbar
-    if (pathname && pathname.startsWith('/dashboard')) {
+    if (pathname && (pathname.startsWith('/dashboard') || pathname.startsWith('/admin'))) {
         return null;
     }
 
