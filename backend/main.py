@@ -31,6 +31,7 @@ def startup_db_sync() -> None:
             (os.getenv("ADMIN_USERNAME_1"), os.getenv("ADMIN_PASSWORD_1")),
             (os.getenv("ADMIN_USERNAME_2"), os.getenv("ADMIN_PASSWORD_2")),
         ]
+        admin_synced = []
 
         for username, password in admin_pairs:
             if not username or not password:
@@ -56,7 +57,19 @@ def startup_db_sync() -> None:
                         role=models.UserRole.ADMIN,
                     )
                 )
+            admin_synced.append(username)
 
+        # Commit admin users first so a later CMS failure does not rollback credentials.
+        db.commit()
+        if admin_synced:
+            print(f"Startup admin sync complete: {admin_synced}")
+        else:
+            print("Startup admin sync skipped: no admin env vars found.")
+    except Exception as e:
+        db.rollback()
+        print(f"Startup admin sync failed: {e}")
+
+    try:
         page = db.query(models.Page).filter(models.Page.slug == "home").first()
         if not page:
             cms_repository.update_page_content(
@@ -72,12 +85,11 @@ def startup_db_sync() -> None:
                     }
                 },
             )
-
         db.commit()
-        print("Startup sync complete.")
+        print("Startup CMS sync complete.")
     except Exception as e:
         db.rollback()
-        print(f"Startup sync failed: {e}")
+        print(f"Startup CMS sync failed: {e}")
     finally:
         db.close()
 
