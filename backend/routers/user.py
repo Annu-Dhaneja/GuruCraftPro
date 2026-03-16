@@ -8,6 +8,10 @@ from services.user import user_service
 
 router = APIRouter()
 
+@router.get("/login", summary="Login Guide")
+def login_get_guide():
+    return {"message": "The login endpoint is active. Please use the POST method via the login form to authenticate."}
+
 @router.post("/login")
 async def login_for_access_token(
     db: Session = Depends(database.get_db),
