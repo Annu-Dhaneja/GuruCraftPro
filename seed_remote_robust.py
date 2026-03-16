@@ -7,12 +7,11 @@ from dotenv import load_dotenv
 backend_dir = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(os.path.join(backend_dir, "backend"))
 
+# Load env FIRST to ensure DATABASE_URL is available for core.database
+load_dotenv(dotenv_path=os.path.join(backend_dir, "backend", ".env"))
+
 from core.database import SessionLocal, engine, Base
 from core import models, auth
-from typing import Dict, Any
-
-# Load env
-load_dotenv(dotenv_path=os.path.join(backend_dir, "backend", ".env"))
 
 def run_seed():
     db = SessionLocal()
