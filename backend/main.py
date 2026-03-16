@@ -13,10 +13,14 @@ app = FastAPI(
     openapi_url=f"{settings.API_V1_STR}/openapi.json"
 )
 
-# CORS Configuration - Permissive for development and multi-cloud sync
+# CORS Configuration - Explicit for production stability
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"], # Allow all origins for easier multi-environment orchestration
+    allow_origins=[
+        "http://localhost:3000",
+        "https://annus.netlify.app",
+        "https://virtual-trys.onrender.com"
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
