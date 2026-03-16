@@ -14,8 +14,7 @@ router = APIRouter()
 @router.get("/{segment}", summary="Get CMS Content Segment")
 def get_segment_content(
     segment: str, 
-    db: Session = Depends(database.get_db),
-    current_user: models.User = Depends(auth.get_current_user)
+    db: Session = Depends(database.get_db)
 ):
     """
     Retrieve dynamic content for a specific segment from the database.

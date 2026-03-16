@@ -29,7 +29,6 @@ export function Hero({ data }: HeroProps) {
 
             <div className="container px-4 md:px-6 relative z-10 flex flex-col items-center text-center mx-auto">
 
-                {/* Badge */}
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -37,7 +36,7 @@ export function Hero({ data }: HeroProps) {
                     className="inline-flex items-center gap-2 rounded-full border border-primary/10 bg-primary/5 backdrop-blur-md px-3 py-1.5 text-xs md:text-sm font-medium text-primary mb-8 ring-1 ring-primary/20"
                 >
                     <Sparkles className="h-3.5 w-3.5" />
-                    <span>{data.badge}</span>
+                    <span>{data?.badge}</span>
                 </motion.div>
 
                 {/* Headline */}
@@ -47,11 +46,11 @@ export function Hero({ data }: HeroProps) {
                     transition={{ duration: 0.5, delay: 0.1 }}
                     className="text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight mb-8 leading-[1.1] md:leading-[1.1]"
                 >
-                    {data.headline_prefix}{" "}
+                    {data?.headline_prefix}{" "}
                     <span className="bg-clip-text text-transparent bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500">
-                        {data.headline_highlight}
+                        {data?.headline_highlight}
                     </span>
-                    {data.headline_suffix}
+                    {data?.headline_suffix}
                 </motion.h1>
 
                 {/* Subheadline */}
@@ -61,7 +60,7 @@ export function Hero({ data }: HeroProps) {
                     transition={{ duration: 0.5, delay: 0.2 }}
                     className="text-xl md:text-2xl text-muted-foreground max-w-2xl mb-12 leading-relaxed"
                 >
-                    {data.subheadline}
+                    {data?.subheadline}
                 </motion.p>
 
                 {/* CTAs */}
