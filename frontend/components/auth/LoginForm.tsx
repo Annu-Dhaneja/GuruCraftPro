@@ -5,12 +5,13 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Loader2, ArrowRight, Github } from "lucide-react";
+import { Loader2, ArrowRight, Github, Eye, EyeOff } from "lucide-react";
 import { getApiUrl } from "@/lib/utils";
 
 export function LoginForm() {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
+    const [showPassword, setShowPassword] = useState(false);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -71,7 +72,27 @@ export function LoginForm() {
                             Forgot password?
                         </Link>
                     </div>
-                    <Input id="password" name="password" type="password" placeholder="••••••••" required />
+                    <div className="relative">
+                        <Input 
+                            id="password" 
+                            name="password" 
+                            type={showPassword ? "text" : "password"} 
+                            placeholder="••••••••" 
+                            required 
+                            className="pr-10"
+                        />
+                        <button
+                            type="button"
+                            onClick={() => setShowPassword(!showPassword)}
+                            className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
+                        >
+                            {showPassword ? (
+                                <EyeOff className="h-4 w-4" />
+                            ) : (
+                                <Eye className="h-4 w-4" />
+                            )}
+                        </button>
+                    </div>
                 </div>
 
                 <Button type="submit" className="w-full h-11 bg-indigo-600 hover:bg-indigo-700 text-white" disabled={loading}>
