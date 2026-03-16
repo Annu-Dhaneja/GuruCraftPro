@@ -7,6 +7,12 @@ from core.database import engine, Base
 # Create tables if they don't exist
 Base.metadata.create_all(bind=engine)
 
+# Initialize the FastAPI application
+app = FastAPI(
+    title=settings.PROJECT_NAME,
+    openapi_url=f"{settings.API_V1_STR}/openapi.json"
+)
+
 @app.on_event("startup")
 def startup_db_sync():
     """
@@ -48,12 +54,6 @@ def startup_db_sync():
     except Exception as e:
         print(f"❌ Startup Sync Failed: {e}")
         db.rollback()
-
-# Initialize the FastAPI application
-app = FastAPI(
-    title=settings.PROJECT_NAME,
-    openapi_url=f"{settings.API_V1_STR}/openapi.json"
-)
 
 # CORS Configuration - Explicit for production stability
 app.add_middleware(
