@@ -1,11 +1,10 @@
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
-import os
+from core.config import settings
 
 # Database configuration
-# Render provides DATABASE_URL. SQLAlchemy requires 'postgresql://' but Render might provide 'postgres://'
-SQLALCHEMY_DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///./sql_app.db")
+SQLALCHEMY_DATABASE_URL = settings.DATABASE_URL
 
 if SQLALCHEMY_DATABASE_URL.startswith("postgres://"):
     SQLALCHEMY_DATABASE_URL = SQLALCHEMY_DATABASE_URL.replace("postgres://", "postgresql://", 1)

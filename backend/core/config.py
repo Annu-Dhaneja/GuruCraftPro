@@ -3,7 +3,8 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 class Settings(BaseSettings):
     PROJECT_NAME: str = "Annu Design Studio API"
     API_V1_STR: str = "/api/v1"
-    CORS_ORIGINS: list = ["http://localhost:3000", "http://127.0.0.1:3000"]
+    CORS_ORIGINS: list = ["*"]
+    DATABASE_URL: str = "sqlite:///./sql_app.db"
     
     # API Keys
     # Note: NANO_BANANA_API_KEY is currently used for Google Gemini Key
