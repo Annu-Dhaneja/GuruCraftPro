@@ -16,27 +16,14 @@ app = FastAPI(
 @app.on_event("startup")
 def startup_db_sync():
     """
-    Universal repair logic to ensure database consistency on every deployment.
+    Ensure basic database consistency (schema and CMS) without modifying users.
     """
-    from core import database, models, auth
+    from core import database, models
     from repositories.cms import cms_repository
     db = next(database.get_db())
     
     try:
-        # 1. Sync Admin User
-        admin_username = "annuad@#05"
-        admin_pass = "annu@123"
-        user = db.query(models.User).filter(models.User.username == admin_username).first()
-        hashed = auth.get_password_hash(admin_pass)
-        
-        if user:
-            user.hashed_password = hashed
-            user.role = models.UserRole.ADMIN
-        else:
-            user = models.User(username=admin_username, hashed_password=hashed, role=models.UserRole.ADMIN)
-            db.add(user)
-        
-        # 2. Sync CMS
+        # 1. Sync CMS only if missing
         page = db.query(models.Page).filter(models.Page.slug == "home").first()
         if not page:
             cms_repository.update_page_content(db, "home", {
@@ -50,7 +37,7 @@ def startup_db_sync():
             })
         
         db.commit()
-        print(f"🚀 Database Synchronized: Admin '{admin_username}' is ready.")
+        print("🚀 Database Consistency Verified.")
     except Exception as e:
         print(f"❌ Startup Sync Failed: {e}")
         db.rollback()
