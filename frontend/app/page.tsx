@@ -29,6 +29,15 @@ import { getApiUrl } from "@/lib/utils";
 
 export const dynamic = 'force-dynamic';
 
+const fallbackHomeHero = {
+  badge: "The Future of Design",
+  headline_prefix: "Design at the speed of imagination",
+  headline_highlight: "",
+  headline_suffix: ".",
+  subheadline:
+    "Combine AI-powered generation with expert human refinement to create polished brand, UI, and marketing assets faster.",
+};
+
 export default async function Home() {
   // Fetch dynamic home page data from the backend
   let homeData: any = {};
@@ -45,8 +54,7 @@ export default async function Home() {
 
   return (
     <main className="flex min-h-screen flex-col bg-background overflow-x-hidden w-full">
-      {homeData.hero && <Hero data={homeData.hero} />}
-      {!homeData.hero && <Hero data={null as any} />} {/* Fallback if needed but we handle null in component */}
+      <Hero data={homeData.hero || fallbackHomeHero} />
 
       {homeData.trust_strip && <TrustStrip data={homeData.trust_strip} />}
       <ServiceCategoryRail data={homeData.service_category_rail} />
