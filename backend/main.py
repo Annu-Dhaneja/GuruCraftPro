@@ -13,18 +13,10 @@ app = FastAPI(
     openapi_url=f"{settings.API_V1_STR}/openapi.json"
 )
 
-# CORS Configuration
-# Allow local dev, the production backend itself (sometimes needed for redirects), 
-# and Vercel domains.
-backend_render_url = "https://virtual-trys.onrender.com"
+# CORS Configuration - Permissive for development and multi-cloud sync
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=settings.CORS_ORIGINS + [
-        backend_render_url,
-        "https://aanu-virtual.vercel.app", # Potential vercel name
-        "https://aanu.vercel.app",         # Potential vercel name
-        "https://virtual-try-rho.vercel.app",
-    ],
+    allow_origins=["*"], # Allow all origins for easier multi-environment orchestration
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
