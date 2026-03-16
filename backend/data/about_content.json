@@ -1,0 +1,50 @@
+{
+  "hero": {
+    "badge": "AI-Assisted • Human-Refined • Client-Focused",
+    "title_prefix": "Where technology meets",
+    "title_highlight": "thoughtful design",
+    "description": "Gurucraftpro blends AI-powered efficiency with human creativity to craft visuals that truly connect and communicate."
+  },
+  "founder": {
+    "name": "Annu Dhaneja",
+    "title": "Founder",
+    "badge": "About Gurucraftpro",
+    "main_title": "Your trusted digital creative partner",
+    "main_description": "At Gurucraftpro, we believe in delivering exceptional digital services that help businesses and individuals bring their creative visions to life. Under Annu Dhaneja's leadership, our team of expert designers and developers work tirelessly to ensure every project exceeds expectations.",
+    "image": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=1000&auto=format&fit=crop",
+    "tags": [
+      "Creative Director",
+      "Digital Strategist",
+      "Design Expert"
+    ],
+    "bio": [
+      "Annu Dhaneja is the visionary founder of Gurucraftpro, dedicated to transforming creative ideas into stunning digital realities.",
+      "With years of expertise in design, branding, and digital services, Annu leads our team with passion and innovation. Her approach ensures that every project is not only efficiently delivered but also deeply rooted in human creativity, strategic intent, and quality."
+    ]
+  },
+  "philosophy": {
+    "title": "Design should be smart, simple, and purposeful.",
+    "description": "Our core values guide every pixel we place and every decision we make."
+  },
+  "ai_human": {
+    "title": "The Perfect Blend of Machine & Soul",
+    "description": "We don't just prompt and pray. We use AI as a high-speed engine, but humans steer the ship. This ensures your designs are delivered in record time without losing the emotional nuance that only a person can provide.",
+    "features": [
+      "Rapid Ideation",
+      "Human Precision",
+      "Emotional Connection",
+      "Strategic Alignment"
+    ]
+  },
+  "tools": {
+    "title": "Our Tech Stack",
+    "description": "We leverage the latest in AI and traditional design tools to stay ahead of the curve.",
+    "tools": [
+      "Midjourney",
+      "Stable Diffusion",
+      "Adobe Creative Cloud",
+      "Figma",
+      "Google Gemini"
+    ]
+  }
+}

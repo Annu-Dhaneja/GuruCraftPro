@@ -1,0 +1,70 @@
+{
+  "Formal": {
+    "Foundation": [
+      {"title": "Classic White Shirt & Navy Trousers", "description": "A crisp foundation for the week. Professional and sharp.", "image": "https://images.unsplash.com/photo-1594932224030-9409201f6ec0?w=800"},
+      {"title": "Charcoal Grey Blazer & Matching Slacks", "description": "Establishing authority with a polished ensemble.", "image": "https://images.unsplash.com/photo-1598808503742-dd34bd85444b?w=800"}
+    ],
+    "Comfort": [
+      {"title": "Light Blue Oxford & Chinos", "description": "Mid-week ease without compromising on the professional look.", "image": "https://images.unsplash.com/photo-1617135671683-47cbca12a52f?w=800"}
+    ],
+    "Statement": [
+      {"title": "Three-Piece Power Suit", "description": "For those important mid-week meetings. Confidence in fabric.", "image": "https://images.unsplash.com/photo-1593032465175-481ac7f402a1?w=800"},
+      {"title": "Double-Breasted Blazer with Silk Tie", "description": "High-impact style for external presentations.", "image": "https://images.unsplash.com/photo-1507679799987-c73779587ccf?w=800"}
+    ],
+    "Relaxation": [
+      {"title": "Unstructured Linen Blazer & Mock Neck", "description": "Transitioning to the weekend with relaxed tailoring.", "image": "https://images.unsplash.com/photo-1555069519-127aadedf1ee?w=800"},
+      {"title": "Textured Cardigan & Tailored Joggers", "description": "Premium comfort for a relaxed Sunday brunch.", "image": "https://images.unsplash.com/photo-1614251621617-669b27d49942?w=800"}
+    ]
+  },
+  "Casual": {
+    "Foundation": [
+      {"title": "Organic Cotton Tee & Dark Denim", "description": "The ultimate comfort base for starting your week.", "image": "https://images.unsplash.com/photo-1521572267360-ee0c2909d518?w=800"},
+      {"title": "Neutral Hoodie & Cargo Pants", "description": "Functional and stylish foundation for daily errands.", "image": "https://images.unsplash.com/photo-1556821840-3a63f956094d?w=800"}
+    ],
+    "Comfort": [
+      {"title": "Oversized Flannel & Worn-in Jeans", "description": "Peak mid-week comfort for creative focus.", "image": "https://images.unsplash.com/photo-1592660503155-7599a37f06a6?w=800"}
+    ],
+    "Statement": [
+      {"title": "Graphic Bomber Jacket & Leather Boots", "description": "Elevating the casual look with a bold outer layer.", "image": "https://images.unsplash.com/photo-1591047139829-d91aecb6caea?w=800"},
+      {"title": "Utility Vest & Tech-wear Inspired Bottoms", "description": "A modern, urban statement for your outing.", "image": "https://images.unsplash.com/photo-1548604812-2c0692745340?w=800"}
+    ],
+    "Relaxation": [
+      {"title": "Cozy Knit Sweater & Soft Cotton Shorts", "description": "Perfect for a slow Saturday morning.", "image": "https://images.unsplash.com/photo-1578587018452-892bacef3f21?w=800"},
+      {"title": "Loungewear Set in Earth Tones", "description": "Ultimate weekend luxury for staying in.", "image": "https://images.unsplash.com/photo-1512436991641-6745cdb1723f?w=800"}
+    ]
+  },
+  "Traditional": {
+    "Foundation": [
+      {"title": "Cotton Kurta with Simple Pajama", "description": "Breathable and classic start to the week.", "image": "https://images.unsplash.com/photo-1583394838336-acd977730f9a?w=800"},
+      {"title": "Linen Tunic with Straight Pants", "description": "Elegance meets simplicity for transition days.", "image": "https://images.unsplash.com/photo-1598121198114-26930553b00d?w=800"}
+    ],
+    "Comfort": [
+      {"title": "Short Kurta with Relaxed Denims", "description": "A blend of traditional comfort and modern ease.", "image": "https://images.unsplash.com/photo-1614786482494-7fc57abd0074?w=800"}
+    ],
+    "Statement": [
+      {"title": "Embroidered Sherwani with Stole", "description": "Making a regal statement for special occasions.", "image": "https://images.unsplash.com/photo-1597983073493-88cd35cf93b0?w=800"},
+      {"title": "Silk Nehru Jacket over Kurta", "description": "Sophisticated layering for mid-week events.", "image": "https://images.unsplash.com/photo-1601333144130-8cbb312386b6?w=800"}
+    ],
+    "Relaxation": [
+      {"title": "Mull Cotton Kurta Set", "description": "Light as air for a peaceful Saturday.", "image": "https://images.unsplash.com/photo-1589310243389-96a5483213a8?w=800"},
+      {"title": "Handcrafted Kaftan with Soft Trousers", "description": "Loose-fit luxury for a relaxing Sunday.", "image": "https://images.unsplash.com/photo-1518049360731-32823ff38fd7?w=800"}
+    ]
+  },
+  "Fusion": {
+    "Foundation": [
+      {"title": "Indigo Kurta with Slim-fit Jeans", "description": "The perfect East-meets-West foundation.", "image": "https://images.unsplash.com/photo-1624378439575-d8705ad7ae80?w=800"},
+      {"title": "Wrap Top with Traditional Block Prints", "description": "Modern silhouette with ethnic textures.", "image": "https://images.unsplash.com/photo-1589310243389-96a5483213a8?w=800"}
+    ],
+    "Comfort": [
+      {"title": "Tunic with Culottes", "description": "Flowy, comfortable, and stylistically balanced.", "image": "https://images.unsplash.com/photo-1560501170-a3930bf435f3?w=800"}
+    ],
+    "Statement": [
+      {"title": "Ethnic Blazer with Bandhni Pocket Square", "description": "Sharp tailoring with a heritage twist.", "image": "https://images.unsplash.com/photo-1601333144130-8cbb312386b6?w=800"},
+      {"title": "Asymmetric Kurta with Moto Jacket", "description": "Edgy fusion statement for the mid-week vibe.", "image": "https://images.unsplash.com/photo-1551488831-00ddcb6c6bd3?w=800"}
+    ],
+    "Relaxation": [
+      {"title": "Oversized Tee with Dhoti Pants", "description": "An avant-garde take on weekend relaxation.", "image": "https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=800"},
+      {"title": "Block Print Chemise with Leggings", "description": "Subtle fusion for a cozy Sunday at home.", "image": "https://images.unsplash.com/photo-1523381235212-d73f80385227?w=800"}
+    ]
+  }
+}

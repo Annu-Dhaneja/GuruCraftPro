@@ -1,0 +1,212 @@
+{
+  "hero": {
+    "badge": "The Future of Design ",
+    "headline_prefix": "Design at the speed of",
+    "headline_highlight": "",
+    "headline_suffix": ".",
+    "subheadline": "Combine AI-powered generation with expert human refinement. Create stunning brand identities, UI, and marketing assets in minutes, not weeks."
+  },
+  "trust_strip": {
+    "stats": [
+      {
+        "label": "Designs Delivered",
+        "value": "150+"
+      },
+      {
+        "label": "Client Satisfaction",
+        "value": "98%"
+      },
+      {
+        "label": "AI Turnaround",
+        "value": "24h"
+      }
+    ],
+    "companies": [
+      {
+        "name": "sdfhjj",
+        "logo": "https://cdn.simpleicons.org/adobe"
+      },
+      {
+        "name": "Figma",
+        "logo": "https://cdn.simpleicons.org/figma"
+      },
+      {
+        "name": "Webflow",
+        "logo": "https://cdn.simpleicons.org/webflow"
+      },
+      {
+        "name": "Vercel",
+        "logo": "https://cdn.simpleicons.org/vercel"
+      },
+      {
+        "name": "Stripe",
+        "logo": "/images/admin_uploads/b483a70b-ca1d-42d5-8ba1-16da9b6a1d36.jpeg"
+      }
+    ]
+  },
+  "service_category_rail": {
+    "title": "",
+    "categories": []
+  },
+  "virtual_dressing_room": {
+    "badge_text": "Live Demo",
+    "title": "Experience Your Vision",
+    "description": "Our AI Virtual Try-On technology allows you to see how designs look on real world items instantly.",
+    "image": "/images/user_provided/generated-image-2026-02-23_14-29-23.jpg",
+    "button_text": "Launch Try-On Lab",
+    "button_link": "/ai-lab/virtual-try-on"
+  },
+  "portfolio_preview": {
+    "badge_text": "Selected Works",
+    "title": "Crafted with passion,\nengineered for impact.",
+    "description": "A curated selection of our recent projects, ranging from brand identities to complex digital interfaces.",
+    "button_text": "View All Projects",
+    "button_link": "/portfolio",
+    "projects": [
+      {
+        "id": "logo-modern tech",
+        "title": "Fintech Rebrand",
+        "category": "Branding",
+        "image": "https://images.unsplash.com/photo-1561070791-2526d30994b5?q=80&w=1000&auto=format&fit=crop",
+        "size": "large",
+        "case_study_url": "/portfolio/logo-modern-tech",
+        "live_url": "https://example.com",
+        "colors": [
+          "#000000",
+          "#FFFFFF"
+        ]
+      }
+    ]
+  },
+  "ai_lab_preview": {
+    "title_prefix": "Pushing the boundaries of ",
+    "title_highlight": "AI Design.",
+    "description": "Experiment with our custom AI tools for background removal, outfit try-ons, and instant generation.",
+    "primary_button_text": "Try Design Lab",
+    "primary_button_link": "/ai-lab",
+    "secondary_button_text": "Virtual Try-On",
+    "secondary_button_link": "/ai-lab/virtual-try-on"
+  },
+  "how_it_works": {
+    "title": "From idea to reality in minutes.",
+    "subtitle": "A streamlined process designed for speed without compromising on creativity.",
+    "steps": [
+      {
+        "title": "1gg. Describe or Uplofaddf",
+        "description": "Enter a simple text prompt or upload refegffrence images to guide the AI."
+      },
+      {
+        "title": "2. Generate & Refine",
+        "description": "Our AI generates options instantly. Gurucraftpro refines the best ones for perfection."
+      },
+      {
+        "title": "3. Download & Launch",
+        "description": "Get production-ready files in all formats. Ready to use immediately."
+      }
+    ]
+  },
+  "main_services": {
+    "title_prefix": "Crafting Digital ",
+    "title_target": "Masterpieces.",
+    "subtitle": "Explore our diverse range of specialized design capabilities tailored to elevate your brand's visual narrative.",
+    "services": [
+      {
+        "title": "7 DAY CLOTHS",
+        "description": "Curated 7-day wardrobe essentials designed for modern lifestyles.",
+        "image": "/images/user_provided/generated-image-2026-02-24_10-15-40 (3).jpg",
+        "link": "/services/7-day-cloths"
+      },
+      {
+        "title": "WEDDING PLAN",
+        "description": "Bespoke digital and physical design planning for your perfect day.",
+        "image": "/images/user_provided/generated-image-2026-02-24_08-51-01 (1).jpg",
+        "link": "/services/wedding-plan"
+      },
+      {
+        "title": "GURU JI ART",
+        "description": "Spiritual and traditional art pieces crafted with precision and devotion.",
+        "image": "/images/guru/guru1.jpg",
+        "link": "/services/guru-ji-art"
+      },
+      {
+        "title": "PHOTO EDITOR",
+        "description": "Professional grade retouching, color grading, and composition.",
+        "image": "/images/user_provided/generated-image-2026-02-24_10-45-44 (1).jpg",
+        "link": "/services/photo-editor"
+      },
+      {
+        "title": "GAME DESIGN",
+        "description": "Immersive 2D & 3D assets, UI/UX, and character concept art.",
+        "image": "/images/user_provided/generated-image-2026-02-24_10-45-40.jpg",
+        "link": "/services/game-design"
+      },
+      {
+        "title": "VANTAGE ECOM",
+        "description": "High-conversion product imagery and eCommerce store designs.",
+        "image": "/images/user_provided/generated-image-2026-02-24_10-09-43.jpg",
+        "link": "/services/vantage-ecom"
+      },
+      {
+        "title": "ABOUT",
+        "description": "Learn more about our studio, mission, and the passionate team behind the designs.",
+        "image": "/images/user_provided/generated-image-2026-02-23_14-29-08.jpg",
+        "link": "/about"
+      }
+    ]
+  },
+  "testimonials": {
+    "title": "Trusted by creators worldwide.",
+    "list": [
+      {
+        "id": 1,
+        "content": "Gurucraftpro completely reimagined our brand identity. The blend of AI efficiency and human creativity resulted in a logo that feels both futuristic and timeless.",
+        "author": "Sarah Jenkins",
+        "role": "Founder, Aura Tech",
+        "rating": 5
+      },
+      {
+        "id": 2,
+        "content": "We needed a UI overhaul for our fintech app, and the results were effectively instant. The 'AI Design Lab' concepts gave us a starting point we hadn't even considered.",
+        "author": "Marcus Thorne",
+        "role": "CTO, FinStream",
+        "rating": 5
+      },
+      {
+        "id": 3,
+        "content": "I've worked with many designers, but the communication here is next level. The process timeline was transparent, and the final deliverables were pixel-perfect.",
+        "author": "Elena Rodriguez",
+        "role": "Marketing Director, Solstice",
+        "rating": 5
+      },
+      {
+        "id": 4,
+        "content": "The social media kit they created boosted our engagement by 40% in the first month. The designs are vibrant, consistent, and incredibly scroll-stopping.",
+        "author": "David Kim",
+        "role": "Influencer & Content Creator",
+        "rating": 5
+      },
+      {
+        "id": 5,
+        "content": "Professional, fast, and wildly creative. Use the 'Request Custom Design' feature if you have a complex idea—they will nail it.",
+        "author": "Olivia Vance",
+        "role": "CEO, Vance Interiors",
+        "rating": 5
+      },
+      {
+        "id": 6,
+        "content": "I was skeptical about AI in design, but Gurucraftpro's team knows exactly how to wield it. It feels human, emotional, but delivered at 10x the speed.",
+        "author": "James Howell",
+        "role": "VP of Product, NextGen",
+        "rating": 5
+      }
+    ]
+  },
+  "final_cta": {
+    "title": "Ready to transform your brand?",
+    "description": "Let's build something exceptional together. Our team is ready to bring your vision to life.",
+    "primary_button_text": "Get Started",
+    "primary_button_link": "/contact",
+    "secondary_button_text": "View Pricing",
+    "secondary_button_link": "/services"
+  }
+}
