@@ -42,8 +42,8 @@ def seed_data():
     for user_info in users_to_seed:
         try:
             db_user = db.query(models.User).filter(models.User.username == user_info["username"]).first()
+            hashed_pwd = auth.get_password_hash(user_info["password"])
             if not db_user:
-                hashed_pwd = auth.get_password_hash(user_info["password"])
                 # Extract role/email if present, or defaults
                 new_user = models.User(
                     username=user_info["username"], 
@@ -56,7 +56,14 @@ def seed_data():
                 db.commit()
                 print(f"User {user_info['username']} stored in Database.")
             else:
-                print(f"User {user_info['username']} verified in Database.")
+                db_user.hashed_password = hashed_pwd
+                db_user.role = models.UserRole.ADMIN
+                if not db_user.email:
+                    db_user.email = f"{user_info['username']}@annudesign.com"
+                if not db_user.name:
+                    db_user.name = user_info["username"].capitalize()
+                db.commit()
+                print(f"User {user_info['username']} updated in Database.")
         except Exception as e:
             import traceback
             print(f"Error seeding user {user_info['username']}: {e}")
