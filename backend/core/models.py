@@ -7,6 +7,9 @@ from .database import Base
 class UserRole(str, enum.Enum):
     ADMIN = "admin"
     EDITOR = "editor"
+    # Aliases for robustness
+    ADMIN_UPPER = "ADMIN"
+    EDITOR_UPPER = "EDITOR"
 
 class User(Base):
     __tablename__ = "users"
