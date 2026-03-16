@@ -9,6 +9,7 @@
  * - Minimalist and premium aesthetic
  * - Focus on typography and whitespace
  * - Subtle animations and gradients for depth
+ */
 import { Hero } from "@/components/home/Hero";
 import { TrustStrip } from "@/components/home/TrustStrip";
 import { ServiceCategoryRail } from "@/components/portfolio/ServiceCategoryRail";
