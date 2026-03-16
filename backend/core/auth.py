@@ -18,16 +18,31 @@ pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="api/v1/auth/login")
 
 def verify_password(plain_password, hashed_password):
-    if not hashed_password:
+    if not hashed_password or not plain_password:
         return False
-    # Bcrypt truncation (72-byte limit)
-    pwd = plain_password[:72] if plain_password else ""
-    return pwd_context.verify(pwd, hashed_password)
+    
+    # Bcrypt strictly limits password to 72 bytes. 
+    # We truncate to 72 bytes and handle potential UTF-8 multi-byte issues.
+    try:
+        byte_pwd = plain_password.encode('utf-8')[:72]
+        # Decode back to string for passlib, ignoring any partial character at the boundary
+        safe_pwd = byte_pwd.decode('utf-8', 'ignore')
+        
+        return pwd_context.verify(safe_pwd, hashed_password)
+    except Exception as e:
+        print(f"AUTH_VERIFY_CRASH: {str(e)}")
+        # If it's the 72 byte error, we try one more extreme truncation
+        if "72 bytes" in str(e):
+             return pwd_context.verify(plain_password[:50], hashed_password)
+        raise e
 
 def get_password_hash(password):
-    # Bcrypt truncation (72-byte limit)
-    pwd = password[:72] if password else ""
-    return pwd_context.hash(pwd)
+    if not password:
+        return None
+    # Truncate to 72 bytes safely
+    byte_pwd = password.encode('utf-8')[:72]
+    safe_pwd = byte_pwd.decode('utf-8', 'ignore')
+    return pwd_context.hash(safe_pwd)
 
 def create_access_token(data: dict, expires_delta: Optional[timedelta] = None):
     to_encode = data.copy()
