@@ -50,6 +50,7 @@ const ImageUploadField = ({ value, onChange }: { value: string, onChange: (v: st
     const formData = new FormData();
     formData.append("file", file);
 
+    try {
       const token = localStorage.getItem("token");
       const res = await fetch(getApiUrl("/api/v1/cms/upload-image"), {
         method: "POST",
