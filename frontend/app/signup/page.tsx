@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { SignupForm } from "@/components/auth/SignupForm";
 import Link from "next/link";
+import Image from "next/image";
 
 export const metadata: Metadata = {
     title: "Sign Up | Annu Design Studio",
@@ -13,10 +14,11 @@ export default function SignupPage() {
             {/* Left Side - Visual */}
             <div className="hidden lg:block relative bg-zinc-900 border-r border-white/5">
                 <div className="absolute inset-0">
-                    <img
+                    <Image
                         src="https://images.unsplash.com/photo-1558655146-d09347e92766?q=80&w=2564&auto=format&fit=crop"
                         alt="Creative Workspace"
-                        className="w-full h-full object-cover opacity-50"
+                        fill
+                        className="object-cover opacity-50"
                     />
                     <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/20 to-transparent" />
                 </div>

@@ -23,10 +23,12 @@ export default function LoginPage() {
             {/* Right Side - Visual */}
             <div className="hidden lg:block relative bg-zinc-900 border-l border-white/5">
                 <div className="absolute inset-0">
-                    <img
+                    <Image
                         src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=2564&auto=format&fit=crop"
                         alt="Abstract Design"
-                        className="w-full h-full object-cover opacity-50"
+                        fill
+                        className="object-cover opacity-50"
+                        priority
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
                 </div>
