@@ -31,15 +31,16 @@ async def login_for_access_token(
             data={"sub": user.username}, expires_delta=access_token_expires
         )
         return {"access_token": access_token, "token_type": "bearer"}
+    except HTTPException:
+        raise
     except Exception as e:
         import traceback
         tb = traceback.format_exc()
         print(f"LOGIN_ERROR: {str(e)}")
         print(tb)
-        error_msg = f"Login Error: {str(e)}"
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=error_msg
+            detail="Login failed due to a server error"
         )
 
 @router.get("/users", summary="List All Administrative Users")

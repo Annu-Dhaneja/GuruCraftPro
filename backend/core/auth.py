@@ -17,27 +17,50 @@ ACCESS_TOKEN_EXPIRE_MINUTES = 60 * 24 # 24 hours
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="api/v1/auth/login")
 
+def _truncate_password_bytes(password: str, max_bytes: int) -> str:
+    if not password:
+        return ""
+
+    encoded = password.encode("utf-8")
+    if len(encoded) <= max_bytes:
+        return password
+
+    truncated = encoded[:max_bytes]
+    while truncated:
+        try:
+            return truncated.decode("utf-8")
+        except UnicodeDecodeError:
+            truncated = truncated[:-1]
+    return ""
+
 def verify_password(plain_password, hashed_password):
     if not hashed_password or not plain_password:
         return False
-    
-    # Bcrypt strictly limits password to 72 bytes. Some backends are even stricter.
-    # We truncate to 50 bytes (very safe) to ensure no '72 byte' errors ever occur.
+
+    # Support both existing truncated hashes and bcrypt's 72-byte limit.
+    candidates = []
+    for max_bytes in (72, 50, 40):
+        candidate = _truncate_password_bytes(plain_password, max_bytes)
+        if candidate and candidate not in candidates:
+            candidates.append(candidate)
+
     try:
-        # Use a very safe 50-byte truncation
-        safe_pwd = plain_password.encode('utf-8')[:50].decode('utf-8', 'ignore')
-        return pwd_context.verify(safe_pwd, hashed_password)
+        for candidate in candidates:
+            if pwd_context.verify(candidate, hashed_password):
+                return True
+        return False
     except Exception as e:
-        # Final fallback: if it still fails due to length, use even smaller slice
         if "72 bytes" in str(e):
-            return pwd_context.verify(plain_password[:40], hashed_password)
+            for candidate in candidates[1:]:
+                if pwd_context.verify(candidate, hashed_password):
+                    return True
+            return False
         raise e
 
 def get_password_hash(password):
     if not password:
         return None
-    # Truncate to 50 bytes for perfect compatibility
-    safe_pwd = password.encode('utf-8')[:50].decode('utf-8', 'ignore')
+    safe_pwd = _truncate_password_bytes(password, 72)
     return pwd_context.hash(safe_pwd)
 
 def create_access_token(data: dict, expires_delta: Optional[timedelta] = None):
