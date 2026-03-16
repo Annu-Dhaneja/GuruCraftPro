@@ -306,7 +306,7 @@ export default function AdminHomePage() {
             )}
 
             {/* Trust Strip Tab */}
-            {activeTab === "trust_strip" && data.trust_strip && (
+            {activeTab === "trust_strip" && data?.trust_strip && (
               <div className="space-y-8 animate-in fade-in">
                 <h2 className="text-xl font-semibold mb-6 pb-2 border-b border-border">Trust Strip Stats</h2>
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
@@ -319,15 +319,15 @@ export default function AdminHomePage() {
                 </div>
                 <h2 className="text-xl font-semibold mb-6 pb-2 border-b border-border mt-12">Trusted Companies</h2>
                 <div className="space-y-4">
-                  {(data.trust_strip.companies || []).map((company: any, i: number) => (
+                  {(data?.trust_strip?.companies || []).map((company: any, i: number) => (
                     <div key={i} className="flex gap-4 items-center bg-muted/30 p-4 rounded-lg border border-border">
                       <div className="flex-1">
                         <InputLabel>Company Name</InputLabel>
-                        <Input value={company.name} onChange={(v) => handleArrayChange("trust_strip", "companies", i, "name", v)} />
+                        <Input value={company?.name} onChange={(v) => handleArrayChange("trust_strip", "companies", i, "name", v)} />
                       </div>
                       <div className="flex-1">
                         <InputLabel>Logo URL / Upload</InputLabel>
-                        <ImageUploadField value={company.logo} onChange={(v) => handleArrayChange("trust_strip", "companies", i, "logo", v)} />
+                        <ImageUploadField value={company?.logo} onChange={(v) => handleArrayChange("trust_strip", "companies", i, "logo", v)} />
                       </div>
                       <Button variant="destructive" size="icon" className="mt-6" onClick={() => removeArrayItem("trust_strip", "companies", i)}>
                         <Trash2 className="w-4 h-4" />
@@ -342,24 +342,24 @@ export default function AdminHomePage() {
             )}
 
             {/* Service Templates Tab */}
-            {activeTab === "categories" && data.service_category_rail && (
+            {activeTab === "categories" && data?.service_category_rail && (
               <div className="space-y-6 animate-in fade-in">
                 <h2 className="text-xl font-semibold mb-6 pb-2 border-b border-border">Service Templates</h2>
                 <div className="mb-8">
                   <InputLabel>Section Title</InputLabel>
-                  <Input value={data.service_category_rail.title} onChange={(v) => handleNestedChange("service_category_rail", "title", v)} />
+                  <Input value={data.service_category_rail?.title} onChange={(v) => handleNestedChange("service_category_rail", "title", v)} />
                 </div>
 
                 <div className="space-y-4">
-                  {(data.service_category_rail.categories || []).map((cat: any, i: number) => (
+                  {(data?.service_category_rail?.categories || []).map((cat: any, i: number) => (
                     <div key={i} className="flex flex-col md:flex-row gap-4 items-start bg-muted/30 p-4 rounded-lg border border-border">
                       <div className="flex-1 space-y-4 w-full">
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                          <div><InputLabel>Category Title</InputLabel><Input value={cat.title} onChange={(v) => handleArrayChange("service_category_rail", "categories", i, "title", v)} /></div>
-                          <div><InputLabel>Link Route</InputLabel><Input value={cat.href} onChange={(v) => handleArrayChange("service_category_rail", "categories", i, "href", v)} /></div>
-                          <div><InputLabel>Tailwind Color Class</InputLabel><Input value={cat.color} onChange={(v) => handleArrayChange("service_category_rail", "categories", i, "color", v)} /></div>
+                          <div><InputLabel>Category Title</InputLabel><Input value={cat?.title} onChange={(v) => handleArrayChange("service_category_rail", "categories", i, "title", v)} /></div>
+                          <div><InputLabel>Link Route</InputLabel><Input value={cat?.href} onChange={(v) => handleArrayChange("service_category_rail", "categories", i, "href", v)} /></div>
+                          <div><InputLabel>Tailwind Color Class</InputLabel><Input value={cat?.color} onChange={(v) => handleArrayChange("service_category_rail", "categories", i, "color", v)} /></div>
                         </div>
-                        <div><InputLabel>Image URL / Upload</InputLabel><ImageUploadField value={cat.image} onChange={(v) => handleArrayChange("service_category_rail", "categories", i, "image", v)} /></div>
+                        <div><InputLabel>Image URL / Upload</InputLabel><ImageUploadField value={cat?.image} onChange={(v) => handleArrayChange("service_category_rail", "categories", i, "image", v)} /></div>
                       </div>
                       <Button variant="destructive" size="icon" className="shrink-0" onClick={() => removeArrayItem("service_category_rail", "categories", i)}>
                         <Trash2 className="w-4 h-4" />
@@ -374,54 +374,54 @@ export default function AdminHomePage() {
             )}
 
             {/* Virtual Try-On Tab */}
-            {activeTab === "virtual" && data.virtual_dressing_room && (
+            {activeTab === "virtual" && data?.virtual_dressing_room && (
               <div className="space-y-8 animate-in fade-in">
                 <h2 className="text-2xl font-bold mb-8 text-indigo-300">Virtual Try-On Lab</h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                  <div><InputLabel>Badge Text</InputLabel><Input value={data.virtual_dressing_room.badge_text} onChange={(v) => handleNestedChange("virtual_dressing_room", "badge_text", v)} /></div>
-                  <div><InputLabel>Main Title</InputLabel><Input value={data.virtual_dressing_room.title} onChange={(v) => handleNestedChange("virtual_dressing_room", "title", v)} /></div>
-                  <div className="md:col-span-2"><InputLabel>Introduction Description</InputLabel><Input value={data.virtual_dressing_room.description} isRich onChange={(v) => handleNestedChange("virtual_dressing_room", "description", v)} /></div>
-                  <div className="md:col-span-2"><InputLabel>Preview Experience Asset</InputLabel><ImageUploadField value={data.virtual_dressing_room.image} onChange={(v) => handleNestedChange("virtual_dressing_room", "image", v)} /></div>
-                  <div><InputLabel>Primary Button Text</InputLabel><Input value={data.virtual_dressing_room.button_text} onChange={(v) => handleNestedChange("virtual_dressing_room", "button_text", v)} /></div>
-                  <div><InputLabel>Destination Path</InputLabel><Input value={data.virtual_dressing_room.button_link} onChange={(v) => handleNestedChange("virtual_dressing_room", "button_link", v)} /></div>
+                  <div><InputLabel>Badge Text</InputLabel><Input value={data.virtual_dressing_room?.badge_text} onChange={(v) => handleNestedChange("virtual_dressing_room", "badge_text", v)} /></div>
+                  <div><InputLabel>Main Title</InputLabel><Input value={data.virtual_dressing_room?.title} onChange={(v) => handleNestedChange("virtual_dressing_room", "title", v)} /></div>
+                  <div className="md:col-span-2"><InputLabel>Introduction Description</InputLabel><Input value={data.virtual_dressing_room?.description} isRich onChange={(v) => handleNestedChange("virtual_dressing_room", "description", v)} /></div>
+                  <div className="md:col-span-2"><InputLabel>Preview Experience Asset</InputLabel><ImageUploadField value={data.virtual_dressing_room?.image} onChange={(v) => handleNestedChange("virtual_dressing_room", "image", v)} /></div>
+                  <div><InputLabel>Primary Button Text</InputLabel><Input value={data.virtual_dressing_room?.button_text} onChange={(v) => handleNestedChange("virtual_dressing_room", "button_text", v)} /></div>
+                  <div><InputLabel>Destination Path</InputLabel><Input value={data.virtual_dressing_room?.button_link} onChange={(v) => handleNestedChange("virtual_dressing_room", "button_link", v)} /></div>
                 </div>
               </div>
             )}
 
             {/* Portfolio Grid Tab */}
-            {activeTab === "portfolio" && data.portfolio_preview && (
+            {activeTab === "portfolio" && data?.portfolio_preview && (
               <div className="space-y-6 animate-in fade-in">
                 <h2 className="text-xl font-semibold mb-6 pb-2 border-b border-border">Portfolio Grid Section</h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-                  <div><InputLabel>Badge Text</InputLabel><Input value={data.portfolio_preview.badge_text} onChange={(v) => handleNestedChange("portfolio_preview", "badge_text", v)} /></div>
-                  <div><InputLabel>Title</InputLabel><Input value={data.portfolio_preview.title} onChange={(v) => handleNestedChange("portfolio_preview", "title", v)} /></div>
-                  <div className="md:col-span-2"><InputLabel>Impactful Portfolio Description</InputLabel><Input value={data.portfolio_preview.description} isRich onChange={(v) => handleNestedChange("portfolio_preview", "description", v)} /></div>
-                  <div><InputLabel>Button Text</InputLabel><Input value={data.portfolio_preview.button_text} onChange={(v) => handleNestedChange("portfolio_preview", "button_text", v)} /></div>
-                  <div><InputLabel>Button Link Route</InputLabel><Input value={data.portfolio_preview.button_link} onChange={(v) => handleNestedChange("portfolio_preview", "button_link", v)} /></div>
+                  <div><InputLabel>Badge Text</InputLabel><Input value={data.portfolio_preview?.badge_text} onChange={(v) => handleNestedChange("portfolio_preview", "badge_text", v)} /></div>
+                  <div><InputLabel>Title</InputLabel><Input value={data.portfolio_preview?.title} onChange={(v) => handleNestedChange("portfolio_preview", "title", v)} /></div>
+                  <div className="md:col-span-2"><InputLabel>Impactful Portfolio Description</InputLabel><Input value={data.portfolio_preview?.description} isRich onChange={(v) => handleNestedChange("portfolio_preview", "description", v)} /></div>
+                  <div><InputLabel>Button Text</InputLabel><Input value={data.portfolio_preview?.button_text} onChange={(v) => handleNestedChange("portfolio_preview", "button_text", v)} /></div>
+                  <div><InputLabel>Button Link Route</InputLabel><Input value={data.portfolio_preview?.button_link} onChange={(v) => handleNestedChange("portfolio_preview", "button_link", v)} /></div>
                 </div>
 
                 <h3 className="text-lg font-medium mb-4">Projects</h3>
                 <div className="space-y-4">
-                  {(data.portfolio_preview.projects || []).map((project: any, i: number) => (
+                  {(data?.portfolio_preview?.projects || []).map((project: any, i: number) => (
                     <div key={i} className="flex flex-col md:flex-row gap-4 items-start bg-muted/30 p-4 rounded-lg border border-border">
                       <div className="flex-1 space-y-4 w-full">
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                          <div><InputLabel>Project Title</InputLabel><Input value={project.title} onChange={(v) => handleArrayChange("portfolio_preview", "projects", i, "title", v)} /></div>
-                          <div><InputLabel>Category</InputLabel><Input value={project.category} onChange={(v) => handleArrayChange("portfolio_preview", "projects", i, "category", v)} /></div>
-                          <div><InputLabel>Project ID</InputLabel><Input value={project.id} onChange={(v) => handleArrayChange("portfolio_preview", "projects", i, "id", v)} /></div>
-                          <div><InputLabel>Case Study URL</InputLabel><Input value={project.case_study_url} onChange={(v) => handleArrayChange("portfolio_preview", "projects", i, "case_study_url", v)} /></div>
-                          <div><InputLabel>Live Preview URL</InputLabel><Input value={project.live_url} onChange={(v) => handleArrayChange("portfolio_preview", "projects", i, "live_url", v)} /></div>
+                          <div><InputLabel>Project Title</InputLabel><Input value={project?.title} onChange={(v) => handleArrayChange("portfolio_preview", "projects", i, "title", v)} /></div>
+                          <div><InputLabel>Category</InputLabel><Input value={project?.category} onChange={(v) => handleArrayChange("portfolio_preview", "projects", i, "category", v)} /></div>
+                          <div><InputLabel>Project ID</InputLabel><Input value={project?.id} onChange={(v) => handleArrayChange("portfolio_preview", "projects", i, "id", v)} /></div>
+                          <div><InputLabel>Case Study URL</InputLabel><Input value={project?.case_study_url} onChange={(v) => handleArrayChange("portfolio_preview", "projects", i, "case_study_url", v)} /></div>
+                          <div><InputLabel>Live Preview URL</InputLabel><Input value={project?.live_url} onChange={(v) => handleArrayChange("portfolio_preview", "projects", i, "live_url", v)} /></div>
                         </div>
 
                         <div>
                           <InputLabel>Color Palette (Hex codes)</InputLabel>
                           <div className="flex flex-wrap gap-2 mb-2">
-                            {(project.colors || []).map((color: string, colorIdx: number) => (
+                            {(project?.colors || []).map((color: string, colorIdx: number) => (
                               <div key={colorIdx} className="flex items-center gap-2 bg-muted/40 px-2 py-1 rounded border border-border">
                                 <div className="w-3 h-3 rounded-full" style={{ backgroundColor: color }} />
                                 <span className="text-[10px] uppercase font-mono">{color}</span>
                                 <button onClick={() => {
-                                  const newColors = project.colors.filter((_: any, idx: number) => idx !== colorIdx);
+                                  const newColors = (project?.colors || []).filter((_: any, idx: number) => idx !== colorIdx);
                                   handleArrayChange("portfolio_preview", "projects", i, "colors", newColors);
                                 }}>×</button>
                               </div>
@@ -431,13 +431,13 @@ export default function AdminHomePage() {
                             if (v.endsWith(",")) {
                               const newColor = v.slice(0, -1).trim();
                               if (newColor.startsWith("#")) {
-                                handleArrayChange("portfolio_preview", "projects", i, "colors", [...(project.colors || []), newColor]);
+                                handleArrayChange("portfolio_preview", "projects", i, "colors", [...(project?.colors || []), newColor]);
                               }
                             }
                           }} placeholder="#Hex, to add" />
                         </div>
 
-                        <div><InputLabel>Image URL / Upload</InputLabel><ImageUploadField value={project.image} onChange={(v) => handleArrayChange("portfolio_preview", "projects", i, "image", v)} /></div>
+                        <div><InputLabel>Image URL / Upload</InputLabel><ImageUploadField value={project?.image} onChange={(v) => handleArrayChange("portfolio_preview", "projects", i, "image", v)} /></div>
                       </div>
                       <Button variant="destructive" size="icon" className="shrink-0" onClick={() => removeArrayItem("portfolio_preview", "projects", i)}>
                         <Trash2 className="w-4 h-4" />
@@ -452,36 +452,36 @@ export default function AdminHomePage() {
             )}
 
             {/* AI Lab Preview Tab */}
-            {activeTab === "ailab" && data.ai_lab_preview && (
+            {activeTab === "ailab" && data?.ai_lab_preview && (
               <div className="space-y-6 animate-in fade-in">
                 <h2 className="text-xl font-semibold mb-6 pb-2 border-b border-border">AI Lab Preview Section</h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div><InputLabel>Title Prefix</InputLabel><Input value={data.ai_lab_preview.title_prefix} onChange={(v) => handleNestedChange("ai_lab_preview", "title_prefix", v)} /></div>
-                  <div><InputLabel>Title Highlight</InputLabel><Input value={data.ai_lab_preview.title_highlight} onChange={(v) => handleNestedChange("ai_lab_preview", "title_highlight", v)} /></div>
-                  <div className="md:col-span-2"><InputLabel>Technology & Vision Description</InputLabel><Input value={data.ai_lab_preview.description} isRich onChange={(v) => handleNestedChange("ai_lab_preview", "description", v)} /></div>
-                  <div><InputLabel>Primary Button Text</InputLabel><Input value={data.ai_lab_preview.primary_button_text} onChange={(v) => handleNestedChange("ai_lab_preview", "primary_button_text", v)} /></div>
-                  <div><InputLabel>Primary Button Link</InputLabel><Input value={data.ai_lab_preview.primary_button_link} onChange={(v) => handleNestedChange("ai_lab_preview", "primary_button_link", v)} /></div>
-                  <div><InputLabel>Secondary Button Text</InputLabel><Input value={data.ai_lab_preview.secondary_button_text} onChange={(v) => handleNestedChange("ai_lab_preview", "secondary_button_text", v)} /></div>
-                  <div><InputLabel>Secondary Button Link</InputLabel><Input value={data.ai_lab_preview.secondary_button_link} onChange={(v) => handleNestedChange("ai_lab_preview", "secondary_button_link", v)} /></div>
+                  <div><InputLabel>Title Prefix</InputLabel><Input value={data.ai_lab_preview?.title_prefix} onChange={(v) => handleNestedChange("ai_lab_preview", "title_prefix", v)} /></div>
+                  <div><InputLabel>Title Highlight</InputLabel><Input value={data.ai_lab_preview?.title_highlight} onChange={(v) => handleNestedChange("ai_lab_preview", "title_highlight", v)} /></div>
+                  <div className="md:col-span-2"><InputLabel>Technology & Vision Description</InputLabel><Input value={data.ai_lab_preview?.description} isRich onChange={(v) => handleNestedChange("ai_lab_preview", "description", v)} /></div>
+                  <div><InputLabel>Primary Button Text</InputLabel><Input value={data.ai_lab_preview?.primary_button_text} onChange={(v) => handleNestedChange("ai_lab_preview", "primary_button_text", v)} /></div>
+                  <div><InputLabel>Primary Button Link</InputLabel><Input value={data.ai_lab_preview?.primary_button_link} onChange={(v) => handleNestedChange("ai_lab_preview", "primary_button_link", v)} /></div>
+                  <div><InputLabel>Secondary Button Text</InputLabel><Input value={data.ai_lab_preview?.secondary_button_text} onChange={(v) => handleNestedChange("ai_lab_preview", "secondary_button_text", v)} /></div>
+                  <div><InputLabel>Secondary Button Link</InputLabel><Input value={data.ai_lab_preview?.secondary_button_link} onChange={(v) => handleNestedChange("ai_lab_preview", "secondary_button_link", v)} /></div>
                 </div>
               </div>
             )}
 
             {/* How It Works Tab */}
-            {activeTab === "how_it_works" && data.how_it_works && (
+            {activeTab === "how_it_works" && data?.how_it_works && (
               <div className="space-y-6 animate-in fade-in">
                 <h2 className="text-xl font-semibold mb-6 pb-2 border-b border-border">How It Works Section</h2>
                 <div className="space-y-4 mb-8">
-                  <div><InputLabel>Title</InputLabel><Input value={data.how_it_works.title} onChange={(v) => handleNestedChange("how_it_works", "title", v)} /></div>
-                  <div><InputLabel>Subtitle</InputLabel><Input value={data.how_it_works.subtitle} isTextarea onChange={(v) => handleNestedChange("how_it_works", "subtitle", v)} /></div>
+                  <div><InputLabel>Title</InputLabel><Input value={data.how_it_works?.title} onChange={(v) => handleNestedChange("how_it_works", "title", v)} /></div>
+                  <div><InputLabel>Subtitle</InputLabel><Input value={data.how_it_works?.subtitle} isTextarea onChange={(v) => handleNestedChange("how_it_works", "subtitle", v)} /></div>
                 </div>
                 <h3 className="text-lg font-medium mb-4">Steps</h3>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                  {data.how_it_works.steps.map((step: any, i: number) => (
+                  {(data.how_it_works?.steps || []).map((step: any, i: number) => (
                     <div key={i} className="bg-muted/30 p-4 rounded-lg space-y-4 border border-border">
                       <div className="font-medium text-sm text-indigo-400 mb-2">Step {i + 1}</div>
-                      <div><InputLabel>Title</InputLabel><Input value={step.title} onChange={(v) => handleArrayChange("how_it_works", "steps", i, "title", v)} /></div>
-                      <div><InputLabel>Description</InputLabel><Input value={step.description} isTextarea onChange={(v) => handleArrayChange("how_it_works", "steps", i, "description", v)} /></div>
+                      <div><InputLabel>Title</InputLabel><Input value={step?.title} onChange={(v) => handleArrayChange("how_it_works", "steps", i, "title", v)} /></div>
+                      <div><InputLabel>Description</InputLabel><Input value={step?.description} isTextarea onChange={(v) => handleArrayChange("how_it_works", "steps", i, "description", v)} /></div>
                     </div>
                   ))}
                 </div>
@@ -489,27 +489,27 @@ export default function AdminHomePage() {
             )}
 
             {/* Graphic Design Services Tab */}
-            {activeTab === "graphic_svc" && data.graphic_design_services && (
+            {activeTab === "graphic_svc" && data?.graphic_design_services && (
               <div className="space-y-6 animate-in fade-in">
                 <h2 className="text-xl font-semibold mb-6 pb-2 border-b border-border">Graphic Services Grid</h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-                  <div><InputLabel>Badge Text</InputLabel><Input value={data.graphic_design_services.badge_text} onChange={(v) => handleNestedChange("graphic_design_services", "badge_text", v)} /></div>
-                  <div><InputLabel>Title</InputLabel><Input value={data.graphic_design_services.title} onChange={(v) => handleNestedChange("graphic_design_services", "title", v)} /></div>
-                  <div className="md:col-span-2"><InputLabel>Description</InputLabel><Input value={data.graphic_design_services.description} isTextarea onChange={(v) => handleNestedChange("graphic_design_services", "description", v)} /></div>
+                  <div><InputLabel>Badge Text</InputLabel><Input value={data.graphic_design_services?.badge_text} onChange={(v) => handleNestedChange("graphic_design_services", "badge_text", v)} /></div>
+                  <div><InputLabel>Title</InputLabel><Input value={data.graphic_design_services?.title} onChange={(v) => handleNestedChange("graphic_design_services", "title", v)} /></div>
+                  <div className="md:col-span-2"><InputLabel>Description</InputLabel><Input value={data.graphic_design_services?.description} isTextarea onChange={(v) => handleNestedChange("graphic_design_services", "description", v)} /></div>
                 </div>
 
                 <h3 className="text-lg font-medium mb-4">Service Options</h3>
                 <div className="space-y-4">
-                  {(data.graphic_design_services.services || []).map((service: any, i: number) => (
+                  {(data.graphic_design_services?.services || []).map((service: any, i: number) => (
                     <div key={i} className="flex flex-col md:flex-row gap-4 items-start bg-muted/30 p-4 rounded-lg border border-border">
                       <div className="flex-1 space-y-4 w-full">
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                          <div><InputLabel>Service Name</InputLabel><Input value={service.title} onChange={(v) => handleArrayChange("graphic_design_services", "services", i, "title", v)} /></div>
-                          <div><InputLabel>Starting Price</InputLabel><Input value={service.price} onChange={(v) => handleArrayChange("graphic_design_services", "services", i, "price", v)} /></div>
-                          <div><InputLabel>Tailwind Gradient</InputLabel><Input value={service.color} onChange={(v) => handleArrayChange("graphic_design_services", "services", i, "color", v)} /></div>
+                          <div><InputLabel>Service Name</InputLabel><Input value={service?.title} onChange={(v) => handleArrayChange("graphic_design_services", "services", i, "title", v)} /></div>
+                          <div><InputLabel>Starting Price</InputLabel><Input value={service?.price} onChange={(v) => handleArrayChange("graphic_design_services", "services", i, "price", v)} /></div>
+                          <div><InputLabel>Tailwind Gradient</InputLabel><Input value={service?.color} onChange={(v) => handleArrayChange("graphic_design_services", "services", i, "color", v)} /></div>
                         </div>
-                        <div><InputLabel>Background Image URL / Upload</InputLabel><ImageUploadField value={service.image} onChange={(v) => handleArrayChange("graphic_design_services", "services", i, "image", v)} /></div>
-                        <div><InputLabel>Description</InputLabel><Input value={service.description} onChange={(v) => handleArrayChange("graphic_design_services", "services", i, "description", v)} /></div>
+                        <div><InputLabel>Background Image URL / Upload</InputLabel><ImageUploadField value={service?.image} onChange={(v) => handleArrayChange("graphic_design_services", "services", i, "image", v)} /></div>
+                        <div><InputLabel>Description</InputLabel><Input value={service?.description} onChange={(v) => handleArrayChange("graphic_design_services", "services", i, "description", v)} /></div>
                       </div>
                       <Button variant="destructive" size="icon" className="shrink-0" onClick={() => removeArrayItem("graphic_design_services", "services", i)}>
                         <Trash2 className="w-4 h-4" />
@@ -524,29 +524,29 @@ export default function AdminHomePage() {
             )}
 
             {/* About Section Tab */}
-            {activeTab === "about" && data.about_section && (
+            {activeTab === "about" && data?.about_section && (
               <div className="space-y-6 animate-in fade-in">
                 <h2 className="text-xl font-semibold mb-6 pb-2 border-b border-border">About Section</h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div className="md:col-span-2"><InputLabel>Story Statement</InputLabel><Input value={data.about_section.title} isRich onChange={(v) => handleNestedChange("about_section", "title", v)} /></div>
-                  <div className="md:col-span-2"><InputLabel>Foundational Narrative (P1)</InputLabel><Input value={data.about_section.paragraph1} isRich onChange={(v) => handleNestedChange("about_section", "paragraph1", v)} /></div>
-                  <div className="md:col-span-2"><InputLabel>Visionary Narrative (P2)</InputLabel><Input value={data.about_section.paragraph2} isRich onChange={(v) => handleNestedChange("about_section", "paragraph2", v)} /></div>
+                  <div className="md:col-span-2"><InputLabel>Story Statement</InputLabel><Input value={data.about_section?.title} isRich onChange={(v) => handleNestedChange("about_section", "title", v)} /></div>
+                  <div className="md:col-span-2"><InputLabel>Foundational Narrative (P1)</InputLabel><Input value={data.about_section?.paragraph1} isRich onChange={(v) => handleNestedChange("about_section", "paragraph1", v)} /></div>
+                  <div className="md:col-span-2"><InputLabel>Visionary Narrative (P2)</InputLabel><Input value={data.about_section?.paragraph2} isRich onChange={(v) => handleNestedChange("about_section", "paragraph2", v)} /></div>
 
                   {/* Stats */}
                   <div className="bg-muted/30 p-4 rounded-lg space-y-4 border border-border md:col-span-2">
                     <h3 className="font-medium">Quick Stats</h3>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                       <div>
-                        <InputLabel>Stat 1 Value</InputLabel><Input value={data.about_section.stat1_value} onChange={(v) => handleNestedChange("about_section", "stat1_value", v)} />
-                        <div className="mt-2"><InputLabel>Stat 1 Label</InputLabel><Input value={data.about_section.stat1_label} onChange={(v) => handleNestedChange("about_section", "stat1_label", v)} /></div>
+                        <InputLabel>Stat 1 Value</InputLabel><Input value={data.about_section?.stat1_value} onChange={(v) => handleNestedChange("about_section", "stat1_value", v)} />
+                        <div className="mt-2"><InputLabel>Stat 1 Label</InputLabel><Input value={data.about_section?.stat1_label} onChange={(v) => handleNestedChange("about_section", "stat1_label", v)} /></div>
                       </div>
                       <div>
-                        <InputLabel>Stat 2 Value</InputLabel><Input value={data.about_section.stat2_value} onChange={(v) => handleNestedChange("about_section", "stat2_value", v)} />
-                        <div className="mt-2"><InputLabel>Stat 2 Label</InputLabel><Input value={data.about_section.stat2_label} onChange={(v) => handleNestedChange("about_section", "stat2_label", v)} /></div>
+                        <InputLabel>Stat 2 Value</InputLabel><Input value={data.about_section?.stat2_value} onChange={(v) => handleNestedChange("about_section", "stat2_value", v)} />
+                        <div className="mt-2"><InputLabel>Stat 2 Label</InputLabel><Input value={data.about_section?.stat2_label} onChange={(v) => handleNestedChange("about_section", "stat2_label", v)} /></div>
                       </div>
                       <div>
-                        <InputLabel>Stat 3 Value</InputLabel><Input value={data.about_section.stat3_value} onChange={(v) => handleNestedChange("about_section", "stat3_value", v)} />
-                        <div className="mt-2"><InputLabel>Stat 3 Label</InputLabel><Input value={data.about_section.stat3_label} onChange={(v) => handleNestedChange("about_section", "stat3_label", v)} /></div>
+                        <InputLabel>Stat 3 Value</InputLabel><Input value={data.about_section?.stat3_value} onChange={(v) => handleNestedChange("about_section", "stat3_value", v)} />
+                        <div className="mt-2"><InputLabel>Stat 3 Label</InputLabel><Input value={data.about_section?.stat3_label} onChange={(v) => handleNestedChange("about_section", "stat3_label", v)} /></div>
                       </div>
                     </div>
                   </div>
@@ -555,32 +555,32 @@ export default function AdminHomePage() {
             )}
 
             {/* Testimonials Tab */}
-            {activeTab === "testimonials" && data.testimonials && (
+            {activeTab === "testimonials" && data?.testimonials && (
               <div className="space-y-6 animate-in fade-in">
                 <h2 className="text-xl font-semibold mb-6 pb-2 border-b border-border">Testimonials Section</h2>
                 <div className="mb-8">
                   <InputLabel>Section Title</InputLabel>
-                  <Input value={data.testimonials.title} onChange={(v) => handleNestedChange("testimonials", "title", v)} />
+                  <Input value={data.testimonials?.title} onChange={(v) => handleNestedChange("testimonials", "title", v)} />
                 </div>
 
                 <div className="space-y-4">
-                  {data.testimonials.list.map((testimonial: any, i: number) => (
+                  {(data.testimonials?.list || []).map((testimonial: any, i: number) => (
                     <div key={i} className="flex flex-col md:flex-row gap-4 items-start bg-muted/30 p-4 rounded-lg border border-border">
                       <div className="flex-1 space-y-4 w-full">
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                          <div><InputLabel>Author Name</InputLabel><Input value={testimonial.author} onChange={(v) => handleArrayChange("testimonials", "list", i, "author", v)} /></div>
-                          <div><InputLabel>Author Role</InputLabel><Input value={testimonial.role} onChange={(v) => handleArrayChange("testimonials", "list", i, "role", v)} /></div>
+                          <div><InputLabel>Author Name</InputLabel><Input value={testimonial?.author} onChange={(v) => handleArrayChange("testimonials", "list", i, "author", v)} /></div>
+                          <div><InputLabel>Author Role</InputLabel><Input value={testimonial?.role} onChange={(v) => handleArrayChange("testimonials", "list", i, "role", v)} /></div>
                           <div>
                             <InputLabel>Rating (out of 5)</InputLabel>
                             <input
                               type="number" min="1" max="5"
                               className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                              value={testimonial.rating}
+                              value={testimonial?.rating}
                               onChange={(e) => handleArrayChange("testimonials", "list", i, "rating", parseInt(e.target.value))}
                             />
                           </div>
                         </div>
-                        <div><InputLabel>Experience Details</InputLabel><Input value={testimonial.content} isRich onChange={(v) => handleArrayChange("testimonials", "list", i, "content", v)} /></div>
+                        <div><InputLabel>Experience Details</InputLabel><Input value={testimonial?.content} isRich onChange={(v) => handleArrayChange("testimonials", "list", i, "content", v)} /></div>
                       </div>
                       <Button variant="destructive" size="icon" className="shrink-0" onClick={() => removeArrayItem("testimonials", "list", i)}>
                         <Trash2 className="w-4 h-4" />
@@ -595,30 +595,30 @@ export default function AdminHomePage() {
             )}
 
             {/* Blog Preview Tab */}
-            {activeTab === "blog" && data.blog_preview && (
+            {activeTab === "blog" && data?.blog_preview && (
               <div className="space-y-6 animate-in fade-in">
                 <h2 className="text-xl font-semibold mb-6 pb-2 border-b border-border">Blog Preview Section</h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-                  <div><InputLabel>Badge Text</InputLabel><Input value={data.blog_preview.badge_text} onChange={(v) => handleNestedChange("blog_preview", "badge_text", v)} /></div>
-                  <div><InputLabel>Title</InputLabel><Input value={data.blog_preview.title} onChange={(v) => handleNestedChange("blog_preview", "title", v)} /></div>
-                  <div><InputLabel>Button Text</InputLabel><Input value={data.blog_preview.button_text} onChange={(v) => handleNestedChange("blog_preview", "button_text", v)} /></div>
-                  <div><InputLabel>Button Link Route</InputLabel><Input value={data.blog_preview.button_link} onChange={(v) => handleNestedChange("blog_preview", "button_link", v)} /></div>
+                  <div><InputLabel>Badge Text</InputLabel><Input value={data.blog_preview?.badge_text} onChange={(v) => handleNestedChange("blog_preview", "badge_text", v)} /></div>
+                  <div><InputLabel>Title</InputLabel><Input value={data.blog_preview?.title} onChange={(v) => handleNestedChange("blog_preview", "title", v)} /></div>
+                  <div><InputLabel>Button Text</InputLabel><Input value={data.blog_preview?.button_text} onChange={(v) => handleNestedChange("blog_preview", "button_text", v)} /></div>
+                  <div><InputLabel>Button Link Route</InputLabel><Input value={data.blog_preview?.button_link} onChange={(v) => handleNestedChange("blog_preview", "button_link", v)} /></div>
                 </div>
 
                 <h3 className="text-lg font-medium mb-4">Blog Posts</h3>
                 <div className="space-y-4">
-                  {(data.blog_preview.posts || []).map((post: any, i: number) => (
+                  {(data.blog_preview?.posts || []).map((post: any, i: number) => (
                     <div key={i} className="flex flex-col md:flex-row gap-4 items-start bg-muted/30 p-4 rounded-lg border border-border">
                       <div className="flex-1 space-y-4 w-full">
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                          <div><InputLabel>Post Title</InputLabel><Input value={post.title} onChange={(v) => handleArrayChange("blog_preview", "posts", i, "title", v)} /></div>
-                          <div><InputLabel>Post ID (Link slug)</InputLabel><Input value={post.id} onChange={(v) => handleArrayChange("blog_preview", "posts", i, "id", v)} /></div>
-                          <div><InputLabel>Date</InputLabel><Input value={post.date} onChange={(v) => handleArrayChange("blog_preview", "posts", i, "date", v)} /></div>
-                          <div><InputLabel>Category</InputLabel><Input value={post.category} onChange={(v) => handleArrayChange("blog_preview", "posts", i, "category", v)} /></div>
-                          <div><InputLabel>Read Time</InputLabel><Input value={post.readTime} onChange={(v) => handleArrayChange("blog_preview", "posts", i, "readTime", v)} /></div>
+                          <div><InputLabel>Post Title</InputLabel><Input value={post?.title} onChange={(v) => handleArrayChange("blog_preview", "posts", i, "title", v)} /></div>
+                          <div><InputLabel>Post ID (Link slug)</InputLabel><Input value={post?.id} onChange={(v) => handleArrayChange("blog_preview", "posts", i, "id", v)} /></div>
+                          <div><InputLabel>Date</InputLabel><Input value={post?.date} onChange={(v) => handleArrayChange("blog_preview", "posts", i, "date", v)} /></div>
+                          <div><InputLabel>Category</InputLabel><Input value={post?.category} onChange={(v) => handleArrayChange("blog_preview", "posts", i, "category", v)} /></div>
+                          <div><InputLabel>Read Time</InputLabel><Input value={post?.readTime} onChange={(v) => handleArrayChange("blog_preview", "posts", i, "readTime", v)} /></div>
                         </div>
-                        <div><InputLabel>Image URL / Upload</InputLabel><ImageUploadField value={post.image} onChange={(v) => handleArrayChange("blog_preview", "posts", i, "image", v)} /></div>
-                        <div><InputLabel>Excerpt / Description</InputLabel><Input value={post.excerpt} isTextarea onChange={(v) => handleArrayChange("blog_preview", "posts", i, "excerpt", v)} /></div>
+                        <div><InputLabel>Image URL / Upload</InputLabel><ImageUploadField value={post?.image} onChange={(v) => handleArrayChange("blog_preview", "posts", i, "image", v)} /></div>
+                        <div><InputLabel>Excerpt / Description</InputLabel><Input value={post?.excerpt} isTextarea onChange={(v) => handleArrayChange("blog_preview", "posts", i, "excerpt", v)} /></div>
                       </div>
                       <Button variant="destructive" size="icon" className="shrink-0" onClick={() => removeArrayItem("blog_preview", "posts", i)}>
                         <Trash2 className="w-4 h-4" />
@@ -633,16 +633,16 @@ export default function AdminHomePage() {
             )}
 
             {/* Final CTA Tab */}
-            {activeTab === "cta" && data.final_cta && (
+            {activeTab === "cta" && data?.final_cta && (
               <div className="space-y-6 animate-in fade-in">
                 <h2 className="text-xl font-semibold mb-6 pb-2 border-b border-border">Final Call To Action Section</h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div className="md:col-span-2"><InputLabel>Title</InputLabel><Input value={data.final_cta.title} onChange={(v) => handleNestedChange("final_cta", "title", v)} /></div>
-                  <div className="md:col-span-2"><InputLabel>Description</InputLabel><Input value={data.final_cta.description} isTextarea onChange={(v) => handleNestedChange("final_cta", "description", v)} /></div>
-                  <div><InputLabel>Primary Button Text</InputLabel><Input value={data.final_cta.primary_button_text} onChange={(v) => handleNestedChange("final_cta", "primary_button_text", v)} /></div>
-                  <div><InputLabel>Primary Button Link Route</InputLabel><Input value={data.final_cta.primary_button_link} onChange={(v) => handleNestedChange("final_cta", "primary_button_link", v)} /></div>
-                  <div><InputLabel>Secondary Button Text</InputLabel><Input value={data.final_cta.secondary_button_text} onChange={(v) => handleNestedChange("final_cta", "secondary_button_text", v)} /></div>
-                  <div><InputLabel>Secondary Button Link Route</InputLabel><Input value={data.final_cta.secondary_button_link} onChange={(v) => handleNestedChange("final_cta", "secondary_button_link", v)} /></div>
+                  <div className="md:col-span-2"><InputLabel>Title</InputLabel><Input value={data.final_cta?.title} onChange={(v) => handleNestedChange("final_cta", "title", v)} /></div>
+                  <div className="md:col-span-2"><InputLabel>Description</InputLabel><Input value={data.final_cta?.description} isTextarea onChange={(v) => handleNestedChange("final_cta", "description", v)} /></div>
+                  <div><InputLabel>Primary Button Text</InputLabel><Input value={data.final_cta?.primary_button_text} onChange={(v) => handleNestedChange("final_cta", "primary_button_text", v)} /></div>
+                  <div><InputLabel>Primary Button Link Route</InputLabel><Input value={data.final_cta?.primary_button_link} onChange={(v) => handleNestedChange("final_cta", "primary_button_link", v)} /></div>
+                  <div><InputLabel>Secondary Button Text</InputLabel><Input value={data.final_cta?.secondary_button_text} onChange={(v) => handleNestedChange("final_cta", "secondary_button_text", v)} /></div>
+                  <div><InputLabel>Secondary Button Link Route</InputLabel><Input value={data.final_cta?.secondary_button_link} onChange={(v) => handleNestedChange("final_cta", "secondary_button_link", v)} /></div>
                 </div>
               </div>
             )}

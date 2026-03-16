@@ -36,7 +36,7 @@ export function LoginForm() {
             if (res.ok) {
                 const data = await res.json();
                 localStorage.setItem("token", data.access_token);
-                window.location.href = "/admin/home";
+                window.location.href = "/admin"; // Redirect to overview for stability
             } else {
                 const errData = await res.json();
                 setError(errData.detail || "Login failed. Please check your credentials.");
