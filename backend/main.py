@@ -1,6 +1,7 @@
 import os
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from sqlalchemy import text
 
 from core.config import settings
 from core.database import Base, engine
@@ -15,21 +16,51 @@ app = FastAPI(
 )
 
 
+# ── CORS MUST be registered BEFORE routes ────────────────────────────
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[
+        "http://localhost:3000",
+        "https://annus.netlify.app",
+        "https://virtual-trys.onrender.com",
+    ],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+
 @app.on_event("startup")
 def startup_db_sync() -> None:
     """
-    Keep the DB ready on every boot:
-    1) upsert admin users from environment variables
-    2) ensure minimal CMS home content exists
+    On every boot:
+    1) Migrate old Enum columns to VARCHAR (safe for PostgreSQL)
+    2) Upsert admin users from environment variables
+    3) Ensure minimal CMS home content exists
     """
-    #temp
-    print("ENV USER:", os.getenv("ADMIN_USERNAME_1"))
-    print("ENV PASS:", os.getenv("ADMIN_PASSWORD_1"))
-    #temp
     from core import auth, database, models
     from repositories.cms import cms_repository
 
     db = next(database.get_db())
+
+    # ── 0. Migrate Enum columns to VARCHAR (only needed once, safe to re-run) ──
+    try:
+        with engine.connect() as conn:
+            # Check if we're on PostgreSQL (not SQLite)
+            dialect = engine.dialect.name
+            if dialect == "postgresql":
+                # Convert role column from enum to varchar
+                conn.execute(text("ALTER TABLE users ALTER COLUMN role TYPE VARCHAR USING role::text"))
+                # Convert status columns from enum to varchar  
+                conn.execute(text("ALTER TABLE pages ALTER COLUMN status TYPE VARCHAR USING status::text"))
+                conn.execute(text("ALTER TABLE posts ALTER COLUMN status TYPE VARCHAR USING status::text"))
+                # Drop the old enum types if they exist
+                conn.execute(text("DROP TYPE IF EXISTS userrole CASCADE"))
+                conn.execute(text("DROP TYPE IF EXISTS pagestatus CASCADE"))
+                conn.commit()
+                print("Startup: Enum→VARCHAR migration complete")
+    except Exception as exc:
+        print(f"Startup: Enum migration skipped (already done or N/A): {exc}")
 
     # ── 1. Seed admin users ──────────────────────────────────────────
     try:
@@ -82,20 +113,6 @@ def startup_db_sync() -> None:
         print(f"Startup: CMS sync FAILED → {exc}")
     finally:
         db.close()
-
-
-# ── CORS ─────────────────────────────────────────────────────────────
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=[
-        "http://localhost:3000",
-        "https://annus.netlify.app",
-        "https://virtual-trys.onrender.com",
-    ],
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
 
 
 @app.get("/")
