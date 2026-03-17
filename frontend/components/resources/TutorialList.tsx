@@ -2,14 +2,16 @@
 
 import { PlayCircle } from "lucide-react";
 
-const tutorials = [
+const defaultTutorials = [
     { title: "Figma 101: Auto-Layout Mastery", category: "UI/UX", duration: "12 mins" },
     { title: "Midjourney V6: Style Reference Guide", category: "AI & Design", duration: "8 mins" },
     { title: "Creating a Brand Pattern Library", category: "Branding", duration: "15 mins" },
     { title: "Typography Hierarchies Explained", category: "UI/UX", duration: "10 mins" },
 ];
 
-export function TutorialList() {
+export function TutorialList({ data }: { data?: any[] }) {
+    const tutorials = data && data.length > 0 ? data : defaultTutorials;
+
     return (
         <section className="py-12 container mx-auto px-4 md:px-6">
             <h2 className="text-2xl font-bold mb-8">Latest Tutorials</h2>

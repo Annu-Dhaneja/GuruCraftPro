@@ -29,11 +29,13 @@ const featured = [
     }
 ];
 
-export function FeaturedPosts() {
+export function FeaturedPosts({ data }: { data?: any[] }) {
+    const posts = data && data.length > 0 ? data : featured;
+
     return (
         <section className="py-16 container mx-auto px-4 md:px-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                {featured.map((post) => (
+                {posts.map((post: any) => (
                     <div key={post.title} className="group cursor-pointer">
                         <div className="rounded-2xl overflow-hidden aspect-[16/9] mb-6 relative">
                             <img src={post.image} alt={post.title} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />

@@ -4,7 +4,10 @@ import Link from "next/link";
 import { ArrowRight, MessageSquare } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
-export function ServicesCTA() {
+export function ServicesCTA({ data }: { data?: any }) {
+    const title = data?.title || "Not sure which fits you best?";
+    const description = data?.description || "One studio. Multiple ways to create. Start fast with AI or go deep with custom design — the choice is yours.";
+
     return (
         <section className="py-24 container mx-auto px-4 md:px-6">
             <div className="bg-foreground text-background rounded-3xl p-12 md:p-24 text-center relative overflow-hidden">
@@ -14,9 +17,9 @@ export function ServicesCTA() {
                 <div className="absolute bottom-0 right-0 w-64 h-64 bg-purple-500/20 rounded-full blur-[100px] translate-x-1/2 translate-y-1/2" />
 
                 <div className="relative z-10 max-w-2xl mx-auto">
-                    <h2 className="text-3xl md:text-5xl font-bold mb-6">Not sure which fits you best?</h2>
+                    <h2 className="text-3xl md:text-5xl font-bold mb-6">{title}</h2>
                     <p className="text-lg text-muted-foreground/80 mb-10">
-                        One studio. Multiple ways to create. Start fast with AI or go deep with custom design — the choice is yours.
+                        {description}
                     </p>
 
                     <div className="flex flex-col sm:flex-row gap-4 justify-center">

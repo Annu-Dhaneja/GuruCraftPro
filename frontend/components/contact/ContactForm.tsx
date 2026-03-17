@@ -11,7 +11,7 @@ import { Upload, Send, Loader2 } from "lucide-react";
 
 import { getApiUrl } from "@/lib/utils";
 
-export function ContactForm() {
+export function ContactForm({ data }: { data?: any }) {
     const [loading, setLoading] = useState(false);
     const [status, setStatus] = useState<"idle" | "success" | "error">("idle");
 
@@ -54,7 +54,7 @@ export function ContactForm() {
     return (
         <section id="contact-form" className="py-12 container mx-auto px-4 md:px-6">
             <div className="max-w-2xl mx-auto bg-card border border-border rounded-2xl p-6 md:p-8 shadow-sm">
-                <h2 className="text-2xl font-bold mb-6">Send a Message</h2>
+                <h2 className="text-2xl font-bold mb-6">{data?.title || "Send a Message"}</h2>
 
                 <form onSubmit={handleSubmit} className="space-y-6">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

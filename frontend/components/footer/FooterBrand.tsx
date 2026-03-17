@@ -2,38 +2,43 @@
 
 import Link from "next/link";
 import { Facebook, Twitter, Instagram, Linkedin, Dribbble } from "lucide-react";
+import { useSiteConfig } from "../layout/SiteConfigProvider";
 
 export function FooterBrand() {
+    const { config } = useSiteConfig();
+
     return (
         <div className="space-y-6">
             {/* Brand Identity */}
             <Link href="/" className="flex items-center gap-2 group">
                 <div className="h-10 w-10 bg-white rounded-br-xl rounded-tl-xl flex items-center justify-center transition-transform group-hover:scale-105">
-                    <span className="text-black font-bold text-xl">A</span>
+                    <span className="text-black font-bold text-xl">{config.brand.logo_text}</span>
                 </div>
                 <span className="font-bold text-xl tracking-tight text-white">
-                    Gurucraftpro
+                    {config.brand.name}
                 </span>
             </Link>
 
             <p className="text-muted-foreground leading-relaxed max-w-xs">
-                AI-powered design blended with human creativity. We craft digital experiences that stand out.
+                {config.brand.tagline}
             </p>
 
             {/* Social Icons */}
             <div className="flex gap-4">
-                <SocialLink href="#" icon={Instagram} label="Instagram" />
-                <SocialLink href="#" icon={Dribbble} label="Dribbble" />
-                <SocialLink href="#" icon={Linkedin} label="LinkedIn" />
-                <SocialLink href="#" icon={Twitter} label="Twitter" />
+                {config.social.instagram !== "#" && <SocialLink href={config.social.instagram} icon={Instagram} label="Instagram" />}
+                {config.social.dribbble !== "#" && <SocialLink href={config.social.dribbble} icon={Dribbble} label="Dribbble" />}
+                {config.social.linkedin !== "#" && <SocialLink href={config.social.linkedin} icon={Linkedin} label="LinkedIn" />}
+                {config.social.twitter !== "#" && <SocialLink href={config.social.twitter} icon={Twitter} label="Twitter" />}
             </div>
 
-            <div className="pt-4">
-                <div className="inline-flex items-center px-3 py-1 rounded-full border border-white/10 bg-white/5 text-xs font-medium text-white/70">
-                    <span className="w-2 h-2 rounded-full bg-green-500 mr-2 animate-pulse"></span>
-                    Accepting New Projects
+            {config.social.accepting_projects && (
+                <div className="pt-4">
+                    <div className="inline-flex items-center px-3 py-1 rounded-full border border-white/10 bg-white/5 text-xs font-medium text-white/70">
+                        <span className="w-2 h-2 rounded-full bg-green-500 mr-2 animate-pulse"></span>
+                        Accepting New Projects
+                    </div>
                 </div>
-            </div>
+            )}
         </div>
     );
 }

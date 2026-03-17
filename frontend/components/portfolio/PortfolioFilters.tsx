@@ -12,7 +12,8 @@ import { useSearchParams } from "next/navigation";
 import { useEffect } from "react";
 
 export function PortfolioFilters({ categories: customCategories }: { categories?: string[] }) {
-    const categories = customCategories || ["All", "Logo Design", "Banner Design", "Thumbnail", "T-Shirt Design", "Mug Design", "Wedding Card", "Book Design", "Resume Design", "7 DAY CLOTHS", "WEDDING PLAN", "GURU JI ART", "PHOTO EDITOR", "GAME DESIGN", "VANTAGE ECOM"];
+    const defaultCategories = ["All", "Logo Design", "Banner Design", "Thumbnail", "T-Shirt Design", "Mug Design", "Wedding Card", "Book Design", "Resume Design", "7 DAY CLOTHS", "WEDDING PLAN", "GURU JI ART", "PHOTO EDITOR", "GAME DESIGN", "VANTAGE ECOM"];
+    const categories = customCategories && customCategories.length > 1 ? customCategories : defaultCategories;
     const styles = ["Minimal", "Modern", "Bold", "Luxury", "Playful", "Digital Art", "Streetwear", "Professional"];
     const { activeCategory, setActiveCategory, searchQuery, setSearchQuery } = usePortfolioStore();
     const [showFilters, setShowFilters] = useState(false);

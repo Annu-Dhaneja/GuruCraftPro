@@ -37,9 +37,9 @@ export default async function AboutPage() {
             <Philosophy data={aboutData.philosophy} />
             <AIHumanSection data={aboutData.ai_human} />
             <ToolsWorkflow data={aboutData.tools} />
-            <ServicesPreview />
-            <TrustSection />
-            <AboutCTA />
+            <ServicesPreview data={aboutData.services_preview} />
+            <TrustSection data={aboutData.trust_section} />
+            <AboutCTA data={aboutData.about_cta} />
             <Footer />
         </main>
     );

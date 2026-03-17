@@ -7,7 +7,7 @@ import {
     AccordionTrigger,
 } from "@/components/ui/accordion";
 
-const faqs = [
+const defaultFaqs = [
     {
         q: "How soon will I get a reply?",
         a: "We strive to respond to all inquiries within 24-48 hours during business days.",
@@ -26,12 +26,15 @@ const faqs = [
     },
 ];
 
-export function ContactFAQ() {
+export function ContactFAQ({ data, globalFaqs }: { data?: any, globalFaqs?: any[] }) {
+    // Prefer data passed directly to this component, then global FAQs, then fallback defaults
+    const contactFaqs = (data?.faqs && data.faqs.length > 0) ? data.faqs : (globalFaqs && globalFaqs.length > 0) ? globalFaqs : defaultFaqs;
+
     return (
         <section className="py-20 container mx-auto px-4 md:px-6 max-w-3xl">
-            <h2 className="text-2xl font-bold mb-8 text-center">Frequently Asked Questions</h2>
+            <h2 className="text-2xl font-bold mb-8 text-center">{data?.title || "Frequently Asked Questions"}</h2>
             <Accordion type="single" collapsible className="w-full">
-                {faqs.map((faq, i) => (
+                {contactFaqs.map((faq: any, i: number) => (
                     <AccordionItem key={i} value={`item-${i}`}>
                         <AccordionTrigger>{faq.q}</AccordionTrigger>
                         <AccordionContent className="text-muted-foreground">{faq.a}</AccordionContent>

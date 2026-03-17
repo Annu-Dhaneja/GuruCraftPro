@@ -4,7 +4,7 @@ import { Mail } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
-export function NewsletterCTA() {
+export function NewsletterCTA({ data }: { data?: any }) {
     return (
         <section className="py-24 bg-foreground text-background">
             <div className="container mx-auto px-4 md:px-6 text-center max-w-2xl">
@@ -12,10 +12,9 @@ export function NewsletterCTA() {
                     <Mail className="h-8 w-8 text-background" />
                 </div>
 
-                <h2 className="text-3xl md:text-4xl font-bold mb-4">Design smarter, straight to your inbox.</h2>
-                <p className="text-lg text-background/70 mb-8">
-                    Get practical design tips, fresh AI prompts, and exclusive freebies.
-                    Sent twice a month. No spam, ever.
+                <h2 className="text-3xl md:text-4xl font-bold mb-4">{data?.title || "Design smarter, straight to your inbox."}</h2>
+                <p className="text-lg text-background/70 mb-8 max-w-lg mx-auto">
+                    {data?.description || "Get practical design tips, fresh AI prompts, and exclusive freebies. Sent twice a month. No spam, ever."}
                 </p>
 
                 <form className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">

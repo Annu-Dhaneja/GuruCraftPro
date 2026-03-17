@@ -32,12 +32,12 @@ export default async function ServicesPage() {
     return (
         <main className="min-h-screen bg-background flex flex-col">
             <ServicesHero data={servicesData.hero} />
-            <ServiceCards />
+            <ServiceCards data={servicesData.cards} />
             <ServiceTiers data={servicesData.tiers} />
-            <ComparisonTable />
+            <ComparisonTable data={servicesData.comparison} />
             <ProcessTimeline data={servicesData.process} />
             <ServiceFAQ data={servicesData.faq} />
-            <ServicesCTA />
+            <ServicesCTA data={servicesData.cta} />
             <Footer />
         </main>
     );

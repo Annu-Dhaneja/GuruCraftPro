@@ -30,7 +30,9 @@ const options = [
     },
 ];
 
-export function ContactOptions() {
+export function ContactOptions({ data }: { data?: any[] }) {
+    const contactOptions = data && data.length > 0 ? data : options;
+
     const scrollToForm = (intent: string) => {
         // In a real implementation, this enables specific form logic
         const element = document.getElementById("contact-form");
@@ -42,19 +44,21 @@ export function ContactOptions() {
     return (
         <section className="pb-12 container mx-auto px-4 md:px-6">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                {options.map((option) => (
+                {contactOptions.map((option: any) => {
+                    const IconComponent = typeof option.icon === 'string' ? PenTool : option.icon; // Simplistic icon fallback for custom strings
+                    return (
                     <button
                         key={option.title}
                         onClick={() => scrollToForm(option.intent)}
                         className="flex flex-col items-center text-center p-6 rounded-xl border border-border bg-card hover:border-indigo-500/50 hover:shadow-lg transition-all group"
                     >
-                        <div className={cn("h-12 w-12 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform", option.bg, option.color)}>
-                            <option.icon className="h-6 w-6" />
+                        <div className={cn("h-12 w-12 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform", option.bg || "bg-indigo-500/10", option.color || "text-indigo-500")}>
+                            <IconComponent className="h-6 w-6" />
                         </div>
                         <h3 className="font-semibold mb-1">{option.title}</h3>
                         <p className="text-sm text-muted-foreground">{option.desc}</p>
                     </button>
-                ))}
+                )})}
             </div>
         </section>
     );

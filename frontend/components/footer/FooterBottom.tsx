@@ -1,14 +1,17 @@
 "use client";
 
 import Link from "next/link";
+import { useSiteConfig } from "../layout/SiteConfigProvider";
 
 export function FooterBottom() {
+    const { config } = useSiteConfig();
+
     return (
         <div className="border-t border-white/10 pt-8 mt-16 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-muted-foreground">
 
             {/* Copyright */}
             <div>
-                © {new Date().getFullYear()} Gurucraftpro. All rights reserved.
+                {config.footer_bottom.copyright.replace("2026", new Date().getFullYear().toString())}
             </div>
 
             {/* Legal Links */}

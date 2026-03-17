@@ -23,6 +23,7 @@ app.add_middleware(
         "http://localhost:3000",
         "https://annus.netlify.app",
         "https://virtual-trys.onrender.com",
+        "https://virtual-try-rho.vercel.app",
     ],
     allow_credentials=True,
     allow_methods=["*"],
@@ -106,6 +107,158 @@ def startup_db_sync() -> None:
                     "subheadline": "Experience the future of fashion with our AI-powered try-on technology.",
                 }
             })
+            
+        # Seed site_config (Nav, Footer, Logo)
+        if not db.query(models.Page).filter(models.Page.slug == "site_config").first():
+            cms_repository.update_page_content(db, "site_config", {
+                "brand": {
+                    "name": "Gurucraftpro",
+                    "logo_text": "A",
+                    "tagline": "AI-powered design blended with human creativity. We craft digital experiences that stand out."
+                },
+                "nav": [
+                    {"label": "Home", "href": "/", "style": "default"},
+                    {"label": "Portfolio", "href": "/portfolio", "style": "default"},
+                    {"label": "AI Design Lab", "href": "/ai-lab", "style": "special"},
+                    {"label": "Guru Ji Art Work", "href": "/guruji-darshan", "style": "guru"},
+                    {"label": "Services", "href": "/services", "style": "default"},
+                    {"label": "Learn", "href": "/resources", "style": "default"},
+                    {"label": "About", "href": "/about", "style": "default"},
+                    {"label": "Contact", "href": "/contact", "style": "default"}
+                ],
+                "social": {
+                    "instagram": "#",
+                    "dribbble": "#",
+                    "linkedin": "#",
+                    "twitter": "#",
+                    "accepting_projects": True
+                },
+                "footer_explore": [
+                    {"label": "Services", "href": "/services"},
+                    {"label": "Portfolio", "href": "/portfolio"},
+                    {"label": "AI Design Lab", "href": "/ai-lab"},
+                    {"label": "About Us", "href": "/about"}
+                ],
+                "footer_support": [
+                    {"label": "Request Custom Design", "href": "/request"},
+                    {"label": "Client Dashboard", "href": "/dashboard"},
+                    {"label": "Contact Us", "href": "/contact"}
+                ],
+                "footer_bottom": {
+                    "copyright": "© 2026 Gurucraftpro. All rights reserved."
+                }
+            })
+            print("Startup: site_config SEEDED")
+            
+        # Seed guruji
+        if not db.query(models.Page).filter(models.Page.slug == "guruji").first():
+            cms_repository.update_page_content(db, "guruji", {
+                "hero_title_prefix": "Guruji Ke",
+                "hero_title_highlight": "Sakshat Darshan",
+                "hero_subtitle": "Immerse yourself in divine energy with our cutting-edge AR technology and spiritual craftsmanship.",
+                "ar_title_prefix": "Bringing Blessings",
+                "ar_title_highlight": "Into Your Home",
+                "ar_subtitle": "Our 'Guruji Ke Sakshat Darshan' feature uses high-fidelity 3D scanning and spatial computing to create an lifelike presence in your personal space.",
+                "satsang_title_prefix": "Premium Guruji",
+                "satsang_title_highlight": "Satsang Box",
+                "satsang_subtitle": "A masterpiece of spiritual art and technology. The Satsang Story Box brings the sacred sounds of Bhajans and Mantras pre-loaded in a beautifully crafted box."
+            })
+            print("Startup: guruji SEEDED")
+            
+        # Seed AI Design Lab
+        if not db.query(models.Page).filter(models.Page.slug == "ai_lab").first():
+            cms_repository.update_page_content(db, "ai_lab", {
+                "hero": {
+                    "title": "Welcome to the AI Design Lab",
+                    "subtitle": "Future of Creativity",
+                    "description": "Explore cutting-edge tools and experiments that merge human creativity with artificial intelligence."
+                },
+                "tools": [
+                    {
+                        "title": "Style Reference Transfer",
+                        "description": "Upload a reference image and instantly apply its unique aesthetic to any new design.",
+                        "icon": "Image",
+                        "status": "Active",
+                        "color": "text-indigo-400",
+                        "bg": "bg-indigo-500/10"
+                    },
+                    {
+                        "title": "Smart Layout Generator",
+                        "description": "Automatically generate conversion-optimized wireframes based on your industry and goals.",
+                        "icon": "Layout",
+                        "status": "Beta",
+                        "color": "text-purple-400",
+                        "bg": "bg-purple-500/10"
+                    }
+                ]
+            })
+            print("Startup: ai_lab SEEDED")
+
+        # Seed Portfolio
+        if not db.query(models.Page).filter(models.Page.slug == "portfolio").first():
+            cms_repository.update_page_content(db, "portfolio", {
+                "categories": ["All", "Web Design", "App UI", "Branding", "AI Art"],
+                "projects": [
+                    {
+                        "id": "1",
+                        "title": "Lumina App Redesign",
+                        "category": "App UI",
+                        "image": "https://images.unsplash.com/photo-1618761714954-0b8cd0026356?auto=format&fit=crop&q=80&w=600",
+                        "client": "Lumina",
+                        "date": "Jan 2024",
+                        "description": "Complete UI/UX overhaul focusing on accessibility and modern aesthetics.",
+                        "challenge": "Outdated interface causing high bounce rates.",
+                        "solution": "Implemented a clean, dark-mode first design with intuitive navigation."
+                    }
+                ]
+            })
+            print("Startup: portfolio SEEDED")
+
+        # Seed Resources
+        if not db.query(models.Page).filter(models.Page.slug == "resources").first():
+            cms_repository.update_page_content(db, "resources", {
+                "hero": {
+                    "title": "Learn & Master Design",
+                    "description": "Free tutorials, premium UI kits, and advanced AI prompts to level up your workflow."
+                },
+                "categories": ["All Resources", "Design Tutorials", "AI & Design", "Branding", "UI/UX", "Free Assets"],
+                "tutorials": [
+                    { "title": "Figma 101: Auto-Layout Mastery", "category": "UI/UX", "duration": "12 mins" },
+                    { "title": "Midjourney V6: Style Reference Guide", "category": "AI & Design", "duration": "18 mins" }
+                ],
+                "prompts": [
+                    { "id": 1, "title": "Cyberpunk Cityscape", "text": "Futuristic city street at night...", "style": "Environment", "image": "https://images.unsplash.com/photo-1515630278258-407f66498911" }
+                ]
+            })
+            print("Startup: resources SEEDED")
+
+        # Seed Contact
+        if not db.query(models.Page).filter(models.Page.slug == "contact").first():
+            cms_repository.update_page_content(db, "contact", {
+                "hero": {
+                    "title": "Let's Build Something Extraordinary",
+                    "description": "Ready to transform your vision into reality? We're here to help you every step of the way."
+                },
+                "alternatives": {
+                    "title": "Or connect with us directly",
+                    "email": "hello@annudesign.com",
+                    "booking_link": "/book",
+                    "booking_text": "Book a Free Consultation"
+                },
+                "process": {
+                    "steps": [
+                        { "icon": "MessageSquare", "title": "Message Received", "desc": "You submit the form." },
+                        { "icon": "Clock", "title": "24h Review", "desc": "We analyze your request." },
+                        { "icon": "UserCheck", "title": "Follow-up", "desc": "Proposal or questions." },
+                        { "icon": "Rocket", "title": "Kickoff", "desc": "Project starts." }
+                    ]
+                },
+                "faqs": [
+                    { "q": "How soon will I get a reply?", "a": "Within 24-48 hours during business days." }
+                ]
+            })
+            print("Startup: contact SEEDED")
+            
         db.commit()
         print("Startup: CMS sync OK")
     except Exception as exc:

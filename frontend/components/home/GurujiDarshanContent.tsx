@@ -15,7 +15,16 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import Image from "next/image";
 
-export function GurujiDarshanContent() {
+export function GurujiDarshanContent({ data }: { data?: any }) {
+  const heroTitlePrefix = data?.hero_title_prefix || "Guruji Ke";
+  const heroTitleHighlight = data?.hero_title_highlight || "Sakshat Darshan";
+  const heroSubtitle = data?.hero_subtitle || "Immerse yourself in divine energy with our cutting-edge AR technology and spiritual craftsmanship.";
+  const arTitlePrefix = data?.ar_title_prefix || "Bringing Blessings";
+  const arTitleHighlight = data?.ar_title_highlight || "Into Your Home";
+  const arSubtitle = data?.ar_subtitle || "Our 'Guruji Ke Sakshat Darshan' feature uses high-fidelity 3D scanning and spatial computing to create an lifelike presence in your personal space.";
+  const satsangTitlePrefix = data?.satsang_title_prefix || "Premium Guruji";
+  const satsangTitleHighlight = data?.satsang_title_highlight || "Satsang Box";
+  const satsangSubtitle = data?.satsang_subtitle || "A masterpiece of spiritual art and technology. The Satsang Story Box brings the sacred sounds of Bhajans and Mantras pre-loaded in a beautifully crafted box.";
   return (
     <div className="flex flex-col">
       {/* ── Hero Section ─────────────────────────────────── */}
@@ -41,9 +50,9 @@ export function GurujiDarshanContent() {
             transition={{ duration: 0.8, delay: 0.2 }}
             className="text-5xl md:text-8xl font-bold tracking-tighter text-white mb-8 leading-[0.9]"
           >
-            Guruji Ke <br />
+            {heroTitlePrefix} <br />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 via-orange-400 to-amber-600">
-              Sakshat Darshan
+              {heroTitleHighlight}
             </span>
           </motion.h1>
           
@@ -53,8 +62,7 @@ export function GurujiDarshanContent() {
             transition={{ duration: 0.8, delay: 0.4 }}
             className="max-w-2xl mx-auto text-xl md:text-2xl text-zinc-400 font-light leading-relaxed mb-12"
           >
-            Immerse yourself in divine energy with our cutting-edge AR technology 
-            and spiritual craftsmanship.
+            {heroSubtitle}
           </motion.p>
           
           <motion.div
@@ -89,12 +97,11 @@ export function GurujiDarshanContent() {
                 <Wifi className="w-4 h-4" /> AUGMENTED REALITY
               </div>
               <h2 className="text-4xl md:text-6xl font-bold tracking-tight text-white leading-[1.1]">
-                Bringing Blessings <br /> 
-                <span className="text-indigo-400">Into Your Home</span>
+                {arTitlePrefix} <br /> 
+                <span className="text-indigo-400">{arTitleHighlight}</span>
               </h2>
               <p className="text-xl text-zinc-400 leading-relaxed font-light">
-                Our "Guruji Ke Sakshat Darshan" feature uses high-fidelity 3D scanning and 
-                spatial computing to create an lifelike presence in your personal space.
+                {arSubtitle}
               </p>
               
               <ul className="space-y-4">
@@ -148,14 +155,13 @@ export function GurujiDarshanContent() {
           <div className="flex flex-col md:flex-row justify-between items-end mb-20 gap-8">
             <div className="max-w-3xl">
               <h2 className="text-4xl md:text-7xl font-bold tracking-tighter text-white mb-8 leading-[0.9]">
-                Premium Guruji <br />
+                {satsangTitlePrefix} <br />
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-400 text-6xl md:text-8xl">
-                  Satsang Box
+                  {satsangTitleHighlight}
                 </span>
               </h2>
               <p className="text-xl text-zinc-400 font-light leading-relaxed">
-                A masterpiece of spiritual art and technology. The Satsang Story Box brings the 
-                sacred sounds of Bhajans and Mantras pre-loaded in a beautifully crafted box.
+                {satsangSubtitle}
               </p>
             </div>
             

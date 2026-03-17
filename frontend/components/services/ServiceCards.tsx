@@ -30,7 +30,8 @@ const services = [
     },
 ];
 
-export function ServiceCards() {
+export function ServiceCards({ data }: { data?: any }) {
+    const cardData = data?.services || services;
     const scrollToSection = (id: string) => {
         const element = document.getElementById(id);
         if (element) {
@@ -41,7 +42,9 @@ export function ServiceCards() {
     return (
         <section className="py-12 container mx-auto px-4 md:px-6">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                {services.map((service, index) => (
+                {cardData.map((service: any, index: number) => {
+                    const Icon = services.find(s => s.id === service.id)?.icon || Zap;
+                    return (
                     <motion.div
                         key={service.id}
                         initial={{ opacity: 0, y: 20 }}
@@ -50,15 +53,16 @@ export function ServiceCards() {
                         onClick={() => scrollToSection(service.id)}
                         className="group cursor-pointer rounded-2xl border border-border bg-card p-8 hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
                     >
-                        <div className={`h-12 w-12 rounded-xl ${service.bg} ${service.color} flex items-center justify-center mb-6`}>
-                            <service.icon className="h-6 w-6" />
+                        <div className={`h-12 w-12 rounded-xl border border-white/10 ${service.bg || 'bg-indigo-500/10'} ${service.color || 'text-indigo-500'} flex items-center justify-center mb-6`}>
+                            <Icon className="h-6 w-6" />
                         </div>
                         <h3 className="text-xl font-semibold mb-3">{service.title}</h3>
                         <p className="text-muted-foreground leading-relaxed">
                             {service.description}
                         </p>
                     </motion.div>
-                ))}
+                    );
+                })}
             </div>
         </section>
     );

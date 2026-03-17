@@ -3,13 +3,15 @@
 import { Download, FileText, Image as ImageIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
-const resources = [
+const defaultResources = [
     { title: "2024 Social Media Sizing Cheat Sheet", type: "PDF", size: "2.4 MB", icon: FileText },
     { title: "Glassmorphism UI Kit (Figma)", type: "FIG", size: "15 MB", icon: ImageIcon },
     { title: "50 Free Gradient Maps", type: "ZIP", size: "45 MB", icon: Download },
 ];
 
-export function FreeResources() {
+export function FreeResources({ data }: { data?: any[] }) {
+    const resources = data && data.length > 0 ? data : defaultResources;
+
     return (
         <section className="py-16 container mx-auto px-4 md:px-6">
             <h2 className="text-2xl font-bold mb-8">Free Downloads</h2>

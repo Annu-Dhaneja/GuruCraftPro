@@ -26,13 +26,17 @@ const features = [
     { name: "Brand Guidelines", ai: false, hybrid: false, custom: true, desc: "Comprehensive guide on usage, fonts, and colors." },
 ];
 
-export function ComparisonTable() {
+export function ComparisonTable({ data }: { data?: any }) {
+    const title = data?.title || "Compare Plans";
+    const subtitle = data?.subtitle || "Find the right fit for your project's needs.";
+    const tableFeatures = data?.features || features;
+
     return (
         <section className="py-24 bg-muted/30">
             <div className="container mx-auto px-4 md:px-6">
                 <div className="text-center mb-16">
-                    <h2 className="text-3xl font-bold mb-4">Compare Plans</h2>
-                    <p className="text-muted-foreground">Find the right fit for your project's needs.</p>
+                    <h2 className="text-3xl font-bold mb-4">{title}</h2>
+                    <p className="text-muted-foreground">{subtitle}</p>
                 </div>
 
                 <div className="bg-card border border-border rounded-2xl overflow-x-auto shadow-sm">
@@ -46,7 +50,7 @@ export function ComparisonTable() {
                             </TableRow>
                         </TableHeader>
                         <TableBody>
-                            {features.map((feature) => (
+                            {tableFeatures.map((feature: any) => (
                                 <TableRow key={feature.name} className="hover:bg-muted/20">
                                     <TableCell className="font-medium pl-6">
                                         <div className="flex items-center gap-2">

@@ -5,13 +5,15 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { useState } from "react";
 
-const prompts = [
+const defaultPrompts = [
     { id: 1, title: "Cyberpunk Cityscape", text: "Futuristic city street at night, neon lights, rain reflections, cyberpunk style, high detail, cinematic lighting --ar 16:9" },
     { id: 2, title: "Minimalist Coffee Logo", text: "Minimalist line art logo for a coffee shop, coffee bean icon, clean typography, sans-serif, black on white background" },
     { id: 3, title: "3D Icon Set", text: "3D icon set, claymorphism style, soft pastel colors, rounded edges, high gloss, isometric view, white background" },
 ];
 
-export function PromptLibrary() {
+export function PromptLibrary({ data }: { data?: any[] }) {
+    const prompts = data && data.length > 0 ? data : defaultPrompts;
+
     return (
         <section className="py-16 bg-muted/30">
             <div className="container mx-auto px-4 md:px-6">

@@ -9,8 +9,11 @@ import Link from "next/link";
 import { ArrowRight, Shirt, Sparkles, PenTool, Sticker } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Footer } from "@/components/footer/Footer";
+import { getApiUrl } from "@/lib/utils";
 
-const tools = [
+export const dynamic = 'force-dynamic';
+
+const DEFAULT_TOOLS = [
     {
         title: "Virtual Dress Change Room",
         description: "Upload your photo and a dress to see how it fits instantly.",
@@ -53,7 +56,34 @@ const tools = [
     }
 ];
 
-export default function AILabPage() {
+export default async function AILabPage() {
+    let aiLabData: any = {};
+    
+    try {
+        const res = await fetch(getApiUrl("/api/v1/cms/ai_lab"), {
+            cache: 'no-store'
+        });
+        if (res.ok) {
+            aiLabData = await res.json();
+        }
+    } catch (error) {
+        console.error("Failed to fetch AI Lab content:", error);
+    }
+
+    const { hero, tools: dynamicTools } = aiLabData;
+    const activeTools = dynamicTools?.length > 0 ? dynamicTools : DEFAULT_TOOLS;
+    
+    // Helper to dynamically render imported lucide icons based on string names returned from CMS
+    const getIcon = (iconName: string) => {
+        switch (iconName) {
+            case 'Shirt': return Shirt;
+            case 'PenTool': return PenTool;
+            case 'Sticker': return Sticker;
+            case 'Sparkles':
+            default: return Sparkles;
+        }
+    };
+
     return (
         <main className="min-h-screen bg-background flex flex-col">
             {/* Hero Section */}
@@ -64,13 +94,13 @@ export default function AILabPage() {
                 <div className="container mx-auto max-w-4xl text-center space-y-6">
                     <div className="inline-flex items-center rounded-full border border-indigo-200 bg-indigo-50 px-3 py-1 text-sm text-indigo-800 backdrop-blur-sm">
                         <Sparkles className="mr-2 h-3 w-3" />
-                        <span>AI Design Lab</span>
+                        <span>{hero?.badge || "AI Design Lab"}</span>
                     </div>
                     <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight bg-gradient-to-r from-gray-900 to-gray-600 bg-clip-text text-transparent">
-                        Unleash Your Creativity with AI
+                        {hero?.title || "Unleash Your Creativity with AI"}
                     </h1>
                     <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-                        Explore our suite of AI-powered modeling and design tools. From virtual try-ons to instant branding, create professional assets in seconds.
+                        {hero?.description || "Explore our suite of AI-powered modeling and design tools. From virtual try-ons to instant branding, create professional assets in seconds."}
                     </p>
                 </div>
             </section>
@@ -78,18 +108,23 @@ export default function AILabPage() {
             {/* Tools Grid */}
             <section className="container mx-auto px-4 md:px-6 pb-24">
                 <div className="grid md:grid-cols-2 gap-6 max-w-5xl mx-auto">
-                    {tools.map((tool) => (
-                        <Link key={tool.title} href={tool.href} className="group">
+                    {activeTools.map((tool: any, idx: number) => {
+                        const IconComponent = typeof tool.icon === 'string' ? getIcon(tool.icon) : tool.icon;
+                        
+                        return (
+                        <Link key={idx} href={tool.href || "#"} className="group">
                             <div className="min-h-[300px] h-full relative overflow-hidden rounded-3xl border bg-card p-8 transition-all hover:shadow-xl hover:-translate-y-1 group-hover:border-indigo-500/50">
                                 {/* Background Image */}
-                                <img src={tool.image} alt={tool.title} className="absolute inset-0 w-full h-full object-cover opacity-20 group-hover:scale-105 transition-transform duration-700" />
+                                {tool.image && (
+                                    <img src={tool.image} alt={tool.title} className="absolute inset-0 w-full h-full object-cover opacity-20 group-hover:scale-105 transition-transform duration-700" />
+                                )}
                                 <div className="absolute inset-0 bg-background/80 backdrop-blur-[2px] transition-colors group-hover:bg-background/60" />
 
-                                <div className={`absolute inset-0 opacity-0 group-hover:opacity-10 transition-opacity bg-gradient-to-br ${tool.gradient}`} />
+                                <div className={`absolute inset-0 opacity-0 group-hover:opacity-10 transition-opacity bg-gradient-to-br ${tool.gradient || 'from-indigo-500 to-purple-500'}`} />
 
                                 <div className="relative z-10 flex flex-col h-full">
-                                    <div className={`h-12 w-12 rounded-2xl ${tool.bg} flex items-center justify-center mb-6 shadow-sm`}>
-                                        <tool.icon className={`h-6 w-6 ${tool.color}`} />
+                                    <div className={`h-12 w-12 rounded-2xl ${tool.bg || 'bg-indigo-500/10'} flex items-center justify-center mb-6 shadow-sm`}>
+                                        <IconComponent className={`h-6 w-6 ${tool.color || 'text-indigo-500'}`} />
                                     </div>
 
                                     <h3 className="text-2xl font-bold mb-3">{tool.title}</h3>
@@ -101,7 +136,7 @@ export default function AILabPage() {
                                 </div>
                             </div>
                         </Link>
-                    ))}
+                    )})}
                 </div>
             </section>
 

@@ -28,6 +28,8 @@ export const viewport = {
   maximumScale: 1,
 };
 
+import { SiteConfigProvider } from "@/components/layout/SiteConfigProvider";
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -44,8 +46,10 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <Navbar />
-          {children}
+          <SiteConfigProvider>
+            <Navbar />
+            {children}
+          </SiteConfigProvider>
         </ThemeProvider>
       </body>
     </html>

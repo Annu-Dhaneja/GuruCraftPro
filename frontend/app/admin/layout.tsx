@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { Home, LayoutDashboard, Settings, Globe, ArrowLeft, Sparkles, LogOut, ShieldCheck, BookOpen } from "lucide-react";
+import { Home, LayoutDashboard, Settings, Globe, ArrowLeft, Sparkles, LogOut, ShieldCheck, BookOpen, PenTool, Lightbulb, Mail } from "lucide-react";
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
@@ -24,20 +24,20 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     router.push("/login");
   };
 
-  const navItems = [
+    const navItems = [
     { name: "Dashboard", href: "/admin", icon: LayoutDashboard },
+    { name: "Site Configuration", href: "/admin/site-config", icon: Settings },
     { name: "Home Page CMS", href: "/admin/home", icon: Home },
-    { name: "Portfolio CMS", href: "/admin/portfolio", icon: Globe },
-    { name: "About Page CMS", href: "/admin/about", icon: Settings },
+    { name: "About Page CMS", href: "/admin/about", icon: BookOpen },
     { name: "Services CMS", href: "/admin/services", icon: LayoutDashboard },
-    { name: "Consultation CMS", href: "/admin/consultation", icon: Sparkles },
-    { name: "FAQ CMS", href: "/admin/faq", icon: LayoutDashboard },
-    { name: "Legal CMS", href: "/admin/legal", icon: ShieldCheck },
+    { name: "Guruji Darshan CMS", href: "/admin/guruji", icon: Sparkles },
+    { name: "AI Lab CMS", href: "/admin/ai-lab", icon: Sparkles },
+    { name: "Portfolio CMS", href: "/admin/portfolio", icon: PenTool },
+    { name: "Resources CMS", href: "/admin/resources", icon: Lightbulb },
+    { name: "Contact Page CMS", href: "/admin/contact", icon: Mail },
     { name: "Content Blog", href: "/admin/blog", icon: BookOpen },
     { name: "User Management", href: "/admin/users", icon: Globe },
     { name: "Media Library", href: "/admin/media", icon: Globe },
-    { name: "Contact Forms", href: "/admin/contacts", icon: Globe },
-    { name: "General Settings", href: "/admin/settings", icon: Settings },
   ];
 
   if (!isAuthorized) {

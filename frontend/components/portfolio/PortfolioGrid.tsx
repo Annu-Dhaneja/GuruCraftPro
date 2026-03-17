@@ -9,7 +9,7 @@ import { Loader2 } from "lucide-react";
 import { useSearchParams } from "next/navigation";
 
 // Mock Data - Updated for New Service Categories
-const portfolioItems = [
+const defaultPortfolioItems = [
     {
         id: "logo-modern tech",
         title: "TechFlow Modern Logo",
@@ -117,8 +117,8 @@ export function PortfolioGrid({ initialProjects }: { initialProjects?: any[] }) 
     const [isModalOpen, setIsModalOpen] = useState(false);
     const searchParams = useSearchParams();
 
-    // Initial projects from CMS or fallback to empty
-    const portfolioItems = initialProjects || [];
+    // Initial projects from CMS or fallback to default array
+    const portfolioItems = initialProjects && initialProjects.length > 0 ? initialProjects : defaultPortfolioItems;
 
     // Pagination / Load More state
     const [displayCount, setDisplayCount] = useState(6);

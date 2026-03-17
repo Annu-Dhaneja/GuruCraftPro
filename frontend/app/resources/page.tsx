@@ -12,17 +12,33 @@ import { PromptLibrary } from "@/components/resources/PromptLibrary";
 import { FreeResources } from "@/components/resources/FreeResources";
 import { NewsletterCTA } from "@/components/resources/NewsletterCTA";
 import { Footer } from "@/components/footer/Footer";
+import { getApiUrl } from "@/lib/utils";
 
-export default function LearnPage() {
+export const dynamic = 'force-dynamic';
+
+export default async function LearnPage() {
+    let resourcesData: any = {};
+    
+    try {
+        const res = await fetch(getApiUrl("/api/v1/cms/resources"), {
+            cache: 'no-store'
+        });
+        if (res.ok) {
+            resourcesData = await res.json();
+        }
+    } catch (error) {
+        console.error("Failed to fetch resources content:", error);
+    }
+
     return (
         <main className="min-h-screen bg-background flex flex-col">
-            <LearnHero />
-            <CategoryTabs />
-            <FeaturedPosts />
-            <TutorialList />
-            <PromptLibrary />
-            <FreeResources />
-            <NewsletterCTA />
+            <LearnHero data={resourcesData.hero} />
+            <CategoryTabs data={resourcesData.categories} />
+            <FeaturedPosts data={resourcesData.featured} />
+            <TutorialList data={resourcesData.tutorials} />
+            <PromptLibrary data={resourcesData.prompts} />
+            <FreeResources data={resourcesData.free_resources} />
+            <NewsletterCTA data={resourcesData.newsletter} />
             <Footer />
         </main>
     );

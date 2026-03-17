@@ -14,21 +14,11 @@ import {
     SheetClose
 } from "@/components/ui/sheet";
 import { Separator } from "@/components/ui/separator";
-
-// Enhanced structure with icons
-const navItems = [
-    { title: "Home", href: "/", icon: Home },
-    { title: "Portfolio", href: "/portfolio", icon: Briefcase },
-    { title: "AI Design Lab", href: "/ai-lab", isSpecial: true, icon: Sparkles },
-    { title: "Guru Ji Art Work", href: "/guruji-darshan", isGuru: true, icon: Paintbrush },
-    { title: "Services", href: "/services", icon: Layers },
-    { title: "Learn", href: "/resources", icon: BookOpen },
-    { title: "About", href: "/about", icon: User },
-    { title: "Contact", href: "/contact", icon: Mail },
-];
+import { useSiteConfig } from "./SiteConfigProvider";
 
 export function MobileNav() {
     const [open, setOpen] = React.useState(false);
+    const { config } = useSiteConfig();
     // TODO: Replace with actual auth state check
     const isLoggedIn = false;
 
@@ -43,7 +33,7 @@ export function MobileNav() {
             <SheetContent side="right" className="w-[300px] sm:w-[400px] flex flex-col h-full p-0">
                 <SheetHeader className="p-6 text-left border-b border-border/50 bg-muted/20">
                     <SheetTitle className="text-xl font-bold font-sans bg-clip-text text-transparent bg-gradient-to-r from-indigo-500 to-purple-600">
-                        Gurucraftpro
+                        {config.brand.name}
                     </SheetTitle>
                     <p className="text-sm text-muted-foreground mt-1">
                         Premium Design Services
@@ -53,26 +43,39 @@ export function MobileNav() {
                 <div className="flex-1 overflow-y-auto px-6 py-6 flex flex-col gap-6">
                     {/* Main Nav Items */}
                     <div className="flex flex-col gap-2">
-                        {navItems.map((item) => (
-                            <SheetClose key={item.title} asChild>
-                                <Link
-                                    href={item.href}
-                                    className={`
-                                        flex items-center gap-4 px-4 py-3 rounded-lg text-lg font-medium transition-all duration-200
-                                        hover:bg-accent hover:text-accent-foreground
-                                        ${item.isSpecial
-                                            ? "bg-indigo-50/50 text-indigo-600 dark:bg-indigo-950/20 dark:text-indigo-400 hover:bg-indigo-100 dark:hover:bg-indigo-900/30"
-                                            : item.isGuru 
-                                                ? "bg-amber-50/50 text-amber-600 dark:bg-amber-950/20 dark:text-amber-400 hover:bg-amber-100 dark:hover:bg-amber-900/30 font-bold"
-                                                : "text-foreground/80"
-                                        }
-                                    `}
-                                >
-                                    <item.icon className={`h-5 w-5 ${item.isSpecial ? "text-indigo-500" : item.isGuru ? "text-amber-500" : "text-muted-foreground"}`} />
-                                    {item.title}
-                                </Link>
-                            </SheetClose>
-                        ))}
+                        {config.nav.map((item) => {
+                            const isSpecial = item.style === "special";
+                            const isGuru = item.style === "guru";
+                            
+                            // Map icon dynamically based on style or name 
+                            let Icon = isGuru ? Paintbrush : isSpecial ? Sparkles : Layers;
+                            if (item.label.toLowerCase() === 'home') Icon = Home;
+                            else if (item.label.toLowerCase() === 'portfolio') Icon = Briefcase;
+                            else if (item.label.toLowerCase() === 'about') Icon = User;
+                            else if (item.label.toLowerCase() === 'contact') Icon = Mail;
+                            else if (item.label.toLowerCase() === 'learn' || item.label.toLowerCase() === 'resources') Icon = BookOpen;
+
+                            return (
+                                <SheetClose key={item.label} asChild>
+                                    <Link
+                                        href={item.href}
+                                        className={`
+                                            flex items-center gap-4 px-4 py-3 rounded-lg text-lg font-medium transition-all duration-200
+                                            hover:bg-accent hover:text-accent-foreground
+                                            ${isSpecial
+                                                ? "bg-indigo-50/50 text-indigo-600 dark:bg-indigo-950/20 dark:text-indigo-400 hover:bg-indigo-100 dark:hover:bg-indigo-900/30"
+                                                : isGuru 
+                                                    ? "bg-amber-50/50 text-amber-600 dark:bg-amber-950/20 dark:text-amber-400 hover:bg-amber-100 dark:hover:bg-amber-900/30 font-bold"
+                                                    : "text-foreground/80"
+                                            }
+                                        `}
+                                    >
+                                        <Icon className={`h-5 w-5 ${isSpecial ? "text-indigo-500" : isGuru ? "text-amber-500" : "text-muted-foreground"}`} />
+                                        {item.label}
+                                    </Link>
+                                </SheetClose>
+                            )
+                        })}
                     </div>
 
                     <div className="mt-auto"></div>

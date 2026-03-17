@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { cn } from "@/lib/utils";
 
-const categories = [
+const defaultCategories = [
     "All Resources",
     "Design Tutorials",
     "AI & Design",
@@ -12,8 +12,9 @@ const categories = [
     "Free Assets",
 ];
 
-export function CategoryTabs() {
-    const [activeTab, setActiveTab] = useState("All Resources");
+export function CategoryTabs({ data }: { data?: string[] }) {
+    const categories = data && data.length > 0 ? data : defaultCategories;
+    const [activeTab, setActiveTab] = useState(categories[0] || "All Resources");
 
     return (
         <div className="sticky top-[72px] z-40 bg-background/80 backdrop-blur-md border-b border-border transition-all">

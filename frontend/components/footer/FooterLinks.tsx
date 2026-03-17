@@ -1,20 +1,20 @@
 "use client";
 
 import Link from "next/link";
+import { useSiteConfig } from "../layout/SiteConfigProvider";
 
 export function FooterLinks() {
+    const { config } = useSiteConfig();
+
     return (
         <>
             {/* Column 2: Explore */}
             <div>
                 <h3 className="font-semibold text-white mb-6">Explore</h3>
                 <ul className="space-y-4">
-                    <FooterLink href="/services" label="Services" />
-                    <FooterLink href="/portfolio" label="Portfolio" />
-                    <FooterLink href="/ai-lab" label="AI Design Lab" />
-                    <FooterLink href="/resources" label="Resources" />
-                    <FooterLink href="/blog" label="Design Blog" />
-                    <FooterLink href="/about" label="About Us" />
+                    {config.footer_explore.map((link, idx) => (
+                         <FooterLink key={idx} href={link.href} label={link.label} />
+                    ))}
                 </ul>
             </div>
 
@@ -22,11 +22,9 @@ export function FooterLinks() {
             <div>
                 <h3 className="font-semibold text-white mb-6">Support</h3>
                 <ul className="space-y-4">
-                    <FooterLink href="/request" label="Request Custom Design" />
-                    <FooterLink href="/dashboard" label="Client Dashboard" />
-                    <FooterLink href="/faq" label="FAQs" />
-                    <FooterLink href="/contact" label="Contact Us" />
-                    <FooterLink href="/book" label="Book a Call" />
+                    {config.footer_support.map((link, idx) => (
+                        <FooterLink key={idx} href={link.href} label={link.label} />
+                    ))}
                 </ul>
             </div>
         </>

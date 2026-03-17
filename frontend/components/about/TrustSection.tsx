@@ -28,7 +28,12 @@ const stats = [
     { value: "24/7", label: "Customer Support", icon: <Headset className="h-5 w-5 text-indigo-400 mb-2" /> },
 ];
 
-export function TrustSection() {
+export function TrustSection({ data }: { data?: any }) {
+    const sectionTitle = data?.title || "Why clients choose Gurucraftpro";
+    const sectionDesc = data?.description || "Design is a partnership. We prioritize transparency, quality, and speed so you can focus on growing your business while we handle the visuals.";
+    const trustStrengths = data?.strengths || strengths;
+    const trustStats = data?.stats || stats;
+
     return (
         <section className="py-24 bg-muted/40 border-y border-border relative overflow-hidden">
             {/* Soft Background Accents */}
@@ -40,13 +45,15 @@ export function TrustSection() {
                     {/* Core Features */}
                     <div>
                         <h3 className="text-sm font-bold text-indigo-600 uppercase tracking-widest mb-2">Core Features & Strengths</h3>
-                        <h2 className="text-3xl md:text-4xl font-bold mb-6">Why clients choose <br /> Gurucraftpro</h2>
+                        <h2 className="text-3xl md:text-4xl font-bold mb-6" dangerouslySetInnerHTML={{ __html: sectionTitle }} />
                         <p className="text-lg text-muted-foreground leading-relaxed mb-10">
-                            Design is a partnership. We prioritize transparency, quality, and speed so you can focus on growing your business while we handle the visuals.
+                            {sectionDesc}
                         </p>
 
                         <div className="space-y-6">
-                            {strengths.map((item, i) => (
+                            {trustStrengths.map((item: any, i: number) => {
+                                const Icon = strengths.find(s => s.title === item.title)?.icon || <Trophy className="h-6 w-6 text-yellow-500" />;
+                                return (
                                 <motion.div
                                     initial={{ opacity: 0, x: -20 }}
                                     whileInView={{ opacity: 1, x: 0 }}
@@ -63,7 +70,8 @@ export function TrustSection() {
                                         <p className="text-muted-foreground">{item.desc}</p>
                                     </div>
                                 </motion.div>
-                            ))}
+                                );
+                            })}
                         </div>
                     </div>
 
@@ -74,7 +82,9 @@ export function TrustSection() {
                         <h3 className="text-2xl font-bold mb-8 text-center">Company Milestones</h3>
 
                         <div className="grid grid-cols-2 gap-x-8 gap-y-12">
-                            {stats.map((stat, i) => (
+                            {trustStats.map((stat: any, i: number) => {
+                                const Icon = stats.find(s => s.label === stat.label)?.icon || <Briefcase className="h-5 w-5 text-indigo-400 mb-2" />;
+                                return (
                                 <motion.div
                                     initial={{ opacity: 0, scale: 0.9 }}
                                     whileInView={{ opacity: 1, scale: 1 }}
@@ -84,14 +94,15 @@ export function TrustSection() {
                                     className="flex flex-col items-center text-center"
                                 >
                                     <div className="flex flex-col items-center justify-center p-4 bg-indigo-50/50 dark:bg-indigo-500/5 rounded-2xl border border-indigo-100 dark:border-indigo-500/10 w-full mb-3 aspect-video">
-                                        {stat.icon}
+                                        {Icon}
                                         <span className="text-4xl md:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-b from-foreground to-foreground/70">
                                             {stat.value}
                                         </span>
                                     </div>
                                     <span className="font-medium text-muted-foreground">{stat.label}</span>
                                 </motion.div>
-                            ))}
+                                );
+                            })}
                         </div>
                     </div>
                 </div>
