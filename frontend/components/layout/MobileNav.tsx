@@ -20,6 +20,7 @@ const navItems = [
     { title: "Home", href: "/", icon: Home },
     { title: "Portfolio", href: "/portfolio", icon: Briefcase },
     { title: "AI Design Lab", href: "/ai-lab", isSpecial: true, icon: Sparkles },
+    { title: "Guru Ji Art Work", href: "/guruji-darshan", isGuru: true, icon: Paintbrush },
     { title: "Services", href: "/services", icon: Layers },
     { title: "Learn", href: "/resources", icon: BookOpen },
     { title: "About", href: "/about", icon: User },
@@ -61,11 +62,13 @@ export function MobileNav() {
                                         hover:bg-accent hover:text-accent-foreground
                                         ${item.isSpecial
                                             ? "bg-indigo-50/50 text-indigo-600 dark:bg-indigo-950/20 dark:text-indigo-400 hover:bg-indigo-100 dark:hover:bg-indigo-900/30"
-                                            : "text-foreground/80"
+                                            : item.isGuru 
+                                                ? "bg-amber-50/50 text-amber-600 dark:bg-amber-950/20 dark:text-amber-400 hover:bg-amber-100 dark:hover:bg-amber-900/30 font-bold"
+                                                : "text-foreground/80"
                                         }
                                     `}
                                 >
-                                    <item.icon className={`h-5 w-5 ${item.isSpecial ? "text-indigo-500" : "text-muted-foreground"}`} />
+                                    <item.icon className={`h-5 w-5 ${item.isSpecial ? "text-indigo-500" : item.isGuru ? "text-amber-500" : "text-muted-foreground"}`} />
                                     {item.title}
                                 </Link>
                             </SheetClose>

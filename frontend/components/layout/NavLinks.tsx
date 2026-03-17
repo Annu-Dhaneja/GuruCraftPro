@@ -93,6 +93,14 @@ export function NavLinks() {
 
                 <NavigationMenuItem>
                     <NavigationMenuLink asChild>
+                        <Link href="/guruji-darshan" className={cn(navigationMenuTriggerStyle(), "bg-gradient-to-r from-amber-500/10 to-orange-500/10 hover:from-amber-500/20 hover:to-orange-500/20 text-orange-600 dark:text-orange-400 font-bold")}>
+                            Guru Ji Art Work
+                        </Link>
+                    </NavigationMenuLink>
+                </NavigationMenuItem>
+
+                <NavigationMenuItem>
+                    <NavigationMenuLink asChild>
                         <Link href="/services" className={navigationMenuTriggerStyle()}>
                             Services
                         </Link>

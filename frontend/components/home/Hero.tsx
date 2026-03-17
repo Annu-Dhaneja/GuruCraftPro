@@ -92,6 +92,11 @@ export function Hero({ data }: HeroProps) {
                             <Wand2 className="mr-2 h-5 w-5" /> Try AI Generator
                         </Link>
                     </Button>
+                    <Button size="lg" variant="ghost" className="rounded-full text-lg h-14 px-8 text-amber-600 dark:text-amber-400 hover:bg-amber-500/10 font-bold" asChild>
+                        <Link href="/guruji-darshan">
+                            Guru Ji Darshan <Sparkles className="ml-2 h-5 w-5" />
+                        </Link>
+                    </Button>
                 </motion.div>
 
                 {/* Hero Visual Removed per user request */}
