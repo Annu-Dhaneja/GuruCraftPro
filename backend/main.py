@@ -120,6 +120,40 @@ def read_root():
     return {"status": "ok", "message": "Annu Design Studio API Backend"}
 
 
+@app.get("/health")
+def health_check():
+    """Check if the database is connected and working."""
+    from core import database, models
+    from sqlalchemy import text
+
+    result = {"api": "ok"}
+
+    try:
+        db = next(database.get_db())
+
+        # 1. Raw SQL ping
+        db.execute(text("SELECT 1"))
+        result["database"] = "connected"
+
+        # 2. Count users
+        user_count = db.query(models.User).count()
+        result["users_in_db"] = user_count
+
+        # 3. Show DB dialect (sqlite vs postgresql)
+        result["db_type"] = engine.dialect.name
+
+        # 4. List usernames (for debugging — remove later)
+        users = db.query(models.User.username).all()
+        result["usernames"] = [u[0] for u in users]
+
+        db.close()
+    except Exception as exc:
+        result["database"] = "DISCONNECTED"
+        result["error"] = str(exc)
+
+    return result
+
+
 # ── Routers ──────────────────────────────────────────────────────────
 app.include_router(user.router, prefix="/api/v1/auth", tags=["auth"])
 app.include_router(contact.router, prefix="/api/v1/contact", tags=["contact"])
