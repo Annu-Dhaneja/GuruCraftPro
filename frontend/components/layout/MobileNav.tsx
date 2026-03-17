@@ -2,7 +2,7 @@ import * as React from "react";
 import Link from "next/link";
 import {
     Menu, X, LayoutDashboard, FileText, Settings, LogOut,
-    Home, Sparkles, Zap, Layers, BookOpen, User, Mail, Briefcase
+    Home, Sparkles, Zap, Layers, BookOpen, User, Mail, Briefcase, Paintbrush
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
