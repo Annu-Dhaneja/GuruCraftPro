@@ -1,6 +1,6 @@
 from typing import Optional, Dict, Any, List
 from sqlalchemy.orm import Session
-from core.models import Page, Section, ContentBlock, PageStatus
+from core.models import Page, Section, ContentBlock
 from .base import BaseRepository
 import json
 
@@ -53,7 +53,7 @@ class CMSRepository(BaseRepository[Page]):
         """
         page = self.get_page_by_slug(db, slug)
         if not page:
-            page = Page(title=slug.capitalize(), slug=slug, status=PageStatus.PUBLISHED)
+            page = Page(title=slug.capitalize(), slug=slug, status="published")
             db.add(page)
             db.flush()
 

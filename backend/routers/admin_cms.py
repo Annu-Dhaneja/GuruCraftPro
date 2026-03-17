@@ -11,43 +11,25 @@ from services.cms import cms_service
 
 router = APIRouter()
 
-@router.get("/{segment}", summary="Get CMS Content Segment")
-def get_segment_content(
-    segment: str, 
-    db: Session = Depends(database.get_db)
-):
-    """
-    Retrieve dynamic content for a specific segment from the database.
-    """
-    return cms_service.get_content(db, segment)
+# ── IMPORTANT: Fixed routes MUST come BEFORE the /{segment} catch-all ──
 
-@router.put("/{segment}", summary="Update CMS Content Segment")
-def update_segment_content(
-    segment: str, 
-    content: Dict[str, Any], 
-    db: Session = Depends(database.get_db),
-    current_user: models.User = Depends(auth.get_current_user)
-):
-    """
-    Update dynamic content for a specific segment in the database.
-    """
-    updated_content = cms_service.update_content(db, segment, content)
-    return {"status": "success", "message": f"{segment.capitalize()} content updated successfully", "content": updated_content}
 
 @router.get("/stats", summary="Get Admin Dashboard Stats")
 def get_dashboard_stats(
     db: Session = Depends(database.get_db),
-    current_user: models.User = Depends(auth.get_current_user)
+    current_user: models.User = Depends(auth.get_current_user),
 ):
-    """
-    Retrieve overview statistics for the admin dashboard.
-    """
     from core.models import ContactSubmission, Page
-    
+
     total_submissions = db.query(ContactSubmission).count()
-    recent_submissions = db.query(ContactSubmission).order_by(ContactSubmission.created_at.desc()).limit(5).all()
+    recent_submissions = (
+        db.query(ContactSubmission)
+        .order_by(ContactSubmission.created_at.desc())
+        .limit(5)
+        .all()
+    )
     cms_sections = db.query(Page).count()
-    
+
     return {
         "total_submissions": total_submissions,
         "cms_sections_count": cms_sections,
@@ -57,58 +39,75 @@ def get_dashboard_stats(
                 "name": s.name,
                 "email": s.email,
                 "type": s.inquiry_type,
-                "date": s.created_at
-            } for s in recent_submissions
-        ]
+                "date": s.created_at,
+            }
+            for s in recent_submissions
+        ],
     }
 
-# Set up the upload directory relative to the backend (saving into frontend/public)
-UPLOAD_DIR = Path("../frontend/public/images/admin_uploads")
 
 @router.get("/posts", summary="List All Blog Posts")
 def list_posts(db: Session = Depends(database.get_db)):
-    """
-    Retrieve all editorial posts from the relational archives.
-    """
     from core.models import Post
     return db.query(Post).order_by(Post.created_at.desc()).all()
 
+
 @router.get("/media", summary="List All Uploaded Assets")
 def list_media(db: Session = Depends(database.get_db)):
-    """
-    Retrieve all media assets managed in the platform repository.
-    """
     from core.models import Media
     return db.query(Media).order_by(Media.uploaded_at.desc()).all()
 
+
+UPLOAD_DIR = Path("../frontend/public/images/admin_uploads")
+
+
 @router.post("/upload-image", summary="Upload Image for CMS")
 async def upload_image(
-    file: UploadFile = File(...), 
+    file: UploadFile = File(...),
     db: Session = Depends(database.get_db),
-    current_user: models.User = Depends(auth.get_current_user)
+    current_user: models.User = Depends(auth.get_current_user),
 ):
-    """
-    Upload an image file that the Admin UI can use.
-    The file is saved directly into the Next.js public/images/admin_uploads directory.
-    Returns the URL path and records it in the Media table.
-    """
     UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
-    
-    # Generate unique filename to avoid overwrites
+
     ext = os.path.splitext(file.filename)[1]
     unique_filename = f"{uuid.uuid4()}{ext}"
     file_path = UPLOAD_DIR / unique_filename
-    
+
     with open(file_path, "wb") as buffer:
         shutil.copyfileobj(file.file, buffer)
-    
+
     relative_url = f"/images/admin_uploads/{unique_filename}"
-    
-    # Record in database
+
     from core.models import Media
     new_media = Media(file_url=relative_url, file_name=file.filename)
     db.add(new_media)
     db.commit()
     db.refresh(new_media)
-        
+
     return {"url": relative_url, "id": new_media.id}
+
+
+# ── Dynamic catch-all MUST be LAST ──────────────────────────────────
+
+
+@router.get("/{segment}", summary="Get CMS Content Segment")
+def get_segment_content(
+    segment: str,
+    db: Session = Depends(database.get_db),
+):
+    return cms_service.get_content(db, segment)
+
+
+@router.put("/{segment}", summary="Update CMS Content Segment")
+def update_segment_content(
+    segment: str,
+    content: Dict[str, Any],
+    db: Session = Depends(database.get_db),
+    current_user: models.User = Depends(auth.get_current_user),
+):
+    updated_content = cms_service.update_content(db, segment, content)
+    return {
+        "status": "success",
+        "message": f"{segment.capitalize()} content updated successfully",
+        "content": updated_content,
+    }

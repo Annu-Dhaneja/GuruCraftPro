@@ -8,48 +8,46 @@ from services.user import user_service
 
 router = APIRouter()
 
-@router.get("/login", summary="Login Guide")
+
+@router.get("/login")
 def login_get_guide():
-    return {"message": "The login endpoint is active. Please use the POST method via the login form to authenticate."}
+    return {"message": "Login endpoint is active. Use POST with username & password."}
+
 
 @router.post("/login")
 async def login_for_access_token(
     db: Session = Depends(database.get_db),
-    form_data: OAuth2PasswordRequestForm = Depends()
+    form_data: OAuth2PasswordRequestForm = Depends(),
 ):
     try:
-        user = user_service.authenticate_user(db, form_data.username, form_data.password)
+        user = user_service.authenticate_user(
+            db, form_data.username, form_data.password
+        )
         if not user:
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,
                 detail="Incorrect username or password",
                 headers={"WWW-Authenticate": "Bearer"},
             )
-        
-        access_token_expires = timedelta(minutes=auth.ACCESS_TOKEN_EXPIRE_MINUTES)
-        access_token = auth.create_access_token(
-            data={"sub": user.username}, expires_delta=access_token_expires
+
+        token = auth.create_access_token(
+            data={"sub": user.username},
+            expires_delta=timedelta(minutes=auth.ACCESS_TOKEN_EXPIRE_MINUTES),
         )
-        return {"access_token": access_token, "token_type": "bearer"}
+        return {"access_token": token, "token_type": "bearer"}
+
     except HTTPException:
         raise
-    except Exception as e:
+    except Exception as exc:
+        # Log full traceback server-side, return safe string to client
         import traceback
-        tb = traceback.format_exc()
-        print(f"LOGIN_ERROR: {str(e)}")
-        print(tb)
+        traceback.print_exc()
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail="Login failed due to a server error"
+            detail=f"Login failed: {exc}",
         )
 
-@router.get("/users", summary="List All Administrative Users")
-async def list_users(
-    db: Session = Depends(database.get_db),
-    # current_user: models.User = Depends(auth.get_current_active_user) # We need to ensure authentication is enforced
-):
-    """
-    Retrieve a list of all administrative personnel registered in the database.
-    """
-    # For now, return all users. In production, we'd check if current_user.role == 'admin'
+
+@router.get("/users")
+async def list_users(db: Session = Depends(database.get_db)):
     return db.query(models.User).all()

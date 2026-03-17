@@ -9,71 +9,48 @@ from sqlalchemy.orm import Session
 from .database import get_db
 from . import models
 
-# SECRET_KEY should be kept secret in production, use environment variable
-SECRET_KEY = os.getenv("JWT_SECRET_KEY", "b39883528b9a4c8a8e1e8e8e8e8e8e8e") # Fallback for local
+SECRET_KEY = os.getenv("JWT_SECRET_KEY", "b39883528b9a4c8a8e1e8e8e8e8e8e8e")
 ALGORITHM = "HS256"
-ACCESS_TOKEN_EXPIRE_MINUTES = 60 * 24 # 24 hours
+ACCESS_TOKEN_EXPIRE_MINUTES = 60 * 24  # 24 hours
 
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto", bcrypt__rounds=12)
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="api/v1/auth/login")
 
-def _truncate_password_bytes(password: str, max_bytes: int) -> str:
+
+def _safe_password(password: str) -> str:
+    """Truncate password to 72 bytes (bcrypt hard limit). Always call before hash/verify."""
     if not password:
         return ""
-
     encoded = password.encode("utf-8")
-    if len(encoded) <= max_bytes:
+    if len(encoded) <= 72:
         return password
+    # Truncate at byte boundary, then decode safely
+    truncated = encoded[:72]
+    return truncated.decode("utf-8", "ignore")
 
-    truncated = encoded[:max_bytes]
-    while truncated:
-        try:
-            return truncated.decode("utf-8")
-        except UnicodeDecodeError:
-            truncated = truncated[:-1]
-    return ""
 
-def verify_password(plain_password, hashed_password):
-    if not hashed_password or not plain_password:
+def verify_password(plain_password: str, hashed_password: str) -> bool:
+    if not plain_password or not hashed_password:
         return False
+    safe = _safe_password(plain_password)
+    return pwd_context.verify(safe, hashed_password)
 
-    # Support both existing truncated hashes and bcrypt's 72-byte limit.
-    candidates = []
-    for max_bytes in (72, 50, 40):
-        candidate = _truncate_password_bytes(plain_password, max_bytes)
-        if candidate and candidate not in candidates:
-            candidates.append(candidate)
 
-    try:
-        for candidate in candidates:
-            if pwd_context.verify(candidate, hashed_password):
-                return True
-        return False
-    except Exception as e:
-        if "72 bytes" in str(e):
-            for candidate in candidates[1:]:
-                if pwd_context.verify(candidate, hashed_password):
-                    return True
-            return False
-        raise e
+def get_password_hash(password: str) -> str:
+    safe = _safe_password(password)
+    return pwd_context.hash(safe)
 
-def get_password_hash(password):
-    if not password:
-        return None
-    safe_pwd = _truncate_password_bytes(password, 72)
-    return pwd_context.hash(safe_pwd)
 
 def create_access_token(data: dict, expires_delta: Optional[timedelta] = None):
     to_encode = data.copy()
-    if expires_delta:
-        expire = datetime.utcnow() + expires_delta
-    else:
-        expire = datetime.utcnow() + timedelta(minutes=15)
+    expire = datetime.utcnow() + (expires_delta or timedelta(minutes=15))
     to_encode.update({"exp": expire})
-    encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
-    return encoded_jwt
+    return jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
 
-async def get_current_user(token: str = Depends(oauth2_scheme), db: Session = Depends(get_db)):
+
+async def get_current_user(
+    token: str = Depends(oauth2_scheme), db: Session = Depends(get_db)
+):
     credentials_exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
         detail="Could not validate credentials",
@@ -86,7 +63,7 @@ async def get_current_user(token: str = Depends(oauth2_scheme), db: Session = De
             raise credentials_exception
     except JWTError:
         raise credentials_exception
-    
+
     user = db.query(models.User).filter(models.User.username == username).first()
     if user is None:
         raise credentials_exception

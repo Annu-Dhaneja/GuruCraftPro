@@ -50,14 +50,14 @@ def seed_data():
                     hashed_password=hashed_pwd,
                     name=user_info["username"].capitalize(),
                     email=f"{user_info['username']}@annudesign.com",
-                    role=models.UserRole.ADMIN
+                    role="admin"
                 )
                 db.add(new_user)
                 db.commit()
                 print(f"User {user_info['username']} stored in Database.")
             else:
                 db_user.hashed_password = hashed_pwd
-                db_user.role = models.UserRole.ADMIN
+                db_user.role = "admin"
                 if not db_user.email:
                     db_user.email = f"{user_info['username']}@annudesign.com"
                 if not db_user.name:
