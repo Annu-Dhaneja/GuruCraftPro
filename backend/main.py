@@ -16,8 +16,16 @@ app = FastAPI(
 
 
 @app.on_event("startup")
-def startup_db_sync():
-    """Seed admin users from env vars and ensure CMS home page exists."""
+def startup_db_sync() -> None:
+    """
+    Keep the DB ready on every boot:
+    1) upsert admin users from environment variables
+    2) ensure minimal CMS home content exists
+    """
+    #temp
+    print("ENV USER:", os.getenv("ADMIN_USERNAME_1"))
+    print("ENV PASS:", os.getenv("ADMIN_PASSWORD_1"))
+    #temp
     from core import auth, database, models
     from repositories.cms import cms_repository
 
