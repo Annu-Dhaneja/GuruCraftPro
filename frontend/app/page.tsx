@@ -21,6 +21,7 @@ import { HowItWorks } from "@/components/home/HowItWorks";
 import { MainServices } from "@/components/home/MainServices";
 import { GraphicDesignServices } from "@/components/services/GraphicDesignServices";
 import { Testimonials } from "@/components/home/Testimonials";
+import { ThingsSection } from "@/components/home/ThingsSection";
 import { AboutSection } from "@/components/home/AboutSection";
 import { BlogPreview } from "@/components/home/BlogPreview";
 import { FinalCTA } from "@/components/home/FinalCTA";
@@ -65,6 +66,7 @@ export default async function Home() {
       {homeData.how_it_works && <HowItWorks data={homeData.how_it_works} />}
       {homeData.main_services && <MainServices data={homeData.main_services} />}
       <GraphicDesignServices data={homeData.graphic_design_services} />
+      <ThingsSection data={homeData.things_section} />
       
       {homeData.testimonials && <Testimonials data={homeData.testimonials} />}
       <AboutSection data={homeData.about_section} />
