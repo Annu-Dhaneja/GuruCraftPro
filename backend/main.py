@@ -22,6 +22,10 @@ def startup_db_sync() -> None:
     1) upsert admin users from environment variables
     2) ensure minimal CMS home content exists
     """
+    #temp
+    print("ENV USER:", os.getenv("ADMIN_USERNAME_1"))
+    print("ENV PASS:", os.getenv("ADMIN_PASSWORD_1"))
+    #temp
     from core import auth, database, models
     from repositories.cms import cms_repository
 
