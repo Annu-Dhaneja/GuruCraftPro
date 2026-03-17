@@ -13,53 +13,58 @@ SECRET_KEY = os.getenv("JWT_SECRET_KEY", "b39883528b9a4c8a8e1e8e8e8e8e8e8e")
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 60 * 24  # 24 hours
 
-# Added truncate_error=False to specifically handle the 72-byte limit without crashing
+# SWITCHING TO pbkdf2_sha256 as the primary scheme to completely bypass 
+# the bcrypt 72-byte limit that is persistently causing issues on production.
 pwd_context = CryptContext(
-    schemes=["bcrypt"], 
+    schemes=["pbkdf2_sha256", "bcrypt"], 
     deprecated="auto", 
     bcrypt__rounds=12,
-    truncate_error=False
 )
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="api/v1/auth/login")
 
 
 def _safe_password(password: str) -> str:
-    """Truncate password to 72 bytes (bcrypt hard limit). Always call before hash/verify."""
+    """
+    Truncate password if using bcrypt, but pbkdf2 doesn't need it.
+    Providing a base truncation for safety in case of extreme input.
+    """
     if not password:
         return ""
     
-    # Use a slightly smaller limit (70) to be extremely safe
-    LIMIT = 70
+    # pbkdf2 doesn't have a 72-byte limit, so we can be much more generous.
+    # We still truncate at 256 for basic DDoS/Memory protection.
+    LIMIT = 256
     
     try:
-        encoded = password.encode("utf-8")
-        if len(encoded) <= LIMIT:
+        if len(password) <= LIMIT:
             return password
-        # Truncate at byte boundary, then decode safely
-        truncated = encoded[:LIMIT]
-        return truncated.decode("utf-8", "ignore")
-    except Exception:
-        # Fallback to simple char slicing if encoding fails
         return password[:LIMIT]
+    except Exception:
+        return password
 
 
 def verify_password(plain_password: str, hashed_password: str) -> bool:
     if not plain_password or not hashed_password:
         return False
-    # If the hash doesn't look like a bcrypt hash, return False immediately
-    if not hashed_password.startswith("$2"):
-         return False
     
-    safe = _safe_password(plain_password)
+    # Handle the existing bcrypt hashes or new pbkdf2 hashes automatically
+    # passlib will use the correct scheme based on the hash prefix
     try:
-        return pwd_context.verify(safe, hashed_password)
-    except Exception:
+        return pwd_context.verify(plain_password, hashed_password)
+    except Exception as e:
+        print(f"Auth: Verification error: {e}")
+        # Fallback for manual truncation if it's an old bcrypt hash and failing
+        if hashed_password.startswith("$2"):
+            try:
+                return pwd_context.verify(plain_password[:71], hashed_password)
+            except:
+                return False
         return False
 
 
 def get_password_hash(password: str) -> str:
-    safe = _safe_password(password)
-    return pwd_context.hash(safe)
+    # This will now use pbkdf2_sha256 by default (first in schemes list)
+    return pwd_context.hash(password)
 
 
 def create_access_token(data: dict, expires_delta: Optional[timedelta] = None):
