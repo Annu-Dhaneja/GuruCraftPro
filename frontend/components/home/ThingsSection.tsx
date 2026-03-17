@@ -34,10 +34,10 @@ interface ThingsSectionProps {
 
 const defaultItems: ThingItem[] = [
   {
-    title: "Guru Ji Art Work",
+    title: "Guruji Ke Sakshat Darshan (AR 3D View)",
     description:
-      "Hand-crafted spiritual and traditional artwork by Guru Ji — blending divine aesthetics with contemporary design.",
-    link: "/portfolio",
+      "Experience the divine presence with our exclusive AR 3D View technology. Bringing Guruji's blessings to your home in an immersive way.",
+    link: "/guruji-darshan",
   },
   {
     title: "AI-Powered Try-On",
@@ -88,11 +88,11 @@ export function ThingsSection({ data }: ThingsSectionProps) {
     data?.subtitle ||
     "Discover the creative capabilities, signature art, and design services that set us apart.";
   const items = data?.items?.length ? data.items : defaultItems;
-  const featuredTitle = data?.featured_title || "Guru Ji Art Work";
+  const featuredTitle = data?.featured_title || "Premium Guruji Satsang Box Ya Satsang Story – Pre-loaded Bhajans & Mantras";
   const featuredDescription =
     data?.featured_description ||
-    "Our signature collection of spiritual and traditional artwork — hand-crafted masterpieces that bring divine beauty into modern spaces. Each piece tells a story rooted in culture, devotion, and artistic excellence.";
-  const featuredLink = data?.featured_link || "/portfolio";
+    "A divine collection featuring hand-crafted spiritual masterpeices. The Satsang Box comes pre-loaded with sacred Bhajans and Mantras to create a serene atmosphere in your home.";
+  const featuredLink = data?.featured_link || "/guruji-darshan";
 
   return (
     <section className="py-24 md:py-32 bg-zinc-950 relative overflow-hidden">
