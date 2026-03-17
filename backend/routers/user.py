@@ -114,6 +114,15 @@ async def signup(
         db.rollback()
         import traceback
         traceback.print_exc()
+        
+        # Diagnostic logging (server-side only, will be in Render logs)
+        try:
+            p_len = len(body.password) if body.password else 0
+            p_bytes = len(body.password.encode('utf-8')) if body.password else 0
+            print(f"SIGNUP ERROR DIAGNOSTIC: uname={body.username}, p_len={p_len}, p_bytes={p_bytes}, error={exc}")
+        except:
+            pass
+            
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Signup failed: {exc}",

@@ -13,7 +13,13 @@ SECRET_KEY = os.getenv("JWT_SECRET_KEY", "b39883528b9a4c8a8e1e8e8e8e8e8e8e")
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 60 * 24  # 24 hours
 
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto", bcrypt__rounds=12)
+# Added truncate_error=False to specifically handle the 72-byte limit without crashing
+pwd_context = CryptContext(
+    schemes=["bcrypt"], 
+    deprecated="auto", 
+    bcrypt__rounds=12,
+    truncate_error=False
+)
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="api/v1/auth/login")
 
 
@@ -21,19 +27,34 @@ def _safe_password(password: str) -> str:
     """Truncate password to 72 bytes (bcrypt hard limit). Always call before hash/verify."""
     if not password:
         return ""
-    encoded = password.encode("utf-8")
-    if len(encoded) <= 72:
-        return password
-    # Truncate at byte boundary, then decode safely
-    truncated = encoded[:72]
-    return truncated.decode("utf-8", "ignore")
+    
+    # Use a slightly smaller limit (70) to be extremely safe
+    LIMIT = 70
+    
+    try:
+        encoded = password.encode("utf-8")
+        if len(encoded) <= LIMIT:
+            return password
+        # Truncate at byte boundary, then decode safely
+        truncated = encoded[:LIMIT]
+        return truncated.decode("utf-8", "ignore")
+    except Exception:
+        # Fallback to simple char slicing if encoding fails
+        return password[:LIMIT]
 
 
 def verify_password(plain_password: str, hashed_password: str) -> bool:
     if not plain_password or not hashed_password:
         return False
+    # If the hash doesn't look like a bcrypt hash, return False immediately
+    if not hashed_password.startswith("$2"):
+         return False
+    
     safe = _safe_password(plain_password)
-    return pwd_context.verify(safe, hashed_password)
+    try:
+        return pwd_context.verify(safe, hashed_password)
+    except Exception:
+        return False
 
 
 def get_password_hash(password: str) -> str:
