@@ -24,6 +24,8 @@ app.add_middleware(
         "https://annus.netlify.app",
         "https://virtual-trys.onrender.com",
         "https://virtual-try-rho.vercel.app",
+        "https://virtual-try.pages.dev",
+        "https://virtual-try-main.pages.dev",
     ],
     allow_credentials=True,
     allow_methods=["*"],
