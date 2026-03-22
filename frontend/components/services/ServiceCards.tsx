@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Zap, Users, PenTool } from "lucide-react";
+import { Zap, Users, PenTool, Heart, Palette, Camera, ShoppingBag } from "lucide-react";
 
 const services = [
     {
@@ -28,6 +28,10 @@ const services = [
         color: "text-pink-500",
         bg: "bg-pink-500/10",
     },
+    { id: "wedding", icon: Heart },
+    { id: "guruji", icon: Palette },
+    { id: "photo", icon: Camera },
+    { id: "vantage", icon: ShoppingBag },
 ];
 
 export function ServiceCards({ data }: { data?: any }) {
@@ -41,7 +45,7 @@ export function ServiceCards({ data }: { data?: any }) {
 
     return (
         <section className="py-12 container mx-auto px-4 md:px-6">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 {cardData.map((service: any, index: number) => {
                     const Icon = services.find(s => s.id === service.id)?.icon || Zap;
                     return (

@@ -19,14 +19,7 @@ app = FastAPI(
 # ── CORS MUST be registered BEFORE routes ────────────────────────────
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        "http://localhost:3000",
-        "https://annus.netlify.app",
-        "https://virtual-trys.onrender.com",
-        "https://virtual-try-rho.vercel.app",
-        "https://virtual-try.pages.dev",
-        "https://virtual-try-main.pages.dev",
-    ],
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

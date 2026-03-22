@@ -6,6 +6,7 @@ export const metadata: Metadata = {
     description: "Meet the team where technology meets thoughtful design. Learn about our philosophy and the founder, Annu.",
 };
 import { FounderIntro } from "@/components/about/FounderIntro";
+import { TeamSection } from "@/components/about/TeamSection";
 import { Philosophy } from "@/components/about/Philosophy";
 import { AIHumanSection } from "@/components/about/AIHumanSection";
 import { ToolsWorkflow } from "@/components/about/ToolsWorkflow";
@@ -34,6 +35,7 @@ export default async function AboutPage() {
         <main className="min-h-screen bg-background flex flex-col">
             <AboutHero data={aboutData.hero} />
             <FounderIntro data={aboutData.founder} />
+            <TeamSection data={aboutData.team} />
             <Philosophy data={aboutData.philosophy} />
             <AIHumanSection data={aboutData.ai_human} />
             <ToolsWorkflow data={aboutData.tools} />
