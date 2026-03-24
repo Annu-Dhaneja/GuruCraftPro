@@ -109,7 +109,7 @@ def startup_db_sync() -> None:
                 "brand": {
                     "name": "GurucraftPro",
                     "logo_text": "G",
-                    "logo_url": "/img/brand/logo.svg",
+                    "logo_url": "/img/brand/logo-dark-v4.svg",
                     "tagline": "Crafting digital excellence through the perfect blend of AI technology and human artistic vision."
                 },
                 "nav": [
