@@ -108,7 +108,8 @@ def startup_db_sync() -> None:
             cms_repository.update_page_content(db, "site_config", {
                 "brand": {
                     "name": "Gurucraftpro",
-                    "logo_text": "A",
+                    "logo_text": "G",
+                    "logo_url": "/img/brand/logo.png",
                     "tagline": "AI-powered design blended with human creativity. We craft digital experiences that stand out."
                 },
                 "nav": [

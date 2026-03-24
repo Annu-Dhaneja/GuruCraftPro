@@ -19,6 +19,7 @@ interface SiteConfig {
     brand: {
         name: string;
         logo_text: string;
+        logo_url?: string;
         tagline: string;
     };
     nav: NavItem[];
@@ -40,7 +41,8 @@ interface SiteConfig {
 const defaultConfig: SiteConfig = {
     brand: {
         name: "Gurucraftpro",
-        logo_text: "A",
+        logo_text: "G",
+        logo_url: "/img/brand/logo.png",
         tagline: "AI-powered design blended with human creativity. We craft digital experiences that stand out.",
     },
     nav: [

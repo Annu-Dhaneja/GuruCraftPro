@@ -10,6 +10,7 @@ import { UserMenu } from "./UserMenu";
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "./ThemeToggle";
 import { useSiteConfig } from "./SiteConfigProvider";
+import Image from "next/image";
 
 export function Navbar() {
     const [scrolled, setScrolled] = React.useState(false);
@@ -42,9 +43,21 @@ export function Navbar() {
             <div className="container mx-auto px-4 md:px-6 flex items-center justify-between">
                 {/* Logo / Brand */}
                 <Link href="/" className="flex items-center gap-2 z-50 group">
-                    <div className="h-8 w-8 bg-foreground rounded-br-xl rounded-tl-xl flex items-center justify-center transition-transform group-hover:scale-105">
-                        <span className="text-background font-bold text-lg">{config.brand.logo_text}</span>
-                    </div>
+                    {config.brand.logo_url ? (
+                        <div className="relative h-10 w-10 transition-transform group-hover:scale-105">
+                            <Image
+                                src={config.brand.logo_url}
+                                alt={config.brand.name}
+                                fill
+                                className="object-contain"
+                                priority
+                            />
+                        </div>
+                    ) : (
+                        <div className="h-8 w-8 bg-foreground rounded-br-xl rounded-tl-xl flex items-center justify-center transition-transform group-hover:scale-105">
+                            <span className="text-background font-bold text-lg">{config.brand.logo_text}</span>
+                        </div>
+                    )}
                     <span className="font-bold text-lg tracking-tight hidden sm:block">
                         {config.brand.name}
                     </span>

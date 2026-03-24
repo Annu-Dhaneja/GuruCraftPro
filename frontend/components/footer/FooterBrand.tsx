@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { Facebook, Twitter, Instagram, Linkedin, Dribbble } from "lucide-react";
 import { useSiteConfig } from "../layout/SiteConfigProvider";
+import Image from "next/image";
 
 export function FooterBrand() {
     const { config } = useSiteConfig();
@@ -11,9 +12,20 @@ export function FooterBrand() {
         <div className="space-y-6">
             {/* Brand Identity */}
             <Link href="/" className="flex items-center gap-2 group">
-                <div className="h-10 w-10 bg-white rounded-br-xl rounded-tl-xl flex items-center justify-center transition-transform group-hover:scale-105">
-                    <span className="text-black font-bold text-xl">{config.brand.logo_text}</span>
-                </div>
+                {config.brand.logo_url ? (
+                    <div className="relative h-12 w-12 transition-transform group-hover:scale-105">
+                        <Image
+                            src={config.brand.logo_url}
+                            alt={config.brand.name}
+                            fill
+                            className="object-contain invert brightness-0"
+                        />
+                    </div>
+                ) : (
+                    <div className="h-10 w-10 bg-white rounded-br-xl rounded-tl-xl flex items-center justify-center transition-transform group-hover:scale-105">
+                        <span className="text-black font-bold text-xl">{config.brand.logo_text}</span>
+                    </div>
+                )}
                 <span className="font-bold text-xl tracking-tight text-white">
                     {config.brand.name}
                 </span>
