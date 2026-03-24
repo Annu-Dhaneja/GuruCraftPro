@@ -43,26 +43,20 @@ export function Navbar() {
             <div className="container mx-auto px-4 md:px-6 flex items-center justify-between">
                 {/* Logo / Brand */}
                 <Link href="/" className="flex items-center gap-2 z-50 group">
-                    {config.brand.logo_url ? (
-                        <div className="relative h-16 w-48 md:h-20 md:w-64 transition-transform group-hover:scale-105">
+                    {config.brand.logo_url && (
+                        <div className="relative h-10 w-10 md:h-12 md:w-12 transition-transform group-hover:scale-105">
                             <Image
                                 src={config.brand.logo_url}
-                                alt={config.brand.name}
+                                alt="GurucraftPro Icon"
                                 fill
-                                className="object-contain object-left mix-blend-screen"
+                                className="object-contain object-center mix-blend-screen"
                                 priority
                             />
                         </div>
-                    ) : (
-                        <>
-                            <div className="h-8 w-8 bg-foreground rounded-br-xl rounded-tl-xl flex items-center justify-center transition-transform group-hover:scale-105">
-                                <span className="text-background font-bold text-lg">{config.brand.logo_text}</span>
-                            </div>
-                            <span className="font-bold text-lg tracking-tight hidden sm:block">
-                                {config.brand.name}
-                            </span>
-                        </>
                     )}
+                    <span className="font-bold text-xl md:text-2xl tracking-tight text-white group-hover:text-indigo-400 transition-colors">
+                        {config.brand.name}
+                    </span>
                 </Link>
 
                 {/* Desktop Navigation */}

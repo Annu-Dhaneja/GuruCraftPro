@@ -11,26 +11,20 @@ export function FooterBrand() {
     return (
         <div className="space-y-6">
             {/* Brand Identity */}
-            <Link href="/" className="flex items-center gap-2 group">
-                {config.brand.logo_url ? (
-                    <div className="relative h-20 w-64 md:h-28 md:w-80 transition-transform group-hover:scale-105">
+            <Link href="/" className="flex items-center gap-3 group">
+                {config.brand.logo_url && (
+                    <div className="relative h-14 w-14 transition-transform group-hover:scale-105">
                         <Image
                             src={config.brand.logo_url}
-                            alt={config.brand.name}
+                            alt="GurucraftPro Icon"
                             fill
-                            className="object-contain object-left mix-blend-screen"
+                            className="object-contain object-center mix-blend-screen"
                         />
                     </div>
-                ) : (
-                    <>
-                        <div className="h-10 w-10 bg-white rounded-br-xl rounded-tl-xl flex items-center justify-center transition-transform group-hover:scale-105">
-                            <span className="text-black font-bold text-xl">{config.brand.logo_text}</span>
-                        </div>
-                        <span className="font-bold text-xl tracking-tight text-white">
-                            {config.brand.name}
-                        </span>
-                    </>
                 )}
+                <span className="font-bold text-2xl tracking-tight text-white group-hover:text-indigo-400 transition-colors">
+                    {config.brand.name}
+                </span>
             </Link>
 
             <p className="text-muted-foreground leading-relaxed max-w-xs">
