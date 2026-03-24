@@ -42,6 +42,11 @@ export function FooterLinks() {
                             Graphic Design by Annu
                         </Link>
                     </li>
+                    <li>
+                        <Link href="https://ommee.in/" target="_blank" className="text-muted-foreground hover:text-white transition-colors duration-200 text-sm">
+                            Official Website
+                        </Link>
+                    </li>
                 </ul>
             </div>
         </>

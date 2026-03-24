@@ -107,10 +107,10 @@ def startup_db_sync() -> None:
         if not db.query(models.Page).filter(models.Page.slug == "site_config").first():
             cms_repository.update_page_content(db, "site_config", {
                 "brand": {
-                    "name": "Gurucraftpro",
+                    "name": "GurucraftPro",
                     "logo_text": "G",
                     "logo_url": "/img/brand/logo.png",
-                    "tagline": "AI-powered design blended with human creativity. We craft digital experiences that stand out."
+                    "tagline": "Crafting digital excellence through the perfect blend of AI technology and human artistic vision."
                 },
                 "nav": [
                     {"label": "Home", "href": "/", "style": "default"},
@@ -118,30 +118,29 @@ def startup_db_sync() -> None:
                     {"label": "AI Design Lab", "href": "/ai-lab", "style": "special"},
                     {"label": "Guru Ji Art Work", "href": "/guruji-darshan", "style": "guru"},
                     {"label": "Services", "href": "/services", "style": "default"},
-                    {"label": "Learn", "href": "/resources", "style": "default"},
                     {"label": "About", "href": "/about", "style": "default"},
                     {"label": "Contact", "href": "/contact", "style": "default"}
                 ],
                 "social": {
-                    "instagram": "#",
+                    "instagram": "https://instagram.com/gurucraftpro",
                     "dribbble": "#",
                     "linkedin": "#",
                     "twitter": "#",
                     "accepting_projects": True
                 },
                 "footer_explore": [
-                    {"label": "Services", "href": "/services"},
-                    {"label": "Portfolio", "href": "/portfolio"},
-                    {"label": "AI Design Lab", "href": "/ai-lab"},
-                    {"label": "About Us", "href": "/about"}
+                    {"label": "Our Services", "href": "/services"},
+                    {"label": "Design Portfolio", "href": "/portfolio"},
+                    {"label": "AI Creative Lab", "href": "/ai-lab"},
+                    {"label": "The Studio", "href": "/about"}
                 ],
                 "footer_support": [
-                    {"label": "Request Custom Design", "href": "/request"},
-                    {"label": "Client Dashboard", "href": "/dashboard"},
-                    {"label": "Contact Us", "href": "/contact"}
+                    {"label": "Custom Request", "href": "/request"},
+                    {"label": "Privacy Policy", "href": "/privacy"},
+                    {"label": "Support Center", "href": "/contact"}
                 ],
                 "footer_bottom": {
-                    "copyright": "© 2026 Gurucraftpro. All rights reserved."
+                    "copyright": "© 2026 GurucraftPro. All rights reserved."
                 }
             })
             print("Startup: site_config SEEDED")
