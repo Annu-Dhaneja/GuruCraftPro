@@ -13,22 +13,24 @@ export function FooterBrand() {
             {/* Brand Identity */}
             <Link href="/" className="flex items-center gap-2 group">
                 {config.brand.logo_url ? (
-                    <div className="relative h-12 w-12 transition-transform group-hover:scale-105">
+                    <div className="relative h-12 w-48 transition-transform group-hover:scale-105">
                         <Image
                             src={config.brand.logo_url}
                             alt={config.brand.name}
                             fill
-                            className="object-contain invert brightness-0"
+                            className="object-contain object-left invert brightness-0"
                         />
                     </div>
                 ) : (
-                    <div className="h-10 w-10 bg-white rounded-br-xl rounded-tl-xl flex items-center justify-center transition-transform group-hover:scale-105">
-                        <span className="text-black font-bold text-xl">{config.brand.logo_text}</span>
-                    </div>
+                    <>
+                        <div className="h-10 w-10 bg-white rounded-br-xl rounded-tl-xl flex items-center justify-center transition-transform group-hover:scale-105">
+                            <span className="text-black font-bold text-xl">{config.brand.logo_text}</span>
+                        </div>
+                        <span className="font-bold text-xl tracking-tight text-white">
+                            {config.brand.name}
+                        </span>
+                    </>
                 )}
-                <span className="font-bold text-xl tracking-tight text-white">
-                    {config.brand.name}
-                </span>
             </Link>
 
             <p className="text-muted-foreground leading-relaxed max-w-xs">

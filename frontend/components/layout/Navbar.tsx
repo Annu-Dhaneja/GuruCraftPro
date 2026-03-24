@@ -44,23 +44,25 @@ export function Navbar() {
                 {/* Logo / Brand */}
                 <Link href="/" className="flex items-center gap-2 z-50 group">
                     {config.brand.logo_url ? (
-                        <div className="relative h-10 w-10 transition-transform group-hover:scale-105">
+                        <div className="relative h-10 w-40 transition-transform group-hover:scale-105">
                             <Image
                                 src={config.brand.logo_url}
                                 alt={config.brand.name}
                                 fill
-                                className="object-contain"
+                                className="object-contain object-left"
                                 priority
                             />
                         </div>
                     ) : (
-                        <div className="h-8 w-8 bg-foreground rounded-br-xl rounded-tl-xl flex items-center justify-center transition-transform group-hover:scale-105">
-                            <span className="text-background font-bold text-lg">{config.brand.logo_text}</span>
-                        </div>
+                        <>
+                            <div className="h-8 w-8 bg-foreground rounded-br-xl rounded-tl-xl flex items-center justify-center transition-transform group-hover:scale-105">
+                                <span className="text-background font-bold text-lg">{config.brand.logo_text}</span>
+                            </div>
+                            <span className="font-bold text-lg tracking-tight hidden sm:block">
+                                {config.brand.name}
+                            </span>
+                        </>
                     )}
-                    <span className="font-bold text-lg tracking-tight hidden sm:block">
-                        {config.brand.name}
-                    </span>
                 </Link>
 
                 {/* Desktop Navigation */}
