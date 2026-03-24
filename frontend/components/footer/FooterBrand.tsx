@@ -18,7 +18,13 @@ export function FooterBrand() {
                             src={config.brand.logo_url}
                             alt={config.brand.name}
                             fill
-                            className="object-contain object-left"
+                            className="object-contain object-left hidden dark:block"
+                        />
+                        <Image
+                            src={config.brand.logo_url.replace('.svg', '-light.svg')}
+                            alt={config.brand.name}
+                            fill
+                            className="object-contain object-left block dark:hidden"
                         />
                     </div>
                 )}
