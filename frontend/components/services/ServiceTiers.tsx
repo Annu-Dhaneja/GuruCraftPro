@@ -7,7 +7,7 @@ import Link from "next/link";
 
 export function ServiceTiers({ data }: { data?: any[] }) {
     const list = data || [
-        { name: "AI Design", badge: "Fast & Efficient", description: "Ideal for early-stage startups and budget-conscious users who need fast ideas.", features: ["Text prompt → AI-generated designs", "Multiple variations instantly"], icon: "Sparkles", image: "/images/ai_design_services.png" },
+        { name: "AI Design", badge: "Fast & Efficient", description: "Ideal for early-stage startups and budget-conscious users who need fast ideas.", features: ["Text prompt → AI-generated designs", "Multiple variations instantly"], icon: "Sparkles", image: "/img/content/ai_design_services.png" },
     ];
 
     const IconMap: any = { Sparkles, User, PenTool };

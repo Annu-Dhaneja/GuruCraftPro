@@ -58,7 +58,7 @@ def list_media(db: Session = Depends(database.get_db)):
     return db.query(Media).order_by(Media.uploaded_at.desc()).all()
 
 
-UPLOAD_DIR = Path("../frontend/public/images/admin_uploads")
+UPLOAD_DIR = Path("../frontend/public/img/uploads")
 
 
 @router.post("/upload-image", summary="Upload Image for CMS")
@@ -76,7 +76,7 @@ async def upload_image(
     with open(file_path, "wb") as buffer:
         shutil.copyfileobj(file.file, buffer)
 
-    relative_url = f"/images/admin_uploads/{unique_filename}"
+    relative_url = f"/img/uploads/{unique_filename}"
 
     from core.models import Media
     new_media = Media(file_url=relative_url, file_name=file.filename)

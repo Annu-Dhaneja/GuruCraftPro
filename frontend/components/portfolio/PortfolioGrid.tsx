@@ -56,7 +56,7 @@ const defaultPortfolioItems = [
         id: "guru-ji-portrait",
         title: "Guru Ji Pendant Art",
         category: "GURU JI ART",
-        image: "/images/guru/guru2.png",
+        image: "/img/content/guru/guru2.png",
         aiAssisted: false,
     },
     {
