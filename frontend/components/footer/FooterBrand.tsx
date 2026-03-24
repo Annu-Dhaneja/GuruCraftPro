@@ -13,12 +13,12 @@ export function FooterBrand() {
             {/* Brand Identity */}
             <Link href="/" className="flex items-center gap-2 group">
                 {config.brand.logo_url ? (
-                    <div className="relative h-16 w-64 md:h-20 md:w-72 transition-transform group-hover:scale-105">
+                    <div className="relative h-20 w-64 md:h-28 md:w-80 transition-transform group-hover:scale-105">
                         <Image
                             src={config.brand.logo_url}
                             alt={config.brand.name}
                             fill
-                            className="object-contain object-left invert brightness-0"
+                            className="object-contain object-left mix-blend-screen"
                         />
                     </div>
                 ) : (

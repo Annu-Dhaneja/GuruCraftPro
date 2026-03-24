@@ -44,12 +44,12 @@ export function Navbar() {
                 {/* Logo / Brand */}
                 <Link href="/" className="flex items-center gap-2 z-50 group">
                     {config.brand.logo_url ? (
-                        <div className="relative h-12 w-48 md:h-14 md:w-56 transition-transform group-hover:scale-105">
+                        <div className="relative h-16 w-48 md:h-20 md:w-64 transition-transform group-hover:scale-105">
                             <Image
                                 src={config.brand.logo_url}
                                 alt={config.brand.name}
                                 fill
-                                className="object-contain object-left"
+                                className="object-contain object-left mix-blend-screen"
                                 priority
                             />
                         </div>
