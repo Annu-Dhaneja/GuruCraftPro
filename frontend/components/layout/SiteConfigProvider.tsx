@@ -40,26 +40,37 @@ interface SiteConfig {
 // Fallback default config if API fails
 const defaultConfig: SiteConfig = {
     brand: {
-        name: "Gurucraftpro",
+        name: "GurucraftPro",
         logo_text: "G",
-        logo_url: "/img/brand/logo.png",
-        tagline: "AI-powered design blended with human creativity. We craft digital experiences that stand out.",
+        logo_url: "/img/brand/logo-full-v2.png",
+        tagline: "Crafting digital excellence through the perfect blend of AI technology and human artistic vision.",
     },
     nav: [
         { label: "Home", href: "/", style: "default" },
+        { label: "Portfolio", href: "/portfolio", style: "default" },
         { label: "AI Design Lab", href: "/ai-lab", style: "special" },
+        { label: "Virtual Try-On", href: "/ai-lab/virtual-try-on", style: "special" },
         { label: "Guru Ji Art Work", href: "/guruji-darshan", style: "guru" }
     ],
     social: {
-        instagram: "#",
+        instagram: "https://instagram.com/gurucraftpro",
         dribbble: "#",
         linkedin: "#",
         twitter: "#",
         accepting_projects: true,
     },
-    footer_explore: [],
-    footer_support: [],
-    footer_bottom: { copyright: "© 2026 Gurucraftpro. All rights reserved." },
+    footer_explore: [
+        {label: "Our Services", href: "/services"},
+        {label: "Design Portfolio", href: "/portfolio"},
+        {label: "AI Creative Lab", href: "/ai-lab"},
+        {label: "The Studio", href: "/about"}
+    ],
+    footer_support: [
+        {label: "Custom Request", href: "/request"},
+        {label: "Privacy Policy", href: "/privacy"},
+        {label: "Support Center", href: "/contact"}
+    ],
+    footer_bottom: { copyright: "© 2026 GurucraftPro. All rights reserved." },
 };
 
 const SiteConfigContext = createContext<{ config: SiteConfig; loading: boolean }>({

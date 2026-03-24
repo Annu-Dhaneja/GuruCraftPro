@@ -7,8 +7,11 @@ import { FooterBottom } from "./FooterBottom";
 
 export function Footer() {
     return (
-        <footer className="bg-[#0F0F0F] text-slate-200 pt-20 pb-10 border-t border-white/5 overflow-hidden">
-            <div className="container mx-auto px-4 md:px-6">
+        <footer className="relative bg-[#0F0F0F] text-slate-200 pt-24 pb-12 border-t border-white/5 overflow-hidden">
+            {/* Premium Glow Effect */}
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_bottom,rgba(99,102,241,0.05)_0%,transparent_60%)] pointer-events-none" />
+            
+            <div className="container mx-auto px-4 md:px-6 relative z-10">
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12 lg:gap-8">
 
                     {/* Column 1: Brand */}
