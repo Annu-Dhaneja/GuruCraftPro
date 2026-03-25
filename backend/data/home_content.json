@@ -40,7 +40,7 @@
       },
       {
         "name": "Stripe",
-        "logo": "/img/uploads/b483a70b-ca1d-42d5-8ba1-16da9b6a1d36.jpeg"
+        "logo": "/images/uploads/b483a70b-ca1d-42d5-8ba1-16da9b6a1d36.jpeg"
       }
     ]
   },
@@ -52,7 +52,7 @@
     "badge_text": "Live Demo",
     "title": "Experience Your Vision",
     "description": "Our AI Virtual Try-On technology allows you to see how designs look on real world items instantly.",
-    "image": "/img/content/user_provided/generated-image-2026-02-23_14-29-23.jpg",
+    "image": "/images/content/user_provided/generated-image-2026-02-23_14-29-23.jpg",
     "button_text": "Launch Try-On Lab",
     "button_link": "/ai-lab/virtual-try-on"
   },

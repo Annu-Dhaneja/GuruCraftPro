@@ -42,7 +42,7 @@ const defaultConfig: SiteConfig = {
     brand: {
         name: "GurucraftPro",
         logo_text: "G",
-        logo_url: "/img/brand/logo-dark-v4.svg",
+        logo_url: "/images/brand/logo-dark-v4.svg",
         tagline: "Crafting digital excellence through the perfect blend of AI technology and human artistic vision.",
     },
     nav: [

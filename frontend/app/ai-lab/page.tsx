@@ -22,7 +22,7 @@ const DEFAULT_TOOLS = [
         color: "text-rose-500",
         bg: "bg-rose-500/10",
         gradient: "from-rose-500/80 to-pink-500/80",
-        image: "/img/uploads/generated-image-2026-02-24_10-15-32.jpg"
+        image: "/images/uploads/generated-image-2026-02-24_10-15-32.jpg"
     },
     {
         title: "Outfit Generator",
@@ -32,7 +32,7 @@ const DEFAULT_TOOLS = [
         color: "text-amber-500",
         bg: "bg-amber-500/10",
         gradient: "from-amber-500/80 to-orange-500/80",
-        image: "/img/uploads/generated-image-2026-02-24_10-09-43.jpg"
+        image: "/images/uploads/generated-image-2026-02-24_10-09-43.jpg"
     },
     {
         title: "Logo & Design Generator",
@@ -42,7 +42,7 @@ const DEFAULT_TOOLS = [
         color: "text-indigo-500",
         bg: "bg-indigo-500/10",
         gradient: "from-indigo-600/80 to-blue-600/80",
-        image: "/img/uploads/generated-image-2026-02-23_14-29-18 (1).jpg"
+        image: "/images/uploads/generated-image-2026-02-23_14-29-18 (1).jpg"
     },
     {
         title: "Sticker Generator",
@@ -52,7 +52,7 @@ const DEFAULT_TOOLS = [
         color: "text-emerald-500",
         bg: "bg-emerald-500/10",
         gradient: "from-emerald-500/80 to-green-500/80",
-        image: "/img/uploads/generated-image-2026-02-23_14-31-53.jpg"
+        image: "/images/uploads/generated-image-2026-02-23_14-31-53.jpg"
     }
 ];
 
