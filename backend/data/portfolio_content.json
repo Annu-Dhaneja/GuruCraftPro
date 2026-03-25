@@ -21,7 +21,7 @@
       "id": "logo-modern tech",
       "title": "TechFlow Modern Logo",
       "category": "Logo Design",
-      "image": "/images/content/user_provided/generated-image-2026-02-23_14-29-08 (1).jpg",
+      "image": "/images/generated/generated-image-2026-02-23_14-29-08 (1).jpg",
       "aiAssisted": true,
       "case_study_url": "/portfolio/logo-modern-tech",
       "live_url": "https://example.com/demo1",
@@ -31,7 +31,7 @@
       "id": "wedding-card-elegant",
       "title": "Elegant Floral Wedding Invite",
       "category": "Wedding Card",
-      "image": "/images/content/user_provided/generated-image-2026-02-23_14-29-25 (4).jpg",
+      "image": "/images/generated/generated-image-2026-02-23_14-29-25 (4).jpg",
       "aiAssisted": false,
       "case_study_url": "/portfolio/wedding-card-elegant",
       "live_url": "https://example.com/demo2",
@@ -41,7 +41,7 @@
       "id": "apparel-streetwear",
       "title": "Urban Street T-Shirt",
       "category": "T-Shirt Design",
-      "image": "/images/content/user_provided/generated-image-2026-02-23_14-29-25 (6).jpg",
+      "image": "/images/generated/generated-image-2026-02-23_14-29-25 (6).jpg",
       "aiAssisted": true,
       "colors": ["#000000", "#374151", "#EF4444", "#FCA5A5"]
     },
@@ -49,7 +49,7 @@
       "id": "banner-sale",
       "title": "Summer Sale Web Banner",
       "category": "Banner Design",
-      "image": "/images/content/user_provided/generated-image-2026-02-23_14-29-25 (3).jpg",
+      "image": "/images/generated/generated-image-2026-02-23_14-29-25 (3).jpg",
       "aiAssisted": false,
       "colors": ["#F59E0B", "#D97706", "#FCD34D", "#FEF3C7"]
     },
@@ -57,7 +57,7 @@
       "id": "resume-pro",
       "title": "Executive Minimal Resume",
       "category": "Resume Design",
-      "image": "/images/content/user_provided/generated-image-2026-02-24_08-51-01 (2).jpg",
+      "image": "/images/generated/generated-image-2026-02-24_08-51-01 (2).jpg",
       "aiAssisted": false,
       "colors": ["#1F2937", "#4B5563", "#9CA3AF", "#F3F4F6"]
     },
@@ -65,7 +65,7 @@
       "id": "thumbnail-gaming",
       "title": "Epic Gaming Thumbnail",
       "category": "Thumbnail",
-      "image": "/images/content/user_provided/generated-image-2026-02-24_08-35-13.jpg",
+      "image": "/images/generated/generated-image-2026-02-24_08-35-13.jpg",
       "aiAssisted": true,
       "colors": ["#7C2D12", "#EA580C", "#FB923C", "#FFEDD5"]
     }

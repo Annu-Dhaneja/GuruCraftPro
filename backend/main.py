@@ -268,6 +268,15 @@ def startup_db_sync() -> None:
             blocks = db.query(ContentBlock).filter(ContentBlock.value.like('%/img/%')).all()
             for block in blocks:
                 block.value = block.value.replace('/img/', '/images/')
+            
+            # Second pass: fix user_provided -> generated mismatch if seen
+            blocks_mismatch = db.query(ContentBlock).filter(ContentBlock.value.like('%/images/content/user_provided/%')).all()
+            for block in blocks_mismatch:
+                block.value = block.value.replace('/images/content/user_provided/', '/images/generated/')
+            
+            blocks_mismatchv2 = db.query(ContentBlock).filter(ContentBlock.value.like('%/images/user_provided/%')).all()
+            for block in blocks_mismatchv2:
+                block.value = block.value.replace('/images/user_provided/', '/images/generated/')
                 
             # Post table
             posts = db.query(Post).filter(Post.content.like('%/img/%')).all()

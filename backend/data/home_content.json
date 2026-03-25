@@ -52,7 +52,7 @@
     "badge_text": "Live Demo",
     "title": "Experience Your Vision",
     "description": "Our AI Virtual Try-On technology allows you to see how designs look on real world items instantly.",
-    "image": "/images/content/user_provided/generated-image-2026-02-23_14-29-23.jpg",
+    "image": "/images/generated/generated-image-2026-02-23_14-29-23.jpg",
     "button_text": "Launch Try-On Lab",
     "button_link": "/ai-lab/virtual-try-on"
   },
@@ -113,13 +113,13 @@
       {
         "title": "7 DAY CLOTHS",
         "description": "Curated 7-day wardrobe essentials designed for modern lifestyles.",
-        "image": "/images/content/user_provided/generated-image-2026-02-24_10-15-40 (3).jpg",
+        "image": "/images/generated/generated-image-2026-02-24_10-15-40 (3).jpg",
         "link": "/services/7-day-cloths"
       },
       {
         "title": "WEDDING PLAN",
         "description": "Bespoke digital and physical design planning for your perfect day.",
-        "image": "/images/content/user_provided/generated-image-2026-02-24_08-51-01 (1).jpg",
+        "image": "/images/generated/generated-image-2026-02-24_08-51-01 (1).jpg",
         "link": "/services/wedding-plan"
       },
       {
@@ -131,25 +131,25 @@
       {
         "title": "PHOTO EDITOR",
         "description": "Professional grade retouching, color grading, and composition.",
-        "image": "/images/content/user_provided/generated-image-2026-02-24_10-45-44 (1).jpg",
+        "image": "/images/generated/generated-image-2026-02-24_10-45-44 (1).jpg",
         "link": "/services/photo-editor"
       },
       {
         "title": "GAME DESIGN",
         "description": "Immersive 2D & 3D assets, UI/UX, and character concept art.",
-        "image": "/images/content/user_provided/generated-image-2026-02-24_10-45-40.jpg",
+        "image": "/images/generated/generated-image-2026-02-24_10-45-40.jpg",
         "link": "/services/game-design"
       },
       {
         "title": "VANTAGE ECOM",
         "description": "High-conversion product imagery and eCommerce store designs.",
-        "image": "/images/content/user_provided/generated-image-2026-02-24_10-09-43.jpg",
+        "image": "/images/generated/generated-image-2026-02-24_10-09-43.jpg",
         "link": "/services/vantage-ecom"
       },
       {
         "title": "ABOUT",
         "description": "Learn more about our studio, mission, and the passionate team behind the designs.",
-        "image": "/images/content/user_provided/generated-image-2026-02-23_14-29-08.jpg",
+        "image": "/images/generated/generated-image-2026-02-23_14-29-08.jpg",
         "link": "/about"
       }
     ]
