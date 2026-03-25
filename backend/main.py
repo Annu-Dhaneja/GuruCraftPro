@@ -1,6 +1,7 @@
 import os
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 from sqlalchemy import text
 
 from core.config import settings
@@ -254,6 +255,31 @@ def startup_db_sync() -> None:
             })
             print("Startup: contact SEEDED")
             
+        # ── 3. Global Path Migration (/img/ -> /images/) ────────────────
+        try:
+            from core.models import Media, ContentBlock, Post
+            
+            # Media table
+            media_items = db.query(Media).filter(Media.file_url.like('%/img/%')).all()
+            for item in media_items:
+                item.file_url = item.file_url.replace('/img/', '/images/')
+            
+            # ContentBlock table
+            blocks = db.query(ContentBlock).filter(ContentBlock.value.like('%/img/%')).all()
+            for block in blocks:
+                block.value = block.value.replace('/img/', '/images/')
+                
+            # Post table
+            posts = db.query(Post).filter(Post.content.like('%/img/%')).all()
+            for post in posts:
+                post.content = post.content.replace('/img/', '/images/')
+                
+            db.commit()
+            print("Startup: Global image path migration complete")
+        except Exception as migration_exc:
+            db.rollback()
+            print(f"Startup: Path migration failed: {migration_exc}")
+
         db.commit()
         print("Startup: CMS sync OK")
     except Exception as exc:
@@ -309,3 +335,18 @@ app.include_router(ai_lab.router, prefix="/api/v1/ai-lab", tags=["ai-lab"])
 app.include_router(clothing_consultation.router, prefix="/api/v1/consultation", tags=["consultation"])
 app.include_router(admin_cms.router, prefix="/api/v1/cms", tags=["cms"])
 app.include_router(admin_contacts.router, prefix="/api/v1/admin", tags=["admin"])
+
+# ── Static Files ─────────────────────────────────────────────────────
+# Mount the frontend public images folder so the backend can serve them
+# This is crucial for environments where the frontend and backend share a volume
+# or for local development debugging.
+try:
+    images_path = os.path.join(os.path.dirname(__file__), "..", "frontend", "public", "images")
+    if os.path.exists(images_path):
+        app.mount("/images", StaticFiles(directory=images_path), name="images")
+        print(f"Static: Mounted /images from {images_path}")
+    else:
+        # Fallback for production if only uploads is present or path is different
+        print(f"Static Warning: {images_path} not found")
+except Exception as e:
+    print(f"Static Error: Could not mount /images: {e}")
