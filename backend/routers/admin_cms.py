@@ -67,24 +67,36 @@ async def upload_image(
     db: Session = Depends(database.get_db),
     current_user: models.User = Depends(auth.get_current_user),
 ):
-    UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
+    try:
+        UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
+    except Exception as e:
+        print(f"Upload Error: Could not create directory {UPLOAD_DIR}: {e}")
+        raise HTTPException(status_code=500, detail=f"Server configuration error: {e}")
 
     ext = os.path.splitext(file.filename)[1]
     unique_filename = f"{uuid.uuid4()}{ext}"
     file_path = UPLOAD_DIR / unique_filename
 
-    with open(file_path, "wb") as buffer:
-        shutil.copyfileobj(file.file, buffer)
+    try:
+        with open(file_path, "wb") as buffer:
+            shutil.copyfileobj(file.file, buffer)
+    except Exception as e:
+        print(f"Upload Error: Failed to write file {file_path}: {e}")
+        raise HTTPException(status_code=500, detail=f"Failed to save image: {e}")
 
     relative_url = f"/images/uploads/{unique_filename}"
 
-    from core.models import Media
-    new_media = Media(file_url=relative_url, file_name=file.filename)
-    db.add(new_media)
-    db.commit()
-    db.refresh(new_media)
-
-    return {"url": relative_url, "id": new_media.id}
+    try:
+        from core.models import Media
+        new_media = Media(file_url=relative_url, file_name=file.filename)
+        db.add(new_media)
+        db.commit()
+        db.refresh(new_media)
+        return {"url": relative_url, "id": new_media.id}
+    except Exception as e:
+        db.rollback()
+        print(f"Upload Error: Database sync failed: {e}")
+        raise HTTPException(status_code=500, detail=f"Media record creation failed: {e}")
 
 
 # ── Dynamic catch-all MUST be LAST ──────────────────────────────────

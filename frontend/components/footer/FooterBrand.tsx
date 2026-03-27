@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Facebook, Twitter, Instagram, Linkedin, Dribbble } from "lucide-react";
+import { Facebook, Twitter, Instagram, Linkedin, Dribbble, MessageCircle } from "lucide-react";
 import { useSiteConfig } from "../layout/SiteConfigProvider";
 import Image from "next/image";
 
@@ -31,6 +31,7 @@ export function FooterBrand() {
             {/* Social Icons */}
             <div className="flex gap-4">
                 {config.social.instagram !== "#" && <SocialLink href={config.social.instagram} icon={Instagram} label="Instagram" />}
+                <SocialLink href="https://wa.me/918527837527" icon={MessageCircle} label="WhatsApp" />
                 {config.social.dribbble !== "#" && <SocialLink href={config.social.dribbble} icon={Dribbble} label="Dribbble" />}
                 {config.social.linkedin !== "#" && <SocialLink href={config.social.linkedin} icon={Linkedin} label="LinkedIn" />}
                 {config.social.twitter !== "#" && <SocialLink href={config.social.twitter} icon={Twitter} label="Twitter" />}

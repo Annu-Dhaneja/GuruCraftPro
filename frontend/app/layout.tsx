@@ -31,6 +31,7 @@ export const viewport = {
 };
 
 import { SiteConfigProvider } from "@/components/layout/SiteConfigProvider";
+import WhatsAppButton from "@/components/ui/WhatsAppButton";
 
 export default function RootLayout({
   children,
@@ -51,6 +52,7 @@ export default function RootLayout({
           <SiteConfigProvider>
             <Navbar />
             {children}
+            <WhatsAppButton />
           </SiteConfigProvider>
         </ThemeProvider>
       </body>
