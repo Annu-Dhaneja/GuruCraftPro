@@ -6,12 +6,12 @@ from typing import Optional
 
 class EmailService:
     def __init__(self):
-        # Using the credentials provided by the user
-        self.smtp_server = "smtp.gmail.com"
-        self.smtp_port = 587
-        self.sender_email = "andad622@gmail.com"
-        self.sender_password = "dyse sbbd hsjk gnzh"
-        self.recipient_email = "andad622@gmail.com"
+        # Using environment variables for better security
+        self.smtp_server = os.getenv("SMTP_SERVER", "smtp.gmail.com")
+        self.smtp_port = int(os.getenv("SMTP_PORT", "587"))
+        self.sender_email = os.getenv("SMTP_EMAIL", "andad622@gmail.com")
+        self.sender_password = os.getenv("SMTP_PASSWORD", "dyse sbbd hsjk gnzh")
+        self.recipient_email = os.getenv("SMTP_RECEIVER", "andad622@gmail.com")
 
     def send_contact_notification(self, name: str, email: str, message_body: str, inquiry_type: Optional[str] = None):
         """
