@@ -182,10 +182,14 @@ def startup_db_sync() -> None:
                     if key not in current:
                         current[key] = val
                         updated = True
-                    elif isinstance(val, dict) and isinstance(current[key], dict):
+                    elif isinstance(val, list) and isinstance(current.get(key), list) and not current[key]:
+                        # Populate empty arrays
+                        current[key] = val
+                        updated = True
+                    elif isinstance(val, dict) and isinstance(current.get(key), dict):
                         # Deep merge one level for sections
                         for sub_k, sub_v in val.items():
-                            if sub_k not in current[key]:
+                            if sub_k not in current[key] or (isinstance(sub_v, list) and isinstance(current[key].get(sub_k), list) and not current[key][sub_k]):
                                 current[key][sub_k] = sub_v
                                 updated = True
                 if updated:
@@ -251,13 +255,20 @@ def startup_db_sync() -> None:
                 "title_prefix": "Comprehensive",
                 "title_target": "Design Services",
                 "subtitle": "From brand identity to digital products, we deliver excellence.",
-                "services": []
+                "services": [
+                    { "title": "Wedding Plan", "description": "Bespoke coordination.", "price": "₹4999+", "image": "https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=2000", "color": "from-rose-500 to-pink-500", "link": "/services/wedding-plan" },
+                    { "title": "Photo Editor", "description": "Professional retouching.", "price": "₹199+", "image": "https://images.unsplash.com/photo-1542038784456-1ea8e935640e?q=80&w=2000", "color": "from-cyan-500 to-blue-500", "link": "/services/photo-editor" },
+                    { "title": "Guru Ji Art", "description": "Divine masterpieces.", "price": "₹1499+", "image": "https://images.unsplash.com/photo-1582555172866-f73bb12a2ab3?q=80&w=2000", "color": "from-amber-500 to-orange-500", "link": "/services/guru-ji-art" }
+                ]
             },
             "graphic_design_services": {
                 "badge_text": "SERVICES",
                 "title": "Graphic Design Solutions",
                 "description": "High-impact visual communication for modern brands.",
-                "services": []
+                "services": [
+                    { "title": "Game Design", "description": "Character concepts.", "price": "₹2499+", "image": "https://images.unsplash.com/photo-1538481199705-c710c4e965fc?q=80&w=2000", "color": "from-purple-500 to-pink-500", "link": "/services/game-design" },
+                    { "title": "Vantage Ecom", "description": "E-commerce branding.", "price": "₹3499+", "image": "https://images.unsplash.com/photo-1472851294608-062f824d29cc?q=80&w=2000", "color": "from-emerald-500 to-teal-500", "link": "/services/vantage-ecom" }
+                ]
             },
             "things_section": {
                 "badge": "EXPLORE",

@@ -28,7 +28,9 @@ interface ServiceData {
 export function ServiceTemplate({ data }: { data: ServiceData }) {
   if (!data) return null;
 
-  const { hero, features, cta } = data;
+  const hero = data?.hero || { title: "", subtitle: "", description: "" };
+  const features = data?.features || [];
+  const cta = data?.cta || { title: "Get Started", link: "/contact" };
 
   return (
     <div className="flex flex-col min-h-screen bg-background">
