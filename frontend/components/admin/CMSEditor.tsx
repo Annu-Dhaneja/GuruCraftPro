@@ -185,7 +185,13 @@ export function CMSEditor({
 
   const handleArrayChange = (section: string, arrayName: string, index: number, field: string, value: any) => {
     setData((prev: any) => {
-      const newArray = [...prev[section][arrayName]];
+      if (!section) {
+        // Top-level array
+        const newArray = [...(prev[arrayName] || [])];
+        newArray[index] = { ...newArray[index], [field]: value };
+        return { ...prev, [arrayName]: newArray };
+      }
+      const newArray = [...(prev[section]?.[arrayName] || [])];
       newArray[index] = { ...newArray[index], [field]: value };
       return {
         ...prev,
@@ -195,15 +201,24 @@ export function CMSEditor({
   };
 
   const addArrayItem = (section: string, arrayName: string, emptyItem: any) => {
-    setData((prev: any) => ({
-      ...prev,
-      [section]: { ...prev[section], [arrayName]: [...prev[section][arrayName], emptyItem] }
-    }));
+    setData((prev: any) => {
+      if (!section) {
+        return { ...prev, [arrayName]: [...(prev[arrayName] || []), emptyItem] };
+      }
+      return {
+        ...prev,
+        [section]: { ...prev[section], [arrayName]: [...(prev[section]?.[arrayName] || []), emptyItem] }
+      };
+    });
   };
 
   const removeArrayItem = (section: string, arrayName: string, index: number) => {
     setData((prev: any) => {
-      const newArray = prev[section][arrayName].filter((_: any, i: number) => i !== index);
+      if (!section) {
+        const newArray = (prev[arrayName] || []).filter((_: any, i: number) => i !== index);
+        return { ...prev, [arrayName]: newArray };
+      }
+      const newArray = (prev[section]?.[arrayName] || []).filter((_: any, i: number) => i !== index);
       return {
         ...prev,
         [section]: { ...prev[section], [arrayName]: newArray }
