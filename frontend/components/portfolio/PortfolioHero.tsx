@@ -5,7 +5,10 @@ import { motion } from "framer-motion";
 import { ArrowRight, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
-export function PortfolioHero() {
+export function PortfolioHero({ data }: { data?: any }) {
+    const title = data?.title || "Crafting Digital Masterpieces";
+    const description = data?.description || "We blend aesthetic excellence with functional precision to build brands that stand out in the digital noise.";
+
     return (
         <section className="relative w-full min-h-[60vh] flex items-center justify-center overflow-hidden bg-background text-foreground py-20">
             {/* Background Gradients & Effects */}
@@ -28,13 +31,12 @@ export function PortfolioHero() {
                         <span className="text-sm font-medium tracking-wide text-gray-300 dark:text-gray-300 text-gray-600">Premium Design Studio</span>
                     </div>
 
-                    <h1 className="text-5xl md:text-7xl font-bold tracking-tight mb-6 leading-tight bg-clip-text text-transparent bg-gradient-to-r from-gray-900 via-gray-700 to-gray-500 dark:from-white dark:via-white dark:to-gray-400">
-                        Crafting Digital <br />
-                        <span className="text-foreground dark:text-white">Masterpieces</span>
+                    <h1 className="text-5xl md:text-7xl font-bold tracking-tight mb-6 leading-tight bg-clip-text text-transparent bg-gradient-to-r from-gray-900 via-gray-700 to-gray-500 dark:from-white dark:via-white dark:to-gray-400 whitespace-pre-line">
+                        {title}
                     </h1>
 
                     <p className="text-lg md:text-xl text-muted-foreground dark:text-gray-400 mb-8 leading-relaxed max-w-lg">
-                        We blend aesthetic excellence with functional precision to build brands that stand out in the digital noise.
+                        {description}
                     </p>
 
                     <div className="flex flex-wrap gap-4">

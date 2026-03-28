@@ -113,10 +113,18 @@ export function ThingsSection({ data }: ThingsSectionProps) {
             {badge}
           </span>
           <h2 className="text-4xl md:text-6xl font-bold tracking-tighter text-white mb-6">
-            {title.split(" ").slice(0, -2).join(" ")}{" "}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400">
-              {title.split(" ").slice(-2).join(" ")}
-            </span>
+            {title.split(" ").length > 2 ? (
+              <>
+                {title.split(" ").slice(0, -2).join(" ")}{" "}
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400">
+                  {title.split(" ").slice(-2).join(" ")}
+                </span>
+              </>
+            ) : (
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400">
+                {title}
+              </span>
+            )}
           </h2>
           <p className="text-lg md:text-xl text-zinc-400 leading-relaxed font-light">
             {subtitle}

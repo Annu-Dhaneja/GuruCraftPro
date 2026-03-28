@@ -30,7 +30,7 @@ const stats = [
 
 export function TrustSection({ data }: { data?: any }) {
     const sectionTitle = data?.title || "Why clients choose Gurucraftpro";
-    const sectionDesc = data?.description || "Design is a partnership. We prioritize transparency, quality, and speed so you can focus on growing your business while we handle the visuals.";
+    const sectionDesc = data?.description || "Design is a partnership. We prioritize transparency, quality, and speed.";
     const trustStrengths = data?.strengths || strengths;
     const trustStats = data?.stats || stats;
 

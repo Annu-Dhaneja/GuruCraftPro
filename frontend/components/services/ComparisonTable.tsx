@@ -28,8 +28,14 @@ const features = [
 
 export function ComparisonTable({ data }: { data?: any }) {
     const title = data?.title || "Compare Plans";
-    const subtitle = data?.subtitle || "Find the right fit for your project's needs.";
-    const tableFeatures = data?.features || features;
+    const subtitle = "Find the right fit for your project's needs.";
+    const columns = data?.columns || ["AI Only", "AI + Manual", "Fully Custom"];
+    const rows = data?.rows || [
+        { label: "Speed", values: ["Instant", "2-5 Days", "5-10 Days"] },
+        { label: "Human Expertise", values: ["No", "Yes", "Yes"] },
+        { label: "Source Files", values: ["No", "Yes", "Yes"] }
+    ];
+
 
     return (
         <section className="py-24 bg-muted/30">
@@ -44,38 +50,24 @@ export function ComparisonTable({ data }: { data?: any }) {
                         <TableHeader>
                             <TableRow className="bg-muted/50 hover:bg-muted/50">
                                 <TableHead className="w-[30%] pl-6">Feature</TableHead>
-                                <TableHead className="text-center w-[20%] text-indigo-600 font-bold">AI Only</TableHead>
-                                <TableHead className="text-center w-[25%] text-purple-600 font-bold bg-purple-50/50 dark:bg-purple-900/10">AI + Manual</TableHead>
-                                <TableHead className="text-center w-[25%] text-pink-600 font-bold">Fully Custom</TableHead>
+                                {columns.map((col: string, idx: number) => (
+                                    <TableHead key={idx} className="text-center font-bold text-indigo-400">
+                                        {col}
+                                    </TableHead>
+                                ))}
                             </TableRow>
                         </TableHeader>
                         <TableBody>
-                            {tableFeatures.map((feature: any) => (
-                                <TableRow key={feature.name} className="hover:bg-muted/20">
+                            {rows.map((row: any, i: number) => (
+                                <TableRow key={i} className="hover:bg-muted/20">
                                     <TableCell className="font-medium pl-6">
-                                        <div className="flex items-center gap-2">
-                                            {feature.name}
-                                            <TooltipProvider>
-                                                <Tooltip>
-                                                    <TooltipTrigger>
-                                                        <HelpCircle className="h-3.5 w-3.5 text-muted-foreground" />
-                                                    </TooltipTrigger>
-                                                    <TooltipContent>
-                                                        <p>{feature.desc}</p>
-                                                    </TooltipContent>
-                                                </Tooltip>
-                                            </TooltipProvider>
-                                        </div>
+                                        {row.label}
                                     </TableCell>
-                                    <TableCell className="text-center">
-                                        <CellContent value={feature.ai} />
-                                    </TableCell>
-                                    <TableCell className="text-center bg-purple-50/30 dark:bg-purple-900/5">
-                                        <CellContent value={feature.hybrid} />
-                                    </TableCell>
-                                    <TableCell className="text-center">
-                                        <CellContent value={feature.custom} />
-                                    </TableCell>
+                                    {(row.values || []).map((val: any, j: number) => (
+                                        <TableCell key={j} className="text-center">
+                                            <CellContent value={val} />
+                                        </TableCell>
+                                    ))}
                                 </TableRow>
                             ))}
                         </TableBody>
@@ -87,7 +79,7 @@ export function ComparisonTable({ data }: { data?: any }) {
 }
 
 function CellContent({ value }: { value: string | boolean }) {
-    if (value === true) return <div className="flex justify-center"><Check className="h-5 w-5 text-green-500" /></div>;
-    if (value === false) return <div className="flex justify-center"><X className="h-5 w-5 text-muted-foreground/30" /></div>;
-    return <span className="text-sm">{value}</span>;
+    if (value === true || value === "Yes" || value === "yes") return <div className="flex justify-center"><Check className="h-5 w-5 text-green-500" /></div>;
+    if (value === false || value === "No" || value === "no") return <div className="flex justify-center"><X className="h-5 w-5 text-muted-foreground/30" /></div>;
+    return <span className="text-sm font-medium">{value}</span>;
 }

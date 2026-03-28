@@ -26,6 +26,9 @@ const team = [
 
 export function TeamSection({ data }: { data?: any }) {
     const teamData = data?.members || team;
+    const sectionTitle = data?.title || "Meet Our Expert Team";
+    const sectionSubtitle = data?.subtitle || "The creative minds and technical experts building the future of digital identity.";
+
     
     return (
         <section className="py-24 relative overflow-hidden">
@@ -44,10 +47,10 @@ export function TeamSection({ data }: { data?: any }) {
                         The Visionaries
                     </motion.div>
                     <h2 className="text-4xl md:text-5xl font-black tracking-tighter text-white">
-                        Meet Our <span className="text-indigo-500">Expert Team</span>
+                        {sectionTitle}
                     </h2>
                     <p className="text-muted-foreground max-w-2xl mx-auto text-lg">
-                        The creative minds and technical experts building the future of digital identity.
+                        {sectionSubtitle}
                     </p>
                 </div>
 

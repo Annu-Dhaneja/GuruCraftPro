@@ -112,6 +112,7 @@ const DEFAULT_HOME_DATA = {
   how_it_works: { title: "", subtitle: "", steps: [] },
   main_services: { title_prefix: "", title_target: "", subtitle: "", services: [] },
   testimonials: { title: "", list: [] },
+  things_section: { badge: "", title: "", subtitle: "", featured_title: "", featured_description: "", featured_link: "", items: [] },
   final_cta: { title: "", description: "", primary_button_text: "", primary_button_link: "", secondary_button_text: "", secondary_button_link: "" }
 };
 
@@ -233,15 +234,19 @@ export default function AdminHomePage() {
   );
 
   const tabs = [
-    { id: "hero", label: "Hero Section" },
+    { id: "hero", label: "Hero Experience" },
     { id: "trust_strip", label: "Trust Strip" },
-    { id: "categories", label: "Service Templates" },
+    { id: "categories", label: "Template Rail" },
     { id: "virtual", label: "Virtual Try-On" },
     { id: "portfolio", label: "Portfolio Grid" },
     { id: "ailab", label: "AI Design Lab" },
     { id: "how_it_works", label: "How It Works" },
     { id: "main_services", label: "Main Services" },
+    { id: "graphic_svc", label: "Graphic Design" },
+    { id: "things_section", label: "Things Section" },
     { id: "testimonials", label: "Testimonials" },
+    { id: "about", label: "About (Home)" },
+    { id: "blog", label: "Blog Preview" },
     { id: "cta", label: "Final CTA" },
   ];
 
@@ -484,6 +489,88 @@ export default function AdminHomePage() {
                       <div><InputLabel>Description</InputLabel><Input value={step?.description} isTextarea onChange={(v) => handleArrayChange("how_it_works", "steps", i, "description", v)} /></div>
                     </div>
                   ))}
+                  <Button variant="outline" onClick={() => addArrayItem("how_it_works", "steps", { title: "New Step", description: "" })}>
+                    <Plus className="w-4 h-4 mr-2" /> Add Step
+                  </Button>
+                </div>
+              </div>
+            )}
+
+            {/* Main Services Tab */}
+            {activeTab === "main_services" && data?.main_services && (
+              <div className="space-y-6 animate-in fade-in">
+                <h2 className="text-xl font-semibold mb-6 pb-2 border-b border-border">Main Services Highlights</h2>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                  <div><InputLabel>Title Prefix</InputLabel><Input value={data.main_services?.title_prefix} onChange={(v) => handleNestedChange("main_services", "title_prefix", v)} /></div>
+                  <div><InputLabel>Title Target (Gradient)</InputLabel><Input value={data.main_services?.title_target} onChange={(v) => handleNestedChange("main_services", "title_target", v)} /></div>
+                  <div className="md:col-span-2"><InputLabel>Subtitle</InputLabel><Input value={data.main_services?.subtitle} isRich onChange={(v) => handleNestedChange("main_services", "subtitle", v)} /></div>
+                </div>
+
+                <h3 className="text-lg font-medium mb-4">Services Cards</h3>
+                <div className="space-y-4">
+                  {(data.main_services?.services || []).map((svc: any, i: number) => (
+                    <div key={i} className="flex flex-col md:flex-row gap-4 items-start bg-muted/30 p-4 rounded-lg border border-border">
+                      <div className="flex-1 space-y-4 w-full">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                          <div><InputLabel>Service Title</InputLabel><Input value={svc?.title} onChange={(v) => handleArrayChange("main_services", "services", i, "title", v)} /></div>
+                          <div><InputLabel>Link Route</InputLabel><Input value={svc?.link} onChange={(v) => handleArrayChange("main_services", "services", i, "link", v)} /></div>
+                          <div><InputLabel>Column Span (1 or 2)</InputLabel>
+                            <input type="number" value={svc?.colSpan || 1} onChange={(e) => handleArrayChange("main_services", "services", i, "colSpan", parseInt(e.target.value))} className="w-full bg-black/40 border border-white/10 p-2 rounded" />
+                          </div>
+                        </div>
+                        <div><InputLabel>Description</InputLabel><Input value={svc?.description} isTextarea onChange={(v) => handleArrayChange("main_services", "services", i, "description", v)} /></div>
+                        <div><InputLabel>Image URL / Upload</InputLabel><ImageUploadField value={svc?.image} onChange={(v) => handleArrayChange("main_services", "services", i, "image", v)} /></div>
+                      </div>
+                      <Button variant="destructive" size="icon" className="shrink-0" onClick={() => removeArrayItem("main_services", "services", i)}>
+                        <Trash2 className="w-4 h-4" />
+                      </Button>
+                    </div>
+                  ))}
+                  <Button variant="outline" onClick={() => addArrayItem("main_services", "services", { title: "New Service", description: "", image: "", link: "/services", colSpan: 1 })}>
+                    <Plus className="w-4 h-4 mr-2" /> Add Service Card
+                  </Button>
+                </div>
+              </div>
+            )}
+
+            {/* Things You Should Know Tab */}
+            {activeTab === "things_section" && data?.things_section && (
+              <div className="space-y-6 animate-in fade-in">
+                <h2 className="text-xl font-semibold mb-6 pb-2 border-b border-border">Things You Should Know</h2>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                  <div><InputLabel>Section Badge</InputLabel><Input value={data.things_section?.badge} onChange={(v) => handleNestedChange("things_section", "badge", v)} /></div>
+                  <div><InputLabel>Main Title</InputLabel><Input value={data.things_section?.title} onChange={(v) => handleNestedChange("things_section", "title", v)} /></div>
+                  <div className="md:col-span-2"><InputLabel>Subtitle</InputLabel><Input value={data.things_section?.subtitle} isTextarea onChange={(v) => handleNestedChange("things_section", "subtitle", v)} /></div>
+                </div>
+
+                <div className="bg-indigo-500/5 p-6 rounded-2xl border border-indigo-500/20 mb-8">
+                  <h3 className="text-lg font-bold text-indigo-300 mb-4">Featured Item (Large Highlight)</h3>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div><InputLabel>Featured Title</InputLabel><Input value={data.things_section?.featured_title} onChange={(v) => handleNestedChange("things_section", "featured_title", v)} /></div>
+                    <div><InputLabel>Button Link</InputLabel><Input value={data.things_section?.featured_link} onChange={(v) => handleNestedChange("things_section", "featured_link", v)} /></div>
+                    <div className="md:col-span-2"><InputLabel>Featured Description</InputLabel><Input value={data.things_section?.featured_description} isTextarea onChange={(v) => handleNestedChange("things_section", "featured_description", v)} /></div>
+                  </div>
+                </div>
+
+                <h3 className="text-lg font-medium mb-4">Card Grid Items</h3>
+                <div className="grid grid-cols-1 gap-4">
+                  {(data.things_section?.items || []).map((item: any, i: number) => (
+                    <div key={i} className="flex flex-col md:flex-row gap-4 items-start bg-muted/30 p-4 rounded-lg border border-border">
+                      <div className="flex-1 space-y-4 w-full">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                          <div><InputLabel>Item Title</InputLabel><Input value={item?.title} onChange={(v) => handleArrayChange("things_section", "items", i, "title", v)} /></div>
+                          <div><InputLabel>Explore Link</InputLabel><Input value={item?.link} onChange={(v) => handleArrayChange("things_section", "items", i, "link", v)} /></div>
+                        </div>
+                        <div><InputLabel>Description</InputLabel><Input value={item?.description} isTextarea onChange={(v) => handleArrayChange("things_section", "items", i, "description", v)} /></div>
+                      </div>
+                      <Button variant="destructive" size="icon" className="shrink-0" onClick={() => removeArrayItem("things_section", "items", i)}>
+                        <Trash2 className="w-4 h-4" />
+                      </Button>
+                    </div>
+                  ))}
+                  <Button variant="outline" onClick={() => addArrayItem("things_section", "items", { title: "New Info Card", description: "", link: "" })}>
+                    <Plus className="w-4 h-4 mr-2" /> Add Info Card
+                  </Button>
                 </div>
               </div>
             )}

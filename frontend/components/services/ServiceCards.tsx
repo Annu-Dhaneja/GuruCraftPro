@@ -35,7 +35,9 @@ const services = [
 ];
 
 export function ServiceCards({ data }: { data?: any }) {
-    const cardData = data?.services || services;
+    const cardData = data?.items || services;
+    const title = data?.title || "Choose Your Path";
+
     const scrollToSection = (id: string) => {
         const element = document.getElementById(id);
         if (element) {
@@ -47,18 +49,19 @@ export function ServiceCards({ data }: { data?: any }) {
         <section className="py-12 container mx-auto px-4 md:px-6">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 {cardData.map((service: any, index: number) => {
-                    const Icon = services.find(s => s.id === service.id)?.icon || Zap;
+                    const iconName = typeof service.icon === 'string' ? service.icon : (service.id);
+                    const Icon = (Zap); // Fallback icon mapping logic can be more complex
+                    
                     return (
                     <motion.div
-                        key={service.id}
+                        key={service.id || index}
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         transition={{ delay: index * 0.1 }}
-                        onClick={() => scrollToSection(service.id)}
                         className="group cursor-pointer rounded-2xl border border-border bg-card p-8 hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
                     >
-                        <div className={`h-12 w-12 rounded-xl border border-white/10 ${service.bg || 'bg-indigo-500/10'} ${service.color || 'text-indigo-500'} flex items-center justify-center mb-6`}>
-                            <Icon className="h-6 w-6" />
+                        <div className={`h-12 w-12 rounded-xl border border-white/10 bg-indigo-500/10 text-indigo-500 flex items-center justify-center mb-6`}>
+                            <Zap className="h-6 w-6" />
                         </div>
                         <h3 className="text-xl font-semibold mb-3">{service.title}</h3>
                         <p className="text-muted-foreground leading-relaxed">

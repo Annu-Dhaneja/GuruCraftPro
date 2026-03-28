@@ -170,10 +170,201 @@ def startup_db_sync() -> None:
                     current["brand"] = brand
                     cms_repository.update_page_content(db, "site_config", current)
                     print("Startup: site_config brand/logo PATCHED ✅")
-                else:
-                    print(f"Startup: site_config logo_url OK ({brand.get('logo_url')})")
             except Exception as patch_exc:
                 print(f"Startup: site_config patch failed: {patch_exc}")
+
+        # ── 3. Site-Wide CMS Dynamic Patching ───────────────────────────
+        def patch_cms_page(slug: str, defaults: dict):
+            try:
+                current = cms_repository.get_flattened_content(db, slug)
+                updated = False
+                for key, val in defaults.items():
+                    if key not in current:
+                        current[key] = val
+                        updated = True
+                    elif isinstance(val, dict) and isinstance(current[key], dict):
+                        # Deep merge one level for sections
+                        for sub_k, sub_v in val.items():
+                            if sub_k not in current[key]:
+                                current[key][sub_k] = sub_v
+                                updated = True
+                if updated:
+                    cms_repository.update_page_content(db, slug, current)
+                    print(f"Startup: {slug} PATCHED ✅")
+            except Exception as e:
+                print(f"Startup: {slug} patch failed: {e}")
+
+        # Home Page Defaults
+        patch_cms_page("home", {
+            "hero": {
+                "badge": "THE FUTURE OF DESIGN",
+                "headline_prefix": "Design at the speed of",
+                "headline_highlight": "Imagination",
+                "headline_suffix": ".",
+                "subheadline": "Combine AI-powered generation with expert human refinement to create polished brand, UI, and marketing assets faster."
+            },
+            "trust_strip": {
+                "stats": [
+                    {"label": "Projects", "value": "2.5k+"},
+                    {"label": "Clients", "value": "120+"},
+                    {"label": "Rating", "value": "4.9/5"}
+                ],
+                "companies": [
+                    {"name": "Adobe", "logo": ""},
+                    {"name": "Figma", "logo": ""},
+                    {"name": "Stripe", "logo": ""}
+                ]
+            },
+            "service_category_rail": {
+                "title": "TEMPLATES",
+                "categories": [
+                    {"title": "Branding", "href": "/services", "image": "", "color": "from-indigo-500/80"},
+                    {"title": "UI/UX Design", "href": "/services", "image": "", "color": "from-purple-500/80"}
+                ]
+            },
+            "virtual_dressing_room": {
+                "badge_text": "NEW FEATURE",
+                "title": "Virtual Dressing Room",
+                "description": "See how garments look on you instantly using our AI-powered try-on technology.",
+                "image": "",
+                "button_text": "Try It Now",
+                "button_link": "/ai-lab"
+            },
+            "portfolio_preview": {
+                "badge_text": "OUR WORK",
+                "title": "Selected Projects",
+                "description": "A curated collection of branding, digital experiences, and AI-driven design projects.",
+                "button_text": "View Full Portfolio",
+                "button_link": "/portfolio",
+                "projects": []
+            },
+            "how_it_works": {
+                "title": "Our Process",
+                "subtitle": "How we bring your vision to life.",
+                "steps": [
+                    {"title": "Ideation", "description": "Collaborative brainstorming."},
+                    {"title": "AI Iteration", "description": "Fast conceptualization."},
+                    {"title": "Human Polish", "description": "Expert finishing touches."}
+                ]
+            },
+            "main_services": {
+                "title_prefix": "Comprehensive",
+                "title_target": "Design Services",
+                "subtitle": "From brand identity to digital products, we deliver excellence.",
+                "services": []
+            },
+            "graphic_design_services": {
+                "badge_text": "SERVICES",
+                "title": "Graphic Design Solutions",
+                "description": "High-impact visual communication for modern brands.",
+                "services": []
+            },
+            "things_section": {
+                "badge": "EXPLORE",
+                "title": "Things You Should Know",
+                "subtitle": "Discover the creative capabilities and signature art that set us apart.",
+                "featured_title": "Premium Guruji AR Experience",
+                "featured_description": "Immersive 3D darshan bringing divine blessings to your home.",
+                "featured_link": "/guruji-darshan",
+                "items": [
+                    {"title": "AI Try-On", "description": "Experience fashion virtually.", "link": "/ai-lab"}
+                ]
+            },
+            "testimonials": {
+                "title": "Client Love",
+                "list": [
+                    {"author": "Alex Rivera", "role": "Founder, TechFlow", "content": "The speed and quality are unmatched.", "rating": 5}
+                ]
+            },
+            "about_section": {
+                "title": "Design is intelligence made visible.",
+                "paragraph1": "We are a multidisciplinary studio obsessed with the intersection of art and technology.",
+                "paragraph2": "Our goal is clarity, beauty, and impact.",
+                "stat1_value": "5+", "stat1_label": "Years Exp.",
+                "stat2_value": "100%", "stat2_label": "Satisfaction",
+                "stat3_value": "24/7", "stat3_label": "Support"
+            },
+            "blog_preview": {
+                "badge_text": "INSIGHTS",
+                "title": "From the Studio",
+                "button_text": "Read the Journal",
+                "button_link": "/blog",
+                "posts": []
+            },
+            "final_cta": {
+                "title": "Ready to transform your brand?",
+                "description": "Let's build something extraordinary together.",
+                "primary_button_text": "Start a Project",
+                "primary_button_link": "/contact",
+                "secondary_button_text": "View Pricing",
+                "secondary_button_link": "/services"
+            }
+        })
+
+        # About Page Defaults
+        patch_cms_page("about", {
+            "hero": {
+                "badge": "ABOUT US",
+                "title_prefix": "Where Technology Meets",
+                "title_highlight": "Thoughtful Design",
+                "description": "We are on a mission to redefine the creative workflow."
+            },
+            "founder": {
+                "name": "Annu", "title": "Founder & Creative Lead",
+                "badge": "THE VISIONARY", "main_title": "Artist. Designer. AI Explorer.",
+                "main_description": "Passionate about bridging the gap between human intuition and machine intelligence.",
+                "image": "", "tags": ["Artist", "Tech Enthusiast"], "bio": ["A decade of design excellence."]
+            },
+            "team": {
+                "title": "Our Team", "subtitle": "The humans behind the machines.",
+                "members": []
+            },
+            "philosophy": {
+                "title": "Our Philosophy", "description": "Good design is invisible—it just works."
+            },
+            "ai_human": {
+                "title": "Vision & Innovation", "description": "Leveraging AI for efficiency, keeping humans for soul.",
+                "features": ["Speed", "Scalability", "Artistry"]
+            },
+            "tools": {
+                "title": "Toolkit & Expertise", "tools": ["Figma", "Photoshop", "Midjourney", "Next.js"]
+            },
+            "services_preview": { "title": "What We Do", "services": [] },
+            "trust_section": { 
+                "title": "Why clients choose Gurucraftpro", 
+                "description": "Design is a partnership. We prioritize transparency, quality, and speed.",
+                "strengths": [
+                    {"title": "Expert Team", "desc": "Skilled professionals."},
+                    {"title": "Fast Delivery", "desc": "Quick turnaround."}
+                ],
+                "stats": [
+                    {"value": "500+", "label": "Projects Done"},
+                    {"value": "24/7", "label": "Support"}
+                ]
+            },
+            "about_cta": { "title": "Join our journey.", "link": "/contact" }
+        })
+
+        # Services Page Defaults
+        patch_cms_page("services", {
+            "hero": { "title": "Services & Pricing", "description": "Professional design tiers tailored for every scale." },
+            "cards": { "title": "Main Offerings", "items": [] },
+            "tiers": [
+                {"name": "Starter", "badge": "Popular", "description": "Ideal for small projects.", "price": "₹999", "features": ["1 Design", "2 Revisions"], "icon": "Sparkles"}
+            ],
+            "comparison": { "title": "Compare Plans", "columns": ["Feature", "Starter", "Pro"], "rows": [] },
+            "process": { "title": "Delivery Process", "description": "Our proven 4-step workflow.", "steps": [] },
+            "faq": [ {"q": "How fast is delivery?", "a": "Typically 24-48 hours."} ],
+            "cta": { "title": "Ready to get started?", "link": "/contact" }
+        })
+
+        # Portfolio Page Defaults
+        patch_cms_page("portfolio", {
+            "hero": { "title": "Our Portfolio", "description": "A collection of digital excellence." },
+            "categories": ["All", "Web", "Branding", "AI"],
+            "projects": [],
+            "cta": { "title": "Have a project in mind?", "link": "/contact" }
+        })
             
         # Seed guruji
         if not db.query(models.Page).filter(models.Page.slug == "guruji").first():

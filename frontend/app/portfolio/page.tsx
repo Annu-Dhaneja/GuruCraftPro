@@ -32,13 +32,13 @@ export default async function PortfolioPage() {
 
     return (
         <main className="min-h-screen bg-background flex flex-col">
-            <PortfolioHero />
+            <PortfolioHero data={portfolioData.hero} />
             <ServiceCategoryRail data={portfolioData.categories} />
             <Suspense fallback={<div className="h-20 bg-muted/20 animate-pulse" />}>
                 <PortfolioFilters categories={portfolioData.categories} />
             </Suspense>
             <PortfolioGrid initialProjects={portfolioData.projects} />
-            <PortfolioCTA />
+            <PortfolioCTA data={portfolioData.cta} />
             <Footer />
         </main>
     );

@@ -30,6 +30,39 @@ export default function AdminServicesPage() {
             </div>
           </section>
 
+          <section className="bg-white/5 p-8 rounded-2xl border border-white/10 backdrop-blur-sm">
+            <h2 className="text-2xl font-bold mb-8 flex items-center gap-3 text-indigo-300">
+              <span className="w-2 h-8 bg-indigo-500 rounded-full" />
+              Service Cards (Highlights)
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+               <div>
+                <CMSEditor.Label>Section Title</CMSEditor.Label>
+                <CMSEditor.Input value={data.cards?.title} onChange={(v) => handleNestedChange("cards", "title", v)} />
+              </div>
+            </div>
+            
+            <div className="space-y-4">
+              {(data.cards?.items || []).map((card: any, i: number) => (
+                <div key={i} className="flex flex-col md:flex-row gap-4 items-start bg-muted/20 p-4 rounded-lg border border-border">
+                  <div className="flex-1 space-y-4 w-full">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div><CMSEditor.Label>Title</CMSEditor.Label><CMSEditor.Input value={card?.title} onChange={(v) => handleArrayChange("cards", "items", i, "title", v)} /></div>
+                      <div><CMSEditor.Label>Icon</CMSEditor.Label><CMSEditor.Input value={card?.icon} onChange={(v) => handleArrayChange("cards", "items", i, "icon", v)} /></div>
+                    </div>
+                    <div><CMSEditor.Label>Description</CMSEditor.Label><CMSEditor.Input value={card?.description} isTextarea onChange={(v) => handleArrayChange("cards", "items", i, "description", v)} /></div>
+                  </div>
+                  <Button variant="destructive" size="icon" onClick={() => removeArrayItem("cards", "items", i)}>
+                    <Trash2 className="w-4 h-4" />
+                  </Button>
+                </div>
+              ))}
+              <Button variant="outline" onClick={() => addArrayItem("cards", "items", { title: "New Highlight", description: "", icon: "Sparkles" })}>
+                <Plus className="w-4 h-4 mr-2" /> Add Highlight Card
+              </Button>
+            </div>
+          </section>
+
           <section>
             <div className="flex justify-between items-center mb-10">
               <h2 className="text-2xl font-bold flex items-center gap-3 text-indigo-300">
@@ -124,6 +157,52 @@ export default function AdminServicesPage() {
           </section>
 
           <section className="bg-white/5 p-8 rounded-2xl border border-white/10 backdrop-blur-sm">
+            <h2 className="text-2xl font-bold mb-8 flex items-center gap-3 text-indigo-300">
+              <span className="w-2 h-8 bg-indigo-500 rounded-full" />
+              Comparison Table
+            </h2>
+            <div className="space-y-6">
+              <div>
+                <CMSEditor.Label>Table Title</CMSEditor.Label>
+                <CMSEditor.Input value={data.comparison?.title} onChange={(v) => handleNestedChange("comparison", "title", v)} />
+              </div>
+              <div className="flex gap-4">
+                 <div className="flex-1">
+                    <CMSEditor.Label>Columns (Comma separated)</CMSEditor.Label>
+                    <CMSEditor.Input 
+                      value={data.comparison?.columns?.join(", ") || ""} 
+                      onChange={(v) => handleNestedChange("comparison", "columns", v.split(",").map(s => s.trim()))} 
+                    />
+                 </div>
+              </div>
+              
+              <h3 className="text-lg font-medium mt-6 mb-4 flex justify-between items-center">
+                Table Rows
+                <Button variant="outline" size="sm" onClick={() => addArrayItem("comparison", "rows", { label: "New Feature", values: ["Yes", "Yes"] })}>
+                  <Plus className="w-4 h-4 mr-2" /> Add Row
+                </Button>
+              </h3>
+              <div className="space-y-4">
+                {(data.comparison?.rows || []).map((row: any, i: number) => (
+                  <div key={i} className="flex gap-4 items-start bg-muted/20 p-4 rounded-lg border border-border">
+                    <div className="flex-1 space-y-4">
+                       <CMSEditor.Input value={row.label} onChange={(v) => handleArrayChange("comparison", "rows", i, "label", v)} placeholder="Feature Label" />
+                       <CMSEditor.Input 
+                        value={row.values?.join(", ") || ""} 
+                        placeholder="Values (comma separated)"
+                        onChange={(v) => handleArrayChange("comparison", "rows", i, "values", v.split(",").map(s => s.trim()))} 
+                       />
+                    </div>
+                    <Button variant="destructive" size="icon" onClick={() => removeArrayItem("comparison", "rows", i)}>
+                      <Trash2 className="w-4 h-4" />
+                    </Button>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </section>
+
+          <section className="bg-white/5 p-8 rounded-2xl border border-white/10 backdrop-blur-sm">
             <div className="flex justify-between items-center mb-8">
               <h2 className="text-2xl font-bold flex items-center gap-3 text-indigo-300">
                 <span className="w-2 h-8 bg-indigo-500 rounded-full" />
@@ -145,6 +224,23 @@ export default function AdminServicesPage() {
                   <CMSEditor.Input value={faq.a} isRich onChange={(v) => handleArrayChange("", "faq", i, "a", v)} placeholder="Detailed Answer..." />
                 </div>
               ))}
+            </div>
+          </section>
+
+          <section className="bg-white/5 p-8 rounded-2xl border border-white/10 backdrop-blur-sm">
+            <h2 className="text-2xl font-bold mb-8 flex items-center gap-3 text-indigo-300">
+              <span className="w-2 h-8 bg-indigo-500 rounded-full" />
+              Call to Action
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <CMSEditor.Label>CTA Title</CMSEditor.Label>
+                <CMSEditor.Input value={data.cta?.title} onChange={(v) => handleNestedChange("cta", "title", v)} />
+              </div>
+              <div>
+                <CMSEditor.Label>Button Link</CMSEditor.Label>
+                <CMSEditor.Input value={data.cta?.link} onChange={(v) => handleNestedChange("cta", "link", v)} />
+              </div>
             </div>
           </section>
         </div>

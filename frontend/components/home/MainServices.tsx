@@ -24,8 +24,11 @@ interface MainServicesProps {
 }
 
 export function MainServices({ data }: MainServicesProps) {
-    if (!data) return null;
-    const { services } = data;
+    const services = data?.services || [];
+    const title_prefix = data?.title_prefix || "Comprehensive";
+    const title_target = data?.title_target || "Design Services";
+    const subtitle = data?.subtitle || "From brand identity to digital products, we deliver excellence.";
+
     const containerRef = useRef<HTMLDivElement>(null);
     const { scrollYProgress } = useScroll({
         target: containerRef,
@@ -49,13 +52,13 @@ export function MainServices({ data }: MainServicesProps) {
                 >
                     <div className="max-w-3xl">
                         <h2 className="text-4xl md:text-6xl font-bold tracking-tighter text-white mb-6">
-                            {data.title_prefix} <br />
+                            {title_prefix} <br />
                             <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400">
-                                {data.title_target}
+                                {title_target}
                             </span>
                         </h2>
                         <p className="text-xl text-zinc-400 leading-relaxed font-light">
-                            {data.subtitle}
+                            {subtitle}
                         </p>
                     </div>
                 </motion.div>

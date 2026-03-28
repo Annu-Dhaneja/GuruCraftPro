@@ -94,7 +94,10 @@ export function SiteConfigProvider({ children }: { children: React.ReactNode }) 
                     
                     // Merge fetched data with defaults to ensure structure exists
                     setConfig({
-                        brand: data.brand || defaultConfig.brand,
+                        brand: {
+                            ...(data.brand || defaultConfig.brand),
+                            logo_url: data.brand?.logo_url || defaultConfig.brand.logo_url
+                        },
                         nav: data.nav || defaultConfig.nav,
                         social: data.social || defaultConfig.social,
                         footer_explore: data.footer_explore || defaultConfig.footer_explore,

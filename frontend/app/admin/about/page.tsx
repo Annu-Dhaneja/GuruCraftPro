@@ -1,6 +1,8 @@
 "use client";
 
 import { CMSEditor } from "@/components/admin/CMSEditor";
+import { Button } from "@/components/ui/button";
+import { Plus, Trash2 } from "lucide-react";
 
 export default function AdminAboutPage() {
   return (
@@ -9,7 +11,7 @@ export default function AdminAboutPage() {
       title="About Page CMS" 
       description="Manage the content of the About Us page."
     >
-      {(data, { handleNestedChange }) => (
+      {(data, { handleNestedChange, handleArrayChange, addArrayItem, removeArrayItem }) => (
         <div className="space-y-12 animate-in fade-in max-w-6xl mx-auto pb-20">
           <section className="bg-white/5 p-8 rounded-2xl border border-white/10 backdrop-blur-sm">
             <h2 className="text-2xl font-bold mb-8 flex items-center gap-3 text-indigo-300">
@@ -85,6 +87,43 @@ export default function AdminAboutPage() {
           <section className="bg-white/5 p-8 rounded-2xl border border-white/10 backdrop-blur-sm">
             <h2 className="text-2xl font-bold mb-8 flex items-center gap-3 text-indigo-300">
               <span className="w-2 h-8 bg-indigo-500 rounded-full" />
+              Our Team
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+               <div>
+                <CMSEditor.Label>Section Title</CMSEditor.Label>
+                <CMSEditor.Input value={data.team?.title} onChange={(v) => handleNestedChange("team", "title", v)} />
+              </div>
+              <div>
+                <CMSEditor.Label>Section Subtitle</CMSEditor.Label>
+                <CMSEditor.Input value={data.team?.subtitle} onChange={(v) => handleNestedChange("team", "subtitle", v)} />
+              </div>
+            </div>
+            
+            <div className="space-y-4">
+              {(data.team?.members || []).map((member: any, i: number) => (
+                <div key={i} className="flex flex-col md:flex-row gap-4 items-start bg-muted/20 p-4 rounded-lg border border-border">
+                  <div className="flex-1 space-y-4 w-full">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div><CMSEditor.Label>Name</CMSEditor.Label><CMSEditor.Input value={member?.name} onChange={(v) => handleArrayChange("team", "members", i, "name", v)} /></div>
+                      <div><CMSEditor.Label>Role</CMSEditor.Label><CMSEditor.Input value={member?.role} onChange={(v) => handleArrayChange("team", "members", i, "role", v)} /></div>
+                    </div>
+                    <div><CMSEditor.Label>Image URL</CMSEditor.Label><CMSEditor.ImageUpload value={member?.image} onChange={(v) => handleArrayChange("team", "members", i, "image", v)} /></div>
+                  </div>
+                  <Button variant="destructive" size="icon" onClick={() => removeArrayItem("team", "members", i)}>
+                    <Trash2 className="w-4 h-4" />
+                  </Button>
+                </div>
+              ))}
+              <Button variant="outline" onClick={() => addArrayItem("team", "members", { name: "New Member", role: "Designer", image: "" })}>
+                <Plus className="w-4 h-4 mr-2" /> Add Team Member
+              </Button>
+            </div>
+          </section>
+
+          <section className="bg-white/5 p-8 rounded-2xl border border-white/10 backdrop-blur-sm">
+            <h2 className="text-2xl font-bold mb-8 flex items-center gap-3 text-indigo-300">
+              <span className="w-2 h-8 bg-indigo-500 rounded-full" />
               Philosophy
             </h2>
             <div className="space-y-6">
@@ -137,6 +176,108 @@ export default function AdminAboutPage() {
               <div>
                 <CMSEditor.Label>Tools List (Comma separated)</CMSEditor.Label>
                 <CMSEditor.Input value={data.tools?.tools?.join(", ")} onChange={(v) => handleNestedChange("tools", "tools", v.split(",").map(s => s.trim()))} />
+              </div>
+            </div>
+          </section>
+
+          <section className="bg-white/5 p-8 rounded-2xl border border-white/10 backdrop-blur-sm">
+            <h2 className="text-2xl font-bold mb-8 flex items-center gap-3 text-indigo-300">
+              <span className="w-2 h-8 bg-indigo-500 rounded-full" />
+              Services Highlights
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+               <div>
+                <CMSEditor.Label>Section Title</CMSEditor.Label>
+                <CMSEditor.Input value={data.services_preview?.title} onChange={(v) => handleNestedChange("services_preview", "title", v)} />
+              </div>
+            </div>
+            
+            <div className="space-y-4">
+              {(data.services_preview?.services || []).map((svc: any, i: number) => (
+                <div key={i} className="flex gap-4 items-start bg-muted/20 p-4 rounded-lg border border-border">
+                  <div className="flex-1 space-y-2">
+                    <CMSEditor.Input value={svc?.title} onChange={(v) => handleArrayChange("services_preview", "services", i, "title", v)} placeholder="Service Title" />
+                    <CMSEditor.Input value={svc?.description} isTextarea onChange={(v) => handleArrayChange("services_preview", "services", i, "description", v)} placeholder="Short description" />
+                  </div>
+                  <Button variant="destructive" size="icon" onClick={() => removeArrayItem("services_preview", "services", i)}>
+                    <Trash2 className="w-4 h-4" />
+                  </Button>
+                </div>
+              ))}
+              <Button variant="outline" onClick={() => addArrayItem("services_preview", "services", { title: "New Service", description: "" })}>
+                <Plus className="w-4 h-4 mr-2" /> Add Service Preview
+              </Button>
+            </div>
+          </section>
+
+          <section className="bg-white/5 p-8 rounded-2xl border border-white/10 backdrop-blur-sm">
+            <h2 className="text-2xl font-bold mb-8 flex items-center gap-3 text-indigo-300">
+              <span className="w-2 h-8 bg-indigo-500 rounded-full" />
+              Trust Section & Why Choose Us
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+               <div>
+                <CMSEditor.Label>Section Title</CMSEditor.Label>
+                <CMSEditor.Input value={data.trust_section?.title} onChange={(v) => handleNestedChange("trust_section", "title", v)} />
+              </div>
+              <div className="md:col-span-2">
+                <CMSEditor.Label>Section Description</CMSEditor.Label>
+                <CMSEditor.Input value={data.trust_section?.description} isTextarea onChange={(v) => handleNestedChange("trust_section", "description", v)} />
+              </div>
+            </div>
+
+            <div className="mt-8 space-y-6">
+              <h3 className="text-lg font-medium border-l-2 border-indigo-500 pl-4 mb-4">Core Strengths</h3>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                {(data.trust_section?.strengths || []).map((strength: any, i: number) => (
+                  <div key={i} className="bg-muted/10 p-4 rounded-xl border border-border group relative">
+                    <div className="space-y-4">
+                      <CMSEditor.Input value={strength?.title} onChange={(v) => handleArrayChange("trust_section", "strengths", i, "title", v)} placeholder="Title" />
+                      <CMSEditor.Input value={strength?.desc} isTextarea onChange={(v) => handleArrayChange("trust_section", "strengths", i, "desc", v)} placeholder="Description" />
+                    </div>
+                    <Button variant="destructive" size="icon" className="absolute -top-2 -right-2 opacity-0 group-hover:opacity-100 transition-opacity" onClick={() => removeArrayItem("trust_section", "strengths", i)}>
+                      <Trash2 className="w-4 h-4" />
+                    </Button>
+                  </div>
+                ))}
+                <Button variant="outline" className="h-[120px]" onClick={() => addArrayItem("trust_section", "strengths", { title: "New Strength", desc: "" })}>
+                  <Plus className="w-4 h-4" /> Add Strength
+                </Button>
+              </div>
+
+              <h3 className="text-lg font-medium border-l-2 border-indigo-500 pl-4 mb-4">Company Stats</h3>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+                {(data.trust_section?.stats || []).map((stat: any, i: number) => (
+                  <div key={i} className="bg-muted/10 p-4 rounded-xl border border-border group relative">
+                    <div className="space-y-4">
+                      <CMSEditor.Input value={stat?.value} onChange={(v) => handleArrayChange("trust_section", "stats", i, "value", v)} placeholder="Value (e.g. 500+)" />
+                      <CMSEditor.Input value={stat?.label} onChange={(v) => handleArrayChange("trust_section", "stats", i, "label", v)} placeholder="Label (e.g. Happy Clients)" />
+                    </div>
+                    <Button variant="destructive" size="icon" className="absolute -top-2 -right-2 opacity-0 group-hover:opacity-100 transition-opacity" onClick={() => removeArrayItem("trust_section", "stats", i)}>
+                      <Trash2 className="w-4 h-4" />
+                    </Button>
+                  </div>
+                ))}
+                <Button variant="outline" onClick={() => addArrayItem("trust_section", "stats", { value: "0", label: "New Stat" })}>
+                  <Plus className="w-4 h-4" /> Add Stat
+                </Button>
+              </div>
+            </div>
+          </section>
+
+          <section className="bg-white/5 p-8 rounded-2xl border border-white/10 backdrop-blur-sm">
+            <h2 className="text-2xl font-bold mb-8 flex items-center gap-3 text-indigo-300">
+              <span className="w-2 h-8 bg-indigo-500 rounded-full" />
+              Call to Action
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <CMSEditor.Label>CTA Title</CMSEditor.Label>
+                <CMSEditor.Input value={data.about_cta?.title} onChange={(v) => handleNestedChange("about_cta", "title", v)} />
+              </div>
+              <div>
+                <CMSEditor.Label>Button Link</CMSEditor.Label>
+                <CMSEditor.Input value={data.about_cta?.link} onChange={(v) => handleNestedChange("about_cta", "link", v)} />
               </div>
             </div>
           </section>

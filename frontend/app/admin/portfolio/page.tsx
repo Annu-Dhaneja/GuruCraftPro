@@ -11,8 +11,25 @@ export default function AdminPortfolioPage() {
       title="Portfolio CMS" 
       description="Manage your design portfolio projects and categories."
     >
-      {(data, { handleArrayChange, addArrayItem, removeArrayItem, handleChange }) => (
-        <div className="space-y-12 animate-in fade-in max-w-6xl mx-auto">
+      {(data, { handleArrayChange, addArrayItem, removeArrayItem, handleChange, handleNestedChange }) => (
+        <div className="space-y-12 animate-in fade-in max-w-6xl mx-auto pb-20">
+          <section className="bg-white/5 p-8 rounded-2xl border border-white/10 backdrop-blur-sm">
+            <h2 className="text-2xl font-bold mb-8 flex items-center gap-3 text-indigo-300">
+              <span className="w-2 h-8 bg-indigo-500 rounded-full" />
+              Portfolio Hero
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <CMSEditor.Label>Hero Title</CMSEditor.Label>
+                <CMSEditor.Input value={data.hero?.title} onChange={(v) => handleNestedChange("hero", "title", v)} />
+              </div>
+              <div className="md:col-span-2">
+                <CMSEditor.Label>Hero Description</CMSEditor.Label>
+                <CMSEditor.Input value={data.hero?.description} isTextarea onChange={(v) => handleNestedChange("hero", "description", v)} />
+              </div>
+            </div>
+          </section>
+
           <section className="bg-white/5 p-8 rounded-2xl border border-white/10 backdrop-blur-sm">
             <h2 className="text-2xl font-bold mb-8 flex items-center gap-3 text-indigo-300">
               <span className="w-2 h-8 bg-indigo-500 rounded-full" />
@@ -155,6 +172,23 @@ export default function AdminPortfolioPage() {
                   </div>
                 </div>
               ))}
+            </div>
+          </section>
+
+          <section className="bg-white/5 p-8 rounded-2xl border border-white/10 backdrop-blur-sm">
+            <h2 className="text-2xl font-bold mb-8 flex items-center gap-3 text-indigo-300">
+              <span className="w-2 h-8 bg-indigo-500 rounded-full" />
+              Portfolio CTA
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <CMSEditor.Label>CTA Title</CMSEditor.Label>
+                <CMSEditor.Input value={data.cta?.title} onChange={(v) => handleNestedChange("cta", "title", v)} />
+              </div>
+              <div>
+                <CMSEditor.Label>Button Link</CMSEditor.Label>
+                <CMSEditor.Input value={data.cta?.link} onChange={(v) => handleNestedChange("cta", "link", v)} />
+              </div>
             </div>
           </section>
         </div>

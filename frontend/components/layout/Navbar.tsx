@@ -45,20 +45,33 @@ export function Navbar() {
                 <Link href="/" className="flex items-center gap-2 z-50 group">
                     {config.brand.logo_url && (
                         <div className="relative h-14 w-48 md:h-16 md:w-56 transition-transform group-hover:scale-105">
-                            <Image
-                                src={config.brand.logo_url}
-                                alt={config.brand.name}
-                                fill
-                                className="object-contain object-left hidden dark:block"
-                                priority
-                            />
-                            <Image
-                                src={config.brand.logo_url.replace('dark-v4.svg', 'light-v4.svg')}
-                                alt={config.brand.name}
-                                fill
-                                className="object-contain object-left block dark:hidden"
-                                priority
-                            />
+                            {/* If it's the default logo, it has a dark/light version. Otherwise, just show the uploaded image as-is. */}
+                            {config.brand.logo_url.includes('dark-v4.svg') ? (
+                                <>
+                                    <Image
+                                        src={config.brand.logo_url}
+                                        alt={config.brand.name}
+                                        fill
+                                        className="object-contain object-left hidden dark:block"
+                                        priority
+                                    />
+                                    <Image
+                                        src={config.brand.logo_url.replace('dark-v4.svg', 'light-v4.svg')}
+                                        alt={config.brand.name}
+                                        fill
+                                        className="object-contain object-left block dark:hidden"
+                                        priority
+                                    />
+                                </>
+                            ) : (
+                                <Image
+                                    src={config.brand.logo_url}
+                                    alt={config.brand.name}
+                                    fill
+                                    className="object-contain object-left"
+                                    priority
+                                />
+                            )}
                         </div>
                     )}
                 </Link>
