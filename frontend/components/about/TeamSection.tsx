@@ -93,6 +93,21 @@ export function TeamSection({ data }: { data?: any }) {
                                             </span>
                                         ))}
                                     </div>
+
+                                    {/* Social Tray */}
+                                    {member.social && (
+                                        <div className="flex flex-wrap justify-center gap-3 pt-4 border-t border-white/5 w-full">
+                                            {member.social.instagram && <TeamSocialLink href={member.social.instagram} icon={Instagram} />}
+                                            {member.social.facebook && <TeamSocialLink href={member.social.facebook} icon={Facebook} />}
+                                            {member.social.github && <TeamSocialLink href={member.social.github} icon={Github} />}
+                                            {member.social.linkedin && <TeamSocialLink href={member.social.linkedin} icon={Linkedin} />}
+                                            {member.social.twitter && <TeamSocialLink href={member.social.twitter} icon={Twitter} />}
+                                            {member.social.threads && <TeamSocialLink href={member.social.threads} icon={Share2} />}
+                                            {member.social.behance && <TeamSocialLink href={member.social.behance} icon={Dribbble} />}
+                                            {member.social.youtube && <TeamSocialLink href={member.social.youtube} icon={Youtube} />}
+                                            {member.social.website && <TeamSocialLink href={member.social.website} icon={Globe} />}
+                                        </div>
+                                    )}
                                 </div>
                             </motion.div>
                         );
@@ -103,4 +118,18 @@ export function TeamSection({ data }: { data?: any }) {
     );
 }
 
-import { Users } from "lucide-react";
+function TeamSocialLink({ href, icon: Icon }: { href: string; icon: any }) {
+    if (!href || href === "#") return null;
+    return (
+        <a 
+            href={href} 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="w-8 h-8 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-muted-foreground hover:bg-indigo-500/20 hover:text-indigo-400 hover:border-indigo-500/30 transition-all duration-300"
+        >
+            <Icon className="w-4 h-4" />
+        </a>
+    );
+}
+
+import { Users, Github, Youtube, Share2, Globe, Facebook, Twitter, Instagram, Linkedin, Dribbble } from "lucide-react";

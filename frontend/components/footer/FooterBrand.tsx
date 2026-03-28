@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Facebook, Twitter, Instagram, Linkedin, Dribbble, MessageCircle } from "lucide-react";
+import { Facebook, Twitter, Instagram, Linkedin, Dribbble, MessageCircle, Github, Youtube, Share2 } from "lucide-react";
 import { useSiteConfig } from "../layout/SiteConfigProvider";
 import Image from "next/image";
 
@@ -29,12 +29,17 @@ export function FooterBrand() {
             </p>
 
             {/* Social Icons */}
-            <div className="flex gap-4">
-                {config.social.instagram !== "#" && <SocialLink href={config.social.instagram} icon={Instagram} label="Instagram" />}
+            <div className="flex flex-wrap gap-4">
+                {config.social.instagram && config.social.instagram !== "#" && <SocialLink href={config.social.instagram} icon={Instagram} label="Instagram" />}
+                {config.social.facebook && config.social.facebook !== "#" && <SocialLink href={config.social.facebook} icon={Facebook} label="Facebook" />}
                 <SocialLink href="https://wa.me/918527837527" icon={MessageCircle} label="WhatsApp" />
-                {config.social.dribbble !== "#" && <SocialLink href={config.social.dribbble} icon={Dribbble} label="Dribbble" />}
-                {config.social.linkedin !== "#" && <SocialLink href={config.social.linkedin} icon={Linkedin} label="LinkedIn" />}
-                {config.social.twitter !== "#" && <SocialLink href={config.social.twitter} icon={Twitter} label="Twitter" />}
+                {config.social.github && config.social.github !== "#" && <SocialLink href={config.social.github} icon={Github} label="GitHub" />}
+                {config.social.linkedin && config.social.linkedin !== "#" && <SocialLink href={config.social.linkedin} icon={Linkedin} label="LinkedIn" />}
+                {config.social.twitter && config.social.twitter !== "#" && <SocialLink href={config.social.twitter} icon={Twitter} label="Twitter/X" />}
+                {config.social.threads && config.social.threads !== "#" && <SocialLink href={config.social.threads} icon={Share2} label="Threads" />}
+                {config.social.behance && config.social.behance !== "#" && <SocialLink href={config.social.behance} icon={Dribbble} label="Behance" />}
+                {config.social.youtube && config.social.youtube !== "#" && <SocialLink href={config.social.youtube} icon={Youtube} label="YouTube" />}
+                {config.social.dribbble && config.social.dribbble !== "#" && <SocialLink href={config.social.dribbble} icon={Dribbble} label="Dribbble" />}
             </div>
 
             {config.social.accepting_projects && (

@@ -94,3 +94,24 @@ class ContactSubmission(Base):
     budget = Column(String, nullable=True)
     deadline = Column(String, nullable=True)
     created_at = Column(DateTime, default=datetime.utcnow)
+
+
+class ClothingPiece(Base):
+    __tablename__ = "clothing_pieces"
+
+    id = Column(Integer, primary_key=True, index=True)
+    name = Column(String, nullable=True)
+    image_url = Column(String)
+    gender = Column(String) # Male, Female, Unisex
+    age_group = Column(String) # Kids, Teens, Adult, Senior
+    style = Column(String) # Formal, Casual, Traditional, Fusion
+    created_at = Column(DateTime, default=datetime.utcnow)
+
+
+class SiteConfig(Base):
+    __tablename__ = "site_configs"
+
+    id = Column(Integer, primary_key=True, index=True)
+    key = Column(String, unique=True, index=True) # e.g. "social_links"
+    value = Column(Text) # JSON string of settings
+    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)

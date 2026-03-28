@@ -11,7 +11,7 @@ export default function AdminAboutPage() {
       title="About Page CMS" 
       description="Manage the content of the About Us page."
     >
-      {(data, { handleNestedChange, handleArrayChange, addArrayItem, removeArrayItem }) => (
+      {(data, { handleNestedChange, handleArrayChange, handleNestedArrayChange, addArrayItem, removeArrayItem }) => (
         <div className="space-y-12 animate-in fade-in max-w-6xl mx-auto pb-20">
           <section className="bg-white/5 p-8 rounded-2xl border border-white/10 backdrop-blur-sm">
             <h2 className="text-2xl font-bold mb-8 flex items-center gap-3 text-indigo-300">
@@ -100,23 +100,61 @@ export default function AdminAboutPage() {
               </div>
             </div>
             
-            <div className="space-y-4">
+            <div className="space-y-6">
               {(data.team?.members || []).map((member: any, i: number) => (
-                <div key={i} className="flex flex-col md:flex-row gap-4 items-start bg-muted/20 p-4 rounded-lg border border-border">
-                  <div className="flex-1 space-y-4 w-full">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <div><CMSEditor.Label>Name</CMSEditor.Label><CMSEditor.Input value={member?.name} onChange={(v) => handleArrayChange("team", "members", i, "name", v)} /></div>
-                      <div><CMSEditor.Label>Role</CMSEditor.Label><CMSEditor.Input value={member?.role} onChange={(v) => handleArrayChange("team", "members", i, "role", v)} /></div>
-                    </div>
-                    <div><CMSEditor.Label>Image URL</CMSEditor.Label><CMSEditor.ImageUpload value={member?.image} onChange={(v) => handleArrayChange("team", "members", i, "image", v)} /></div>
-                  </div>
-                  <Button variant="destructive" size="icon" onClick={() => removeArrayItem("team", "members", i)}>
+                <div key={i} className="bg-slate-900/60 p-6 rounded-2xl border border-white/10 backdrop-blur-md relative group">
+                  <Button 
+                    variant="destructive" 
+                    size="icon" 
+                    className="absolute -top-3 -right-3 rounded-full shadow-lg opacity-0 group-hover:opacity-100 transition-opacity" 
+                    onClick={() => removeArrayItem("team", "members", i)}
+                  >
                     <Trash2 className="w-4 h-4" />
                   </Button>
+
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+                    <div className="md:col-span-1">
+                      <CMSEditor.Label>Profile Photo</CMSEditor.Label>
+                      <CMSEditor.ImageUpload value={member?.image} onChange={(v) => handleArrayChange("team", "members", i, "image", v)} />
+                    </div>
+                    <div className="md:col-span-2 space-y-4">
+                      <div className="grid grid-cols-2 gap-4">
+                        <div><CMSEditor.Label>Name</CMSEditor.Label><CMSEditor.Input value={member?.name} onChange={(v) => handleArrayChange("team", "members", i, "name", v)} /></div>
+                        <div><CMSEditor.Label>Role</CMSEditor.Label><CMSEditor.Input value={member?.role} onChange={(v) => handleArrayChange("team", "members", i, "role", v)} /></div>
+                      </div>
+                      <div>
+                        <CMSEditor.Label>Skills (Comma separated)</CMSEditor.Label>
+                        <CMSEditor.Input 
+                          value={Array.isArray(member?.skills) ? member?.skills.join(", ") : (member?.skills || "")} 
+                          onChange={(v) => handleArrayChange("team", "members", i, "skills", v.split(",").map(s => s.trim()))} 
+                          placeholder="e.g. Designer, Developer"
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="pt-6 border-t border-white/5">
+                    <CMSEditor.Label>Social Media & Links</CMSEditor.Label>
+                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3 mt-2">
+                      <div><CMSEditor.Input value={member?.social?.instagram} onChange={(v) => handleNestedArrayChange("team", "members", i, "social", "instagram", v)} placeholder="Instagram URL" /></div>
+                      <div><CMSEditor.Input value={member?.social?.facebook} onChange={(v) => handleNestedArrayChange("team", "members", i, "social", "facebook", v)} placeholder="Facebook URL" /></div>
+                      <div><CMSEditor.Input value={member?.social?.github} onChange={(v) => handleNestedArrayChange("team", "members", i, "social", "github", v)} placeholder="GitHub URL" /></div>
+                      <div><CMSEditor.Input value={member?.social?.linkedin} onChange={(v) => handleNestedArrayChange("team", "members", i, "social", "linkedin", v)} placeholder="LinkedIn URL" /></div>
+                      <div><CMSEditor.Input value={member?.social?.twitter} onChange={(v) => handleNestedArrayChange("team", "members", i, "social", "twitter", v)} placeholder="X / Twitter" /></div>
+                      <div><CMSEditor.Input value={member?.social?.threads} onChange={(v) => handleNestedArrayChange("team", "members", i, "social", "threads", v)} placeholder="Threads" /></div>
+                      <div><CMSEditor.Input value={member?.social?.behance} onChange={(v) => handleNestedArrayChange("team", "members", i, "social", "behance", v)} placeholder="Behance" /></div>
+                      <div><CMSEditor.Input value={member?.social?.youtube} onChange={(v) => handleNestedArrayChange("team", "members", i, "social", "youtube", v)} placeholder="YouTube" /></div>
+                      <div><CMSEditor.Input value={member?.social?.website} onChange={(v) => handleNestedArrayChange("team", "members", i, "social", "website", v)} placeholder="Website" /></div>
+                    </div>
+                  </div>
                 </div>
               ))}
-              <Button variant="outline" onClick={() => addArrayItem("team", "members", { name: "New Member", role: "Designer", image: "" })}>
-                <Plus className="w-4 h-4 mr-2" /> Add Team Member
+              <Button 
+                variant="outline" 
+                className="w-full h-16 border-dashed border-white/10 hover:border-indigo-500/50 hover:bg-indigo-500/5 rounded-2xl text-muted-foreground hover:text-indigo-400 border-2" 
+                onClick={() => addArrayItem("team", "members", { name: "New Member", role: "Specialist", image: "", skills: [], social: {} })}
+              >
+                <Plus className="w-5 h-5 mr-3" /> Add Team Genius
               </Button>
             </div>
           </section>

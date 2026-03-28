@@ -196,8 +196,13 @@ export default function SiteConfigAdmin() {
             </div>
             <div className="grid gap-6 md:grid-cols-2">
               <div><InputLabel>Instagram URL</InputLabel><Input value={data.social?.instagram} onChange={v => updateField(["social", "instagram"], v)} placeholder="https://instagram.com/..." /></div>
+              <div><InputLabel>Facebook URL</InputLabel><Input value={data.social?.facebook} onChange={v => updateField(["social", "facebook"], v)} placeholder="https://facebook.com/..." /></div>
               <div><InputLabel>Twitter/X URL</InputLabel><Input value={data.social?.twitter} onChange={v => updateField(["social", "twitter"], v)} placeholder="https://twitter.com/..." /></div>
               <div><InputLabel>LinkedIn URL</InputLabel><Input value={data.social?.linkedin} onChange={v => updateField(["social", "linkedin"], v)} placeholder="https://linkedin.com/..." /></div>
+              <div><InputLabel>GitHub URL</InputLabel><Input value={data.social?.github} onChange={v => updateField(["social", "github"], v)} placeholder="https://github.com/..." /></div>
+              <div><InputLabel>Threads URL</InputLabel><Input value={data.social?.threads} onChange={v => updateField(["social", "threads"], v)} placeholder="https://threads.net/..." /></div>
+              <div><InputLabel>Behance URL</InputLabel><Input value={data.social?.behance} onChange={v => updateField(["social", "behance"], v)} placeholder="https://behance.net/..." /></div>
+              <div><InputLabel>YouTube URL</InputLabel><Input value={data.social?.youtube} onChange={v => updateField(["social", "youtube"], v)} placeholder="https://youtube.com/..." /></div>
               <div><InputLabel>Dribbble URL</InputLabel><Input value={data.social?.dribbble} onChange={v => updateField(["social", "dribbble"], v)} placeholder="https://dribbble.com/..." /></div>
             </div>
           </section>

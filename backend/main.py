@@ -6,7 +6,7 @@ from sqlalchemy import text
 
 from core.config import settings
 from core.database import Base, engine
-from routers import admin_cms, admin_contacts, ai_lab, clothing_consultation, contact, user
+from routers import admin_cms, admin_contacts, ai_lab, clothing_consultation, contact, user, wardrobe, site_config
 
 # Create tables if they don't exist
 Base.metadata.create_all(bind=engine)
@@ -318,7 +318,22 @@ def startup_db_sync() -> None:
             },
             "team": {
                 "title": "Our Team", "subtitle": "The humans behind the machines.",
-                "members": []
+                "members": [
+                    { 
+                        "name": "Annu Dhanjeja", 
+                        "role": "Head / Lead Designer", 
+                        "image": "https://api.dicebear.com/7.x/avataaars/svg?seed=Annu",
+                        "skills": ["Graphic Designer", "Video Editor"],
+                        "social": { "instagram": "https://instagram.com/gurucraftpro", "linkedin": "#", "behance": "#" }
+                    },
+                    { 
+                        "name": "Om Prakash", 
+                        "role": "Lead Developer", 
+                        "image": "https://api.dicebear.com/7.x/avataaars/svg?seed=Om",
+                        "skills": ["Full Stack Developer", "Python Expert"],
+                        "social": { "github": "#", "linkedin": "#", "twitter": "#" }
+                    }
+                ]
             },
             "philosophy": {
                 "title": "Our Philosophy", "description": "Good design is invisible—it just works.",
@@ -571,6 +586,55 @@ def startup_db_sync() -> None:
             db.rollback()
             print(f"Startup: Path migration failed: {migration_exc}")
 
+        # ── 4. New Service Segments ───────────────────────────
+        new_services = {
+            "photo-editor": {
+                "hero": { "title": "Professional Photo Editing", "subtitle": "Flawless Visuals", "description": "High-end retouching, background removal, and color correction for photographers and brands." },
+                "features": [
+                    { "title": "High-End Retouching", "description": "Skin smoothing, blemish removal, and realistic texture preservation." },
+                    { "title": "Background Removal", "description": "Perfect cutouts for e-commerce and marketing assets." }
+                ],
+                "cta": { "title": "Get Your Photos Edited", "link": "/contact" }
+            },
+            "wedding-plan": {
+                "hero": { "title": "Luxury Wedding Planning", "subtitle": "Memorable Celebrations", "description": "Bespoke wedding design and coordination services for your most special day." },
+                "features": [
+                    { "title": "Themed Decor Design", "description": "Custom visual concepts tailored to your personal style." },
+                    { "title": "Timeline Coordination", "description": "Stress-free management from engagement to the big day." }
+                ],
+                "cta": { "title": "Plan Your Wedding", "link": "/contact" }
+            },
+            "guru-ji-art": {
+                "hero": { "title": "Divine Guru Ji Art Work", "subtitle": "Sacred Masterpieces", "description": "Hand-painted and digitally crafted portraits of Guru Ji, bringing blessings to your space." },
+                "features": [
+                    { "title": "Custom Portraits", "description": "Unique, hand-crafted artwork tailored to your requirements." },
+                    { "title": "Premium Framing", "description": "Luxury frames that complement the divine beauty of the art." }
+                ],
+                "cta": { "title": "Inquire About Art", "link": "/contact" }
+            },
+            "game-design": {
+                "hero": { "title": "Next-Gen Game Design", "subtitle": "Immersive Worlds", "description": "Character concepts, environment art, and UI design for modern gaming experiences." },
+                "features": [
+                    { "title": "Character Concepts", "description": "Innovative character designs with detailed turnarounds." },
+                    { "title": "Environment Art", "description": "Breathtaking landscapes and atmospheric setting design." }
+                ],
+                "cta": { "title": "Start Your Game Project", "link": "/contact" }
+            },
+            "vantage-ecom": {
+                "hero": { "title": "Vantage E-commerce Solutions", "subtitle": "Sell More Online", "description": "Growth-focused design and branding for high-performing e-commerce stores." },
+                "features": [
+                    { "title": "Conversion-Optimized UI", "description": "Shopping experiences designed to maximize sales." },
+                    { "title": "Product Branding", "description": "Cohesive visual identity across all your product lines." }
+                ],
+                "cta": { "title": "Boost Your Store", "link": "/contact" }
+            }
+        }
+
+        for slug, defaults in new_services.items():
+            if not db.query(models.Page).filter(models.Page.slug == slug).first():
+                cms_repository.update_page_content(db, slug, defaults)
+                print(f"Startup: {slug} SEEDED ✅")
+
         db.commit()
         print("Startup: CMS sync OK")
     except Exception as exc:
@@ -626,6 +690,8 @@ app.include_router(ai_lab.router, prefix="/api/v1/ai-lab", tags=["ai-lab"])
 app.include_router(clothing_consultation.router, prefix="/api/v1/consultation", tags=["consultation"])
 app.include_router(admin_cms.router, prefix="/api/v1/cms", tags=["cms"])
 app.include_router(admin_contacts.router, prefix="/api/v1/admin", tags=["admin"])
+app.include_router(wardrobe.router, prefix="/api/v1/wardrobe", tags=["wardrobe"])
+app.include_router(site_config.router, prefix="/api/v1/site-config", tags=["site-config"])
 
 # ── Static Files ─────────────────────────────────────────────────────
 # Create local uploads dir to ensure backend CMS uploads work securely
@@ -633,11 +699,16 @@ local_uploads_path = os.path.join(os.path.dirname(__file__), "static", "uploads"
 os.makedirs(local_uploads_path, exist_ok=True)
 
 try:
-    # Mount /images/uploads FIRST so it resolves before the generic /images route
+    # Mount /images/uploads/wardrobe FIRST for new feature
+    wardrobe_uploads = os.path.join(os.path.dirname(__file__), "static", "uploads", "wardrobe")
+    os.makedirs(wardrobe_uploads, exist_ok=True)
+    app.mount("/images/uploads/wardrobe", StaticFiles(directory=wardrobe_uploads), name="wardrobe_uploads")
+
+    # Mount /images/uploads SECOND
     app.mount("/images/uploads", StaticFiles(directory=local_uploads_path), name="uploads")
-    print(f"Static: Mounted /images/uploads from {local_uploads_path}")
+    print(f"Static: Mounted /images/uploads and /wardrobe from {local_uploads_path}")
 except Exception as e:
-    print(f"Static Error: Could not mount /images/uploads: {e}")
+    print(f"Static Error: Could not mount uploads: {e}")
 
 try:
     images_path = os.path.join(os.path.dirname(__file__), "..", "frontend", "public", "images")

@@ -25,6 +25,11 @@ interface SiteConfig {
     nav: NavItem[];
     social: {
         instagram: string;
+        facebook: string;
+        github: string;
+        threads: string;
+        behance: string;
+        youtube: string;
         dribbble: string;
         linkedin: string;
         twitter: string;
@@ -54,6 +59,11 @@ const defaultConfig: SiteConfig = {
     ],
     social: {
         instagram: "https://instagram.com/gurucraftpro",
+        facebook: "#",
+        github: "#",
+        threads: "#",
+        behance: "#",
+        youtube: "#",
         dribbble: "#",
         linkedin: "#",
         twitter: "#",

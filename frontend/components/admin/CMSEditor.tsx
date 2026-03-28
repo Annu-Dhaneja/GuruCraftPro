@@ -122,6 +122,7 @@ export function CMSEditor({
     children: (data: any, handlers: { 
         handleNestedChange: (section: string, field: string, value: any) => void;
         handleArrayChange: (section: string, arrayName: string, index: number, field: string, value: any) => void;
+        handleNestedArrayChange: (section: string, arrayName: string, index: number, nestedObj: string, field: string, value: any) => void;
         addArrayItem: (section: string, arrayName: string, emptyItem: any) => void;
         removeArrayItem: (section: string, arrayName: string, index: number) => void;
         handleChange: (field: string, value: any) => void;
@@ -200,6 +201,19 @@ export function CMSEditor({
     });
   };
 
+  const handleNestedArrayChange = (section: string, arrayName: string, index: number, nestedObj: string, field: string, value: any) => {
+    setData((prev: any) => {
+      const target = section ? prev[section] : prev;
+      const array = [...(target[arrayName] || [])];
+      const item = { ...array[index] };
+      item[nestedObj] = { ...(item[nestedObj] || {}), [field]: value };
+      array[index] = item;
+      
+      if (!section) return { ...prev, [arrayName]: array };
+      return { ...prev, [section]: { ...prev[section], [arrayName]: array } };
+    });
+  };
+
   const addArrayItem = (section: string, arrayName: string, emptyItem: any) => {
     setData((prev: any) => {
       if (!section) {
@@ -275,7 +289,7 @@ export function CMSEditor({
       </div>
 
       <div className="bg-slate-900/50 backdrop-blur-xl border border-white/10 rounded-2xl p-8 shadow-2xl ring-1 ring-white/5">
-        {children(data, { handleNestedChange, handleArrayChange, addArrayItem, removeArrayItem, handleChange })}
+        {children(data, { handleNestedChange, handleArrayChange, handleNestedArrayChange, addArrayItem, removeArrayItem, handleChange })}
       </div>
     </div>
   );
