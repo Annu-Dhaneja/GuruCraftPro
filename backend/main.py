@@ -313,6 +313,71 @@ def startup_db_sync() -> None:
             }
         })
 
+        # Update site_config with expanded socials if missing
+        try:
+            config = db.query(CMSContent).filter(CMSContent.segment == "site_config").first()
+            if config:
+                data = json.loads(config.content)
+                social = data.get("social", {})
+                new_socials = {
+                    "facebook": "https://facebook.com/gurucraftpro",
+                    "github": "https://github.com/om-prakash16",
+                    "threads": "https://threads.net/@gurucraftpro",
+                    "behance": "https://behance.net/gurucraftpro",
+                    "youtube": "https://youtube.com/@gurucraftpro"
+                }
+                updated = False
+                for k, v in new_socials.items():
+                    if k not in social or social[k] == "#" or not social[k]:
+                        social[k] = v
+                        updated = True
+                if updated:
+                    data["social"] = social
+                    config.content = json.dumps(data)
+                    db.commit()
+                    print("Startup: site_config SOCIALS expanded ✅")
+        except Exception as e:
+            print(f"Startup: social expansion failed: {e}")
+
+        # Forced Seeding for Individual Service Pages
+        service_pages_content = {
+            "photo-editor": {
+                "hero": { "title": "Professional Photo Editing", "subtitle": "Flawless Visuals", "description": "Elevate your imagery with our high-end retouching and editorial editing services.", "image": "https://images.unsplash.com/photo-1542038784456-1ea8e935640e?q=80&w=2000" },
+                "features": [{"title": "Color Grading", "description": "Expert cinematic color balance."}, {"title": "Skin Retouching", "description": "Natural, high-end beauty retouching."}],
+                "cta": { "title": "Start Editing", "link": "/contact" }
+            },
+            "wedding-plan": {
+                "hero": { "title": "Bespoke Wedding Planning", "subtitle": "Your Dream Day", "description": "Comprehensive design and coordination for the ultimate luxury wedding experience.", "image": "https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=2000" },
+                "features": [{"title": "Venue Design", "description": "Visualizing your perfect setting."}, {"title": "Timeline Mgmt", "description": "Stress-free coordination."}],
+                "cta": { "title": "Book a Consultation", "link": "/contact" }
+            },
+            "guru-ji-art": {
+                "hero": { "title": "Guru Ji Divine Art", "subtitle": "Spiritual Vision", "description": "Experience divine blessings through immersive AR and premium digital spiritual art.", "image": "https://images.unsplash.com/photo-1582555172866-f73bb12a2ab3?q=80&w=2000" },
+                "features": [{"title": "AR Darshan", "description": "Immersive 3D experiences."}, {"title": "Premium Canvas", "description": "Museum-grade art prints."}],
+                "cta": { "title": "Explore Art", "link": "/guruji-darshan" }
+            },
+            "game-design": {
+                "hero": { "title": "Immersive Game Design", "subtitle": "Next-Gen Worlds", "description": "From character design to environment art, we build the foundations of your next level.", "image": "https://images.unsplash.com/photo-1538481199705-c710c4e965fc?q=80&w=2000" },
+                "features": [{"title": "Character Art", "description": "Original concept design."}, {"title": "World Building", "description": "Immersive environment modeling."}],
+                "cta": { "title": "Start Building", "link": "/contact" }
+            },
+            "vantage-ecom": {
+                "hero": { "title": "Vantage E-com Growth", "subtitle": "Sell More", "description": "Design systems and branding strategies focused on high-conversion e-commerce.", "image": "https://images.unsplash.com/photo-1472851294608-062f824d29cc?q=80&w=2000" },
+                "features": [{"title": "Conversion UX", "description": "Reduced friction checkout."}, {"title": "Brand Strategy", "description": "Market-leading visual identity."}],
+                "cta": { "title": "Scale My Brand", "link": "/contact" }
+            }
+        }
+
+        for slug, content in service_pages_content.items():
+            existing = db.query(CMSContent).filter(CMSContent.segment == slug).first()
+            if not existing or existing.content == "{}" or not json.loads(existing.content).get("hero"):
+                if not existing:
+                    db.add(CMSContent(segment=slug, content=json.dumps(content)))
+                else:
+                    existing.content = json.dumps(content)
+                db.commit()
+                print(f"Startup: Service segment '{slug}' SEEDED/UPDATED ✅")
+
         # About Page Defaults
         patch_cms_page("about", {
             "hero": {

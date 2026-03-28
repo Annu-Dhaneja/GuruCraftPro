@@ -24,8 +24,9 @@ export default async function ServicePage({ params }: { params: { slug: string }
     });
     if (res.ok) {
       serviceData = await res.json();
+      console.log(`[CMS] Fetched content for ${slug}:`, serviceData ? "SUCCESS" : "EMPTY");
     } else {
-        // If not found in CMS, trigger notFound
+        console.error(`[CMS] Failed to fetch content for ${slug}: ${res.status}`);
         return notFound();
     }
   } catch (error) {

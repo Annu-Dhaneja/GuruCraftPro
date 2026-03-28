@@ -26,11 +26,24 @@ interface ServiceData {
 }
 
 export function ServiceTemplate({ data }: { data: ServiceData }) {
-  if (!data) return null;
+  if (!data) return (
+    <div className="min-h-screen flex items-center justify-center bg-background">
+      <div className="animate-pulse text-muted-foreground font-bold tracking-widest uppercase">Loading Experience...</div>
+    </div>
+  );
 
-  const hero = data?.hero || { title: "", subtitle: "", description: "" };
-  const features = data?.features || [];
-  const cta = data?.cta || { title: "Get Started", link: "/contact" };
+  const hero = {
+    title: data?.hero?.title || "Premium Service",
+    subtitle: data?.hero?.subtitle || "Elite Experience",
+    description: data?.hero?.description || "Extraordinary value for your modern brand.",
+    image: data?.hero?.image || ""
+  };
+  
+  const features = Array.isArray(data?.features) ? data.features : [];
+  const cta = {
+    title: data?.cta?.title || "Start a Project",
+    link: data?.cta?.link || "/contact"
+  };
 
   return (
     <div className="flex flex-col min-h-screen bg-background">
@@ -86,7 +99,7 @@ export function ServiceTemplate({ data }: { data: ServiceData }) {
       {/* ── Features Grid ─────────────────────────────────── */}
       <section className="py-24 container mx-auto px-4 md:px-6">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 max-w-5xl mx-auto">
-          {features.map((feature, idx) => (
+          {features.length > 0 ? features.map((feature, idx) => (
             <motion.div
               key={idx}
               initial={{ opacity: 0, x: idx % 2 === 0 ? -20 : 20 }}
@@ -97,12 +110,16 @@ export function ServiceTemplate({ data }: { data: ServiceData }) {
               <div className="w-12 h-12 rounded-2xl bg-indigo-500/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
                 <CheckCircle2 className="w-6 h-6 text-indigo-500" />
               </div>
-              <h3 className="text-2xl font-bold mb-3">{feature.title}</h3>
+              <h3 className="text-2xl font-bold mb-3">{feature?.title || "Specialized Feature"}</h3>
               <p className="text-muted-foreground leading-relaxed">
-                {feature.description}
+                {feature?.description || "Expertly crafted delivery for your brand."}
               </p>
             </motion.div>
-          ))}
+          )) : (
+            <div className="col-span-full text-center text-muted-foreground opacity-50 italic">
+               Specific features for this category are being updated.
+            </div>
+          )}
         </div>
       </section>
 
@@ -119,7 +136,7 @@ export function ServiceTemplate({ data }: { data: ServiceData }) {
                    <p className="font-bold text-xl uppercase tracking-widest text-muted-foreground">Expert Craftsmanship</p>
                 </div>
              </div>
-             {hero.image && (
+             {hero.image && hero.image !== "#" && (
                 <Image 
                   src={hero.image} 
                   alt={hero.title} 

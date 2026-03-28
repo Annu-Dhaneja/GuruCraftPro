@@ -11,6 +11,7 @@ import { ComparisonTable } from "@/components/services/ComparisonTable";
 import { ProcessTimeline } from "@/components/services/ProcessTimeline";
 import { ServiceFAQ } from "@/components/services/ServiceFAQ";
 import { ServicesCTA } from "@/components/services/ServicesCTA";
+import { ServiceNavigator } from "@/components/services/ServiceNavigator";
 import { Footer } from "@/components/footer/Footer";
 import { getApiUrl } from "@/lib/utils";
 
@@ -32,6 +33,7 @@ export default async function ServicesPage() {
     return (
         <main className="min-h-screen bg-background flex flex-col">
             <ServicesHero data={servicesData.hero} />
+            <ServiceNavigator />
             <ServiceCards data={servicesData.cards} />
             <ServiceTiers data={servicesData.tiers} />
             <ComparisonTable data={servicesData.comparison} />
