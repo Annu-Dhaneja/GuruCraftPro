@@ -105,7 +105,9 @@ def startup_db_sync() -> None:
             })
             
         # Seed site_config (Nav, Footer, Logo)
-        if not db.query(models.Page).filter(models.Page.slug == "site_config").first():
+        # Always patch logo_url to ensure it's never missing after a redeploy
+        existing_site_config = db.query(models.Page).filter(models.Page.slug == "site_config").first()
+        if not existing_site_config:
             cms_repository.update_page_content(db, "site_config", {
                 "brand": {
                     "name": "GurucraftPro",
@@ -145,6 +147,20 @@ def startup_db_sync() -> None:
                 }
             })
             print("Startup: site_config SEEDED")
+        else:
+            # Patch: Always ensure logo_url is set in brand (fixes missing logo on existing deployments)
+            try:
+                current = cms_repository.get_flattened_content(db, "site_config")
+                brand = current.get("brand", {})
+                if not brand.get("logo_url"):
+                    brand["logo_url"] = "/images/brand/logo-dark-v4.svg"
+                    current["brand"] = brand
+                    cms_repository.update_page_content(db, "site_config", current)
+                    print("Startup: site_config logo_url PATCHED")
+                else:
+                    print(f"Startup: site_config logo_url OK ({brand.get('logo_url')})")
+            except Exception as patch_exc:
+                print(f"Startup: site_config patch failed: {patch_exc}")
             
         # Seed guruji
         if not db.query(models.Page).filter(models.Page.slug == "guruji").first():

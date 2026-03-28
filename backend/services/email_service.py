@@ -12,8 +12,11 @@ class EmailService:
         self.smtp_server = os.getenv("SMTP_SERVER", "smtp.gmail.com")
         self.smtp_port = int(os.getenv("SMTP_PORT", "587"))
         self.sender_email = os.getenv("SMTP_EMAIL", "andad622@gmail.com")
-        self.sender_password = os.getenv("SMTP_PASSWORD", "dyse sbbd hsjk gnzh")
+        # No hardcoded password - MUST be set via SMTP_PASSWORD env var on Render
+        self.sender_password = os.getenv("SMTP_PASSWORD", "")
         self.recipient_email = os.getenv("SMTP_RECEIVER", "andad622@gmail.com")
+        if not self.sender_password:
+            print("WARNING: SMTP_PASSWORD env var is not set! Email will fail.")
 
     def send_contact_notification(self, name: str, email: str, message_body: str, inquiry_type: Optional[str] = None, attachment_filename: Optional[str] = None, attachment_data: Optional[bytes] = None):
         """
