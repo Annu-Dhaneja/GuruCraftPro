@@ -409,6 +409,54 @@ def startup_db_sync() -> None:
                 ]
             })
             print("Startup: ai_lab SEEDED")
+        # ── New Service Segments ───────────────────────────
+        new_services = {
+            "photo-editor": {
+                "hero": { "title": "Professional Photo Editing", "subtitle": "Flawless Visuals", "description": "High-end retouching, background removal, and color correction for photographers and brands." },
+                "features": [
+                    { "title": "High-End Retouching", "description": "Skin smoothing, blemish removal, and realistic texture preservation." },
+                    { "title": "Background Removal", "description": "Perfect cutouts for e-commerce and marketing assets." }
+                ],
+                "cta": { "title": "Get Your Photos Edited", "link": "/contact" }
+            },
+            "wedding-plan": {
+                "hero": { "title": "Luxury Wedding Planning", "subtitle": "Memorable Celebrations", "description": "Bespoke wedding design and coordination services for your most special day." },
+                "features": [
+                    { "title": "Themed Decor Design", "description": "Custom visual concepts tailored to your personal style." },
+                    { "title": "Timeline Coordination", "description": "Stress-free management from engagement to the big day." }
+                ],
+                "cta": { "title": "Plan Your Wedding", "link": "/contact" }
+            },
+            "guru-ji-art": {
+                "hero": { "title": "Divine Guru Ji Art Work", "subtitle": "Sacred Masterpieces", "description": "Hand-painted and digitally crafted portraits of Guru Ji, bringing blessings to your space." },
+                "features": [
+                    { "title": "Custom Portraits", "description": "Unique, hand-crafted artwork tailored to your requirements." },
+                    { "title": "Premium Framing", "description": "Luxury frames that complement the divine beauty of the art." }
+                ],
+                "cta": { "title": "Inquire About Art", "link": "/contact" }
+            },
+            "game-design": {
+                "hero": { "title": "Next-Gen Game Design", "subtitle": "Immersive Worlds", "description": "Character concepts, environment art, and UI design for modern gaming experiences." },
+                "features": [
+                    { "title": "Character Concepts", "description": "Innovative character designs with detailed turnarounds." },
+                    { "title": "Environment Art", "description": "Breathtaking landscapes and atmospheric setting design." }
+                ],
+                "cta": { "title": "Start Your Game Project", "link": "/contact" }
+            },
+            "vantage-ecom": {
+                "hero": { "title": "Vantage E-commerce Solutions", "subtitle": "Sell More Online", "description": "Growth-focused design and branding for high-performing e-commerce stores." },
+                "features": [
+                    { "title": "Conversion-Optimized UI", "description": "Shopping experiences designed to maximize sales." },
+                    { "title": "Product Branding", "description": "Cohesive visual identity across all your product lines." }
+                ],
+                "cta": { "title": "Boost Your Store", "link": "/contact" }
+            }
+        }
+
+        for slug, defaults in new_services.items():
+            if not db.query(models.Page).filter(models.Page.slug == slug).first():
+                cms_repository.update_page_content(db, slug, defaults)
+                print(f"Startup: {slug} SEEDED ✅")
 
         # Seed Portfolio
         if not db.query(models.Page).filter(models.Page.slug == "portfolio").first():

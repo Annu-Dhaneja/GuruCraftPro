@@ -2,17 +2,43 @@
 
 import { CMSEditor } from "@/components/admin/CMSEditor";
 import { Button } from "@/components/ui/button";
-import { Plus, Trash2 } from "lucide-react";
+import { Plus, Trash2, Sparkles } from "lucide-react";
+import Link from "next/link";
 
 export default function AdminServicesPage() {
   return (
     <CMSEditor 
       segment="services" 
       title="Services CMS" 
-      description="Manage service tiers, pricing, and features."
+      description="Manage main service tiers and individual service landing pages."
     >
       {(data, { handleNestedChange, handleArrayChange, addArrayItem, removeArrayItem }) => (
         <div className="space-y-12 animate-in fade-in max-w-6xl mx-auto pb-20">
+          
+          {/* Individual Service Pages Navigator */}
+          <section className="bg-gradient-to-br from-indigo-500/10 to-purple-500/10 p-8 rounded-2xl border border-indigo-500/20 backdrop-blur-sm">
+            <h2 className="text-xl font-bold mb-6 flex items-center gap-3 text-white">
+              <Sparkles className="w-5 h-5 text-indigo-400" />
+              Manage Individual Service Pages
+            </h2>
+            <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+              {[
+                { name: "Photo Editor", slug: "photo-editor" },
+                { name: "Wedding Plan", slug: "wedding-plan" },
+                { name: "Guru Ji Art", slug: "guru-ji-art" },
+                { name: "Game Design", slug: "game-design" },
+                { name: "Vantage Ecom", slug: "vantage-ecom" }
+              ].map((service) => (
+                <Button key={service.slug} variant="secondary" className="bg-white/5 hover:bg-white/10 border border-white/10 h-auto py-4 flex flex-col gap-2 rounded-xl" asChild>
+                  <Link href={`/admin/services/${service.slug}`}>
+                    <div className="text-xs text-muted-foreground uppercase tracking-widest font-bold">Edit</div>
+                    <div className="text-sm font-bold text-white">{service.name}</div>
+                  </Link>
+                </Button>
+              ))}
+            </div>
+          </section>
+
           <section className="bg-white/5 p-8 rounded-2xl border border-white/10 backdrop-blur-sm">
             <h2 className="text-2xl font-bold mb-8 flex items-center gap-3 text-indigo-300">
               <span className="w-2 h-8 bg-indigo-500 rounded-full" />
