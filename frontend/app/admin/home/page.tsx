@@ -113,6 +113,8 @@ const DEFAULT_HOME_DATA = {
   main_services: { title_prefix: "", title_target: "", subtitle: "", services: [] },
   testimonials: { title: "", list: [] },
   things_section: { badge: "", title: "", subtitle: "", featured_title: "", featured_description: "", featured_link: "", items: [] },
+  about_section: { title: "", paragraph1: "", paragraph2: "", image: "", stat1_value: "", stat1_label: "", stat2_value: "", stat2_label: "", stat3_value: "", stat3_label: "" },
+  blog_preview: { badge_text: "", title: "", button_text: "", button_link: "", posts: [] },
   final_cta: { title: "", description: "", primary_button_text: "", primary_button_link: "", secondary_button_text: "", secondary_button_link: "" }
 };
 
@@ -616,6 +618,7 @@ export default function AdminHomePage() {
                 <h2 className="text-xl font-semibold mb-6 pb-2 border-b border-border">About Section</h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div className="md:col-span-2"><InputLabel>Story Statement</InputLabel><Input value={data.about_section?.title} isRich onChange={(v) => handleNestedChange("about_section", "title", v)} /></div>
+                  <div className="md:col-span-2"><InputLabel>Profile Image / Studio Photo</InputLabel><ImageUploadField value={data.about_section?.image} onChange={(v) => handleNestedChange("about_section", "image", v)} /></div>
                   <div className="md:col-span-2"><InputLabel>Foundational Narrative (P1)</InputLabel><Input value={data.about_section?.paragraph1} isRich onChange={(v) => handleNestedChange("about_section", "paragraph1", v)} /></div>
                   <div className="md:col-span-2"><InputLabel>Visionary Narrative (P2)</InputLabel><Input value={data.about_section?.paragraph2} isRich onChange={(v) => handleNestedChange("about_section", "paragraph2", v)} /></div>
 

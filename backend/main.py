@@ -280,6 +280,7 @@ def startup_db_sync() -> None:
                 "title": "Design is intelligence made visible.",
                 "paragraph1": "We are a multidisciplinary studio obsessed with the intersection of art and technology.",
                 "paragraph2": "Our goal is clarity, beauty, and impact.",
+                "image": "https://images.unsplash.com/photo-1517048676732-d65bc937f952?q=80&w=2000",
                 "stat1_value": "5+", "stat1_label": "Years Exp.",
                 "stat2_value": "100%", "stat2_label": "Satisfaction",
                 "stat3_value": "24/7", "stat3_label": "Support"
@@ -320,14 +321,27 @@ def startup_db_sync() -> None:
                 "members": []
             },
             "philosophy": {
-                "title": "Our Philosophy", "description": "Good design is invisible—it just works."
+                "title": "Our Philosophy", "description": "Good design is invisible—it just works.",
+                "values": [
+                    { "title": "Human First", "desc": "AI assists, but decisions remain human-led.", "icon": "Heart", "color": "text-pink-500", "bg": "bg-pink-500/10" },
+                    { "title": "Clarity Over Noise", "desc": "Focus on the essential message.", "icon": "Eye", "color": "text-indigo-500", "bg": "bg-indigo-500/10" },
+                    { "title": "Adaptable Creativity", "desc": "Designs that scale with your brand.", "icon": "Maximize", "color": "text-purple-500", "bg": "bg-purple-500/10" },
+                    { "title": "Ethical AI Use", "desc": "Transparency and authenticity.", "icon": "ShieldCheck", "color": "text-green-500", "bg": "bg-green-500/10" }
+                ]
             },
             "ai_human": {
                 "title": "Vision & Innovation", "description": "Leveraging AI for efficiency, keeping humans for soul.",
                 "features": ["Speed", "Scalability", "Artistry"]
             },
             "tools": {
-                "title": "Toolkit & Expertise", "tools": ["Figma", "Photoshop", "Midjourney", "Next.js"]
+                "title": "Toolkit & Expertise", 
+                "tools": ["Figma", "Photoshop", "Midjourney", "Next.js"],
+                "steps": [
+                    { "title": "Define", "desc": "Understand goals" },
+                    { "title": "Explore", "desc": "AI + Manual ideas" },
+                    { "title": "Refine", "desc": "Polish with intent" },
+                    { "title": "Deliver", "desc": "Final assets" }
+                ]
             },
             "services_preview": { "title": "What We Do", "services": [] },
             "trust_section": { 

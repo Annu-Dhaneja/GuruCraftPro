@@ -21,19 +21,22 @@ export function AboutSection({ data }: { data?: any }) {
                 <div className="flex flex-col md:flex-row items-center gap-12 md:gap-24">
 
                     {/* Image Side */}
-                    <div className="w-full md:w-1/2 relative">
-                        <div className="aspect-[4/5] rounded-2xl overflow-hidden bg-muted relative z-10">
-                            {/* 
-                   Replace with actual photo of Gurucraftpro.
-                   Using a placeholder gradient for now.
-                */}
-                            <div className="absolute inset-0 bg-gradient-to-br from-indigo-200 to-purple-200" />
-                            <div className="absolute inset-0 flex items-center justify-center text-indigo-900/20 font-bold text-4xl">
-                                Gurucraftpro
-                            </div>
+                    <div className="w-full md:w-1/2 relative group">
+                        <div className="aspect-[4/5] rounded-3xl overflow-hidden bg-muted relative z-10 border border-border/50 shadow-2xl">
+                             {data?.image ? (
+                                <img 
+                                    src={data.image} 
+                                    alt="Gurucraftpro Studio" 
+                                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                                />
+                             ) : (
+                                <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/20 via-background to-purple-500/20 flex items-center justify-center">
+                                    <span className="text-muted-foreground font-bold text-2xl animate-pulse">Gurucraftpro Studio</span>
+                                </div>
+                             )}
                         </div>
                         {/* Decorative Background Element */}
-                        <div className="absolute -bottom-6 -right-6 w-full h-full border-2 border-border rounded-2xl -z-0" />
+                        <div className="absolute -bottom-6 -right-6 w-full h-full border-2 border-indigo-500/10 rounded-3xl -z-0 group-hover:translate-x-2 group-hover:translate-y-2 transition-transform duration-500" />
                     </div>
 
                     {/* Text Side */}

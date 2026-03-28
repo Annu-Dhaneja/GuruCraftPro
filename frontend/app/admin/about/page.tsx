@@ -135,6 +135,29 @@ export default function AdminAboutPage() {
                 <CMSEditor.Label>Philosophy Narrative</CMSEditor.Label>
                 <CMSEditor.Input value={data.philosophy?.description} isRich onChange={(v) => handleNestedChange("philosophy", "description", v)} />
               </div>
+
+              {/* Added Values Editor */}
+              <div className="pt-6">
+                <h3 className="text-lg font-medium mb-4 flex justify-between items-center text-indigo-200 uppercase tracking-widest text-xs">
+                   Core Values
+                   <Button variant="outline" size="sm" onClick={() => addArrayItem("philosophy", "values", { title: "New Value", desc: "", icon: "Heart", color: "text-indigo-500", bg: "bg-indigo-500/10" })}>
+                     <Plus className="w-4 h-4 mr-2" /> Add 
+                   </Button>
+                </h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                   {(data.philosophy?.values || []).map((val: any, i: number) => (
+                      <div key={i} className="p-4 bg-black/40 border border-white/10 rounded-xl relative group">
+                         <Button variant="destructive" size="icon" className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity" onClick={() => removeArrayItem("philosophy", "values", i)}>
+                            <Trash2 className="w-3 h-3" />
+                         </Button>
+                         <div className="space-y-3">
+                            <CMSEditor.Input value={val.title} onChange={(v) => handleArrayChange("philosophy", "values", i, "title", v)} placeholder="Title" />
+                            <CMSEditor.Input value={val.desc} isTextarea onChange={(v) => handleArrayChange("philosophy", "values", i, "desc", v)} placeholder="Description" />
+                         </div>
+                      </div>
+                   ))}
+                </div>
+              </div>
             </div>
           </section>
 
@@ -166,16 +189,41 @@ export default function AdminAboutPage() {
           <section className="bg-white/5 p-8 rounded-2xl border border-white/10 backdrop-blur-sm">
             <h2 className="text-2xl font-bold mb-8 flex items-center gap-3 text-indigo-300">
               <span className="w-2 h-8 bg-indigo-500 rounded-full" />
-              Toolkit & Expertise
+              Toolkit & Discovery Process
             </h2>
             <div className="space-y-6">
-              <div>
-                <CMSEditor.Label>Tools Title</CMSEditor.Label>
-                <CMSEditor.Input value={data.tools?.title} onChange={(v) => handleNestedChange("tools", "title", v)} />
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <CMSEditor.Label>Tools Title</CMSEditor.Label>
+                  <CMSEditor.Input value={data.tools?.title} onChange={(v) => handleNestedChange("tools", "title", v)} />
+                </div>
+                <div>
+                  <CMSEditor.Label>Tools List (Comma separated)</CMSEditor.Label>
+                  <CMSEditor.Input value={data.tools?.tools?.join(", ")} onChange={(v) => handleNestedChange("tools", "tools", v.split(",").map(s => s.trim()))} />
+                </div>
               </div>
-              <div>
-                <CMSEditor.Label>Tools List (Comma separated)</CMSEditor.Label>
-                <CMSEditor.Input value={data.tools?.tools?.join(", ")} onChange={(v) => handleNestedChange("tools", "tools", v.split(",").map(s => s.trim()))} />
+
+              {/* Added Steps Editor */}
+              <div className="pt-6 border-t border-white/5 mt-6">
+                 <h3 className="text-lg font-medium mb-4 flex justify-between items-center text-indigo-200 uppercase tracking-widest text-xs">
+                    Workflow Steps
+                    <Button variant="outline" size="sm" onClick={() => addArrayItem("tools", "steps", { title: "New Step", desc: "" })}>
+                       <Plus className="w-4 h-4 mr-2" /> Add
+                    </Button>
+                 </h3>
+                 <div className="grid grid-cols-1 gap-4">
+                    {(data.tools?.steps || []).map((step: any, i: number) => (
+                       <div key={i} className="flex gap-4 items-start bg-black/40 border border-white/10 p-4 rounded-xl relative group">
+                          <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-4">
+                             <CMSEditor.Input value={step.title} onChange={(v) => handleArrayChange("tools", "steps", i, "title", v)} placeholder="Step Title" />
+                             <CMSEditor.Input value={step.desc} onChange={(v) => handleArrayChange("tools", "steps", i, "desc", v)} placeholder="Quick Desc" />
+                          </div>
+                          <Button variant="destructive" size="icon" onClick={() => removeArrayItem("tools", "steps", i)}>
+                             <Trash2 className="w-3 h-3" />
+                          </Button>
+                       </div>
+                    ))}
+                 </div>
               </div>
             </div>
           </section>
