@@ -13,55 +13,63 @@ const defaultDesignServices = [
         price: "₹999+",
         image: "/images/user_provided/generated-image-2026-02-24_10-45-45 (1).jpg",
         color: "from-blue-500/80 to-indigo-500/80",
+        link: "/portfolio?category=Logo Design"
+    },
+    {
+        title: "Wedding Plan",
+        description: "Bespoke wedding design and coordination services",
+        price: "₹4999+",
+        image: "/images/user_provided/generated-image-2026-02-24_08-35-13 (1).jpg",
+        color: "from-rose-500/80 to-pink-500/80",
+        link: "/services/wedding-plan"
+    },
+    {
+        title: "Photo Editor",
+        description: "Professional high-end photo retouching and editing",
+        price: "₹199+",
+        image: "/images/user_provided/generated-image-2026-02-24_10-45-46 (1).jpg",
+        color: "from-cyan-500/80 to-blue-500/80",
+        link: "/services/photo-editor"
+    },
+    {
+        title: "Guru Ji Art",
+        description: "Divine hand-painted and digital Guru Ji masterpieces",
+        price: "₹1499+",
+        image: "/images/user_provided/generated-image-2026-02-24_08-35-13.jpg",
+        color: "from-amber-500/80 to-orange-500/80",
+        link: "/services/guru-ji-art"
+    },
+    {
+        title: "Game Design",
+        description: "Character concepts and immersive environment art",
+        price: "₹2499+",
+        image: "/images/user_provided/generated-image-2026-02-23_14-29-24.jpg",
+        color: "from-purple-500/80 to-pink-500/80",
+        link: "/services/game-design"
+    },
+    {
+        title: "Vantage Ecom",
+        description: "Growth-focused e-commerce designs and branding",
+        price: "₹3499+",
+        image: "/images/user_provided/generated-image-2026-02-23_14-29-25 (3).jpg",
+        color: "from-emerald-500/80 to-teal-500/80",
+        link: "/services/vantage-ecom"
     },
     {
         title: "Banner Design",
         description: "Eye-catching banners for web and social media",
         price: "₹499+",
         image: "/images/user_provided/generated-image-2026-02-23_14-29-25 (3).jpg",
-        color: "from-emerald-500/80 to-teal-500/80",
-    },
-    {
-        title: "Thumbnail",
-        description: "Attractive thumbnails for YouTube and social media",
-        price: "₹299+",
-        image: "/images/user_provided/generated-image-2026-02-24_08-35-13.jpg",
-        color: "from-red-500/80 to-orange-500/80",
-    },
-    {
-        title: "T-Shirt Design",
-        description: "Custom apparel designs for your brand or event",
-        price: "₹599+",
-        image: "/images/user_provided/generated-image-2026-02-23_14-29-24.jpg",
-        color: "from-purple-500/80 to-pink-500/80",
-    },
-    {
-        title: "Mug Design",
-        description: "Creative mug designs for personal or business use",
-        price: "₹399+",
-        image: "/images/user_provided/generated-image-2026-02-23_14-29-25 (5).jpg",
-        color: "from-amber-500/80 to-yellow-500/80",
-    },
-    {
-        title: "Wedding Card",
-        description: "Elegant digital wedding invitations",
-        price: "₹799+",
-        image: "/images/user_provided/generated-image-2026-02-24_08-35-13 (1).jpg",
-        color: "from-rose-500/80 to-pink-500/80",
-    },
-    {
-        title: "Book Design",
-        description: "Professional book covers and layouts",
-        price: "₹1499+",
-        image: "/images/user_provided/generated-image-2026-02-24_10-45-46 (1).jpg",
-        color: "from-indigo-500/80 to-purple-500/80",
+        color: "from-teal-500/80 to-cyan-500/80",
+        link: "/portfolio?category=Banner Design"
     },
     {
         title: "Resume Design",
         description: "Professional resume templates and designs",
         price: "₹349+",
         image: "/images/user_provided/generated-image-2026-02-23_14-29-24 (3).jpg",
-        color: "from-cyan-500/80 to-blue-500/80",
+        color: "from-blue-600/80 to-indigo-600/80",
+        link: "/portfolio?category=Resume Design"
     },
 ];
 
@@ -128,7 +136,7 @@ export function GraphicDesignServices({ data }: { data?: any }) {
                 >
                     {designServices.map((service: any, index: number) => (
                         <motion.div key={index} variants={itemVariants} className="h-full">
-                            <Link href="/contact" className="block h-[380px] w-full group relative rounded-3xl overflow-hidden shadow-lg border border-zinc-200/50 dark:border-zinc-800/50 transition-all hover:-translate-y-2 hover:shadow-2xl">
+                            <Link href={service.link || "/contact"} className="block h-[380px] w-full group relative rounded-3xl overflow-hidden shadow-lg border border-zinc-200/50 dark:border-zinc-800/50 transition-all hover:-translate-y-2 hover:shadow-2xl">
                                 {/* Background Image */}
                                 <Image
                                     src={service.image}
