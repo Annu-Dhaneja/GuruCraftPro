@@ -346,9 +346,17 @@ app.include_router(admin_cms.router, prefix="/api/v1/cms", tags=["cms"])
 app.include_router(admin_contacts.router, prefix="/api/v1/admin", tags=["admin"])
 
 # ── Static Files ─────────────────────────────────────────────────────
-# Mount the frontend public images folder so the backend can serve them
-# This is crucial for environments where the frontend and backend share a volume
-# or for local development debugging.
+# Create local uploads dir to ensure backend CMS uploads work securely
+local_uploads_path = os.path.join(os.path.dirname(__file__), "static", "uploads")
+os.makedirs(local_uploads_path, exist_ok=True)
+
+try:
+    # Mount /images/uploads FIRST so it resolves before the generic /images route
+    app.mount("/images/uploads", StaticFiles(directory=local_uploads_path), name="uploads")
+    print(f"Static: Mounted /images/uploads from {local_uploads_path}")
+except Exception as e:
+    print(f"Static Error: Could not mount /images/uploads: {e}")
+
 try:
     images_path = os.path.join(os.path.dirname(__file__), "..", "frontend", "public", "images")
     if os.path.exists(images_path):

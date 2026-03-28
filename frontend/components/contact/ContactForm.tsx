@@ -20,27 +20,25 @@ export function ContactForm({ data }: { data?: any }) {
         setLoading(true);
         setStatus("idle");
 
-        const formData = new FormData(e.target as HTMLFormElement);
-        const data = {
-            name: formData.get("name"),
-            email: formData.get("email"),
-            company: formData.get("company"),
-            inquiry_type: formData.get("inquiry_type"),
-            message: formData.get("message"),
-            budget: formData.get("budget"),
-            deadline: formData.get("deadline"),
-        };
+        const formEl = e.target as HTMLFormElement;
+        const formData = new FormData(formEl);
+        
+        // Grab the actual file input (we will add its reference below)
+        const fileInput = formEl.querySelector('input[type="file"]') as HTMLInputElement;
+        if (fileInput && fileInput.files && fileInput.files.length > 0) {
+            formData.append("attachment", fileInput.files[0]);
+        }
 
         try {
             const res = await fetch(getApiUrl("/api/v1/contact/"), {
                 method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(data),
+                // Removing Content-Type forces the browser to set multipart/form-data with boundaries
+                body: formData,
             });
 
             if (res.ok) {
                 setStatus("success");
-                (e.target as HTMLFormElement).reset();
+                formEl.reset();
             } else {
                 setStatus("error");
             }
@@ -124,8 +122,9 @@ export function ContactForm({ data }: { data?: any }) {
 
                     <div className="space-y-2">
                         <Label>Attachments (Optional)</Label>
-                        <div className="border-2 border-dashed border-border rounded-xl p-6 text-center hover:bg-muted/50 transition-colors cursor-pointer">
-                            <Upload className="h-6 w-6 mx-auto text-muted-foreground mb-2" />
+                        <div className="relative border-2 border-dashed border-border rounded-xl p-6 text-center hover:bg-muted/50 transition-colors cursor-pointer overflow-hidden group">
+                           <input type="file" name="attachment" className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" />
+                            <Upload className="h-6 w-6 mx-auto text-muted-foreground mb-2 group-hover:text-primary transition-colors" />
                             <p className="text-sm font-medium">Click to upload or drag & drop</p>
                             <p className="text-xs text-muted-foreground">PDF, JPG, PNG (Max 10MB)</p>
                         </div>

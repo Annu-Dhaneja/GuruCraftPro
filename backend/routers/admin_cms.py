@@ -58,7 +58,8 @@ def list_media(db: Session = Depends(database.get_db)):
     return db.query(Media).order_by(Media.uploaded_at.desc()).all()
 
 
-UPLOAD_DIR = Path("../frontend/public/images/uploads")
+# Use a local static folder in the backend for deployed environments
+UPLOAD_DIR = Path("static/uploads")
 
 
 @router.post("/upload-image", summary="Upload Image for CMS")

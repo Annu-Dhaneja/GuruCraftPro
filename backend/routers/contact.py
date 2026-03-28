@@ -1,15 +1,14 @@
-from fastapi import APIRouter, HTTPException, Depends
+from fastapi import APIRouter, HTTPException, Depends, Form, UploadFile, File
 from sqlalchemy.orm import Session
-from schemas.contact import ContactCreate, ContactResponse
+from schemas.contact import ContactResponse
 from core.database import get_db
 from core.models import ContactSubmission
 from repositories.contact import contact_repository
-import asyncio
 import threading
 
 router = APIRouter()
 
-def _send_email_background(name, email, message, inquiry_type):
+def _send_email_background(name, email, message, inquiry_type, attachment_filename=None, attachment_data=None):
     """Run email sending in a background thread so it doesn't block the response."""
     try:
         # Import here to ensure env vars are already loaded by main.py
@@ -19,23 +18,49 @@ def _send_email_background(name, email, message, inquiry_type):
             name=name,
             email=email,
             message_body=message,
-            inquiry_type=inquiry_type
+            inquiry_type=inquiry_type,
+            attachment_filename=attachment_filename,
+            attachment_data=attachment_data
         )
     except Exception as e:
         print(f"Background email thread error: {e}")
 
 @router.post("/", response_model=ContactResponse)
-async def submit_contact_form(contact: ContactCreate, db: Session = Depends(get_db)):
+async def submit_contact_form(
+    name: str = Form(...),
+    email: str = Form(...),
+    company: str = Form(None),
+    inquiry_type: str = Form(...),
+    message: str = Form(...),
+    budget: str = Form(None),
+    deadline: str = Form(None),
+    attachment: UploadFile = File(None),
+    db: Session = Depends(get_db)
+):
     """
-    Handle new contact form submissions.
+    Handle new contact form submissions with optional multipart/form-data attachments.
     """
-    new_submission = ContactSubmission(**contact.dict())
+    new_submission = ContactSubmission(
+        name=name,
+        email=email,
+        company=company,
+        inquiry_type=inquiry_type,
+        message=message,
+        budget=budget,
+        deadline=deadline
+    )
     db_contact = contact_repository.create(db, new_submission)
     
-    # Fire-and-forget in a real background thread (safe, doesn't block response)
+    attachment_filename = None
+    attachment_data = None
+    if attachment and attachment.filename:
+        attachment_filename = attachment.filename
+        attachment_data = await attachment.read()
+    
+    # Fire-and-forget in a background thread (safe, doesn't block response)
     thread = threading.Thread(
         target=_send_email_background,
-        args=(contact.name, contact.email, contact.message, contact.inquiry_type),
+        args=(name, email, message, inquiry_type, attachment_filename, attachment_data),
         daemon=True
     )
     thread.start()

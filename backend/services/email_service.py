@@ -2,6 +2,8 @@ import smtplib
 import os
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
+from email.mime.base import MIMEBase
+from email import encoders
 from typing import Optional
 
 class EmailService:
@@ -13,7 +15,7 @@ class EmailService:
         self.sender_password = os.getenv("SMTP_PASSWORD", "dyse sbbd hsjk gnzh")
         self.recipient_email = os.getenv("SMTP_RECEIVER", "andad622@gmail.com")
 
-    def send_contact_notification(self, name: str, email: str, message_body: str, inquiry_type: Optional[str] = None):
+    def send_contact_notification(self, name: str, email: str, message_body: str, inquiry_type: Optional[str] = None, attachment_filename: Optional[str] = None, attachment_data: Optional[bytes] = None):
         """
         Send an email notification when a new contact form is submitted.
         """
@@ -37,6 +39,16 @@ class EmailService:
         message["To"] = self.recipient_email
         message["Subject"] = subject
         message.attach(MIMEText(body, "plain"))
+        
+        if attachment_filename and attachment_data:
+            part = MIMEBase("application", "octet-stream")
+            part.set_payload(attachment_data)
+            encoders.encode_base64(part)
+            part.add_header(
+                "Content-Disposition",
+                f"attachment; filename= {attachment_filename}",
+            )
+            message.attach(part)
 
         try:
             server = smtplib.SMTP(self.smtp_server, self.smtp_port)
