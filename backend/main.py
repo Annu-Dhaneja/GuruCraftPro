@@ -152,11 +152,24 @@ def startup_db_sync() -> None:
             try:
                 current = cms_repository.get_flattened_content(db, "site_config")
                 brand = current.get("brand", {})
+                needs_update = False
+                
                 if not brand.get("logo_url"):
                     brand["logo_url"] = "/images/brand/logo-dark-v4.svg"
+                    needs_update = True
+                
+                # Also force correct brand name and text to verify patch
+                if brand.get("name") == "Gurucraftpro": # Was lowercase 'p' in old seeds
+                    brand["name"] = "GurucraftPro"
+                    needs_update = True
+                if brand.get("logo_text") == "A": # Old placeholder
+                    brand["logo_text"] = "G"
+                    needs_update = True
+                    
+                if needs_update:
                     current["brand"] = brand
                     cms_repository.update_page_content(db, "site_config", current)
-                    print("Startup: site_config logo_url PATCHED")
+                    print("Startup: site_config brand/logo PATCHED ✅")
                 else:
                     print(f"Startup: site_config logo_url OK ({brand.get('logo_url')})")
             except Exception as patch_exc:
