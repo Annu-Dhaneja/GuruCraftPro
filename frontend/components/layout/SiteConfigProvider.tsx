@@ -31,6 +31,7 @@ interface SiteConfig {
         behance: string;
         youtube: string;
         dribbble: string;
+        whatsapp: string;
         linkedin: string;
         twitter: string;
         accepting_projects: boolean;
@@ -65,6 +66,7 @@ const defaultConfig: SiteConfig = {
         behance: "#",
         youtube: "#",
         dribbble: "#",
+        whatsapp: "https://wa.me/918527837527",
         linkedin: "#",
         twitter: "#",
         accepting_projects: true,

@@ -203,6 +203,7 @@ export default function SiteConfigAdmin() {
               <div><InputLabel>Threads URL</InputLabel><Input value={data.social?.threads} onChange={v => updateField(["social", "threads"], v)} placeholder="https://threads.net/..." /></div>
               <div><InputLabel>Behance URL</InputLabel><Input value={data.social?.behance} onChange={v => updateField(["social", "behance"], v)} placeholder="https://behance.net/..." /></div>
               <div><InputLabel>YouTube URL</InputLabel><Input value={data.social?.youtube} onChange={v => updateField(["social", "youtube"], v)} placeholder="https://youtube.com/..." /></div>
+              <div><InputLabel>WhatsApp Number/URL</InputLabel><Input value={data.social?.whatsapp} onChange={v => updateField(["social", "whatsapp"], v)} placeholder="https://wa.me/91..." /></div>
               <div><InputLabel>Dribbble URL</InputLabel><Input value={data.social?.dribbble} onChange={v => updateField(["social", "dribbble"], v)} placeholder="https://dribbble.com/..." /></div>
             </div>
           </section>

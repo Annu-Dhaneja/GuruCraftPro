@@ -324,7 +324,12 @@ def startup_db_sync() -> None:
                     "github": "https://github.com/om-prakash16",
                     "threads": "https://threads.net/@gurucraftpro",
                     "behance": "https://behance.net/gurucraftpro",
-                    "youtube": "https://youtube.com/@gurucraftpro"
+                    "youtube": "https://youtube.com/@gurucraftpro",
+                    "whatsapp": "https://wa.me/918527837527",
+                    "instagram": "https://instagram.com/gurucraftpro",
+                    "linkedin": "https://linkedin.com/in/gurucraftpro",
+                    "twitter": "https://twitter.com/gurucraftpro",
+                    "dribbble": "https://dribbble.com/gurucraftpro"
                 }
                 updated = False
                 for k, v in new_socials.items():

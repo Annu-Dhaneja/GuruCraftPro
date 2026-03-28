@@ -32,7 +32,7 @@ export function FooterBrand() {
             <div className="flex flex-wrap gap-4">
                 {config.social.instagram && config.social.instagram !== "#" && <SocialLink href={config.social.instagram} icon={Instagram} label="Instagram" />}
                 {config.social.facebook && config.social.facebook !== "#" && <SocialLink href={config.social.facebook} icon={Facebook} label="Facebook" />}
-                <SocialLink href="https://wa.me/918527837527" icon={MessageCircle} label="WhatsApp" />
+                {config.social.whatsapp && config.social.whatsapp !== "#" && <SocialLink href={config.social.whatsapp} icon={MessageCircle} label="WhatsApp" />}
                 {config.social.github && config.social.github !== "#" && <SocialLink href={config.social.github} icon={Github} label="GitHub" />}
                 {config.social.linkedin && config.social.linkedin !== "#" && <SocialLink href={config.social.linkedin} icon={Linkedin} label="LinkedIn" />}
                 {config.social.twitter && config.social.twitter !== "#" && <SocialLink href={config.social.twitter} icon={Twitter} label="Twitter/X" />}
