@@ -37,6 +37,7 @@ def startup_db_sync() -> None:
     """
     from core import auth, database, models
     from repositories.cms import cms_repository
+    from repositories.cms_ssot import upsert_reusable_section, link_section_to_page, update_global_settings
 
     db = next(database.get_db())
 
@@ -711,16 +712,33 @@ def startup_db_sync() -> None:
             }
         }
 
-        for slug, defaults in new_services.items():
-            if not db.query(models.Page).filter(models.Page.slug == slug).first():
-                cms_repository.update_page_content(db, slug, defaults)
-                print(f"Startup: {slug} SEEDED ✅")
+        # Sync SSOT Data
+        for slug, data in service_definitions.items():
+            page = db.query(models.CMSPage).filter(models.CMSPage.slug == slug).first()
+            if not page:
+                page = models.CMSPage(title=slug.replace("-", " ").title(), slug=slug)
+                db.add(page)
+                db.flush()
+                
+                for idx, sec_def in enumerate(data["sections"]):
+                    upsert_reusable_section(db, sec_def["slug"], sec_def["type"], sec_def["content"])
+                    link_section_to_page(db, slug, sec_def["slug"], order=idx)
+                print(f"Startup SSOT: {slug} SEEDED ✅")
+
+        if not db.query(models.GlobalSettings).first():
+             update_global_settings(db, {
+                 "site_name": "GurucraftPro",
+                 "logo_url": "/images/brand/logo-dark-v4.svg",
+                 "footer": { "copyright": "© 2026 GurucraftPro. All rights reserved." },
+                 "social": { "instagram": "https://instagram.com/gurucraftpro" }
+             })
+             print("Startup SSOT: GlobalSettings SEEDED ✅")
 
         db.commit()
-        print("Startup: CMS sync OK")
+        print("Startup SSOT: Sync OK")
     except Exception as exc:
         db.rollback()
-        print(f"Startup: CMS sync FAILED → {exc}")
+        print(f"Startup SSOT: Sync FAILED → {exc}")
     finally:
         db.close()
 

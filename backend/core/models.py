@@ -115,3 +115,62 @@ class SiteConfig(Base):
     key = Column(String, unique=True, index=True) # e.g. "social_links"
     value = Column(Text) # JSON string of settings
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+
+# ── NEW SSOT CMS MODELS ──────────────────────────────────────────────
+
+class GlobalSettings(Base):
+    """Stores data used across entire website (SSOT)."""
+    __tablename__ = "global_settings"
+
+    id = Column(Integer, primary_key=True, index=True)
+    site_name = Column(String, default="GurucraftPro")
+    logo_url = Column(String, nullable=True)
+    contact_email = Column(String, nullable=True)
+    phone = Column(String, nullable=True)
+    address = Column(String, nullable=True)
+    footer_json = Column(Text, default="{}") # For links and copyright
+    social_json = Column(Text, default="{}") # For social links
+    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+
+class ReusableSection(Base):
+    """Each section stored once and potentially referenced multiple times."""
+    __tablename__ = "reusable_sections"
+
+    id = Column(Integer, primary_key=True, index=True)
+    name = Column(String, unique=True, index=True) # e.g. "Global Footer CTA"
+    slug = Column(String, unique=True, index=True)
+    type = Column(String) # hero, testimonial, faq, feature, cta
+    content = Column(Text, default="{}") # JSON content
+    created_at = Column(DateTime, default=datetime.utcnow)
+    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+
+class CMSPage(Base):
+    """Each page references reusable sections."""
+    __tablename__ = "cms_pages"
+
+    id = Column(Integer, primary_key=True, index=True)
+    title = Column(String)
+    slug = Column(String, unique=True, index=True)
+    meta_title = Column(String, nullable=True)
+    meta_description = Column(String, nullable=True)
+    created_at = Column(DateTime, default=datetime.utcnow)
+    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+    # Relationship to sections through the bridge table
+    sections = relationship("PageSectionAssociation", back_populates="page", cascade="all, delete-orphan", order_by="PageSectionAssociation.order")
+
+
+class PageSectionAssociation(Base):
+    """Bridge table for many-to-many relationship between pages and sections."""
+    __tablename__ = "page_section_associations"
+
+    id = Column(Integer, primary_key=True, index=True)
+    page_id = Column(Integer, ForeignKey("cms_pages.id"))
+    section_id = Column(Integer, ForeignKey("reusable_sections.id"))
+    order = Column(Integer, default=0)
+
+    page = relationship("CMSPage", back_populates="sections")
+    section = relationship("ReusableSection")

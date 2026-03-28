@@ -8,6 +8,7 @@ import uuid
 from pathlib import Path
 
 from services.cms import cms_service
+from repositories.cms_ssot import get_ssot_page_content, update_global_settings, get_global_settings
 
 router = APIRouter()
 
@@ -108,6 +109,15 @@ def get_segment_content(
     segment: str,
     db: Session = Depends(database.get_db),
 ):
+    # Try SSOT First
+    ssot_data = get_ssot_page_content(db, segment)
+    if ssot_data and ssot_data.get("sections"):
+        return ssot_data
+        
+    # Special case: global settings
+    if segment == "site_config":
+        return get_global_settings(db) or cms_service.get_content(db, segment)
+
     return cms_service.get_content(db, segment)
 
 
