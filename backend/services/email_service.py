@@ -41,7 +41,9 @@ class EmailService:
         try:
             server = smtplib.SMTP(self.smtp_server, self.smtp_port)
             server.starttls()
-            server.login(self.sender_email, self.sender_password)
+            # Clean app password (remove spaces if user copy-pasted them)
+            clean_password = self.sender_password.replace(" ", "")
+            server.login(self.sender_email, clean_password)
             text = message.as_string()
             server.sendmail(self.sender_email, self.recipient_email, text)
             server.quit()
