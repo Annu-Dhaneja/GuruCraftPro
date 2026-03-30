@@ -8,8 +8,8 @@ import { useParams } from "next/navigation";
 
 export default function AdminIndividualServicePage() {
   const params = useParams();
-  const slug = params.slug as string;
-  const serviceName = slug.split("-").map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(" ");
+  const slug = (params?.slug as string) || "";
+  const serviceName = slug ? slug.split("-").map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(" ") : "Service";
 
   return (
     <div className="p-6">
