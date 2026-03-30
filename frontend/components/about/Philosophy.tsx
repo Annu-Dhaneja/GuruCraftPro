@@ -50,15 +50,15 @@ export function Philosophy({ data }: { data?: any }) {
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-                    {philosophyValues.map((item: any) => (
-                        <div key={item.title} className="bg-card border border-border p-6 rounded-2xl hover:shadow-lg transition-all text-center">
-                            <div className={`h-14 w-14 mx-auto rounded-xl ${item.bg || 'bg-indigo-500/10'} ${item.color || 'text-indigo-500'} flex items-center justify-center mb-6`}>
+                    {(Array.isArray(philosophyValues) ? philosophyValues : []).map((item: any, idx: number) => (
+                        <div key={item?.title || idx} className="bg-card border border-border p-6 rounded-2xl hover:shadow-lg transition-all text-center">
+                            <div className={`h-14 w-14 mx-auto rounded-xl ${item?.bg || 'bg-indigo-500/10'} ${item?.color || 'text-indigo-500'} flex items-center justify-center mb-6`}>
                                 {/* Note: dynamic lucide icons are hard without mapping, falling back to Heart if unsure */}
                                 <Heart className="h-7 w-7" />
                             </div>
-                            <h3 className="font-semibold text-lg mb-3">{item.title}</h3>
+                            <h3 className="font-semibold text-lg mb-3">{item?.title || "Value"}</h3>
                             <p className="text-sm text-muted-foreground leading-relaxed">
-                                {item.desc}
+                                {item?.desc || "Core design principle."}
                             </p>
                         </div>
                     ))}

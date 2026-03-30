@@ -18,17 +18,13 @@ export function AIHumanSection({ data }: { data?: any }) {
                     </p>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8 text-left">
-                        {/* We'll assume the first two features are the main blocks if provided, 
-                            otherwise fallback to the split view logic if we want to keep it identical.
-                            For now, let's keep the two blocks but make their content dynamic.
-                        */}
                         <div className="bg-white/10 backdrop-blur-sm rounded-xl p-8 border border-white/10">
                             <div className="flex items-center gap-4 mb-4">
                                 <Zap className="h-8 w-8 text-yellow-400" />
                                 <h3 className="text-xl font-bold">AI Accelerates</h3>
                             </div>
                             <ul className="space-y-2 text-indigo-100/80 list-disc list-inside">
-                                {data.features?.slice(0, 3).map((f: string) => <li key={f}>{f}</li>) || (
+                                {Array.isArray(data.features) ? data.features.slice(0, 3).map((f: string, idx: number) => <li key={idx}>{f}</li>) : (
                                     <>
                                         <li>Rapid concept ideation and exploration</li>
                                         <li>Generates varied layout options instantly</li>
@@ -44,7 +40,7 @@ export function AIHumanSection({ data }: { data?: any }) {
                                 <h3 className="text-xl font-bold">Human Refines</h3>
                             </div>
                             <ul className="space-y-2 text-indigo-100/80 list-disc list-inside">
-                                {data.features?.slice(3, 6).map((f: string) => <li key={f}>{f}</li>) || (
+                                {Array.isArray(data.features) ? data.features.slice(3, 6).map((f: string, idx: number) => <li key={idx}>{f}</li>) : (
                                     <>
                                         <li>Ensures emotional resonance and brand fit</li>
                                         <li>Detailed typographic and color tuning</li>

@@ -25,18 +25,18 @@ export function ToolsWorkflow({ data }: { data?: any }) {
                 <div className="mb-16">
                     <h2 className="text-2xl font-bold mb-8">{data?.title || "Tools of Trade"}</h2>
                     <div className="flex flex-wrap justify-center gap-8 opacity-70 grayscale hover:grayscale-0 transition-all duration-500">
-                        {data?.tools?.map((tool: string) => (
-                             <div key={tool} className="text-xl font-bold flex items-center gap-2">
+                        {Array.isArray(data?.tools) ? data.tools.map((tool: string, idx: number) => (
+                             <div key={idx} className={`text-xl font-bold flex items-center gap-2 ${tool === "Figma" ? "text-pink-500" : ""}`}>
                                  {tool.includes("Figma") && <Figma className="h-6 w-6" />}
                                  {tool.includes("Adobe") && <PenTool className="h-6 w-6" />}
                                  {tool}
                              </div>
-                        )) || (
+                        )) : (
                             <>
-                                <div className="text-xl font-bold flex items-center gap-2"><Figma className="h-6 w-6" /> Figma</div>
-                                <div className="text-xl font-bold flex items-center gap-2">Adobe Creative Cloud</div>
-                                <div className="text-xl font-bold flex items-center gap-2">Midjourney</div>
-                                <div className="text-xl font-bold flex items-center gap-2">ChatGPT</div>
+                                <div className="text-xl font-bold flex items-center gap-2 transition-colors hover:text-pink-500 cursor-default"><Figma className="h-6 w-6" /> Figma</div>
+                                <div className="text-xl font-bold flex items-center gap-2 transition-colors hover:text-red-500 cursor-default"><PenTool className="h-6 w-6" /> Adobe Suite</div>
+                                <div className="text-xl font-bold flex items-center gap-2 transition-colors hover:text-purple-500 cursor-default">Midjourney</div>
+                                <div className="text-xl font-bold flex items-center gap-2 transition-colors hover:text-green-500 cursor-default">ChatGPT</div>
                             </>
                         )}
                     </div>
@@ -45,14 +45,14 @@ export function ToolsWorkflow({ data }: { data?: any }) {
                 <div>
                     <h2 className="text-2xl font-bold mb-10">Our Workflow</h2>
                     <div className="flex flex-col md:flex-row items-center justify-center gap-6 max-w-4xl mx-auto">
-                        {workflowSteps.map((step: any, i: number) => (
-                            <div key={step.title} className="flex flex-col md:flex-row items-center w-full">
+                        {(Array.isArray(workflowSteps) ? workflowSteps : []).map((step: any, i: number) => (
+                            <div key={step?.title || i} className="flex flex-col md:flex-row items-center w-full">
                                 <div className="flex flex-col items-center gap-2 w-full">
                                     <div className="h-10 w-10 sorted-full rounded-full bg-indigo-600 text-white flex items-center justify-center font-bold">
                                         {i + 1}
                                     </div>
-                                    <h3 className="font-semibold">{step.title}</h3>
-                                    <p className="text-xs text-muted-foreground">{step.desc}</p>
+                                    <h3 className="font-semibold">{step?.title || `Step ${i+1}`}</h3>
+                                    <p className="text-xs text-muted-foreground">{step?.desc || "Process"}</p>
                                 </div>
                                 {/* Connector Line */}
                                 {i !== workflowSteps.length - 1 && (
