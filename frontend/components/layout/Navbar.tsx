@@ -43,21 +43,21 @@ export function Navbar() {
             <div className="container mx-auto px-4 md:px-6 flex items-center justify-between">
                 {/* Logo / Brand */}
                 <Link href="/" className="flex items-center gap-2 z-50 group">
-                    {config.brand.logo_url && (
+                    {config?.brand?.logo_url ? (
                         <div className="relative h-14 w-48 md:h-16 md:w-56 transition-transform group-hover:scale-105">
                             {/* If it's the default logo, it has a dark/light version. Otherwise, just show the uploaded image as-is. */}
-                            {config.brand.logo_url.includes('dark-v4.svg') ? (
+                            {typeof config.brand.logo_url === 'string' && config.brand.logo_url.includes('dark-v4.svg') ? (
                                 <>
                                     <Image
                                         src={config.brand.logo_url}
-                                        alt={config.brand.name}
+                                        alt={config.brand.name || "GurucraftPro"}
                                         fill
                                         className="object-contain object-left hidden dark:block"
                                         priority
                                     />
                                     <Image
                                         src={config.brand.logo_url.replace('dark-v4.svg', 'light-v4.svg')}
-                                        alt={config.brand.name}
+                                        alt={config.brand.name || "GurucraftPro"}
                                         fill
                                         className="object-contain object-left block dark:hidden"
                                         priority
@@ -66,13 +66,17 @@ export function Navbar() {
                             ) : (
                                 <Image
                                     src={config.brand.logo_url}
-                                    alt={config.brand.name}
+                                    alt={config.brand.name || "GurucraftPro"}
                                     fill
                                     className="object-contain object-left"
                                     priority
                                 />
                             )}
                         </div>
+                    ) : (
+                        <span className="text-2xl font-bold tracking-tighter">
+                            {config?.brand?.logo_text || "G"}
+                        </span>
                     )}
                 </Link>
 

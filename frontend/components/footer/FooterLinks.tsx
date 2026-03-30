@@ -12,7 +12,7 @@ export function FooterLinks() {
             <div>
                 <h3 className="font-semibold text-white mb-6">Explore</h3>
                 <ul className="space-y-4">
-                    {config.footer_explore.map((link, idx) => (
+                    {(config?.footer_explore || []).map((link, idx) => (
                          <FooterLink key={idx} href={link.href} label={link.label} />
                     ))}
                 </ul>
@@ -22,7 +22,7 @@ export function FooterLinks() {
             <div>
                 <h3 className="font-semibold text-white mb-6">Support</h3>
                 <ul className="space-y-4">
-                    {config.footer_support.map((link, idx) => (
+                    {(config?.footer_support || []).map((link, idx) => (
                         <FooterLink key={idx} href={link.href} label={link.label} />
                     ))}
                 </ul>

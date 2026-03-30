@@ -11,7 +11,7 @@ export function FooterBottom() {
 
             {/* Copyright */}
             <div>
-                {config.footer_bottom.copyright.replace("2026", new Date().getFullYear().toString())}
+                {(config?.footer_bottom?.copyright || "© 2026 GurucraftPro").replace("2026", new Date().getFullYear().toString())}
             </div>
 
             {/* Legal Links */}

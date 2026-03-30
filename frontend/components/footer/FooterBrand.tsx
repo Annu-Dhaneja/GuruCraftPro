@@ -12,35 +12,39 @@ export function FooterBrand() {
         <div className="space-y-6">
             {/* Brand Identity */}
             <Link href="/" className="flex items-center gap-2 group">
-                {config.brand.logo_url && (
+                {config?.brand?.logo_url ? (
                     <div className="relative h-16 w-56 md:h-20 md:w-64 transition-transform group-hover:scale-105">
                         <Image
                             src={config.brand.logo_url}
-                            alt={config.brand.name}
+                            alt={config.brand.name || "GurucraftPro"}
                             fill
                             className="object-contain object-left"
                         />
                     </div>
+                ) : (
+                    <span className="text-2xl font-bold tracking-tighter">
+                        {config?.brand?.logo_text || config?.brand?.name || "GurucraftPro"}
+                    </span>
                 )}
             </Link>
 
             <p className="text-muted-foreground leading-relaxed max-w-xs">
-                {config.brand.tagline}
+                {config?.brand?.tagline}
             </p>
 
             {/* Social Icons */}
             <div className="flex flex-wrap gap-4">
-                {config.social.instagram && config.social.instagram !== "#" && <SocialLink href={config.social.instagram} icon={Instagram} label="Instagram" />}
-                {config.social.facebook && config.social.facebook !== "#" && <SocialLink href={config.social.facebook} icon={Facebook} label="Facebook" />}
-                {config.social.whatsapp && config.social.whatsapp !== "#" && <SocialLink href={config.social.whatsapp} icon={MessageCircle} label="WhatsApp" />}
+                {config?.social?.instagram && config.social.instagram !== "#" && <SocialLink href={config.social.instagram} icon={Instagram} label="Instagram" />}
+                {config?.social?.facebook && config.social.facebook !== "#" && <SocialLink href={config.social.facebook} icon={Facebook} label="Facebook" />}
+                {config?.social?.whatsapp && config.social.whatsapp !== "#" && <SocialLink href={config.social.whatsapp} icon={MessageCircle} label="WhatsApp" />}
                 <SocialLink href="https://t.me/Adgraphic123" icon={Send} label="Telegram" />
-                {config.social.github && config.social.github !== "#" && <SocialLink href={config.social.github} icon={Github} label="GitHub" />}
-                {config.social.linkedin && config.social.linkedin !== "#" && <SocialLink href={config.social.linkedin} icon={Linkedin} label="LinkedIn" />}
-                {config.social.twitter && config.social.twitter !== "#" && <SocialLink href={config.social.twitter} icon={Twitter} label="Twitter/X" />}
-                {config.social.threads && config.social.threads !== "#" && <SocialLink href={config.social.threads} icon={Share2} label="Threads" />}
-                {config.social.behance && config.social.behance !== "#" && <SocialLink href={config.social.behance} icon={Dribbble} label="Behance" />}
-                {config.social.youtube && config.social.youtube !== "#" && <SocialLink href={config.social.youtube} icon={Youtube} label="YouTube" />}
-                {config.social.dribbble && config.social.dribbble !== "#" && <SocialLink href={config.social.dribbble} icon={Dribbble} label="Dribbble" />}
+                {config?.social?.github && config.social.github !== "#" && <SocialLink href={config.social.github} icon={Github} label="GitHub" />}
+                {config?.social?.linkedin && config.social.linkedin !== "#" && <SocialLink href={config.social.linkedin} icon={Linkedin} label="LinkedIn" />}
+                {config?.social?.twitter && config.social.twitter !== "#" && <SocialLink href={config.social.twitter} icon={Twitter} label="Twitter/X" />}
+                {config?.social?.threads && config.social.threads !== "#" && <SocialLink href={config.social.threads} icon={Share2} label="Threads" />}
+                {config?.social?.behance && config.social.behance !== "#" && <SocialLink href={config.social.behance} icon={Dribbble} label="Behance" />}
+                {config?.social?.youtube && config.social.youtube !== "#" && <SocialLink href={config.social.youtube} icon={Youtube} label="YouTube" />}
+                {config?.social?.dribbble && config.social.dribbble !== "#" && <SocialLink href={config.social.dribbble} icon={Dribbble} label="Dribbble" />}
             </div>
 
             {config.social.accepting_projects && (
