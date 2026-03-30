@@ -6,17 +6,18 @@ import { notFound } from "next/navigation";
 
 export const dynamic = 'force-dynamic';
 
-export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
-  const formatTitle = (slug: string) => slug.split("-").map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(" ");
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+  const { slug } = await params;
+  const formatTitle = (s: string) => (s || "Service").split("-").map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(" ");
   return {
-    title: `${formatTitle(params.slug)} | Gurucraftpro`,
-    description: `Premium ${formatTitle(params.slug)} services by Gurucraftpro Design Studio.`
+    title: `${formatTitle(slug)} | Gurucraftpro`,
+    description: `Premium ${formatTitle(slug)} services by Gurucraftpro Design Studio.`
   };
 }
 
-export default async function ServicePage({ params }: { params: { slug: string } }) {
+export default async function ServicePage({ params }: { params: Promise<{ slug: string }> }) {
   let serviceData: any = null;
-  const { slug } = params;
+  const { slug } = await params;
 
   try {
     const res = await fetch(getApiUrl(`/api/v1/cms/${slug}`), {
