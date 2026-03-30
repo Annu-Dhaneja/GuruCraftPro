@@ -4,18 +4,26 @@ import { motion } from "framer-motion";
 import { User, Sparkles } from "lucide-react";
 
 export function FounderIntro({ data }: { data?: any }) {
-    if (!data) return null;
+    // We render the component even if data is missing, using defaults
+    const badgeText = data?.badge || "About Gurucraftpro";
+    const mainTitle = data?.main_title || "Creative Leadership";
+    const mainDescription = data?.main_description || "Leading the intersection of art and technology to create meaningful digital experiences.";
+    const name = data?.name || "Annu Dhanjeja";
+    const title = data?.title || "Creative Lead";
+    const image = data?.image || "/images/about/founder-placeholder.jpg";
+    const tags = data?.tags || ["Designer", "Artist", "Visionary"];
+    const bio = data?.bio || ["A decade of design excellence, focused on crafting high-impact visual narratives."];
 
     return (
         <section className="py-24 container mx-auto px-4 md:px-6">
             <div className="text-center max-w-3xl mx-auto mb-16">
                 <div className="inline-flex items-center gap-2 text-indigo-500 font-medium mb-4 bg-indigo-50 px-4 py-1.5 rounded-full border border-indigo-100 dark:bg-indigo-500/10 dark:text-indigo-300 dark:border-indigo-500/20">
                     <Sparkles className="h-4 w-4" />
-                    {data.badge || "About Gurucraftpro"}
+                    {badgeText}
                 </div>
-                <h2 className="text-3xl md:text-5xl font-black mb-6">{data.main_title}</h2>
+                <h2 className="text-3xl md:text-5xl font-black mb-6">{mainTitle}</h2>
                 <p className="text-lg text-muted-foreground leading-relaxed">
-                    {data.main_description}
+                    {mainDescription}
                 </p>
             </div>
 
@@ -23,8 +31,8 @@ export function FounderIntro({ data }: { data?: any }) {
                 <div className="relative">
                     <div className="aspect-[4/5] rounded-3xl overflow-hidden bg-muted relative z-10 box-shadow-xl border border-border/50">
                         <img
-                            src={data.image}
-                            alt={`${data.name} - ${data.title}`}
+                            src={image}
+                            alt={`${name} - ${title}`}
                             className="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
                         />
                     </div>
@@ -35,10 +43,10 @@ export function FounderIntro({ data }: { data?: any }) {
 
                 <div>
                     <h3 className="text-sm font-bold text-muted-foreground uppercase tracking-widest mb-2">Leadership / Founder Profile</h3>
-                    <h2 className="text-4xl font-bold mb-4">Meet {data.name}</h2>
+                    <h2 className="text-4xl font-bold mb-4">Meet {name}</h2>
 
                     <div className="flex flex-wrap gap-2 mb-8 text-sm font-medium">
-                        {data.tags?.map((tag: string) => (
+                        {tags.map((tag: string) => (
                             <span key={tag} className="bg-indigo-50 text-indigo-700 px-3 py-1 rounded-full dark:bg-indigo-500/10 dark:text-indigo-300">
                                 {tag}
                             </span>
@@ -46,7 +54,7 @@ export function FounderIntro({ data }: { data?: any }) {
                     </div>
 
                     <div className="space-y-6 text-lg text-muted-foreground leading-relaxed">
-                        {data.bio?.map((para: string, i: number) => (
+                        {bio.map((para: string, i: number) => (
                              <p key={i}>{para}</p>
                         ))}
                     </div>

@@ -13,8 +13,20 @@ import {
     ExternalLink,
     Mail,
     Palette,
-    Code
+    Code,
+    Sparkles,
+    Briefcase
 } from "lucide-react";
+
+// Robust mapping for icons since JSON can't store component functions
+const ICON_MAP: Record<string, any> = {
+    "Palette": Palette,
+    "Code": Code,
+    "Sparkles": Sparkles,
+    "Briefcase": Briefcase,
+    "Users": Users,
+    "Globe": Globe
+};
 
 const team = [
     {
@@ -22,7 +34,7 @@ const team = [
         role: "Founder & Creative Lead",
         description: "A visionary designer with over 8 years of experience in visual storytelling and brand identity. Annu leads the creative direction of every project, ensuring that aesthetic excellence meets functional purpose.",
         skills: ["Graphic Designer", "Video Editor", "Art Director"],
-        icon: Palette,
+        icon: "Palette",
         color: "text-pink-500",
         bg: "bg-pink-500/10",
         image: "https://api.dicebear.com/7.x/avataaars/svg?seed=Annu",
@@ -40,7 +52,7 @@ const team = [
         role: "Chief Technology Officer",
         description: "Architect of robust digital solutions. Om specializes in full-stack development and AI integration, turning complex technical challenges into seamless user experiences across various platforms.",
         skills: ["Full Stack Dev", "Python Expert", "System Architect"],
-        icon: Code,
+        icon: "Code",
         color: "text-indigo-500",
         bg: "bg-indigo-500/10",
         image: "https://api.dicebear.com/7.x/avataaars/svg?seed=Om",
@@ -85,16 +97,21 @@ export function TeamSection({ data }: { data?: any }) {
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-12 max-w-5xl mx-auto">
                     {teamData.map((member: any, index: number) => {
+                        // Dynamically resolve icon component
+                        const IconComponent = ICON_MAP[member.icon] || (index % 2 === 0 ? Palette : Code);
+                        const memberColor = member.color || (index % 2 === 0 ? "text-pink-500" : "text-indigo-500");
+                        const memberBg = member.bg || (index % 2 === 0 ? "bg-pink-500/10" : "bg-indigo-500/10");
+
                         return (
                             <motion.div
-                                key={member.name}
+                                key={member.name || index}
                                 initial={{ opacity: 0, y: 30 }}
                                 whileInView={{ opacity: 1, y: 0 }}
                                 transition={{ delay: index * 0.2 }}
                                 className="group relative bg-[#0D0D12] border border-white/5 rounded-[48px] p-12 hover:border-indigo-500/30 transition-all duration-500 overflow-hidden glass-card"
                             >
                                 <div className="absolute top-0 right-0 p-8 opacity-10 group-hover:opacity-100 transition-opacity">
-                                    <member.icon className={`w-24 h-24 ${member.color}`} />
+                                    <IconComponent className={`w-24 h-24 ${memberColor}`} />
                                 </div>
 
                                 <div className="flex flex-col h-full relative z-10">
@@ -102,13 +119,13 @@ export function TeamSection({ data }: { data?: any }) {
                                         <div className="relative">
                                             <div className="w-24 h-24 rounded-3xl overflow-hidden border-2 border-white/10 group-hover:border-indigo-500/50 transition-colors duration-500 p-1 bg-gradient-to-br from-indigo-500/20 to-purple-500/20 shadow-2xl">
                                                 <img 
-                                                    src={member.image} 
+                                                    src={member.image || `https://api.dicebear.com/7.x/avataaars/svg?seed=${member.name}`} 
                                                     alt={member.name} 
                                                     className="w-full h-full object-cover rounded-2xl"
                                                 />
                                             </div>
-                                            <div className={`absolute -bottom-2 -right-2 w-8 h-8 rounded-xl ${member.bg || 'bg-indigo-500/10'} border border-white/10 flex items-center justify-center`}>
-                                                <member.icon className={`w-4 h-4 ${member.color}`} />
+                                            <div className={`absolute -bottom-2 -right-2 w-8 h-8 rounded-xl ${memberBg} border border-white/10 flex items-center justify-center`}>
+                                                <IconComponent className={`w-4 h-4 ${memberColor}`} />
                                             </div>
                                         </div>
 
@@ -122,16 +139,16 @@ export function TeamSection({ data }: { data?: any }) {
 
                                     <div className="space-y-4 mb-8">
                                         <div>
-                                            <h3 className="text-3xl font-black text-white tracking-tight leading-none mb-2">{member.name}</h3>
-                                            <p className="text-indigo-400 font-bold text-sm uppercase tracking-widest">{member.role}</p>
+                                            <h3 className="text-3xl font-black text-white tracking-tight leading-none mb-2">{member.name || "Team Member"}</h3>
+                                            <p className="text-indigo-400 font-bold text-sm uppercase tracking-widest">{member.role || "Specialist"}</p>
                                         </div>
                                         <p className="text-slate-400 leading-relaxed text-sm font-medium">
-                                            {member.description}
+                                            {member.description || "Dedicated to delivering exceptional quality and creative excellence."}
                                         </p>
                                     </div>
 
                                     <div className="flex flex-wrap gap-2 mb-8 mt-auto">
-                                        {member.skills?.map((skill: string) => (
+                                        {(member.skills || ["Creative", "Strategy"]).map((skill: string) => (
                                             <span 
                                                 key={skill}
                                                 className="px-3 py-1 rounded-full bg-white/5 border border-white/5 text-[10px] font-bold text-muted-foreground uppercase tracking-widest transition-colors group-hover:text-indigo-300"

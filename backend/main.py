@@ -175,9 +175,28 @@ def startup_db_sync() -> None:
                 print(f"Startup: site_config patch failed: {patch_exc}")
 
         # ── 3. Site-Wide CMS Dynamic Patching ───────────────────────────
+        def sanitize_payload(data: Any) -> Any:
+            """Recursively check and truncate massive base64 strings that crash the Edge Runtime."""
+            if isinstance(data, dict):
+                return {k: sanitize_payload(v) for k, v in data.items()}
+            elif isinstance(data, list):
+                return [sanitize_payload(i) for i in data]
+            elif isinstance(data, str) and len(data) > 50000 and data.startswith("data:image"):
+                print(f"Startup: Truncating massive base64 string (len={len(data)})")
+                return "" # Clear it out, the frontend will use a fallback
+            return data
+
         def patch_cms_page(slug: str, defaults: dict):
             try:
                 current = cms_repository.get_flattened_content(db, slug)
+                
+                # Sanitize current content in case it has massive bloated base64 from previous uploads
+                sanitized = sanitize_payload(current)
+                if sanitized != current:
+                    cms_repository.update_page_content(db, slug, sanitized)
+                    current = sanitized
+                    print(f"Startup: {slug} SANITIZED (bloated base64 removed) 🧹")
+
                 updated = False
                 for key, val in defaults.items():
                     if key not in current:
@@ -188,11 +207,17 @@ def startup_db_sync() -> None:
                         current[key] = val
                         updated = True
                     elif isinstance(val, dict) and isinstance(current.get(key), dict):
-                        # Deep merge one level for sections
+                        # Deep merge sections/objects
                         for sub_k, sub_v in val.items():
                             if sub_k not in current[key] or (isinstance(sub_v, list) and isinstance(current[key].get(sub_k), list) and not current[key][sub_k]):
                                 current[key][sub_k] = sub_v
                                 updated = True
+                            elif isinstance(sub_v, dict) and isinstance(current[key].get(sub_k), dict):
+                                # One more level for nested configs like social
+                                for nested_k, nested_v in sub_v.items():
+                                    if nested_k not in current[key][sub_k]:
+                                        current[key][sub_k][nested_k] = nested_v
+                                        updated = True
                 if updated:
                     cms_repository.update_page_content(db, slug, current)
                     print(f"Startup: {slug} PATCHED ✅")
@@ -440,7 +465,7 @@ def startup_db_sync() -> None:
                     { "title": "Deliver", "desc": "Final assets" }
                 ]
             },
-            "services_preview": { "title": "What We Do", "services": [] },
+            "services_preview": { "title": "What We Create", "services": [] },
             "trust_section": { 
                 "title": "Why clients choose Gurucraftpro", 
                 "description": "Design is a partnership. We prioritize transparency, quality, and speed.",
@@ -449,8 +474,8 @@ def startup_db_sync() -> None:
                     {"title": "Fast Delivery", "desc": "Quick turnaround."}
                 ],
                 "stats": [
-                    {"value": "500+", "label": "Projects Done"},
-                    {"value": "24/7", "label": "Support"}
+                    {"value": "5k+", "label": "Designs Live"},
+                    {"value": "24/7", "label": "Global Support"}
                 ]
             },
             "about_cta": { "title": "Join our journey.", "link": "/contact" }

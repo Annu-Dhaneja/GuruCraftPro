@@ -66,7 +66,15 @@ const defaultCategories = [
 
 export function ServiceCategoryRail({ data }: { data?: any }) {
     const title = data?.title || "Explore templates";
-    const categories = data?.categories || defaultCategories;
+    const categories = (data?.categories || defaultCategories).map((cat: any) => ({
+        ...cat,
+        // Safeguard: If image is a massive base64 string, we might want to handle it 
+        // but for now just ensures it exists.
+        image: cat.image || "https://images.unsplash.com/photo-1542435503-956c469947f6?auto=format&fit=crop&q=80&w=200",
+        href: cat.href || "/portfolio",
+        color: cat.color || "bg-indigo-100",
+        textColor: cat.textColor || "text-indigo-900"
+    }));
 
     return (
         <section className="w-full py-12 border-b bg-background/50 overflow-hidden">
@@ -104,7 +112,14 @@ export function ServiceCategoryRail({ data }: { data?: any }) {
 
                                 {/* Image Visual */}
                                 <div className="w-[80px] h-[70px] bg-white/40 rounded-lg shadow-sm rotate-[5deg] translate-x-2 translate-y-2 overflow-hidden flex items-center justify-center">
-                                    <img src={cat.image} alt="" className="w-full h-full object-cover opacity-80 mix-blend-multiply" />
+                                    <img 
+                                        src={cat.image} 
+                                        alt="" 
+                                        className="w-full h-full object-cover opacity-80 mix-blend-multiply" 
+                                        onError={(e: any) => {
+                                            e.target.src = "https://images.unsplash.com/photo-1542435503-956c469947f6?auto=format&fit=crop&q=80&w=200";
+                                        }}
+                                    />
                                 </div>
                             </Link>
                         ))}
