@@ -1,20 +1,18 @@
-from fastapi import APIRouter, HTTPException, Depends, Form, UploadFile, File
+from fastapi import APIRouter, HTTPException, Depends, Form, UploadFile, File, BackgroundTasks
 from sqlalchemy.orm import Session
 from schemas.contact import ContactResponse
 from core.database import get_db
 from core.models import ContactSubmission
 from repositories.contact import contact_repository
-import threading
 
 router = APIRouter()
 
-def _send_email_background(name, email, message, inquiry_type, attachment_filename=None, attachment_data=None):
-    """Run email sending in a background thread so it doesn't block the response."""
+def _send_email_background(name: str, email: str, message: str, inquiry_type: str, attachment_filename: str = None, attachment_data: bytes = None):
+    """Run email sending in a background task."""
     try:
         # Import here to ensure env vars are already loaded by main.py
-        from services.email_service import EmailService
-        svc = EmailService()
-        svc.send_contact_notification(
+        from services.email_service import email_service
+        email_service.send_contact_notification(
             name=name,
             email=email,
             message_body=message,
@@ -23,10 +21,11 @@ def _send_email_background(name, email, message, inquiry_type, attachment_filena
             attachment_data=attachment_data
         )
     except Exception as e:
-        print(f"Background email thread error: {e}")
+        print(f"Background email task error: {e}")
 
 @router.post("/", response_model=ContactResponse)
 async def submit_contact_form(
+    background_tasks: BackgroundTasks,
     name: str = Form(...),
     email: str = Form(...),
     company: str = Form(None),
@@ -57,13 +56,16 @@ async def submit_contact_form(
         attachment_filename = attachment.filename
         attachment_data = await attachment.read()
     
-    # Fire-and-forget in a background thread (safe, doesn't block response)
-    thread = threading.Thread(
-        target=_send_email_background,
-        args=(name, email, message, inquiry_type, attachment_filename, attachment_data),
-        daemon=True
+    # Use FastAPI BackgroundTasks for better life-cycle management
+    background_tasks.add_task(
+        _send_email_background,
+        name, 
+        email, 
+        message, 
+        inquiry_type, 
+        attachment_filename, 
+        attachment_data
     )
-    thread.start()
 
     return {
         "id": db_contact.id,

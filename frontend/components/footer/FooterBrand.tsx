@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Facebook, Twitter, Instagram, Linkedin, Dribbble, MessageCircle, Github, Youtube, Share2 } from "lucide-react";
+import { Facebook, Twitter, Instagram, Linkedin, Dribbble, MessageCircle, Github, Youtube, Share2, Send } from "lucide-react";
 import { useSiteConfig } from "../layout/SiteConfigProvider";
 import Image from "next/image";
 
@@ -33,6 +33,7 @@ export function FooterBrand() {
                 {config.social.instagram && config.social.instagram !== "#" && <SocialLink href={config.social.instagram} icon={Instagram} label="Instagram" />}
                 {config.social.facebook && config.social.facebook !== "#" && <SocialLink href={config.social.facebook} icon={Facebook} label="Facebook" />}
                 {config.social.whatsapp && config.social.whatsapp !== "#" && <SocialLink href={config.social.whatsapp} icon={MessageCircle} label="WhatsApp" />}
+                <SocialLink href="https://t.me/Adgraphic123" icon={Send} label="Telegram" />
                 {config.social.github && config.social.github !== "#" && <SocialLink href={config.social.github} icon={Github} label="GitHub" />}
                 {config.social.linkedin && config.social.linkedin !== "#" && <SocialLink href={config.social.linkedin} icon={Linkedin} label="LinkedIn" />}
                 {config.social.twitter && config.social.twitter !== "#" && <SocialLink href={config.social.twitter} icon={Twitter} label="Twitter/X" />}

@@ -14,6 +14,9 @@ import {
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import Image from "next/image";
+import { useState } from "react";
+import { CameraDarshan } from "@/components/guruji-darshan/CameraDarshan";
+import { AnimatePresence } from "framer-motion";
 
 export function GurujiDarshanContent({ data }: { data?: any }) {
   const heroTitlePrefix = data?.hero_title_prefix || "Guruji Ke";
@@ -25,8 +28,14 @@ export function GurujiDarshanContent({ data }: { data?: any }) {
   const satsangTitlePrefix = data?.satsang_title_prefix || "Premium Guruji";
   const satsangTitleHighlight = data?.satsang_title_highlight || "Satsang Box";
   const satsangSubtitle = data?.satsang_subtitle || "A masterpiece of spiritual art and technology. The Satsang Story Box brings the sacred sounds of Bhajans and Mantras pre-loaded in a beautifully crafted box.";
+  
+  const [isCameraOpen, setIsCameraOpen] = useState(false);
+
   return (
     <div className="flex flex-col">
+      <AnimatePresence>
+        {isCameraOpen && <CameraDarshan onClose={() => setIsCameraOpen(false)} />}
+      </AnimatePresence>
       {/* ── Hero Section ─────────────────────────────────── */}
       <section className="relative min-h-[80vh] flex items-center justify-center overflow-hidden bg-zinc-950 py-24">
         {/* Background Effects */}
@@ -71,7 +80,11 @@ export function GurujiDarshanContent({ data }: { data?: any }) {
             transition={{ duration: 0.8, delay: 0.6 }}
             className="flex flex-wrap justify-center gap-6"
           >
-            <Button size="lg" className="bg-amber-600 hover:bg-amber-500 text-white rounded-full px-10 h-16 text-lg font-bold shadow-2xl shadow-amber-600/20">
+            <Button 
+                onClick={() => setIsCameraOpen(true)}
+                size="lg" 
+                className="bg-amber-600 hover:bg-amber-500 text-white rounded-full px-10 h-16 text-lg font-bold shadow-2xl shadow-amber-600/20"
+            >
               Experience AR View <Eye className="ml-2 w-5 h-5" />
             </Button>
             <Link href="#satsang-box">
@@ -128,10 +141,13 @@ export function GurujiDarshanContent({ data }: { data?: any }) {
               className="relative aspect-square md:aspect-video lg:aspect-square rounded-3xl overflow-hidden border border-white/10 bg-zinc-900 shadow-2xl"
             >
                {/* This would be the AR Viewer or Video */}
-               <div className="absolute inset-0 flex items-center justify-center group cursor-pointer">
-                 <div className="w-20 h-20 rounded-full bg-white/10 backdrop-blur-xl border border-white/20 flex items-center justify-center group-hover:scale-110 transition-transform duration-500 z-10">
-                   <Wand2 className="w-10 h-10 text-white" />
-                 </div>
+                <div 
+                    onClick={() => setIsCameraOpen(true)}
+                    className="absolute inset-0 flex items-center justify-center group cursor-pointer"
+                >
+                  <div className="w-20 h-20 rounded-full bg-white/10 backdrop-blur-xl border border-white/20 flex items-center justify-center group-hover:scale-110 transition-transform duration-500 z-10">
+                    <Wand2 className="w-10 h-10 text-white" />
+                  </div>
                  <Image 
                   src="https://images.unsplash.com/photo-1514833150113-bc7519969062?q=80&w=2070&auto=format&fit=crop"
                   alt="AR Experience Preview"

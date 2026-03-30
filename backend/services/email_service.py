@@ -65,7 +65,12 @@ class EmailService:
             print(f"Email notification sent for {name}")
             return True
         except Exception as e:
-            print(f"Failed to send email notification: {e}")
+            error_msg = str(e)
+            print(f"Failed to send email notification: {error_msg}")
+            if "authentication failed" in error_msg.lower():
+                print("HINT: SMTP authentication failed. Check your SMTP_PASSWORD (App Password).")
+            elif "conn" in error_msg.lower():
+                print("HINT: Connection issue. Check your SMTP_SERVER and SMTP_PORT.")
             return False
 
 email_service = EmailService()
