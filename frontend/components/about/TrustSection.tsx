@@ -71,26 +71,30 @@ export function TrustSection({ data }: { data?: any }) {
                         </p>
 
                         <div className="space-y-6">
-                            {trustStrengths.map((item: any, i: number) => {
-                                const IconComponent = ICON_MAP[item.icon] || Trophy;
-                                return (
-                                <motion.div
-                                    initial={{ opacity: 0, x: -20 }}
-                                    whileInView={{ opacity: 1, x: 0 }}
-                                    transition={{ duration: 0.5, delay: i * 0.1 }}
-                                    viewport={{ once: true }}
-                                    key={item.title || i}
-                                    className="flex items-start gap-4 p-4 rounded-2xl hover:bg-background border border-transparent hover:border-border/50 hover:shadow-sm transition-all"
-                                >
-                                    <div className="p-3 bg-background rounded-xl shadow-sm border border-border/50 shrink-0">
-                                        <IconComponent className="h-6 w-6 text-indigo-500" />
-                                    </div>
-                                    <div>
-                                        <h4 className="text-xl font-bold mb-1">{item.title || "Quality Service"}</h4>
-                                        <p className="text-muted-foreground">{item.desc || "We deliver excellence in every pixel."}</p>
-                                    </div>
-                                </motion.div>
-                                );
+                            {(trustStrengths || []).map((item: any, i: number) => {
+                                try {
+                                    const IconComponent = ICON_MAP[item.icon] || Trophy;
+                                    return (
+                                    <motion.div
+                                        initial={{ opacity: 0, x: -20 }}
+                                        whileInView={{ opacity: 1, x: 0 }}
+                                        transition={{ duration: 0.5, delay: i * 0.1 }}
+                                        viewport={{ once: true }}
+                                        key={item.title || i}
+                                        className="flex items-start gap-4 p-4 rounded-2xl hover:bg-background border border-transparent hover:border-border/50 hover:shadow-sm transition-all"
+                                    >
+                                        <div className="p-3 bg-background rounded-xl shadow-sm border border-border/50 shrink-0">
+                                            <IconComponent className="h-6 w-6 text-indigo-500" />
+                                        </div>
+                                        <div>
+                                            <h4 className="text-xl font-bold mb-1">{item.title || "Quality Service"}</h4>
+                                            <p className="text-muted-foreground">{item.desc || "We deliver excellence in every pixel."}</p>
+                                        </div>
+                                    </motion.div>
+                                    );
+                                } catch (err) {
+                                    return null;
+                                }
                             })}
                         </div>
                     </div>
@@ -102,26 +106,30 @@ export function TrustSection({ data }: { data?: any }) {
                         <h3 className="text-2xl font-bold mb-8 text-center">Company Milestones</h3>
 
                         <div className="grid grid-cols-2 gap-x-8 gap-y-12">
-                            {trustStats.map((stat: any, i: number) => {
-                                const IconComponent = ICON_MAP[stat.icon] || Briefcase;
-                                return (
-                                <motion.div
-                                    initial={{ opacity: 0, scale: 0.9 }}
-                                    whileInView={{ opacity: 1, scale: 1 }}
-                                    transition={{ duration: 0.5, delay: i * 0.1 }}
-                                    viewport={{ once: true }}
-                                    key={stat.label || i}
-                                    className="flex flex-col items-center text-center"
-                                >
-                                    <div className="flex flex-col items-center justify-center p-4 bg-indigo-50/50 dark:bg-indigo-500/5 rounded-2xl border border-indigo-100 dark:border-indigo-500/10 w-full mb-3 aspect-video">
-                                        <IconComponent className="h-5 w-5 text-indigo-400 mb-2" />
-                                        <span className="text-4xl md:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-b from-foreground to-foreground/70">
-                                            {stat.value || "0"}
-                                        </span>
-                                    </div>
-                                    <span className="font-medium text-muted-foreground">{stat.label || "Achieved"}</span>
-                                </motion.div>
-                                );
+                            {(trustStats || []).map((stat: any, i: number) => {
+                                try {
+                                    const IconComponent = ICON_MAP[stat.icon] || Briefcase;
+                                    return (
+                                    <motion.div
+                                        initial={{ opacity: 0, scale: 0.9 }}
+                                        whileInView={{ opacity: 1, scale: 1 }}
+                                        transition={{ duration: 0.5, delay: i * 0.1 }}
+                                        viewport={{ once: true }}
+                                        key={stat.label || i}
+                                        className="flex flex-col items-center text-center"
+                                    >
+                                        <div className="flex flex-col items-center justify-center p-4 bg-indigo-50/50 dark:bg-indigo-500/5 rounded-2xl border border-indigo-100 dark:border-indigo-500/10 w-full mb-3 aspect-video">
+                                            <IconComponent className="h-5 w-5 text-indigo-400 mb-2" />
+                                            <span className="text-4xl md:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-b from-foreground to-foreground/70">
+                                                {stat.value || "0"}
+                                            </span>
+                                        </div>
+                                        <span className="font-medium text-muted-foreground">{stat.label || "Achieved"}</span>
+                                    </motion.div>
+                                    );
+                                } catch (err) {
+                                    return null;
+                                }
                             })}
                         </div>
                     </div>

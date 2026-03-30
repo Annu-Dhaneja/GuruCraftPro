@@ -97,85 +97,90 @@ export function TeamSection({ data }: { data?: any }) {
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-12 max-w-5xl mx-auto">
                     {teamData.map((member: any, index: number) => {
-                        // Dynamically resolve icon component
-                        const IconComponent = ICON_MAP[member.icon] || (index % 2 === 0 ? Palette : Code);
-                        const memberColor = member.color || (index % 2 === 0 ? "text-pink-500" : "text-indigo-500");
-                        const memberBg = member.bg || (index % 2 === 0 ? "bg-pink-500/10" : "bg-indigo-500/10");
+                        try {
+                            // Dynamically resolve icon component
+                            const IconComponent = ICON_MAP[member.icon] || (index % 2 === 0 ? Palette : Code);
+                            const memberColor = member.color || (index % 2 === 0 ? "text-pink-500" : "text-indigo-500");
+                            const memberBg = member.bg || (index % 2 === 0 ? "bg-pink-500/10" : "bg-indigo-500/10");
 
-                        return (
-                            <motion.div
-                                key={member.name || index}
-                                initial={{ opacity: 0, y: 30 }}
-                                whileInView={{ opacity: 1, y: 0 }}
-                                transition={{ delay: index * 0.2 }}
-                                className="group relative bg-[#0D0D12] border border-white/5 rounded-[48px] p-12 hover:border-indigo-500/30 transition-all duration-500 overflow-hidden glass-card"
-                            >
-                                <div className="absolute top-0 right-0 p-8 opacity-10 group-hover:opacity-100 transition-opacity">
-                                    <IconComponent className={`w-24 h-24 ${memberColor}`} />
-                                </div>
-
-                                <div className="flex flex-col h-full relative z-10">
-                                    <div className="flex items-start justify-between mb-8">
-                                        <div className="relative">
-                                            <div className="w-24 h-24 rounded-3xl overflow-hidden border-2 border-white/10 group-hover:border-indigo-500/50 transition-colors duration-500 p-1 bg-gradient-to-br from-indigo-500/20 to-purple-500/20 shadow-2xl">
-                                                <img 
-                                                    src={member.image || `https://api.dicebear.com/7.x/avataaars/svg?seed=${member.name}`} 
-                                                    alt={member.name} 
-                                                    className="w-full h-full object-cover rounded-2xl"
-                                                />
-                                            </div>
-                                            <div className={`absolute -bottom-2 -right-2 w-8 h-8 rounded-xl ${memberBg} border border-white/10 flex items-center justify-center`}>
-                                                <IconComponent className={`w-4 h-4 ${memberColor}`} />
-                                            </div>
-                                        </div>
-
-                                        <a 
-                                            href={member.portfolio || "#"} 
-                                            className="inline-flex items-center gap-2 px-6 py-3 rounded-2xl bg-white/5 border border-white/5 text-xs font-bold uppercase tracking-widest text-indigo-400 hover:bg-white/10 transition-all"
-                                        >
-                                            Portfolio <ExternalLink className="w-3 h-3" />
-                                        </a>
+                            return (
+                                <motion.div
+                                    key={member.name || index}
+                                    initial={{ opacity: 0, y: 30 }}
+                                    whileInView={{ opacity: 1, y: 0 }}
+                                    transition={{ delay: index * 0.2 }}
+                                    className="group relative bg-[#0D0D12] border border-white/5 rounded-[48px] p-12 hover:border-indigo-500/30 transition-all duration-500 overflow-hidden glass-card"
+                                >
+                                    <div className="absolute top-0 right-0 p-8 opacity-10 group-hover:opacity-100 transition-opacity">
+                                        <IconComponent className={`w-24 h-24 ${memberColor}`} />
                                     </div>
 
-                                    <div className="space-y-4 mb-8">
-                                        <div>
-                                            <h3 className="text-3xl font-black text-white tracking-tight leading-none mb-2">{member.name || "Team Member"}</h3>
-                                            <p className="text-indigo-400 font-bold text-sm uppercase tracking-widest">{member.role || "Specialist"}</p>
-                                        </div>
-                                        <p className="text-slate-400 leading-relaxed text-sm font-medium">
-                                            {member.description || "Dedicated to delivering exceptional quality and creative excellence."}
-                                        </p>
-                                    </div>
+                                    <div className="flex flex-col h-full relative z-10">
+                                        <div className="flex items-start justify-between mb-8">
+                                            <div className="relative">
+                                                <div className="w-24 h-24 rounded-3xl overflow-hidden border-2 border-white/10 group-hover:border-indigo-500/50 transition-colors duration-500 p-1 bg-gradient-to-br from-indigo-500/20 to-purple-500/20 shadow-2xl">
+                                                    <img 
+                                                        src={member.image || `https://api.dicebear.com/7.x/avataaars/svg?seed=${member.name}`} 
+                                                        alt={member.name} 
+                                                        className="w-full h-full object-cover rounded-2xl"
+                                                    />
+                                                </div>
+                                                <div className={`absolute -bottom-2 -right-2 w-8 h-8 rounded-xl ${memberBg} border border-white/10 flex items-center justify-center`}>
+                                                    <IconComponent className={`w-4 h-4 ${memberColor}`} />
+                                                </div>
+                                            </div>
 
-                                    <div className="flex flex-wrap gap-2 mb-8 mt-auto">
-                                        {(member.skills || ["Creative", "Strategy"]).map((skill: string) => (
-                                            <span 
-                                                key={skill}
-                                                className="px-3 py-1 rounded-full bg-white/5 border border-white/5 text-[10px] font-bold text-muted-foreground uppercase tracking-widest transition-colors group-hover:text-indigo-300"
+                                            <a 
+                                                href={member.portfolio || "#"} 
+                                                className="inline-flex items-center gap-2 px-6 py-3 rounded-2xl bg-white/5 border border-white/5 text-xs font-bold uppercase tracking-widest text-indigo-400 hover:bg-white/10 transition-all"
                                             >
-                                                {skill}
-                                            </span>
-                                        ))}
-                                    </div>
-
-                                    {/* Social Tray */}
-                                    {member.social && (
-                                        <div className="flex items-center gap-3 pt-8 border-t border-white/5">
-                                            {member.social.instagram && <TeamSocialLink href={member.social.instagram} icon={Instagram} />}
-                                            {member.social.facebook && <TeamSocialLink href={member.social.facebook} icon={Facebook} />}
-                                            {member.social.github && <TeamSocialLink href={member.social.github} icon={Github} />}
-                                            {member.social.linkedin && <TeamSocialLink href={member.social.linkedin} icon={Linkedin} />}
-                                            {member.social.twitter && <TeamSocialLink href={member.social.twitter} icon={Twitter} />}
-                                            {member.social.threads && <TeamSocialLink href={member.social.threads} icon={Share2} />}
-                                            {member.social.behance && <TeamSocialLink href={member.social.behance} icon={Dribbble} />}
-                                            {member.social.youtube && <TeamSocialLink href={member.social.youtube} icon={Youtube} />}
-                                            {member.social.website && <TeamSocialLink href={member.social.website} icon={Globe} />}
-                                            <TeamSocialLink href={`mailto:office@annudesign.com`} icon={Mail} />
+                                                Portfolio <ExternalLink className="w-3 h-3" />
+                                            </a>
                                         </div>
-                                    )}
-                                </div>
-                            </motion.div>
-                        );
+
+                                        <div className="space-y-4 mb-8">
+                                            <div>
+                                                <h3 className="text-3xl font-black text-white tracking-tight leading-none mb-2">{member.name || "Team Member"}</h3>
+                                                <p className="text-indigo-400 font-bold text-sm uppercase tracking-widest">{member.role || "Specialist"}</p>
+                                            </div>
+                                            <p className="text-slate-400 leading-relaxed text-sm font-medium">
+                                                {member.description || "Dedicated to delivering exceptional quality and creative excellence."}
+                                            </p>
+                                        </div>
+
+                                        <div className="flex flex-wrap gap-2 mb-8 mt-auto">
+                                            {(member.skills || ["Creative", "Strategy"]).map((skill: string) => (
+                                                <span 
+                                                    key={skill}
+                                                    className="px-3 py-1 rounded-full bg-white/5 border border-white/5 text-[10px] font-bold text-muted-foreground uppercase tracking-widest transition-colors group-hover:text-indigo-300"
+                                                >
+                                                    {skill}
+                                                </span>
+                                            ))}
+                                        </div>
+
+                                        {/* Social Tray */}
+                                        {member.social && (
+                                            <div className="flex items-center gap-3 pt-8 border-t border-white/5">
+                                                {member.social.instagram && <TeamSocialLink href={member.social.instagram} icon={Instagram} />}
+                                                {member.social.facebook && <TeamSocialLink href={member.social.facebook} icon={Facebook} />}
+                                                {member.social.github && <TeamSocialLink href={member.social.github} icon={Github} />}
+                                                {member.social.linkedin && <TeamSocialLink href={member.social.linkedin} icon={Linkedin} />}
+                                                {member.social.twitter && <TeamSocialLink href={member.social.twitter} icon={Twitter} />}
+                                                {member.social.threads && <TeamSocialLink href={member.social.threads} icon={Share2} />}
+                                                {member.social.behance && <TeamSocialLink href={member.social.behance} icon={Dribbble} />}
+                                                {member.social.youtube && <TeamSocialLink href={member.social.youtube} icon={Youtube} />}
+                                                {member.social.website && <TeamSocialLink href={member.social.website} icon={Globe} />}
+                                                <TeamSocialLink href={`mailto:office@annudesign.com`} icon={Mail} />
+                                            </div>
+                                        )}
+                                    </div>
+                                </motion.div>
+                            );
+                        } catch (err) {
+                            console.error("Error rendering team member:", err);
+                            return null;
+                        }
                     })}
                 </div>
             </div>
