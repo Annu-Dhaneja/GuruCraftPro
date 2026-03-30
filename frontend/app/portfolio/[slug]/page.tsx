@@ -171,11 +171,13 @@ const projects = {
 // --- Page Component ---
 
 interface PageProps {
-    params: { slug: string };
+    params: Promise<{ slug: string }>;
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
-    const { slug } = params;
+    const { slug } = await params;
+    
+    if (!slug) return { title: "Portfolio" };
 
     // SEO for Categories
     if (categories.includes(slug)) {
