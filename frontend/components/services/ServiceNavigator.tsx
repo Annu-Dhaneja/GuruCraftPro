@@ -9,8 +9,10 @@ const categories = [
     { name: "Wedding Plan", slug: "wedding-plan", icon: Heart, color: "text-rose-400", bg: "bg-rose-400/10", border: "border-rose-400/20" },
     { name: "Guru Ji Art", slug: "guru-ji-art", icon: Palette, color: "text-amber-400", bg: "bg-amber-400/10", border: "border-amber-400/20" },
     { name: "Game Design", slug: "game-design", icon: Gamepad2, color: "text-purple-400", bg: "bg-purple-400/10", border: "border-purple-400/20" },
-    { name: "Vantage Ecom", slug: "vantage-ecom", icon: ShoppingBag, color: "text-emerald-400", bg: "bg-emerald-400/10", border: "border-emerald-400/20" }
+    { name: "Vantage Ecom", slug: "vantage-ecom", icon: ShoppingBag, color: "text-emerald-400", bg: "bg-emerald-400/10", border: "border-emerald-400/20" },
+    { name: "7-Day Clothes", slug: "7-day-cloths", icon: Shirt, color: "text-indigo-400", bg: "bg-indigo-400/10", border: "border-indigo-400/20" }
 ];
+import { Shirt } from "lucide-react";
 
 export function ServiceNavigator() {
     return (

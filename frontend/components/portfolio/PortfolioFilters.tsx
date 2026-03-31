@@ -10,8 +10,10 @@ import { cn } from "@/lib/utils";
 import { usePortfolioStore } from "@/lib/store/usePortfolioStore";
 import { useSearchParams } from "next/navigation";
 import { useEffect } from "react";
+import Link from "next/link";
+import { slugify } from "@/lib/utils";
 
-export function PortfolioFilters({ categories: customCategories }: { categories?: string[] }) {
+export function PortfolioFilters({ categories: customCategories, initialCategory }: { categories?: string[], initialCategory?: string }) {
     const defaultCategories = ["All", "Logo Design", "Banner Design", "Thumbnail", "T-Shirt Design", "Mug Design", "Wedding Card", "Book Design", "Resume Design", "7 DAY CLOTHS", "WEDDING PLAN", "GURU JI ART", "PHOTO EDITOR", "GAME DESIGN", "VANTAGE ECOM"];
     const categories = customCategories && customCategories.length > 1 ? customCategories : defaultCategories;
     const styles = ["Minimal", "Modern", "Bold", "Luxury", "Playful", "Digital Art", "Streetwear", "Professional"];
@@ -20,11 +22,15 @@ export function PortfolioFilters({ categories: customCategories }: { categories?
     const searchParams = useSearchParams();
 
     useEffect(() => {
+        if (initialCategory) {
+            setActiveCategory(initialCategory);
+            return;
+        }
         const cat = searchParams.get("category");
         if (cat && categories.includes(cat)) {
             setActiveCategory(cat);
         }
-    }, [searchParams, categories, setActiveCategory]);
+    }, [searchParams, categories, setActiveCategory, initialCategory]);
 
     return (
         <section className="sticky top-16 z-40 bg-background/80 backdrop-blur-md border-b border-border transition-all">
@@ -34,9 +40,9 @@ export function PortfolioFilters({ categories: customCategories }: { categories?
                     {/* Categories (Desktop) */}
                     <div className="hidden md:flex items-center gap-2 overflow-x-auto no-scrollbar mask-gradient-right flex-1">
                         {categories.map((cat) => (
-                            <button
+                            <Link
                                 key={cat}
-                                onClick={() => setActiveCategory(cat)}
+                                href={cat === "All" ? "/portfolio" : `/portfolio/${slugify(cat)}`}
                                 className={cn(
                                     "px-4 py-2 rounded-full text-sm font-medium transition-colors whitespace-nowrap",
                                     activeCategory === cat
@@ -45,7 +51,7 @@ export function PortfolioFilters({ categories: customCategories }: { categories?
                                 )}
                             >
                                 {cat}
-                            </button>
+                            </Link>
                         ))}
                     </div>
 

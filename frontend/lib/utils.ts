@@ -27,3 +27,33 @@ export function getApiUrl(path: string = "") {
 
   return cleanPath ? `${cleanBase}/${cleanPath}` : cleanBase;
 }
+export function slugify(text: string) {
+  return text
+    .toString()
+    .toLowerCase()
+    .trim()
+    .replace(/\s+/g, '-')     // Replace spaces with -
+    .replace(/[^\w-]+/g, '')     // Remove all non-word chars
+    .replace(/--+/g, '-')       // Replace multiple - with single -
+    .replace(/^-+/, '')          // Trim - from start of text
+    .replace(/-+$/, '');         // Trim - from end of text
+}
+
+export function unslugify(slug: string) {
+  // Special cases for exact matches provided by user
+  const specialCases: Record<string, string> = {
+    "guru-ji-art": "GURU JI ART",
+    "vantage-ecom": "VANTAGE ECOM",
+    "7-day-cloths": "7 DAY CLOTHS",
+    "game-design": "GAME DESIGN",
+    "wedding-plan": "WEDDING PLAN",
+    "photo-editor": "PHOTO EDITOR"
+  };
+
+  if (specialCases[slug.toLowerCase()]) return specialCases[slug.toLowerCase()];
+
+  return slug
+    .split('-')
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(' ');
+}

@@ -30,8 +30,18 @@ export default async function FAQPage() {
             const contentType = res.headers.get("content-type");
             if (contentType && contentType.includes("application/json")) {
                 const data = await res.json();
-                faqData = data.sections || [];
-                console.log(`[CMS] Successfully fetched FAQ content`);
+                console.log(`[CMS] Full FAQ Data Received:`, JSON.stringify(data, null, 2));
+                
+                // Be extremely robust: search every section for any 'sections' array in 'content'
+                // This handles various data nesting formats seen in SSOT vs Legacy
+                let allFaqSections = [];
+                if (data.sections && Array.isArray(data.sections)) {
+                    allFaqSections = data.sections.flatMap((s: any) => s.content?.sections || []);
+                }
+                
+                faqData = allFaqSections;
+                
+                console.log(`[CMS] Extracted FAQ Sections:`, faqData.length);
             } else {
                 console.warn(`[CMS] Expected JSON but got ${contentType}`);
                 fetchError = true;

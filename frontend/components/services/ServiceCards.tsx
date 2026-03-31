@@ -1,9 +1,20 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Zap, Users, PenTool, Heart, Palette, Camera, ShoppingBag } from "lucide-react";
+import { Zap, Users, PenTool, Heart, Palette, Camera, ShoppingBag, Shirt, Sparkles, Wand2 } from "lucide-react";
+import Link from "next/link";
 
-const services = [
+const staticServices = [
+    {
+        id: "clothes-planner",
+        title: "7-Day Clothes Planner",
+        description: "AI-powered weekly wardrobe curation based on your age, style, and identity.",
+        icon: Shirt,
+        color: "text-indigo-400",
+        bg: "bg-indigo-500/10",
+        href: "/services/7-day-cloths",
+        badge: "Smart Tool"
+    },
     {
         id: "ai",
         title: "AI Design Services",
@@ -28,47 +39,65 @@ const services = [
         color: "text-pink-500",
         bg: "bg-pink-500/10",
     },
-    { id: "wedding", icon: Heart },
-    { id: "guruji", icon: Palette },
-    { id: "photo", icon: Camera },
-    { id: "vantage", icon: ShoppingBag },
 ];
 
-export function ServiceCards({ data }: { data?: any }) {
-    const cardData = data?.items || services;
-    const title = data?.title || "Choose Your Path";
+const ICON_MAP: Record<string, any> = {
+    "clothes-planner": Shirt,
+    "ai": Zap,
+    "hybrid": Users,
+    "custom": PenTool,
+    "wedding": Heart,
+    "guruji": Palette,
+    "photo": Camera,
+    "vantage": ShoppingBag,
+    "sparkles": Sparkles,
+    "wand": Wand2
+};
 
-    const scrollToSection = (id: string) => {
-        const element = document.getElementById(id);
-        if (element) {
-            element.scrollIntoView({ behavior: "smooth" });
-        }
-    };
+export function ServiceCards({ data }: { data?: any }) {
+    const cardData = data?.items || staticServices;
+    const title = data?.title || "Choose Your Path";
 
     return (
         <section className="py-12 container mx-auto px-4 md:px-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <h2 className="text-3xl font-bold tracking-tight mb-8 sr-only">{title}</h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                 {cardData.map((service: any, index: number) => {
-                    const iconName = typeof service.icon === 'string' ? service.icon : (service.id);
-                    const Icon = (Zap); // Fallback icon mapping logic can be more complex
+                    const iconKey = service.id || "ai";
+                    const Icon = ICON_MAP[iconKey] || Zap;
                     
-                    return (
-                    <motion.div
-                        key={service.id || index}
-                        initial={{ opacity: 0, y: 20 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        transition={{ delay: index * 0.1 }}
-                        className="group cursor-pointer rounded-2xl border border-border bg-card p-8 hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
-                    >
-                        <div className={`h-12 w-12 rounded-xl border border-white/10 bg-indigo-500/10 text-indigo-500 flex items-center justify-center mb-6`}>
-                            <Zap className="h-6 w-6" />
+                    const content = (
+                        <div className="h-full rounded-3xl border border-white/5 bg-slate-900/40 backdrop-blur-md p-8 hover:bg-slate-900/60 transition-all duration-500 group relative overflow-hidden">
+                            {/* Accent Glow */}
+                            <div className="absolute -right-4 -top-4 w-24 h-24 bg-indigo-500/10 rounded-full blur-2xl group-hover:bg-indigo-500/20 transition-all" />
+                            
+                            <div className={`h-14 w-14 rounded-2xl border border-white/10 bg-indigo-500/10 text-indigo-400 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-500`}>
+                                <Icon className="h-7 w-7" />
+                            </div>
+                            
+                            {service.badge && (
+                                <span className="absolute top-8 right-8 text-[10px] font-black uppercase tracking-widest text-indigo-400 bg-indigo-500/10 px-3 py-1 rounded-full border border-indigo-500/20">
+                                    {service.badge}
+                                </span>
+                            )}
+
+                            <h3 className="text-xl font-bold mb-3 text-white italic tracking-tight">{service.title}</h3>
+                            <p className="text-muted-foreground text-sm leading-relaxed mb-6">
+                                {service.description}
+                            </p>
+                            
+                            <div className="flex items-center text-indigo-400 text-[10px] font-black uppercase tracking-widest group-hover:gap-2 transition-all">
+                                <span>Explore Now</span>
+                                <span className="opacity-0 group-hover:opacity-100 transition-opacity">→</span>
+                            </div>
                         </div>
-                        <h3 className="text-xl font-semibold mb-3">{service.title}</h3>
-                        <p className="text-muted-foreground leading-relaxed">
-                            {service.description}
-                        </p>
-                    </motion.div>
                     );
+
+                    if (service.href) {
+                        return <Link key={service.id || index} href={service.href} className="block">{content}</Link>;
+                    }
+
+                    return <div key={service.id || index}>{content}</div>;
                 })}
             </div>
         </section>

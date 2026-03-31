@@ -15,11 +15,13 @@ import {
   Layers,
   Palette,
   CloudUpload,
-  Search
+  Search,
+  Globe
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { getApiUrl } from "@/lib/utils";
 import { useDropzone } from "react-dropzone";
+import Link from "next/link";
 
 // --- Design Tokens ---
 const GENDERS = ["male", "female", "transgender"];
@@ -155,6 +157,12 @@ export default function AdminClothesPlanner() {
                 <p className="text-[10px] font-black text-indigo-400 uppercase tracking-widest">Library Scale</p>
                 <p className="text-2xl font-bold text-white">{outfits.length} Visuals</p>
             </div>
+            <Link href="/services/7-day-cloths" target="_blank">
+                <Button variant="outline" className="h-12 px-6 rounded-2xl border-white/10 hover:bg-white/5 gap-2">
+                    <Globe className="w-4 h-4" />
+                    <span className="text-xs font-bold uppercase tracking-widest">View Live</span>
+                </Button>
+            </Link>
             <div className="w-12 h-12 bg-indigo-500/10 rounded-2xl flex items-center justify-center border border-indigo-500/20 text-indigo-400">
                 <Layers className="w-6 h-6" />
             </div>
