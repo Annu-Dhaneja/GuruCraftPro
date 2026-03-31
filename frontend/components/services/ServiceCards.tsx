@@ -12,7 +12,7 @@ const staticServices = [
         icon: Shirt,
         color: "text-indigo-400",
         bg: "bg-indigo-500/10",
-        href: "/services/7-day-cloths",
+        href: "/services/7-day-clothing-consultation",
         badge: "Smart Tool"
     },
     {

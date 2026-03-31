@@ -11,10 +11,17 @@ const styles = ["Formal", "Casual", "Traditional", "Fusion"];
 export function ConsultationForm({ onSubmit, isLoading }: { onSubmit: (data: any) => void; isLoading: boolean }) {
     const [startDate, setStartDate] = useState(format(new Date(), "yyyy-MM-dd"));
     const [selectedStyle, setSelectedStyle] = useState(styles[0]);
+    const [age, setAge] = useState("25");
+    const [gender, setGender] = useState("female");
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        onSubmit({ start_date: startDate, style_preference: selectedStyle });
+        onSubmit({ 
+          start_date: startDate, 
+          style: selectedStyle,
+          age: parseInt(age),
+          gender: gender
+        });
     };
 
     return (
@@ -44,7 +51,7 @@ export function ConsultationForm({ onSubmit, isLoading }: { onSubmit: (data: any
                                 key={style}
                                 type="button"
                                 onClick={() => setSelectedStyle(style)}
-                                className={`h-14 rounded-xl border transition-all flex items-center justify-center gap-2 px-4 ${
+                                className={`h-14 rounded-xl border transition-all flex items-center justify-center gap-2 px-4 text-xs font-bold uppercase tracking-widest ${
                                     selectedStyle === style
                                         ? "bg-purple-600 border-purple-500 text-white shadow-lg shadow-purple-600/30"
                                         : "bg-white/5 border-white/10 text-muted-foreground hover:bg-white/10"
@@ -52,6 +59,45 @@ export function ConsultationForm({ onSubmit, isLoading }: { onSubmit: (data: any
                             >
                                 {style}
                                 {selectedStyle === style && <Check className="h-4 w-4" />}
+                            </button>
+                        ))}
+                    </div>
+                </div>
+
+                {/* Age Selection */}
+                <div className="space-y-3">
+                    <label className="text-sm font-medium text-muted-foreground uppercase tracking-wider">Target Age</label>
+                    <div className="relative">
+                        <div className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground flex items-center justify-center font-bold text-xs">#</div>
+                        <Input
+                            type="number"
+                            value={age}
+                            min="1"
+                            max="100"
+                            onChange={(e) => setAge(e.target.value)}
+                            className="pl-12 h-14 bg-white/5 border-white/10 rounded-xl focus:ring-purple-500/50 font-bold"
+                        />
+                    </div>
+                    <p className="text-xs text-muted-foreground">Enter the age for specific recommendations.</p>
+                </div>
+
+                {/* Gender Selection */}
+                <div className="space-y-3">
+                    <label className="text-sm font-medium text-muted-foreground uppercase tracking-wider">Gender</label>
+                    <div className="grid grid-cols-3 gap-3">
+                        {["male", "female", "transgender"].map((g) => (
+                            <button
+                                key={g}
+                                type="button"
+                                onClick={() => setGender(g)}
+                                className={`h-14 rounded-xl border transition-all flex items-center justify-center gap-2 text-xs font-bold uppercase tracking-widest ${
+                                    gender === g
+                                        ? "bg-indigo-600 border-indigo-500 text-white shadow-lg shadow-indigo-600/30"
+                                        : "bg-white/5 border-white/10 text-muted-foreground hover:bg-white/10"
+                                }`}
+                            >
+                                {g === "male" ? "Man" : g === "female" ? "Woman" : "Trans"}
+                                {gender === g && <Check className="h-4 w-4" />}
                             </button>
                         ))}
                     </div>

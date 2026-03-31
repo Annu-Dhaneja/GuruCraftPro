@@ -91,7 +91,7 @@ export default function ClothingConsultationPage() {
               <span className="text-xs font-black uppercase tracking-[0.2em]">AI-Powered Precision</span>
             </div>
             <h1 className="text-5xl md:text-8xl font-black tracking-tighter mb-8 bg-clip-text text-transparent bg-gradient-to-b from-white via-white to-white/20 italic uppercase">
-              Smart 7-Day <br /> Clothes Planner
+              7-Day Clothing <br /> Consultation
             </h1>
             <p className="text-muted-foreground text-lg md:text-xl max-w-2xl mx-auto font-medium leading-relaxed">
               Orchestrate your weekly wardrobe with our advanced categorization logic. Zero effort, maximum style.
