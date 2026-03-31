@@ -12,33 +12,63 @@ import { Footer } from "@/components/footer/Footer";
 
 import { ServiceCategoryRail } from "@/components/portfolio/ServiceCategoryRail";
 import { Suspense } from "react";
+import { ExploreTemplates } from "@/components/portfolio/ExploreTemplates";
 import { getApiUrl } from "@/lib/utils";
 
 export const dynamic = 'force-dynamic';
 
 export default async function PortfolioPage() {
     let portfolioData: any = { categories: ["All"], projects: [] };
+    let fetchError = false;
     
     try {
-        const res = await fetch(getApiUrl("/api/v1/cms/portfolio"), {
-            cache: 'no-store'
+        const url = getApiUrl("/api/v1/cms/portfolio");
+        console.log(`[CMS] Fetching portfolio content from: ${url}`);
+        
+        const res = await fetch(url, {
+            cache: 'no-store',
+            headers: {
+                'Accept': 'application/json'
+            }
         });
+        
         if (res.ok) {
-            portfolioData = await res.json();
+            const contentType = res.headers.get("content-type");
+            if (contentType && contentType.includes("application/json")) {
+                portfolioData = await res.json();
+                console.log(`[CMS] Successfully fetched portfolio content`);
+            } else {
+                console.warn(`[CMS] Expected JSON but got ${contentType}`);
+                fetchError = true;
+            }
+        } else {
+            console.error(`[CMS] Failed to fetch portfolio content: ${res.status} ${res.statusText}`);
+            fetchError = true;
         }
     } catch (error) {
         console.error("Failed to fetch portfolio content:", error);
+        fetchError = true;
     }
 
+    // Default structure for sub-components to prevent crashes
+    const safeData = portfolioData || { categories: ["All"], projects: [] };
+
     return (
-        <main className="min-h-screen bg-background flex flex-col">
-            <PortfolioHero data={portfolioData.hero} />
-            <ServiceCategoryRail data={portfolioData.categories} />
+        <main className="min-h-screen bg-background flex flex-col pt-16">
+            {fetchError && (
+                <div className="bg-yellow-500/10 border-b border-yellow-500/20 py-2 text-center text-sm text-yellow-600 dark:text-yellow-400">
+                    Running in offline/fallback mode. Some sections may show default content.
+                </div>
+            )}
+            
+            <PortfolioHero data={safeData.hero || {}} />
+            <ServiceCategoryRail data={safeData.categories || []} />
             <Suspense fallback={<div className="h-20 bg-muted/20 animate-pulse" />}>
-                <PortfolioFilters categories={portfolioData.categories} />
+                <PortfolioFilters categories={safeData.categories || ["All"]} />
             </Suspense>
-            <PortfolioGrid initialProjects={portfolioData.projects} />
-            <PortfolioCTA data={portfolioData.cta} />
+            <PortfolioGrid initialProjects={safeData.projects || []} />
+            <ExploreTemplates templates={safeData.explore_templates} />
+            <PortfolioCTA data={safeData.cta || {}} />
             <Footer />
         </main>
     );

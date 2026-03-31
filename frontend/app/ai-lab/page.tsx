@@ -58,19 +58,41 @@ const DEFAULT_TOOLS = [
 
 export default async function AILabPage() {
     let aiLabData: any = {};
+    let fetchError = false;
     
     try {
-        const res = await fetch(getApiUrl("/api/v1/cms/ai_lab"), {
-            cache: 'no-store'
+        const url = getApiUrl("/api/v1/cms/ai_lab");
+        console.log(`[CMS] Fetching AI Lab content from: ${url}`);
+        
+        const res = await fetch(url, {
+            cache: 'no-store',
+            headers: {
+                'Accept': 'application/json'
+            }
         });
+        
         if (res.ok) {
-            aiLabData = await res.json();
+            const contentType = res.headers.get("content-type");
+            if (contentType && contentType.includes("application/json")) {
+                aiLabData = await res.json();
+                console.log(`[CMS] Successfully fetched AI Lab content`);
+            } else {
+                console.warn(`[CMS] Expected JSON but got ${contentType}`);
+                fetchError = true;
+            }
+        } else {
+            console.error(`[CMS] Failed to fetch AI Lab content: ${res.status} ${res.statusText}`);
+            fetchError = true;
         }
     } catch (error) {
         console.error("Failed to fetch AI Lab content:", error);
+        fetchError = true;
     }
 
-    const { hero, tools: dynamicTools } = aiLabData;
+    // Default structure for sub-components to prevent crashes
+    const safeData = aiLabData || {};
+    const hero = safeData.hero;
+    const dynamicTools = safeData.tools;
     const activeTools = dynamicTools?.length > 0 ? dynamicTools : DEFAULT_TOOLS;
     
     // Helper to dynamically render imported lucide icons based on string names returned from CMS
@@ -85,7 +107,12 @@ export default async function AILabPage() {
     };
 
     return (
-        <main className="min-h-screen bg-background flex flex-col">
+        <main className="min-h-screen bg-background flex flex-col pt-16">
+            {fetchError && (
+                <div className="bg-yellow-500/10 border-b border-yellow-500/20 py-2 text-center text-sm text-yellow-600 dark:text-yellow-400">
+                    Running in offline/fallback mode. Some sections may show default content.
+                </div>
+            )}
             {/* Hero Section */}
             <section className="relative py-24 px-4 md:px-6 overflow-hidden">
                 <div className="absolute inset-0 bg-grid-slate-200/50 [mask-image:linear-gradient(0deg,white,rgba(255,255,255,0.6))] -z-10" />

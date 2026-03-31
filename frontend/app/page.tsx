@@ -40,39 +40,68 @@ const fallbackHomeHero = {
 };
 
 export default async function Home() {
-  // Fetch dynamic home page data from the backend
-  let homeData: any = {};
-  try {
-    const res = await fetch(getApiUrl("/api/v1/cms/home"), { 
-      cache: 'no-store' // Keep it dynamic
-    });
-    if (res.ok) {
-      homeData = await res.json();
+    // Fetch dynamic home page data from the backend
+    let homeData: any = {};
+    let fetchError = false;
+
+    try {
+        const url = getApiUrl("/api/v1/cms/home");
+        console.log(`[CMS] Fetching home content from: ${url}`);
+        
+        const res = await fetch(url, {
+            cache: 'no-store',
+            headers: {
+                'Accept': 'application/json'
+            }
+        });
+        
+        if (res.ok) {
+            const contentType = res.headers.get("content-type");
+            if (contentType && contentType.includes("application/json")) {
+                homeData = await res.json();
+                console.log(`[CMS] Successfully fetched home content`);
+            } else {
+                console.warn(`[CMS] Expected JSON but got ${contentType}`);
+                fetchError = true;
+            }
+        } else {
+            console.error(`[CMS] Failed to fetch home content: ${res.status} ${res.statusText}`);
+            fetchError = true;
+        }
+    } catch (error) {
+        console.error("Failed to fetch home content:", error);
+        fetchError = true;
     }
-  } catch (error) {
-    console.error("Failed to fetch home content:", error);
-  }
 
-  return (
-    <main className="flex min-h-screen flex-col bg-background overflow-x-hidden w-full">
-      <Hero data={homeData.hero || fallbackHomeHero} />
+    // Default structure for sub-components to prevent crashes
+    const safeData = homeData || {};
 
-      {homeData.trust_strip && <TrustStrip data={homeData.trust_strip} />}
-      <ServiceCategoryRail data={homeData.service_category_rail} />
-      <VirtualDressingRoom data={homeData.virtual_dressing_room} />
-      <PortfolioPreview data={homeData.portfolio_preview} />
-      <AILabPreview data={homeData.ai_lab_preview} />
+    return (
+        <main className="flex min-h-screen flex-col bg-background overflow-x-hidden w-full pt-16">
+            {fetchError && (
+                <div className="bg-yellow-500/10 border-b border-yellow-500/20 py-2 text-center text-sm text-yellow-600 dark:text-yellow-400">
+                    Running in offline/fallback mode. Some sections may show default content.
+                </div>
+            )}
+            
+            <Hero data={safeData.hero || fallbackHomeHero} />
 
-      {homeData.how_it_works && <HowItWorks data={homeData.how_it_works} />}
-      {homeData.main_services && <MainServices data={homeData.main_services} />}
-      <GraphicDesignServices data={homeData.graphic_design_services} />
-      <ThingsSection data={homeData.things_section} />
-      
-      {homeData.testimonials && <Testimonials data={homeData.testimonials} />}
-      <AboutSection data={homeData.about_section} />
-      <BlogPreview data={homeData.blog_preview} />
-      <FinalCTA data={homeData.final_cta} />
-      <Footer />
-    </main>
-  );
+            {safeData.trust_strip && <TrustStrip data={safeData.trust_strip} />}
+            <ServiceCategoryRail data={safeData.service_category_rail} />
+            <VirtualDressingRoom data={safeData.virtual_dressing_room} />
+            <PortfolioPreview data={safeData.portfolio_preview} />
+            <AILabPreview data={safeData.ai_lab_preview} />
+
+            {safeData.how_it_works && <HowItWorks data={safeData.how_it_works} />}
+            {safeData.main_services && <MainServices data={safeData.main_services} />}
+            <GraphicDesignServices data={safeData.graphic_design_services} />
+            <ThingsSection data={safeData.things_section} />
+            
+            {safeData.testimonials && <Testimonials data={safeData.testimonials} />}
+            <AboutSection data={safeData.about_section} />
+            <BlogPreview data={safeData.blog_preview} />
+            <FinalCTA data={safeData.final_cta} />
+            <Footer />
+        </main>
+    );
 }

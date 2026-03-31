@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 
 export default function RequestPage() {
     return (
-        <main className="min-h-screen bg-background flex flex-col">
+        <main className="min-h-screen bg-background flex flex-col pt-16">
             <RequestHero />
             <ProjectIntakeForm />
             <Footer />

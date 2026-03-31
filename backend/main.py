@@ -17,6 +17,25 @@ app = FastAPI(
 )
 
 
+# ── Global Exception Handler ──────────────────────────────────────────
+from starlette.requests import Request
+from fastapi.responses import JSONResponse
+
+@app.exception_handler(Exception)
+async def global_exception_handler(request: Request, exc: Exception):
+    import traceback
+    print(f"GLOBAL ERROR: {str(exc)}")
+    traceback.print_exc()
+    return JSONResponse(
+        status_code=500,
+        content={
+            "status": "error",
+            "message": "Internal Server Error",
+            "detail": str(exc)
+        },
+    )
+
+
 # ── CORS MUST be registered BEFORE routes ────────────────────────────
 app.add_middleware(
     CORSMiddleware,
@@ -499,6 +518,7 @@ def startup_db_sync() -> None:
             "hero": { "title": "Our Portfolio", "description": "A collection of digital excellence." },
             "categories": ["All", "Web", "Branding", "AI"],
             "projects": [],
+            "explore_templates": [],
             "cta": { "title": "Have a project in mind?", "link": "/contact" }
         })
             

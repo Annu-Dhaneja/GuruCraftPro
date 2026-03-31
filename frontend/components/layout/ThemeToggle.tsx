@@ -7,6 +7,20 @@ import { Button } from "@/components/ui/button";
 
 export function ThemeToggle() {
   const { theme, setTheme } = useTheme();
+  const [mounted, setMounted] = React.useState(false);
+
+  // useEffect runs only on the client, so we can safely show the UI after mounting
+  React.useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) {
+    return (
+      <Button variant="ghost" size="icon" className="rounded-full w-10 h-10">
+        <Sun className="h-[1.2rem] w-[1.2rem] opacity-20" />
+      </Button>
+    );
+  }
 
   return (
     <Button

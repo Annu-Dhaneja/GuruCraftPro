@@ -176,6 +176,49 @@ export default function AdminPortfolioPage() {
           </section>
 
           <section className="bg-white/5 p-8 rounded-2xl border border-white/10 backdrop-blur-sm">
+            <div className="flex justify-between items-center mb-10">
+              <h2 className="text-2xl font-bold flex items-center gap-3 text-indigo-300">
+                <span className="w-2 h-8 bg-emerald-500 rounded-full" />
+                Explore Templates
+              </h2>
+              <Button onClick={() => addArrayItem("", "explore_templates", { id: Date.now().toString(), title: "New Template", description: "", image: "", link: "" })} className="bg-emerald-600 hover:bg-emerald-700 shadow-lg shadow-emerald-600/20">
+                <Plus className="w-4 h-4 mr-2" /> Add Template
+              </Button>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              {data.explore_templates?.map((template: any, i: number) => (
+                <div key={i} className="group bg-slate-900/40 backdrop-blur-md p-8 rounded-3xl border border-white/5 hover:border-emerald-500/30 transition-all duration-300 shadow-xl relative">
+                  <div className="space-y-6">
+                    <div>
+                      <CMSEditor.Label>Template Title</CMSEditor.Label>
+                      <CMSEditor.Input value={template.title} onChange={(v) => handleArrayChange("", "explore_templates", i, "title", v)} />
+                    </div>
+                    <div>
+                      <CMSEditor.Label>Description</CMSEditor.Label>
+                      <CMSEditor.Input value={template.description} isTextarea onChange={(v) => handleArrayChange("", "explore_templates", i, "description", v)} />
+                    </div>
+                    <div>
+                      <CMSEditor.Label>Image Preview</CMSEditor.Label>
+                      <CMSEditor.ImageUpload value={template.image} onChange={(v) => handleArrayChange("", "explore_templates", i, "image", v)} />
+                    </div>
+                    <div>
+                      <CMSEditor.Label>Template Link</CMSEditor.Label>
+                      <CMSEditor.Input value={template.link} onChange={(v) => handleArrayChange("", "explore_templates", i, "link", v)} placeholder="/ai-lab/virtual-try-on" />
+                    </div>
+                  </div>
+                  
+                  <div className="absolute top-4 right-4">
+                    <Button variant="ghost" size="icon" onClick={() => removeArrayItem("", "explore_templates", i)} className="text-muted-foreground hover:text-destructive hover:bg-destructive/10 rounded-full h-10 w-10">
+                      <Trash2 className="w-4 h-4" />
+                    </Button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          <section className="bg-white/5 p-8 rounded-2xl border border-white/10 backdrop-blur-sm">
             <h2 className="text-2xl font-bold mb-8 flex items-center gap-3 text-indigo-300">
               <span className="w-2 h-8 bg-indigo-500 rounded-full" />
               Portfolio CTA
