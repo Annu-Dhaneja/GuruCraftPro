@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { Home, LayoutDashboard, Settings, Globe, ArrowLeft, Sparkles, LogOut, ShieldCheck, BookOpen, PenTool, Lightbulb, Mail } from "lucide-react";
+import { Home, LayoutDashboard, Settings, Globe, ArrowLeft, Sparkles, LogOut, ShieldCheck, BookOpen, PenTool, Lightbulb, Mail, Shirt } from "lucide-react";
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
@@ -27,6 +27,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     const navItems = [
     { name: "Dashboard", href: "/admin", icon: LayoutDashboard },
     { name: "Site Configuration", href: "/admin/site-config", icon: Settings },
+    { name: "Try Dress", href: "/admin/wardrobe", icon: Shirt },
     { name: "Home Page CMS", href: "/admin/home", icon: Home },
     { name: "About Page CMS", href: "/admin/about", icon: BookOpen },
     { name: "Services CMS", href: "/admin/services", icon: LayoutDashboard },
