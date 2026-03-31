@@ -23,6 +23,16 @@ import { getApiUrl } from "@/lib/utils";
 import { useDropzone } from "react-dropzone";
 import Link from "next/link";
 
+// --- Helpers ---
+const Input = ({ value, onChange, className = "" }: { value: string, onChange: (v: string) => void, className?: string }) => (
+    <input 
+      type="text" 
+      value={value || ""} 
+      onChange={e => onChange(e.target.value)} 
+      className={`bg-black/40 border border-white/10 rounded-2xl py-3 px-4 text-sm font-bold text-white focus:outline-none focus:ring-2 focus:ring-indigo-500/30 transition-all ${className}`} 
+    />
+);
+
 // --- Design Tokens ---
 const GENDERS = ["male", "female", "transgender"];
 const AGE_GROUPS = ["baby", "kids", "teen", "young_adult", "adult", "senior"];
@@ -40,11 +50,12 @@ export default function AdminClothesPlanner() {
   
   // Batch Tags
   const [batchTags, setBatchTags] = useState({
-    gender: "male",
+    gender: "female",
     age_group: "young_adult",
     style: "Casual",
     season: "All",
-    occasion: "Daily wear"
+    occasion: "Daily wear",
+    color: "#000000"
   });
 
   const toggleSelection = (id: number) => {
@@ -102,20 +113,19 @@ export default function AdminClothesPlanner() {
     
     try {
       for (const file of files) {
-        // 1. Upload logic (Simulated here as base64 for local dev/sync)
-        // In production, this would go to S3/Cloudinary via a dedicated media endpoint
         const base64 = await toBase64(file);
         
         await fetch(getApiUrl("/api/v1/outfits/"), {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            image_url: base64, // Using base64 for immediate demo, replace with URL in prod
+            image_url: base64,
             gender: batchTags.gender,
             age_group: batchTags.age_group,
             style: batchTags.style,
             season: batchTags.season,
-            occasion: batchTags.occasion
+            occasion: batchTags.occasion,
+            color: batchTags.color
           })
         });
       }
@@ -149,7 +159,7 @@ export default function AdminClothesPlanner() {
     <div className="p-4 md:p-10 max-w-7xl mx-auto space-y-12 animate-in fade-in duration-700 pb-20">
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 bg-white/5 p-8 rounded-[2.5rem] border border-white/10 backdrop-blur-md">
         <div>
-          <h1 className="text-5xl font-black text-white tracking-tighter italic">Fashion Matrix Ingest</h1>
+          <h1 className="text-5xl font-black text-white tracking-tighter italic uppercase">Fashion Matrix Ingest</h1>
           <p className="text-muted-foreground font-medium mt-2">Scalable orchestration of high-fidelity clothing assets.</p>
         </div>
         <div className="flex items-center gap-4">
@@ -163,7 +173,7 @@ export default function AdminClothesPlanner() {
                     <span className="text-xs font-bold uppercase tracking-widest">View Live</span>
                 </Button>
             </Link>
-            <div className="w-12 h-12 bg-indigo-500/10 rounded-2xl flex items-center justify-center border border-indigo-500/20 text-indigo-400">
+            <div className="w-12 h-12 bg-indigo-500/10 rounded-2xl flex items-center justify-center border border-indigo-500/20 text-indigo-400 shadow-[0_0_20px_rgba(99,102,241,0.1)]">
                 <Layers className="w-6 h-6" />
             </div>
         </div>
@@ -183,7 +193,7 @@ export default function AdminClothesPlanner() {
                   className={`border-2 border-dashed rounded-[2.5rem] p-12 text-center transition-all cursor-pointer ${isDragActive ? 'bg-indigo-500/10 border-indigo-500' : 'bg-white/5 border-white/10 hover:border-white/20'}`}
                 >
                     <input {...getInputProps()} />
-                    <CloudUpload className="w-12 h-12 mx-auto text-indigo-400 mb-4" />
+                    <CloudUpload className="w-12 h-12 mx-auto text-indigo-400 mb-4 animate-bounce" />
                     <p className="text-sm font-bold text-white">Drop visuals to index</p>
                     <p className="text-xs text-muted-foreground mt-2">HEIC, JPEG, PNG supported</p>
                 </div>
@@ -240,7 +250,7 @@ export default function AdminClothesPlanner() {
                             onChange={(e) => setBatchTags(p=>({...p, age_group: e.target.value}))}
                             className="w-full bg-black/40 border border-white/10 rounded-2xl py-3 px-4 text-sm font-bold text-white appearance-none focus:outline-none focus:ring-2 focus:ring-indigo-500/30"
                         >
-                            {AGE_GROUPS.map(a => <option key={a} value={a} className="bg-slate-900">{a}</option>)}
+                            {AGE_GROUPS.map(a => <option key={a} value={a} className="bg-slate-900 uppercase">{a}</option>)}
                         </select>
                     </div>
 
@@ -256,12 +266,32 @@ export default function AdminClothesPlanner() {
                             {STYLES.map(s => <option key={s} value={s} className="bg-slate-900">{s}</option>)}
                         </select>
                     </div>
+
+                    {/* New Color Field */}
+                    <div className="space-y-3">
+                        <label className="text-[10px] font-black text-indigo-400 uppercase tracking-widest flex items-center gap-2">
+                            <Palette className="w-3.5 h-3.5" /> Color Accent
+                        </label>
+                        <div className="flex gap-3">
+                            <input 
+                                type="color" 
+                                value={batchTags.color}
+                                onChange={(e) => setBatchTags(p=>({...p, color: e.target.value}))}
+                                className="w-12 h-12 rounded-xl bg-black/40 border border-white/10 cursor-pointer p-1"
+                            />
+                            <Input 
+                                value={batchTags.color} 
+                                onChange={(v) => setBatchTags(p=>({...p, color: v}))}
+                                className="flex-1 bg-black/40 border border-white/10 rounded-xl px-4 text-xs font-mono font-bold text-white uppercase"
+                            />
+                        </div>
+                    </div>
                 </div>
 
                 <Button 
                     onClick={uploadBatch}
                     disabled={uploading || files.length === 0}
-                    className="w-full bg-indigo-600 hover:bg-slate-200 hover:text-black rounded-2xl py-7 font-black tracking-widest uppercase shadow-2xl shadow-indigo-600/30 transition-all disabled:opacity-50"
+                    className="w-full bg-indigo-600 hover:bg-white hover:text-black rounded-2xl py-8 font-black tracking-widest uppercase shadow-2xl shadow-indigo-600/30 transition-all hover:scale-[1.02] active:scale-95 disabled:opacity-50"
                 >
                     {uploading ? 'Processing Matrix...' : `Deploy ${files.length} Visuals`}
                 </Button>

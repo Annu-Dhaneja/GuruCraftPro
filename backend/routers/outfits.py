@@ -25,50 +25,67 @@ def suggest_outfits(
     db: Session = Depends(get_db)
 ):
     """
-    7 random suggestions with smart fallback:
+    Generate a 7-day clothing plan with high-fidelity fallback logic.
+    Tiers:
     1. Exact (Age Group + Gender + Style)
-    2. Same Gender + Style (Ignore Age)
-    3. Same Style Only
+    2. Gender + Style (Ignore Age)
+    3. Style Only (Broadest Match)
     """
     target_age_group = age_group
     if age is not None:
         target_age_group = map_age_group(age)
     
-    # Tier 1: Exact matches
-    results = db.query(ClothingPiece).filter(
-        ClothingPiece.age_group == target_age_group,
-        ClothingPiece.gender == gender,
-        ClothingPiece.style == style
-    ).all()
+    # Track selected IDs to ensure no duplicates in the response
+    selected_ids = []
+    final_results = []
 
-    # Tier 2: Same Gender + Style
-    if len(results) < 7:
-        tier2 = db.query(ClothingPiece).filter(
-            ClothingPiece.gender == gender,
-            ClothingPiece.style == style,
-            ~ClothingPiece.id.in_([r.id for r in results])
-        ).all()
-        results.extend(tier2)
+    def get_pool(filter_age=True, filter_gender=True):
+        query = db.query(ClothingPiece).filter(ClothingPiece.style == style)
+        if filter_age and target_age_group:
+            query = query.filter(ClothingPiece.age_group == target_age_group)
+        if filter_gender:
+            query = query.filter(ClothingPiece.gender == gender)
+        
+        # Exclude already selected items
+        if selected_ids:
+            query = query.filter(~ClothingPiece.id.in_(selected_ids))
+            
+        return query.order_by(func.random()).all()
 
-    # Tier 3: Same Style Only
-    if len(results) < 7:
-        tier3 = db.query(ClothingPiece).filter(
-            ClothingPiece.style == style,
-            ~ClothingPiece.id.in_([r.id for r in results])
-        ).all()
-        results.extend(tier3)
+    # Tier 1: Exact Match
+    tier1 = get_pool(filter_age=True, filter_gender=True)
+    for item in tier1:
+        if len(final_results) >= 7: break
+        final_results.append(item)
+        selected_ids.append(item.id)
 
+    # Tier 2: Gender + Style (Ignore Age)
+    if len(final_results) < 7:
+        tier2 = get_pool(filter_age=False, filter_gender=True)
+        for item in tier2:
+            if len(final_results) >= 7: break
+            final_results.append(item)
+            selected_ids.append(item.id)
+
+    # Tier 3: Style Only
+    if len(final_results) < 7:
+        tier3 = get_pool(filter_age=False, filter_gender=False)
+        for item in tier3:
+            if len(final_results) >= 7: break
+            final_results.append(item)
+            selected_ids.append(item.id)
+
+    # If still under 7, we must duplicate some items (with unique day labels)
     import random
-    random.shuffle(results)
-    
-    # Final slice and return with day labeling
-    final_outfits = results[:7]
-    
-    # If still < 7, duplicate from final_outfits to reach 7
-    if len(final_outfits) > 0 and len(final_outfits) < 7:
-        while len(final_outfits) < 7:
-            final_outfits.append(random.choice(final_outfits))
-    
+    if len(final_results) > 0 and len(final_results) < 7:
+        source_pool = list(final_results)
+        while len(final_results) < 7:
+            final_results.append(random.choice(source_pool))
+
+    # Guard: if database is totally empty for this style, return 404 or empty
+    if not final_results:
+        return []
+
     return [
         {
             "day_number": i + 1,
@@ -82,7 +99,7 @@ def suggest_outfits(
                 "occasion": o.occasion,
                 "color": o.color
             }
-        } for i, o in enumerate(final_outfits)
+        } for i, o in enumerate(final_results[:7])
     ]
 
 @router.get("/", response_model=List[ClothingPieceSchema])

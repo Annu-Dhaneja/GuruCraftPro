@@ -105,10 +105,10 @@ class ClothingPiece(Base):
     gender = Column(String, index=True) # male, female, transgender
     age_group = Column(String, index=True) # baby, kids, teen, young_adult, adult, senior
     style = Column(String, index=True) # Formal, Casual, Traditional, Fusion
-    category = Column(String, nullable=True) # e.g. "Topwear", "Bottomwear"
-    season = Column(String, default="All") # Summer, Winter, All
-    occasion = Column(String, default="Daily wear") # Office, Party, Daily wear, Wedding
-    color = Column(String, nullable=True) # hex or name
+    category = Column(String, nullable=True, index=True) # e.g. "Topwear", "Bottomwear"
+    season = Column(String, default="All", index=True) # Summer, Winter, All
+    occasion = Column(String, default="Daily wear", index=True) # Office, Party, Daily wear, Wedding
+    color = Column(String, nullable=True, index=True) # hex or name
     created_at = Column(DateTime, default=datetime.utcnow)
 
 
