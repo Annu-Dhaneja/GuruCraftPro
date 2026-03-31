@@ -515,10 +515,28 @@ def startup_db_sync() -> None:
 
         # Portfolio Page Defaults
         patch_cms_page("portfolio", {
-            "hero": { "title": "Our Portfolio", "description": "A collection of digital excellence." },
-            "categories": ["All", "Web", "Branding", "AI"],
-            "projects": [],
-            "explore_templates": [],
+            "hero": { 
+                "title": "Selected Works", 
+                "description": "A curated collection of branding, digital experiences, and AI-driven design projects." 
+            },
+            "categories": ["All", "Web Development", "Branding", "AI Art", "Creative Lab"],
+            "projects": [
+                {
+                    "title": "Ommee.in",
+                    "category": "Web Development",
+                    "image": "https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=2000",
+                    "link": "https://ommee.in",
+                    "description": "High-performance e-commerce platform built for modern retail."
+                }
+            ],
+            "explore_templates": [
+                {
+                    "title": "Aesthetic E-com Starter",
+                    "description": "Clean, minimal layout for luxury brands.",
+                    "image": "https://images.unsplash.com/photo-1441986300917-64674bd600d8?q=80&w=2000",
+                    "link": "#"
+                }
+            ],
             "cta": { "title": "Have a project in mind?", "link": "/contact" }
         })
             
