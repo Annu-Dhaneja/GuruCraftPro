@@ -53,6 +53,71 @@ def list_posts(db: Session = Depends(database.get_db)):
     return db.query(Post).order_by(Post.created_at.desc()).all()
 
 
+@router.post("/posts", summary="Create New Blog Post")
+def create_post(
+    post: dict, # Using dict for flexibility or import schemas.blog.PostCreate
+    db: Session = Depends(database.get_db),
+    current_user: models.User = Depends(auth.get_current_user),
+):
+    from core.models import Post
+    db_post = Post(
+        title=post.get("title"),
+        slug=post.get("slug"),
+        content=post.get("content"),
+        status=post.get("status", "published"),
+        author_id=current_user.id
+    )
+    db.add(db_post)
+    db.commit()
+    db.refresh(db_post)
+    return db_post
+
+
+@router.put("/posts/{post_id}", summary="Update Existing Blog Post")
+def update_post(
+    post_id: int,
+    post: dict,
+    db: Session = Depends(database.get_db),
+    current_user: models.User = Depends(auth.get_current_user),
+):
+    from core.models import Post
+    db_post = db.query(Post).filter(Post.id == post_id).first()
+    if not db_post:
+        raise HTTPException(status_code=404, detail="Post not found")
+    
+    for key, value in post.items():
+        if hasattr(db_post, key):
+            setattr(db_post, key, value)
+            
+    db.commit()
+    db.refresh(db_post)
+    return db_post
+
+
+@router.delete("/posts/{post_id}", summary="Delete Blog Post")
+def delete_post(
+    post_id: int,
+    db: Session = Depends(database.get_db),
+    current_user: models.User = Depends(auth.get_current_user),
+):
+    from core.models import Post
+    db_post = db.query(Post).filter(Post.id == post_id).first()
+    if not db_post:
+        raise HTTPException(status_code=404, detail="Post not found")
+    db.delete(db_post)
+    db.commit()
+    return {"message": "Post deleted"}
+
+
+@router.get("/posts/slug/{slug}", summary="Get Post by Slug")
+def get_post_by_slug(slug: str, db: Session = Depends(database.get_db)):
+    from core.models import Post
+    post = db.query(Post).filter(Post.slug == slug).first()
+    if not post:
+        raise HTTPException(status_code=404, detail="Post not found")
+    return post
+
+
 @router.get("/media", summary="List All Uploaded Assets")
 def list_media(db: Session = Depends(database.get_db)):
     from core.models import Media

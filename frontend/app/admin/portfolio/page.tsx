@@ -51,19 +51,35 @@ export default function AdminPortfolioPage() {
                 </div>
               ))}
             </div>
-            <div className="max-w-md">
-              <CMSEditor.Input 
-                value="" 
-                onChange={(v) => {
-                  if (v.endsWith(",")) {
-                    const newCat = v.slice(0, -1).trim();
-                    if (newCat && !data.categories.includes(newCat)) {
-                      handleChange("categories", [...data.categories, newCat]);
+            <div className="max-w-md flex gap-2">
+              <input 
+                type="text"
+                placeholder="Type category and press Enter or Comma..."
+                className="flex h-11 w-full rounded-lg border border-white/10 bg-black/40 px-4 py-2 text-sm ring-offset-indigo-500 placeholder:text-muted-foreground/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500/50 transition-all text-white"
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ',') {
+                    if (e.key === ',') e.preventDefault();
+                    const val = e.currentTarget.value.trim();
+                    if (val && !data.categories.includes(val)) {
+                      handleChange("categories", [...data.categories, val]);
+                      e.currentTarget.value = "";
                     }
                   }
-                }} 
-                placeholder="Type category and press comma to add..."
+                }}
               />
+              <Button 
+                onClick={(e) => {
+                    const input = e.currentTarget.previousSibling as HTMLInputElement;
+                    const val = input.value.trim();
+                    if (val && !data.categories.includes(val)) {
+                      handleChange("categories", [...data.categories, val]);
+                      input.value = "";
+                    }
+                }}
+                className="bg-indigo-600 hover:bg-indigo-500"
+              >
+                  Add
+              </Button>
             </div>
           </section>
 

@@ -102,9 +102,13 @@ class ClothingPiece(Base):
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String, nullable=True)
     image_url = Column(String)
-    gender = Column(String) # Male, Female, Unisex
-    age_group = Column(String) # Kids, Teens, Adult, Senior
-    style = Column(String) # Formal, Casual, Traditional, Fusion
+    gender = Column(String, index=True) # male, female, transgender
+    age_group = Column(String, index=True) # baby, kids, teen, young_adult, adult, senior
+    style = Column(String, index=True) # Formal, Casual, Traditional, Fusion
+    category = Column(String, nullable=True) # e.g. "Topwear", "Bottomwear"
+    season = Column(String, default="All") # Summer, Winter, All
+    occasion = Column(String, default="Daily wear") # Office, Party, Daily wear, Wedding
+    color = Column(String, nullable=True) # hex or name
     created_at = Column(DateTime, default=datetime.utcnow)
 
 

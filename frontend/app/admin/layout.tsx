@@ -34,6 +34,8 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     { name: "AI Lab CMS", href: "/admin/ai-lab", icon: Sparkles },
     { name: "Portfolio CMS", href: "/admin/portfolio", icon: PenTool },
     { name: "Resources CMS", href: "/admin/resources", icon: Lightbulb },
+    { name: "FAQ CMS", href: "/admin/faq", icon: ShieldCheck },
+    { name: "Clothing Library", href: "/admin/clothes-planner", icon: Sparkles },
     { name: "Contact Page CMS", href: "/admin/contact", icon: Mail },
     { name: "Content Blog", href: "/admin/blog", icon: BookOpen },
     { name: "User Management", href: "/admin/users", icon: Globe },

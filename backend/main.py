@@ -6,7 +6,7 @@ from sqlalchemy import text
 
 from core.config import settings
 from core.database import Base, engine
-from routers import admin_cms, admin_contacts, ai_lab, clothing_consultation, contact, user, wardrobe, site_config
+from routers import admin_cms, admin_contacts, ai_lab, clothing_consultation, contact, user, wardrobe, site_config, outfits
 
 # Create tables if they don't exist
 Base.metadata.create_all(bind=engine)
@@ -163,7 +163,8 @@ def startup_db_sync() -> None:
                     {"label": "Support Center", "href": "/contact"}
                 ],
                 "footer_bottom": {
-                    "copyright": "© 2026 GurucraftPro. All rights reserved."
+                    "copyright": "© 2026 GurucraftPro. All rights reserved.",
+                    "email": "hello@gurucraftpro.com"
                 }
             })
             print("Startup: site_config SEEDED")
@@ -681,7 +682,7 @@ def startup_db_sync() -> None:
                 },
                 "alternatives": {
                     "title": "Or connect with us directly",
-                    "email": "hello@annudesign.com",
+                    "email": "hello@gurucraftpro.com",
                     "booking_link": "/book",
                     "booking_text": "Book a Free Consultation"
                 },
@@ -856,6 +857,7 @@ app.include_router(admin_cms.router, prefix="/api/v1/cms", tags=["cms"])
 app.include_router(admin_contacts.router, prefix="/api/v1/admin", tags=["admin"])
 app.include_router(wardrobe.router, prefix="/api/v1/wardrobe", tags=["wardrobe"])
 app.include_router(site_config.router, prefix="/api/v1/site-config", tags=["site-config"])
+app.include_router(outfits.router, prefix="/api/v1/outfits", tags=["outfits"])
 
 # ── Static Files ─────────────────────────────────────────────────────
 # Create local uploads dir to ensure backend CMS uploads work securely
