@@ -21,18 +21,43 @@ interface ServiceData {
     description: string;
   };
   sections?: Section[];
+  hero?: any;
+  features?: any;
+  cta?: any;
 }
 
 export function ServiceTemplate({ data }: { data: ServiceData }) {
-  if (!data || !data.sections) return (
-    <div className="min-h-screen flex items-center justify-center bg-background">
-      <div className="animate-pulse text-muted-foreground font-bold tracking-widest uppercase">Loading Experience...</div>
-    </div>
-  );
+  // Defensive check with fallback for legacy/flattened CMS structures
+  if (!data) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-background">
+        <div className="animate-pulse text-muted-foreground font-bold tracking-widest uppercase italic">Loading experience...</div>
+      </div>
+    );
+  }
+
+  // If data.sections is missing, we check for direct keys (hero, features, cta) 
+  // which is the common flattened structure from our CMS repository.
+  const sections = data.sections || [
+    data.hero ? { type: "hero", slug: "hero", content: data.hero } : null,
+    data.features ? { type: "features", slug: "features", content: { items: data.features } } : null,
+    data.cta ? { type: "cta", slug: "cta", content: data.cta } : null,
+  ].filter(Boolean) as Section[];
+
+  if (sections.length === 0) {
+    return (
+      <div className="min-h-screen flex flex-col items-center justify-center bg-background p-4 text-center">
+        <Wand2 className="w-12 h-12 text-muted-foreground mb-4 opacity-20" />
+        <h2 className="text-xl font-bold mb-2">Experience under construction</h2>
+        <p className="text-muted-foreground text-sm max-w-xs">We're putting the finishing touches on this service. Please check back shortly.</p>
+        <Button variant="link" asChild className="mt-4"><Link href="/services">Back to Services</Link></Button>
+      </div>
+    );
+  }
 
   return (
     <div className="flex flex-col min-h-screen bg-background">
-      {data.sections.map((section, idx) => {
+      {sections.map((section, idx) => {
         switch (section.type) {
           case "hero":
             return <HeroSection key={section.slug || idx} content={section.content} />;
