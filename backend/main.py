@@ -254,14 +254,16 @@ def startup_db_sync() -> None:
             },
             "trust_strip": {
                 "stats": [
-                    {"label": "Projects", "value": "2.5k+"},
-                    {"label": "Clients", "value": "120+"},
-                    {"label": "Rating", "value": "4.9/5"}
+                    {"label": "Designs Delivered", "value": "150+"},
+                    {"label": "Client Satisfaction", "value": "98%"},
+                    {"label": "AI Turnaround", "value": "24h"}
                 ],
                 "companies": [
-                    {"name": "Adobe", "logo": ""},
-                    {"name": "Figma", "logo": ""},
-                    {"name": "Stripe", "logo": ""}
+                    {"name": "Adobe", "logo": "https://cdn.simpleicons.org/adobe/white"},
+                    {"name": "Figma", "logo": "https://cdn.simpleicons.org/figma/white"},
+                    {"name": "Stripe", "logo": "https://cdn.simpleicons.org/stripe/white"},
+                    {"name": "Photoshop", "logo": "https://cdn.simpleicons.org/adobephotoshop/white"},
+                    {"name": "Illustrator", "logo": "https://cdn.simpleicons.org/adobeillustrator/white"}
                 ]
             },
             "service_category_rail": {

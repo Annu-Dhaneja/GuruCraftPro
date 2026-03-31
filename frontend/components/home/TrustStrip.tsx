@@ -56,13 +56,26 @@ export function TrustStrip({ data }: TrustStripProps) {
                             {[...companies, ...companies, ...companies].map((company, index) => (
                                 <div
                                     key={`${company.name}-${index}`}
-                                    className="relative h-8 w-28 opacity-40 hover:opacity-100 transition-opacity duration-500 grayscale hover:grayscale-0 cursor-pointer"
+                                    className="relative flex items-center gap-3 opacity-40 hover:opacity-100 transition-opacity duration-500 grayscale hover:grayscale-0 cursor-pointer group"
                                 >
-                                    <img
-                                        src={company.logo}
-                                        alt={company.name}
-                                        className="object-contain w-full h-full"
-                                    />
+                                    {company.logo ? (
+                                        <div className="h-8 w-28 relative">
+                                            <img
+                                                src={company.logo}
+                                                alt={company.name}
+                                                className="object-contain w-full h-full"
+                                                onError={(e) => {
+                                                    // Fallback if the logo URL fails to load
+                                                    e.currentTarget.style.display = 'none';
+                                                    e.currentTarget.parentElement?.nextElementSibling?.classList.remove('hidden');
+                                                }}
+                                            />
+                                            {/* Fallback text hidden by default if logo exists */}
+                                            <span className="hidden text-sm font-bold tracking-widest text-white uppercase">{company.name}</span>
+                                        </div>
+                                    ) : (
+                                        <span className="text-sm font-bold tracking-widest text-white uppercase">{company.name}</span>
+                                    )}
                                 </div>
                             ))}
                         </motion.div>
