@@ -12,7 +12,8 @@ import {
   Users,
   ChevronDown,
   ArrowRight,
-  Zap
+  Zap,
+  Info
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { getApiUrl } from "@/lib/utils";
