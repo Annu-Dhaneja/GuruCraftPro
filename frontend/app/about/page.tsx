@@ -52,7 +52,17 @@ export default async function AboutPage() {
     }
 
     // Default structure for sub-components to prevent crashes
-    const safeData = aboutData || {};
+    // If backend returns SSOT format (sections array), normalize it now as an extra guard
+    const rawData = aboutData || {};
+    let safeData = rawData;
+    
+    // If it's pure SSOT format with a sections array, flatten it here too (redundant but safe)
+    if (Array.isArray(rawData.sections)) {
+        safeData = {};
+        rawData.sections.forEach((s: any) => {
+            if (s.slug) safeData[s.slug] = s.content || {};
+        });
+    }
 
     return (
         <main className="min-h-screen bg-background flex flex-col pt-16">

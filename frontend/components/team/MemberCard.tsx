@@ -85,12 +85,12 @@ export function MemberCard({ member }: { member: MemberProps }) {
                 </div>
 
                 <p className="text-slate-400 text-sm leading-relaxed max-w-xs line-clamp-2">
-                    {member.description}
+                    {member.description || "Creative specialist dedicated to excellence."}
                 </p>
 
                 {/* Skill Badges */}
                 <div className="flex flex-wrap justify-center gap-2">
-                    {member.skills.map((skill) => (
+                    {(member.skills || []).map((skill) => (
                         <span 
                             key={skill}
                             className="px-3 py-1 rounded-full bg-white/5 border border-white/5 text-[9px] font-bold text-slate-300 uppercase tracking-widest hover:border-[#6C63FF]/30 hover:text-[#6C63FF] transition-colors"
@@ -109,12 +109,12 @@ export function MemberCard({ member }: { member: MemberProps }) {
                         }}
                         className="flex items-center justify-center gap-4"
                     >
-                        {member.social.github && <SocialIcon href={member.social.github} icon={Github} />}
-                        {member.social.linkedin && <SocialIcon href={member.social.linkedin} icon={Linkedin} />}
-                        {member.social.twitter && <SocialIcon href={member.social.twitter} icon={Twitter} />}
-                        {member.social.instagram && <SocialIcon href={member.social.instagram} icon={Instagram} />}
-                        {member.social.website && <SocialIcon href={member.social.website} icon={Globe} />}
-                        {member.social.email && <SocialIcon href={`mailto:${member.social.email}`} icon={Mail} />}
+                        {member.social?.github && <SocialIcon href={member.social.github} icon={Github} />}
+                        {member.social?.linkedin && <SocialIcon href={member.social.linkedin} icon={Linkedin} />}
+                        {member.social?.twitter && <SocialIcon href={member.social.twitter} icon={Twitter} />}
+                        {member.social?.instagram && <SocialIcon href={member.social.instagram} icon={Instagram} />}
+                        {member.social?.website && <SocialIcon href={member.social.website} icon={Globe} />}
+                        {member.social?.email && <SocialIcon href={`mailto:${member.social.email}`} icon={Mail} />}
                     </motion.div>
                 </div>
             </div>

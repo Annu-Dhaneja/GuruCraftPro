@@ -62,7 +62,7 @@ const team = [
 ];
 
 export function TeamSection({ data }: { data?: any }) {
-    const teamData = data?.members || team;
+    const teamData = Array.isArray(data?.members) && data.members.length > 0 ? data.members : team;
     const sectionTitle = data?.title || "Team Behind the Craft";
     const sectionSubtitle = data?.subtitle || "A collective of visionary minds merging advanced AI technology with timeless creative mastery.";
 
@@ -92,24 +92,10 @@ export function TeamSection({ data }: { data?: any }) {
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-12 max-w-5xl mx-auto">
                     {teamData.map((member: any, index: number) => (
-                        <MemberCard key={member.name || index} member={member} />
+                        <MemberCard key={member?.name || index} member={member} />
                     ))}
                 </div>
             </div>
         </section>
-    );
-}
-
-function TeamSocialLink({ href, icon: Icon }: { href: string; icon: any }) {
-    if (!href || href === "#") return null;
-    return (
-        <a 
-            href={href} 
-            target="_blank" 
-            rel="noopener noreferrer"
-            className="w-10 h-10 rounded-xl bg-white/5 border border-white/5 flex items-center justify-center text-muted-foreground hover:bg-indigo-600/20 hover:text-indigo-400 hover:border-indigo-600/30 transition-all duration-300"
-        >
-            <Icon className="w-5 h-5" />
-        </a>
     );
 }

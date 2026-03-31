@@ -112,7 +112,18 @@ def get_segment_content(
     # Try SSOT First
     ssot_data = get_ssot_page_content(db, segment)
     if ssot_data and ssot_data.get("sections"):
-        return ssot_data
+        # Auto-flatten for the frontend if this is a known legacy-style page
+        # The frontend components expect keys like 'hero', 'team' at the top level
+        flattened = {}
+        for section in ssot_data["sections"]:
+            slug = section.get("slug")
+            if slug:
+                flattened[slug] = section.get("content", {})
+        
+        # Merge meta/title from SSOT page record
+        flattened["_ssot_meta"] = ssot_data.get("meta", {})
+        flattened["title"] = ssot_data.get("title")
+        return flattened
         
     # Special case: global settings
     if segment == "site_config":
