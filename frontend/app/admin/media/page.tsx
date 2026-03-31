@@ -15,13 +15,16 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { getApiUrl } from "@/lib/utils";
+import { BulkUrlImportModal } from "@/components/admin/media/BulkUrlImportModal";
+import { Link as LinkIcon } from "lucide-react";
 
 export default function AdminMediaPage() {
   const [media, setMedia] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [copiedId, setCopiedId] = useState<number | null>(null);
+  const [isImportModalOpen, setIsImportModalOpen] = useState(false);
 
-  useEffect(() => {
+  const fetchMedia = () => {
     setLoading(true);
     fetch(getApiUrl("/api/v1/cms/media"))
       .then(res => res.json())
@@ -33,6 +36,10 @@ export default function AdminMediaPage() {
         console.error("Media Fetch Error:", err);
         setLoading(false);
       });
+  };
+
+  useEffect(() => {
+    fetchMedia();
   }, []);
 
   const copyToClipboard = (url: string, id: number) => {
@@ -48,11 +55,27 @@ export default function AdminMediaPage() {
           <h1 className="text-5xl font-black text-white tracking-tighter">Asset Intelligence</h1>
           <p className="text-muted-foreground font-medium mt-2">Centralized media matrix for all platform visuals.</p>
         </div>
-        <Button className="bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl py-6 px-8 font-bold shadow-xl shadow-indigo-600/20">
-          <Upload className="w-5 h-5 mr-3" />
-          Ingest Assets
-        </Button>
+        <div className="flex gap-4">
+            <Button 
+                onClick={() => setIsImportModalOpen(true)}
+                variant="outline" 
+                className="border-white/10 bg-white/5 hover:bg-white/10 text-white rounded-xl py-6 px-8 font-bold shadow-xl"
+            >
+                <LinkIcon className="w-5 h-5 mr-3" />
+                Import from URL
+            </Button>
+            <Button className="bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl py-6 px-8 font-bold shadow-xl shadow-indigo-600/20">
+                <Upload className="w-5 h-5 mr-3" />
+                Ingest Assets
+            </Button>
+        </div>
       </div>
+
+      <BulkUrlImportModal 
+        isOpen={isImportModalOpen} 
+        onClose={() => setIsImportModalOpen(false)} 
+        onSuccess={fetchMedia}
+      />
 
       <div className="bg-slate-900/50 backdrop-blur-xl border border-white/10 rounded-[2.5rem] p-8 space-y-8 shadow-2xl">
         <div className="flex flex-col md:flex-row justify-between items-center gap-6">

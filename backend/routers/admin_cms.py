@@ -166,6 +166,57 @@ async def upload_image(
         raise HTTPException(status_code=500, detail=f"Media record creation failed: {e}")
 
 
+@router.post("/media/bulk-url-import", summary="Bulk Import Images from URLs")
+async def bulk_url_import(
+    request_data: Dict[str, Any],
+    db: Session = Depends(database.get_db),
+    current_user: models.User = Depends(auth.get_current_user),
+):
+    import urllib.request
+    from core.models import Media
+    
+    urls = request_data.get("urls", [])
+    if not urls:
+        raise HTTPException(status_code=400, detail="No URLs provided")
+    
+    results = []
+    
+    # Ensure upload directory exists
+    UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
+    
+    for url in urls:
+        if not url or not url.startswith("http"):
+            results.append({"url": url, "status": "failed", "error": "Invalid URL format"})
+            continue
+            
+        try:
+            # Generate unique filename based on extension or fallback to .jpg
+            ext = os.path.splitext(url.split('?')[0])[1]
+            if not ext or len(ext) > 5: ext = ".jpg"
+            unique_filename = f"{uuid.uuid4()}{ext}"
+            file_path = UPLOAD_DIR / unique_filename
+            
+            # Download Image
+            headers = {'User-Agent': 'Mozilla/5.0'}
+            req = urllib.request.Request(url, headers=headers)
+            with urllib.request.urlopen(req, timeout=10) as response:
+                with open(file_path, 'wb') as out_file:
+                    out_file.write(response.read())
+            
+            # Create Media Record
+            relative_url = f"/images/uploads/{unique_filename}"
+            new_media = Media(file_url=relative_url, file_name=url.split('/')[-1])
+            db.add(new_media)
+            results.append({"url": url, "status": "success", "relative_url": relative_url})
+            
+        except Exception as e:
+            print(f"Bulk Import Error for {url}: {e}")
+            results.append({"url": url, "status": "failed", "error": str(e)})
+            
+    db.commit()
+    return {"results": results}
+
+
 # ── Dynamic catch-all MUST be LAST ──────────────────────────────────
 
 
