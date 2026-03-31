@@ -1,8 +1,10 @@
 "use client";
 
+import React, { useState } from "react";
 import Link from "next/link";
 import { ArrowUpRight, Sparkles } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import { motion } from "framer-motion";
 
 interface PortfolioItem {
     id: string | number;
@@ -18,41 +20,75 @@ interface PortfolioCardProps {
 }
 
 export function PortfolioCard({ item, onClick }: PortfolioCardProps) {
+    const [mousePos, setMousePos] = React.useState({ x: 0, y: 0 });
+    const [isHovered, setIsHovered] = React.useState(false);
+
+    const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+        const rect = e.currentTarget.getBoundingClientRect();
+        setMousePos({
+            x: e.clientX - rect.left,
+            y: e.clientY - rect.top,
+        });
+    };
+
     return (
-        <div
+        <motion.div
             onClick={onClick}
-            className="group/card block mb-6 break-inside-avoid relative cursor-pointer"
+            onMouseMove={handleMouseMove}
+            onMouseEnter={() => setIsHovered(true)}
+            onMouseLeave={() => setIsHovered(false)}
+            whileHover={{ y: -10 }}
+            className="group/card block mb-8 break-inside-avoid relative cursor-pointer perspective-[1000px]"
         >
-            <div className="relative rounded-xl overflow-hidden bg-muted transform-gpu">
-                {/* Image */}
-                <img
-                    src={item.image}
-                    alt={item.title}
-                    className="w-full h-auto object-cover transition-transform duration-500 group-hover/card:scale-105 transform-gpu"
-                />
+            <motion.div 
+                animate={{ 
+                    rotateX: isHovered ? (mousePos.y - 150) / 20 : 0,
+                    rotateY: isHovered ? (mousePos.x - 150) / -20 : 0,
+                }}
+                transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                className="relative rounded-[2rem] overflow-hidden bg-slate-900 border border-white/5 shadow-2xl glass-card transform-gpu"
+            >
+                {/* Image with Parallax-ish Zoom */}
+                <div className="relative overflow-hidden aspect-[4/5]">
+                    <motion.img
+                        src={item.image}
+                        alt={item.title}
+                        animate={{ scale: isHovered ? 1.1 : 1 }}
+                        transition={{ duration: 0.6 }}
+                        className="w-full h-full object-cover"
+                    />
+                    
+                    {/* Glow Reveal Effect */}
+                    <div 
+                        className="absolute inset-0 z-10 pointer-events-none opacity-0 group-hover/card:opacity-100 transition-opacity duration-500"
+                        style={{
+                            background: `radial-gradient(600px circle at ${mousePos.x}px ${mousePos.y}px, rgba(99, 102, 241, 0.15), transparent 40%)`
+                        }}
+                    />
+                </div>
 
                 {/* AI Badge */}
                 {item.aiAssisted && (
-                    <div className="absolute top-3 left-3 z-10">
-                        <Badge variant="secondary" className="bg-white/90 backdrop-blur-md text-indigo-600 shadow-sm gap-1 px-2 py-0.5 text-[10px] uppercase font-bold tracking-wider">
-                            <Sparkles className="h-3 w-3" /> AI-Assisted
+                    <div className="absolute top-5 left-5 z-20">
+                        <Badge variant="secondary" className="bg-indigo-500/20 backdrop-blur-xl text-indigo-300 border-indigo-500/30 shadow-2xl gap-2 px-3 py-1 text-[10px] uppercase font-black tracking-widest">
+                            <Sparkles className="h-3.5 w-3.5 animate-pulse" /> AI Enhanced
                         </Badge>
                     </div>
                 )}
 
-                {/* Overlay */}
-                <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center backdrop-blur-[2px]">
-                    <div className="bg-white text-black px-6 py-3 rounded-full font-medium transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300 flex items-center gap-2">
-                        View Project <ArrowUpRight className="h-4 w-4" />
+                {/* Content Overlay */}
+                <div className="absolute inset-x-0 bottom-0 p-8 z-20 bg-gradient-to-t from-slate-950 via-slate-950/80 to-transparent">
+                     <div className="flex justify-between items-end gap-4 translate-y-4 group-hover/card:translate-y-0 transition-transform duration-500">
+                        <div className="space-y-1">
+                            <h3 className="text-xl font-bold text-white tracking-tight leading-none">{item.title}</h3>
+                            <p className="text-xs font-bold uppercase tracking-widest text-indigo-400/80">{item.category}</p>
+                        </div>
+                        <div className="w-12 h-12 rounded-2xl bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center text-white backdrop-blur-xl group-hover/card:bg-indigo-500 group-hover/card:text-white transition-all duration-300">
+                            <ArrowUpRight className="h-6 w-6" />
+                        </div>
                     </div>
                 </div>
-            </div>
-
-            {/* Meta (Below Image) */}
-            <div className="mt-3">
-                <h3 className="font-bold text-lg leading-tight group-hover:text-indigo-500 transition-colors">{item.title}</h3>
-                <p className="text-sm text-muted-foreground">{item.category}</p>
-            </div>
-        </div>
+            </motion.div>
+        </motion.div>
     );
 }
