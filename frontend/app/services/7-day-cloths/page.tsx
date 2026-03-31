@@ -37,7 +37,8 @@ export default function ClothingConsultationPage() {
   const [form, setForm] = useState({
     style: "Casual",
     age: "25",
-    gender: "female"
+    gender: "female",
+    startDate: new Date().toISOString().split('T')[0]
   });
 
   const fetchSuggestions = async () => {
@@ -113,9 +114,23 @@ export default function ClothingConsultationPage() {
                     <div className="space-y-12">
                       <div className="space-y-6">
                         <div className="flex items-center justify-between">
-                            <h3 className="text-[10px] font-black text-indigo-400 uppercase tracking-[0.3em]">01. Style Universe</h3>
+                            <h3 className="text-[10px] font-black text-indigo-400 uppercase tracking-[0.3em]">01. Schedule Control</h3>
                             <span className="text-[10px] text-white/40 font-mono italic">REQUIRED</span>
                         </div>
+                        <div className="relative group">
+                          <Calendar className="absolute left-6 top-1/2 -translate-y-1/2 w-5 h-5 text-indigo-400/50 group-focus-within:text-white transition-colors" />
+                          <input
+                            type="date"
+                            value={form.startDate}
+                            onChange={(e) => setForm(p => ({ ...p, startDate: e.target.value }))}
+                            className="w-full bg-black/40 border border-white/5 rounded-[2rem] py-5 pl-16 pr-8 text-sm font-bold text-white focus:outline-none focus:border-indigo-500/40 focus:ring-1 focus:ring-indigo-500/20 transition-all italic"
+                          />
+                        </div>
+                        <p className="text-[10px] text-white/30 font-medium pl-2">Select the first day of your 7-day plan.</p>
+                      </div>
+
+                      <div className="space-y-6">
+                        <h3 className="text-[10px] font-black text-indigo-400 uppercase tracking-[0.3em]">02. Style Universe</h3>
                         <div className="grid grid-cols-2 gap-4">
                           {STYLES.map(s => (
                             <button
@@ -128,51 +143,50 @@ export default function ClothingConsultationPage() {
                           ))}
                         </div>
                       </div>
-
-                      <div className="space-y-6">
-                        <h3 className="text-[10px] font-black text-indigo-400 uppercase tracking-[0.3em]">02. Gender Identity</h3>
-                        <div className="grid grid-cols-1 gap-3">
-                          {GENDERS.map(g => (
-                            <button
-                              key={g.id}
-                              onClick={() => setForm(p => ({ ...p, gender: g.id }))}
-                              className={`w-full py-4 px-6 rounded-2xl text-left text-sm font-bold border transition-all duration-500 flex items-center justify-between group ${form.gender === g.id ? 'bg-indigo-600 border-indigo-400 text-white shadow-[0_0_30px_rgba(79,70,229,0.3)]' : 'bg-white/5 border-white/5 text-muted-foreground hover:bg-white/10 hover:text-white'}`}
-                            >
-                              <span className="flex items-center gap-3">
-                                {g.label}
-                              </span>
-                              <div className={`w-2 h-2 rounded-full transition-all duration-500 ${form.gender === g.id ? 'bg-white shadow-[0_0_10px_white]' : 'bg-white/10 group-hover:bg-white/30'}`} />
-                            </button>
-                          ))}
-                        </div>
-                      </div>
                     </div>
 
-                    {/* Right: Age + Generate */}
+                    {/* Right: Age + Gender + Generate */}
                     <div className="space-y-12">
                       <div className="space-y-6">
                         <div className="flex items-center justify-between">
-                            <h3 className="text-[10px] font-black text-indigo-400 uppercase tracking-[0.3em]">03. Age Dynamics</h3>
-                            <div className="px-3 py-1 bg-indigo-500/10 border border-indigo-500/20 rounded-full">
-                                <span className="text-[9px] font-bold text-indigo-400 uppercase tracking-widest italic">{map_age_group(parseInt(form.age))}</span>
+                            <h3 className="text-[10px] font-black text-indigo-400 uppercase tracking-[0.3em]">03. Personal Matrix</h3>
+                        </div>
+                        
+                        <div className="grid grid-cols-1 gap-6">
+                            {/* Age Input with auto-mapping display */}
+                            <div className="space-y-3">
+                                <div className="flex justify-between items-center px-2">
+                                    <label className="text-[9px] font-bold text-white/40 uppercase tracking-widest">Target Age</label>
+                                    <span className="text-[9px] font-black text-indigo-400 uppercase tracking-widest bg-indigo-500/10 px-2 py-0.5 rounded-full">{map_age_group(parseInt(form.age))}</span>
+                                </div>
+                                <div className="relative group">
+                                    <Users className="absolute left-6 top-1/2 -translate-y-1/2 w-5 h-5 text-indigo-400/50 group-focus-within:text-white transition-colors" />
+                                    <input
+                                        type="number"
+                                        value={form.age}
+                                        min="0" max="100"
+                                        onChange={(e) => setForm(p => ({ ...p, age: e.target.value }))}
+                                        placeholder="Age"
+                                        className="w-full bg-black/40 border border-white/5 rounded-[1.5rem] py-4 pl-16 pr-8 text-lg font-black text-white focus:outline-none focus:border-indigo-500/40 transition-all italic"
+                                    />
+                                </div>
                             </div>
-                        </div>
-                        <div className="relative group">
-                          <Users className="absolute left-6 top-1/2 -translate-y-1/2 w-6 h-6 text-indigo-400/50 group-focus-within:text-white transition-colors" />
-                          <input
-                            type="number"
-                            value={form.age}
-                            min="0" max="100"
-                            onChange={(e) => setForm(p => ({ ...p, age: e.target.value }))}
-                            placeholder="Current Age"
-                            className="w-full bg-black/40 border border-white/5 rounded-[2rem] py-6 pl-16 pr-8 text-2xl font-black text-white focus:outline-none focus:border-indigo-500/40 focus:ring-1 focus:ring-indigo-500/20 transition-all placeholder:text-muted-foreground/20 italic"
-                          />
-                        </div>
-                        <div className="p-6 bg-white/5 rounded-3xl border border-white/5 flex items-start gap-4">
-                          <Zap className="w-4 h-4 text-indigo-400 mt-1 flex-shrink-0" />
-                          <p className="text-xs text-muted-foreground leading-relaxed font-medium">
-                            <span className="text-white">Intelligent Mapping:</span> Our algorithm automatically calculates your lifecycle stage to provide era-appropriate style suggestions.
-                          </p>
+
+                            {/* Gender List */}
+                            <div className="space-y-3">
+                                <label className="text-[9px] font-bold text-white/40 uppercase tracking-widest px-2">Identity</label>
+                                <div className="grid grid-cols-3 gap-2">
+                                    {GENDERS.map(g => (
+                                        <button
+                                            key={g.id}
+                                            onClick={() => setForm(p => ({ ...p, gender: g.id }))}
+                                            className={`py-3 rounded-xl text-[10px] font-black uppercase tracking-tighter border transition-all ${form.gender === g.id ? 'bg-indigo-600 border-indigo-400 text-white' : 'bg-white/5 border-white/5 text-muted-foreground hover:bg-white/10'}`}
+                                        >
+                                            {g.id === "male" ? "Man" : g.id === "female" ? "Woman" : "Trans"}
+                                        </button>
+                                    ))}
+                                </div>
+                            </div>
                         </div>
                       </div>
 
@@ -183,9 +197,8 @@ export default function ClothingConsultationPage() {
                           className="w-full bg-white text-black hover:bg-slate-200 rounded-[2rem] py-10 font-black tracking-[0.3em] uppercase shadow-[0_20px_50px_rgba(255,255,255,0.1)] transition-all hover:scale-[1.02] active:scale-95 disabled:opacity-50 text-base italic overflow-hidden relative group"
                         >
                           <div className="flex items-center gap-3 relative z-10">
-                            {loading ? <RefreshCcw className="w-6 h-6 animate-spin" /> : <span>👉 Generate 7 Outfit Ideas</span>}
+                            {loading ? <RefreshCcw className="w-6 h-6 animate-spin" /> : <span>👉 Generate Weekly Plan</span>}
                           </div>
-                          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000" />
                         </Button>
                       </div>
                     </div>

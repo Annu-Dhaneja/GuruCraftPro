@@ -18,10 +18,9 @@ def map_age_group(age: int) -> str:
 
 @router.get("/suggest")
 def suggest_outfits(
-    gender: str = Query(...),
-    age: Optional[int] = Query(None),
-    age_group: Optional[str] = Query(None),
-    style: str = Query(...),
+    gender: str,
+    age: int,
+    style: str,
     db: Session = Depends(get_db)
 ):
     """
@@ -31,17 +30,16 @@ def suggest_outfits(
     2. Gender + Style (Ignore Age)
     3. Style Only (Broadest Match)
     """
-    target_age_group = age_group
-    if age is not None:
-        target_age_group = map_age_group(age)
+    target_age_group = map_age_group(age)
     
     # Track selected IDs to ensure no duplicates in the response
     selected_ids = []
     final_results = []
 
     def get_pool(filter_age=True, filter_gender=True):
+        # IMPORTANT: Use .style column for style filtering, not .category
         query = db.query(ClothingPiece).filter(ClothingPiece.style == style)
-        if filter_age and target_age_group:
+        if filter_age:
             query = query.filter(ClothingPiece.age_group == target_age_group)
         if filter_gender:
             query = query.filter(ClothingPiece.gender == gender)
@@ -52,14 +50,14 @@ def suggest_outfits(
             
         return query.order_by(func.random()).all()
 
-    # Tier 1: Exact Match
+    # Tier 1: Exact Match (Age Group + Gender + Style)
     tier1 = get_pool(filter_age=True, filter_gender=True)
     for item in tier1:
         if len(final_results) >= 7: break
         final_results.append(item)
         selected_ids.append(item.id)
 
-    # Tier 2: Gender + Style (Ignore Age)
+    # Tier 2: Gender + Style (Ignore Age Group)
     if len(final_results) < 7:
         tier2 = get_pool(filter_age=False, filter_gender=True)
         for item in tier2:
@@ -67,7 +65,7 @@ def suggest_outfits(
             final_results.append(item)
             selected_ids.append(item.id)
 
-    # Tier 3: Style Only
+    # Tier 3: Style Only (Broadest Match)
     if len(final_results) < 7:
         tier3 = get_pool(filter_age=False, filter_gender=False)
         for item in tier3:
@@ -82,7 +80,7 @@ def suggest_outfits(
         while len(final_results) < 7:
             final_results.append(random.choice(source_pool))
 
-    # Guard: if database is totally empty for this style, return 404 or empty
+    # Guard: if database is totally empty for this style, return empty list
     if not final_results:
         return []
 
@@ -91,7 +89,8 @@ def suggest_outfits(
             "day_number": i + 1,
             "id": o.id,
             "image_url": o.image_url,
-            "category": o.style,
+            "style": o.style,
+            "category": o.category,
             "age_group": o.age_group,
             "gender": o.gender,
             "tags": {
