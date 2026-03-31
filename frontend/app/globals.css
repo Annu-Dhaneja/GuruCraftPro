@@ -172,6 +172,61 @@
     transform: scale(1.08);
   }
 
+  .neon-border-glow {
+    position: relative;
+    z-index: 0;
+  }
+
+  .neon-border-glow::before {
+    content: "";
+    position: absolute;
+    inset: -2px;
+    background: linear-gradient(45deg, #6C63FF, #00D4FF, #6C63FF);
+    background-size: 200% auto;
+    z-index: -1;
+    filter: blur(8px);
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    animation: gradient-flow 3s linear infinite;
+    border-radius: inherit;
+  }
+
+  .neon-border-glow:hover::before {
+    opacity: 1;
+  }
+
+  @keyframes gradient-flow {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+
+  .shimmer-sweep {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .shimmer-sweep::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -150%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      to right,
+      transparent,
+      rgba(255, 255, 255, 0.1),
+      transparent
+    );
+    transform: skewX(-20deg);
+    transition: left 0.8s ease-in-out;
+  }
+
+  .shimmer-sweep:hover::after {
+    left: 150%;
+  }
+
   .glass-card {
     background: color-mix(in srgb, var(--card), transparent 60%);
     backdrop-filter: blur(20px) saturate(180%);
