@@ -14,7 +14,8 @@ import {
   Wind,
   Layers,
   Palette,
-  CloudUpload
+  CloudUpload,
+  Search
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { getApiUrl } from "@/lib/utils";
@@ -28,6 +29,8 @@ const STYLES = ["Formal", "Casual", "Traditional", "Fusion"];
 export default function AdminClothesPlanner() {
   const [outfits, setOutfits] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [filter, setFilter] = useState("");
+  const [selectedIds, setSelectedIds] = useState<number[]>([]);
   
   // Bulk Upload State
   const [files, setFiles] = useState<File[]>([]);
@@ -41,6 +44,25 @@ export default function AdminClothesPlanner() {
     season: "All",
     occasion: "Daily wear"
   });
+
+  const toggleSelection = (id: number) => {
+    setSelectedIds(prev => 
+      prev.includes(id) ? prev.filter(i => i !== id) : [...prev, id]
+    );
+  };
+
+  const handleBulkDelete = async () => {
+    if (!confirm(`Delete ${selectedIds.length} selected items?`)) return;
+    try {
+      for (const id of selectedIds) {
+        await fetch(getApiUrl(`/api/v1/outfits/${id}`), { method: "DELETE" });
+      }
+      setSelectedIds([]);
+      fetchOutfits();
+    } catch (err) {
+      console.error("Bulk delete error:", err);
+    }
+  };
 
   useEffect(() => {
     fetchOutfits();
@@ -240,13 +262,35 @@ export default function AdminClothesPlanner() {
 
         {/* Right Column: Library Display */}
         <div className="lg:col-span-2 space-y-8">
-            <div className="flex items-center justify-between px-2">
-                <h2 className="text-3xl font-black text-white italic tracking-tighter">INDEXED ASSETS</h2>
-                <div className="flex gap-4">
-                    <div className="bg-emerald-500/10 border border-emerald-500/20 px-4 py-2 rounded-xl flex items-center gap-2">
+            <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6 px-2">
+                <div className="space-y-1">
+                    <h2 className="text-3xl font-black text-white italic tracking-tighter">INDEXED ASSETS</h2>
+                    <div className="flex items-center gap-2">
                         <div className="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse shadow-[0_0_10px_rgb(16,185,129)]" />
                         <span className="text-[10px] font-black text-emerald-400 uppercase tracking-widest">Active Matrix</span>
                     </div>
+                </div>
+                
+                {/* Advanced Filtering */}
+                <div className="flex flex-wrap gap-3">
+                    <div className="bg-white/5 border border-white/10 rounded-xl px-3 py-1.5 flex items-center gap-2">
+                        <Search className="w-3.5 h-3.5 text-muted-foreground" />
+                        <input 
+                            placeholder="Filter library..." 
+                            className="bg-transparent border-none text-[10px] font-bold text-white focus:ring-0 w-24 outline-none"
+                            onChange={(e) => setFilter(e.target.value)}
+                        />
+                    </div>
+                    <Button 
+                        variant="ghost" 
+                        size="sm" 
+                        disabled={selectedIds.length === 0}
+                        onClick={handleBulkDelete}
+                        className="bg-rose-500/10 text-rose-400 border border-rose-500/20 hover:bg-rose-500 hover:text-white rounded-xl text-[10px] font-black uppercase tracking-widest px-4"
+                    >
+                        <Trash2 className="w-3 h-3 mr-2" />
+                        Purge Selected ({selectedIds.length})
+                    </Button>
                 </div>
             </div>
 
@@ -255,9 +299,23 @@ export default function AdminClothesPlanner() {
                     Array.from({length: 6}).map((_, i) => (
                         <div key={i} className="aspect-[3/4] bg-white/5 rounded-[2.5rem] animate-pulse border border-white/5" />
                     ))
-                ) : outfits.map((outfit) => (
-                    <div key={outfit.id} className="group relative aspect-[3/4] rounded-[2.5rem] overflow-hidden border border-white/10 hover:border-indigo-500/50 transition-all duration-500 shadow-2xl">
-                        <img src={outfit.image_url} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" alt="Outfit" />
+                ) : outfits.filter(o => !filter || o.style.toLowerCase().includes(filter.toLowerCase()) || o.gender.toLowerCase().includes(filter.toLowerCase())).map((outfit) => (
+                    <div 
+                        key={outfit.id} 
+                        onClick={() => toggleSelection(outfit.id)}
+                        className={`group relative aspect-[3/4] rounded-[2.5rem] overflow-hidden border transition-all duration-500 shadow-2xl cursor-pointer ${selectedIds.includes(outfit.id) ? 'border-indigo-500 bg-indigo-500/10 scale-[0.98]' : 'border-white/10 hover:border-indigo-500/50'}`}
+                    >
+                        <img src={outfit.image_url} className={`w-full h-full object-cover transition-transform duration-700 ${selectedIds.includes(outfit.id) ? 'opacity-50' : 'group-hover:scale-110'}`} alt="Outfit" />
+                        
+                        {/* Selected Indicator */}
+                        {selectedIds.includes(outfit.id) && (
+                            <div className="absolute inset-0 flex items-center justify-center bg-indigo-500/20 backdrop-blur-[2px]">
+                                <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center text-indigo-600 shadow-2xl animate-in zoom-in-50 duration-300">
+                                    <Check className="w-6 h-6 stroke-[4]" />
+                                </div>
+                            </div>
+                        )}
+
                         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                         
                         {/* Meta Badges */}
@@ -269,7 +327,7 @@ export default function AdminClothesPlanner() {
                             <div className="flex items-center justify-between">
                                 <span className="text-[10px] font-bold text-white uppercase italic">{outfit.age_group}</span>
                                 <button 
-                                    onClick={() => handleDelete(outfit.id)}
+                                    onClick={(e) => { e.stopPropagation(); handleDelete(outfit.id); }}
                                     className="w-8 h-8 bg-rose-500/20 hover:bg-rose-500 transition-all rounded-lg flex items-center justify-center text-rose-400 hover:text-white"
                                 >
                                     <Trash2 className="w-4 h-4" />
