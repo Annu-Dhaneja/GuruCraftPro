@@ -128,9 +128,34 @@ def update_segment_content(
     db: Session = Depends(database.get_db),
     current_user: models.User = Depends(auth.get_current_user),
 ):
-    updated_content = cms_service.update_content(db, segment, content)
-    return {
-        "status": "success",
-        "message": f"{segment.capitalize()} content updated successfully",
-        "content": updated_content,
-    }
+    try:
+        from repositories.cms_ssot import get_ssot_page_content, update_ssot_page_content
+        from core.models import CMSPage
+
+        # Case 1: Handle SSOT-managed pages (The new priority system)
+        is_ssot = db.query(CMSPage).filter(CMSPage.slug == segment).first() is not None
+        
+        # If it's a known service, it might be in SSOT even if not yet fully initialized
+        known_service_pages = ["photo-editor", "wedding-plan", "guru-ji-art", "game-design", "vantage-ecom"]
+        if is_ssot or segment in known_service_pages:
+            print(f"CMS PUT: Updating SSOT segment '{segment}'")
+            update_ssot_page_content(db, segment, content)
+            return {
+                "status": "success",
+                "message": f"{segment.capitalize()} (SSOT) content updated successfully",
+                "content": get_ssot_page_content(db, segment) # Re-fetch to return clean state
+            }
+
+        # Case 2: Handle Legacy pages (Fallback)
+        print(f"CMS PUT: Updating Legacy segment '{segment}'")
+        updated_content = cms_service.update_content(db, segment, content)
+        return {
+            "status": "success",
+            "message": f"{segment.capitalize()} (Legacy) content updated successfully",
+            "content": updated_content,
+        }
+    except Exception as exc:
+        print(f"CMS PUT ERROR (segment '{segment}'): {str(exc)}")
+        # Note: Global exception handler will also catch this, 
+        # but re-raising helps maintain the stack trace for our handler
+        raise HTTPException(status_code=500, detail=f"CMS Save Error for {segment}: {str(exc)}")

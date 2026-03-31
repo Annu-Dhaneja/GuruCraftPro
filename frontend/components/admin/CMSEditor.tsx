@@ -157,6 +157,7 @@ export function CMSEditor({
 
   const handleSave = async () => {
     const token = localStorage.getItem("token");
+    setStatus("Saving...");
     try {
       const res = await fetch(getApiUrl(`/api/v1/cms/${segment}`), {
         method: "PUT",
@@ -166,14 +167,17 @@ export function CMSEditor({
         },
         body: JSON.stringify(data)
       });
+
       if (res.ok) {
         setStatus("Saved successfully!");
         setTimeout(() => setStatus(""), 3000);
       } else {
-        setStatus("Error saving.");
+        const errorData = await res.json().catch(() => ({}));
+        setStatus(`Error: ${errorData.detail || errorData.message || "Server Error"}`);
       }
     } catch (e) {
-      setStatus("Error saving data.");
+      console.error("Save Error:", e);
+      setStatus("Error: Connection Failed");
     }
   };
 

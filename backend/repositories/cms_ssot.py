@@ -123,3 +123,47 @@ def link_section_to_page(db: Session, page_slug: str, section_slug: str, order: 
 
     db.commit()
     return True
+def update_ssot_page_content(db: Session, page_slug: str, content: Dict[str, Any]) -> bool:
+    """
+    Updates an SSOT page by iterating through the keys/sections of the provided content.
+    Expects data in the same format it was fetched (Hero, Features, etc. at top level).
+    """
+    page = db.query(CMSPage).filter(CMSPage.slug == page_slug).first()
+    if not page:
+        page = CMSPage(title=page_slug.title(), slug=page_slug)
+        db.add(page)
+        db.flush()
+
+    # The content dictionary for an SSOT page usually contains section slugs as keys
+    # or it contains a 'sections' array if sent in the expanded format.
+    
+    # CASE 1: Expanded sections array (The standard SSOT format)
+    if "sections" in content and isinstance(content["sections"], list):
+        for idx, sec_data in enumerate(content["sections"]):
+            if not isinstance(sec_data, dict): continue
+            
+            sec_slug = sec_data.get("slug")
+            sec_type = sec_data.get("type", "hero")
+            sec_content = sec_data.get("content", {})
+            
+            if sec_slug:
+                upsert_reusable_section(db, sec_slug, sec_type, sec_content)
+                link_section_to_page(db, page_slug, sec_slug, order=idx)
+        return True
+
+    # CASE 2: Flattened top-level keys (The common legacy-compatible format)
+    # We treat each top-level key as a section slug for this page
+    for section_slug, section_content in content.items():
+        # Skip metadata keys
+        if section_slug in ["title", "slug", "meta"]: continue
+        
+        # Determine type (heuristic)
+        # Note: In a real system, we might look up the existing section type
+        section_type = "hero"
+        if "features" in section_slug or "list" in section_slug: section_type = "features"
+        if "cta" in section_slug: section_type = "cta"
+        
+        upsert_reusable_section(db, section_slug, section_type, section_content)
+        link_section_to_page(db, page_slug, section_slug)
+        
+    return True
