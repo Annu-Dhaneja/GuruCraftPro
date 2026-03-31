@@ -152,7 +152,7 @@ export default function AdminDashboardPage() {
                 { label: "Edit About Page", link: "/admin/about", icon: Users },
                 { label: "Edit Portfolio", link: "/admin/portfolio", icon: Search },
                 { label: "Edit Services", link: "/admin/services", icon: LayoutDashboard },
-                { label: "Manage Wardrobe", link: "/admin/wardrobe", icon: Sparkles, highlight: true },
+                { label: "Manage 7-Day Planner", link: "/admin/clothes-planner", icon: Sparkles, highlight: true },
               ].map((action, i) => (
                 <Link key={i} href={action.link} className={`flex items-center justify-between p-4 border rounded-xl transition-all group ${action.highlight ? 'bg-indigo-600/10 border-indigo-500/50 hover:bg-indigo-600/20' : 'bg-white/5 border-white/5 hover:bg-white/10'}`}>
                   <div className="flex items-center gap-3">

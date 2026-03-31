@@ -2,7 +2,7 @@
 
 import { CMSEditor } from "@/components/admin/CMSEditor";
 import { Button } from "@/components/ui/button";
-import { Plus, Trash2, ArrowLeft, Sparkles } from "lucide-react";
+import { Plus, Trash2, ArrowLeft, Sparkles, PenTool } from "lucide-react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 
@@ -39,6 +39,17 @@ export default function AdminIndividualServicePage() {
                 Customize every pixel of the {serviceName} experience. Changes will reflect instantly on the live site.
               </p>
             </div>
+
+            {slug === '7-day-clothing-consultation' && (
+              <div className="flex items-center gap-4">
+                <Link href="/admin/clothes-planner">
+                  <Button className="h-14 px-8 rounded-2xl bg-indigo-600 hover:bg-white hover:text-black gap-3 shadow-2xl shadow-indigo-600/20 font-bold transition-all transition-transform active:scale-95">
+                    <Sparkles className="w-5 h-5" />
+                    <span className="uppercase tracking-widest text-xs">Manage Inventory</span>
+                  </Button>
+                </Link>
+              </div>
+            )}
           </div>
         </div>
       </div>

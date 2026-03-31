@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { 
   Calendar, Sparkles, ArrowLeft, RefreshCcw, Heart, ArrowRight,
@@ -32,6 +32,7 @@ const map_age_group = (age: number) => {
 export default function ClothingConsultationPage() {
   const [outfits, setOutfits] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
+  const [cmsData, setCmsData] = useState<any>(null);
 
   // Form State
   const [form, setForm] = useState({
@@ -40,6 +41,13 @@ export default function ClothingConsultationPage() {
     gender: "female",
     startDate: new Date().toISOString().split('T')[0]
   });
+
+  useEffect(() => {
+    fetch(getApiUrl("/api/v1/cms/7-day-clothing-consultation"))
+      .then(res => res.json())
+      .then(data => setCmsData(data))
+      .catch(err => console.error("CMS Fetch Error:", err));
+  }, []);
 
   const fetchSuggestions = async () => {
     setLoading(true);
@@ -90,11 +98,11 @@ export default function ClothingConsultationPage() {
               <Sparkles className="h-4 w-4 animate-pulse" />
               <span className="text-xs font-black uppercase tracking-[0.2em]">AI-Powered Precision</span>
             </div>
-            <h1 className="text-5xl md:text-8xl font-black tracking-tighter mb-8 bg-clip-text text-transparent bg-gradient-to-b from-white via-white to-white/20 italic uppercase">
-              7-Day Clothing <br /> Consultation
+            <h1 className="text-5xl md:text-8xl font-black tracking-tighter mb-8 bg-clip-text text-transparent bg-gradient-to-b from-white via-white to-white/20 italic uppercase font-outfit">
+              {cmsData?.hero?.title || "7-Day Clothing Consultation"}
             </h1>
             <p className="text-muted-foreground text-lg md:text-xl max-w-2xl mx-auto font-medium leading-relaxed">
-              Orchestrate your weekly wardrobe with our advanced categorization logic. Zero effort, maximum style.
+              {cmsData?.hero?.description || "Orchestrate your weekly wardrobe with our advanced categorization logic. Zero effort, maximum style."}
             </p>
           </motion.div>
 

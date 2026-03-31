@@ -27,7 +27,8 @@ export default function AdminServicesPage() {
                 { name: "Wedding Plan", slug: "wedding-plan" },
                 { name: "Guru Ji Art", slug: "guru-ji-art" },
                 { name: "Game Design", slug: "game-design" },
-                { name: "Vantage Ecom", slug: "vantage-ecom" }
+                { name: "Vantage Ecom", slug: "vantage-ecom" },
+                { name: "Clothes Planner", slug: "7-day-clothing-consultation" }
               ].map((service) => (
                 <Button key={service.slug} variant="secondary" className="bg-white/5 hover:bg-white/10 border border-white/10 h-auto py-4 flex flex-col gap-2 rounded-xl" asChild>
                   <Link href={`/admin/services/${service.slug}`}>
