@@ -452,9 +452,33 @@ def startup_db_sync() -> None:
                 }
             },
             "guru-ji-art": {
-                "hero": { "title": "Guru Ji Divine Art", "subtitle": "Spiritual Vision", "description": "Experience divine blessings through immersive AR and premium digital spiritual art.", "image": "https://images.unsplash.com/photo-1582555172866-f73bb12a2ab3?q=80&w=2000" },
-                "features": [{"title": "AR Darshan", "description": "Immersive 3D experiences."}, {"title": "Premium Canvas", "description": "Museum-grade art prints."}],
-                "cta": { "title": "Explore Art", "link": "/guruji-darshan" }
+                "hero": {
+                    "title": "Guru Ji Divine Art",
+                    "subtitle": "Spiritual Vision",
+                    "description": "\"Art is not just a visual experience; it's a spiritual journey that connects the soul to the divine frequency.\"",
+                    "image": "https://images.unsplash.com/photo-1582555172866-f73bb12a2ab3?q=80&w=2670"
+                },
+                "artworks": [
+                    { "title": "Radiant Blessing", "desc": "Oil on Canvas, 4x6ft", "src": "https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?q=80&w=2000" },
+                    { "title": "Infinite Peace", "desc": "Digital Sacred Geometry", "src": "https://images.unsplash.com/photo-1582555172866-f73bb12a2ab3?q=80&w=2000" },
+                    { "title": "Eternal Grace", "desc": "Gold Leaf Embellishment", "src": "https://images.unsplash.com/photo-1550684848-fac1c5b4e853?q=80&w=2000" }
+                ],
+                "products": [
+                    { "title": "3D Spiritual Canvas", "description": "Premium museum-grade canvas with textured brushwork.", "price": "₹12,499", "image": "https://images.unsplash.com/photo-1549490349-8643362247b5?q=80&w=2000" },
+                    { "title": "AR-Enabled Frame", "description": "Scan the frame with your phone to see the art come to life.", "price": "₹18,999", "image": "https://images.unsplash.com/photo-1582555172866-f73bb12a2ab3?q=80&w=2000" },
+                    { "title": "Digital Blueprint", "description": "High-resolution digital file for personalized spiritual spaces.", "price": "₹4,999", "image": "https://images.unsplash.com/photo-1550684848-fac1c5b4e853?q=80&w=2000" }
+                ],
+                "story": {
+                    "title": "The Legacy of Divine Art",
+                    "description": "Annu Design Studio bridges the gap between ancient spiritual symbolism and modern artistic expression.",
+                    "points": ["Hand-painted traditional techniques", "Premium archival quality materials", "AR Integrated Experiences"],
+                    "image": "https://images.unsplash.com/photo-1549490349-8643362247b5?q=80&w=2574"
+                },
+                "cta": {
+                    "title": "Own a Masterpiece",
+                    "description": "\"A home with divine art is a home with divine protection.\" - Guruji",
+                    "button_text": "Request a Custom Piece"
+                }
             },
             "game-design": {
                 "hero": { "title": "Immersive Game Design", "subtitle": "Next-Gen Worlds", "description": "From character design to environment art, we build the foundations of your next level.", "image": "https://images.unsplash.com/photo-1538481199705-c710c4e965fc?q=80&w=2000" },

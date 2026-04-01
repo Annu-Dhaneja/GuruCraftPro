@@ -10,7 +10,9 @@ import {
   Sun,
   Flame,
   Award,
-  CheckCircle2
+  CheckCircle2,
+  IndianRupee,
+  ShoppingBag
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
@@ -39,7 +41,14 @@ interface GurujiArtData {
     description?: string;
     link?: string;
   };
+  products?: Array<{
+    title: string;
+    description: string;
+    price: string;
+    image: string;
+  }>;
 }
+
 
 export function GurujiArtContent({ data }: { data?: GurujiArtData }) {
   const hero = data?.hero || {
@@ -154,7 +163,7 @@ export function GurujiArtContent({ data }: { data?: GurujiArtData }) {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 lg:gap-14">
-          {artworks.map((art, i) => (
+          {artworks.map((art: any, i: number) => (
             <motion.div
               key={i}
               initial={{ opacity: 0, y: 30 }}
@@ -183,6 +192,74 @@ export function GurujiArtContent({ data }: { data?: GurujiArtData }) {
           ))}
         </div>
       </section>
+
+      {/* ── Divine Product Shop ───────────────────────────── */}
+      {data?.products && data.products.length > 0 && (
+        <section className="py-40 relative overflow-hidden">
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[500px] bg-amber-500/5 blur-[120px] rounded-full pointer-events-none" />
+          
+          <div className="max-w-7xl mx-auto px-6 md:px-10 relative z-10">
+            <div className="text-center mb-20">
+               <motion.div
+                 initial={{ opacity: 0, y: 20 }}
+                 whileInView={{ opacity: 1, y: 0 }}
+                 viewport={{ once: true }}
+                 className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-500 mb-6"
+               >
+                 <Sparkles className="w-4 h-4" />
+                 <span className="text-[10px] font-black uppercase tracking-[0.3em]">Spiritual Offerings</span>
+               </motion.div>
+               <h2 className="text-5xl md:text-8xl font-bold tracking-tighter mb-6">Divine Collection</h2>
+               <p className="text-zinc-400 text-lg max-w-xl mx-auto font-light">Carry the divine frequency with you through our curated spiritual lifestyle products.</p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
+              {data.products.map((product: any, i: number) => (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, y: 40 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: i * 0.1 }}
+                  className="group relative flex flex-col rounded-[3rem] bg-zinc-900/40 border border-white/5 hover:border-amber-500/30 transition-all duration-500 overflow-hidden"
+                >
+                  {/* Product Image Wrapper */}
+                  <div className="relative aspect-square overflow-hidden">
+                    <Image 
+                      src={formatImage(product.image)}
+                      alt={product.title}
+                      fill
+                      className="object-cover transition-transform duration-700 group-hover:scale-110"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-transparent to-transparent opacity-60" />
+                  </div>
+
+                  {/* Product Content */}
+                  <div className="p-10 flex flex-col flex-grow text-left">
+                    <h3 className="text-3xl font-bold mb-4 group-hover:text-amber-500 transition-colors tracking-tight">{product.title}</h3>
+                    <p className="text-zinc-500 text-sm font-light mb-10 leading-relaxed italic">
+                      {product.description}
+                    </p>
+                    
+                    <div className="mt-auto flex items-center justify-between">
+                       <div className="flex flex-col">
+                          <span className="text-[10px] text-zinc-600 font-bold uppercase tracking-widest">Premium Offering</span>
+                          <span className="text-3xl font-bold text-white flex items-center gap-1">
+                             <IndianRupee className="w-5 h-5 text-amber-500" /> {product.price.replace('₹', '')}
+                          </span>
+                       </div>
+                       <Button size="icon" className="w-16 h-16 rounded-full bg-white text-black hover:bg-amber-500 hover:text-white transition-all shadow-xl">
+                          <ShoppingBag className="w-6 h-6" />
+                       </Button>
+                    </div>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
 
       {/* ── Story Section ────────────────────────────────── */}
       <section className="py-40 bg-zinc-900/50 border-y border-white/5 relative overflow-hidden">
