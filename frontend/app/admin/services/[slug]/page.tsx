@@ -143,6 +143,88 @@ export default function AdminIndividualServicePage() {
               </div>
             </section>
 
+            {/* GURU JI ART SPECIFIC: ARTWORKS GALLERY */}
+            {slug === 'guru-ji-art' && (
+              <section className="bg-slate-900/40 backdrop-blur-md p-10 rounded-[2.5rem] border border-amber-500/20 shadow-2xl relative group overflow-hidden text-left">
+                <div className="absolute top-0 left-0 w-2 h-full bg-amber-500 rounded-full my-10 -ml-1" />
+                <div className="absolute -top-20 -right-20 w-64 h-64 bg-amber-600/10 blur-[80px] rounded-full group-hover:bg-amber-600/20 transition-all duration-500" />
+                
+                <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-12">
+                  <h2 className="text-3xl font-bold flex items-center gap-4 text-white">
+                    Sacred Masterpieces Gallery
+                  </h2>
+                  <Button 
+                    onClick={() => addArrayItem("", "artworks", { title: "New Artwork", desc: "", src: "" })} 
+                    className="bg-amber-600 hover:bg-amber-700 text-white shadow-lg shadow-amber-600/20 px-8 py-6 rounded-2xl font-bold h-auto"
+                  >
+                    <Plus className="w-5 h-5 mr-3" /> Add Artwork
+                  </Button>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                  {(data.artworks || []).map((art: any, i: number) => (
+                    <div key={i} className="p-8 rounded-3xl bg-black/40 border border-white/5 hover:border-amber-500/30 transition-all duration-300 relative group/feature shadow-xl">
+                      <Button 
+                        variant="destructive" 
+                        size="icon" 
+                        className="absolute -top-3 -right-3 rounded-full opacity-0 group-hover/feature:opacity-100 transition-opacity shadow-lg"
+                        onClick={() => removeArrayItem("", "artworks", i)}
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </Button>
+                      <div className="space-y-6">
+                        <div>
+                          <CMSEditor.Label>Artwork Title</CMSEditor.Label>
+                          <CMSEditor.Input value={art.title} onChange={(v) => handleArrayChange("", "artworks", i, "title", v)} placeholder="Divine Presence..." />
+                        </div>
+                        <div>
+                          <CMSEditor.Label>Medium & Dimensions</CMSEditor.Label>
+                          <CMSEditor.Input value={art.desc} onChange={(v) => handleArrayChange("", "artworks", i, "desc", v)} placeholder="Oil on canvas..." />
+                        </div>
+                        <div>
+                          <CMSEditor.Label>Artwork Visual</CMSEditor.Label>
+                          <CMSEditor.ImageUpload value={art.src} onChange={(v) => handleArrayChange("", "artworks", i, "src", v)} />
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </section>
+            )}
+
+            {/* GURU JI ART SPECIFIC: DIVINE STORY */}
+            {slug === 'guru-ji-art' && (
+              <section className="bg-slate-900/40 backdrop-blur-md p-10 rounded-[2.5rem] border border-white/10 shadow-2xl relative group overflow-hidden text-left">
+                <div className="absolute top-0 left-0 w-2 h-full bg-orange-500 rounded-full my-10 -ml-1" />
+                
+                <h2 className="text-3xl font-bold mb-10 text-white">Divine Story & Legacy</h2>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+                   <div className="space-y-8 text-left">
+                     <div className="space-y-3">
+                       <CMSEditor.Label>Story Headline</CMSEditor.Label>
+                       <CMSEditor.Input value={data.story?.title} onChange={(v) => handleNestedChange("story", "title", v)} />
+                     </div>
+                     <div className="space-y-3">
+                       <CMSEditor.Label>Narrative</CMSEditor.Label>
+                       <CMSEditor.Input value={data.story?.description} isTextarea onChange={(v) => handleNestedChange("story", "description", v)} />
+                     </div>
+                     <div className="space-y-3">
+                       <CMSEditor.Label>Trust Points (One per line)</CMSEditor.Label>
+                       <CMSEditor.Input 
+                        value={data.story?.points?.join("\n") || ""} 
+                        isTextarea 
+                        onChange={(v) => handleNestedChange("story", "points", v.split("\n"))} 
+                       />
+                     </div>
+                   </div>
+                   <div className="space-y-3">
+                      <CMSEditor.Label>Atmospheric Visual</CMSEditor.Label>
+                      <CMSEditor.ImageUpload value={data.story?.image} onChange={(v) => handleNestedChange("story", "image", v)} />
+                   </div>
+                </div>
+              </section>
+            )}
+
             {/* CALL TO ACTION SECTION */}
             <section className="bg-slate-900/40 backdrop-blur-md p-10 rounded-[2.5rem] border border-white/10 shadow-2xl relative group overflow-hidden">
                <div className="absolute top-0 left-0 w-2 h-full bg-pink-500 rounded-full my-10 -ml-1" />

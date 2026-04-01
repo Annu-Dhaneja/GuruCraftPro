@@ -7,6 +7,7 @@ import { ProcessTimeline } from "@/components/services/ProcessTimeline";
 import { ServiceFAQ } from "@/components/services/ServiceFAQ";
 import { ServicesCTA } from "@/components/services/ServicesCTA";
 import { ServiceNavigator } from "@/components/services/ServiceNavigator";
+import { ProductGrid } from "@/components/services/ProductGrid";
 import { Footer } from "@/components/footer/Footer";
 import { getApiUrl } from "@/lib/utils";
 
@@ -63,6 +64,7 @@ export default async function ServicesPage() {
             
             <ServicesHero data={safeData.hero} />
             <ServiceNavigator />
+            <ProductGrid products={safeData.products} />
             <ServiceCards data={safeData.cards} />
             <ServiceTiers data={safeData.tiers} />
             <ComparisonTable data={safeData.comparison} />

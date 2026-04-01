@@ -5,6 +5,7 @@ import { ArrowRight, CheckCircle2, Sparkles, Wand2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import Image from "next/image";
+import { GurujiArtContent } from "@/components/guruji-art/GurujiArtContent";
 
 interface Section {
   id?: number;
@@ -43,6 +44,10 @@ export function ServiceTemplate({ data }: { data: ServiceData }) {
     data.features ? { type: "features", slug: "features", content: { items: data.features } } : null,
     data.cta ? { type: "cta", slug: "cta", content: data.cta } : null,
   ].filter(Boolean) as Section[];
+
+  if (data.slug === "guru-ji-art") {
+    return <GurujiArtContent data={data} />;
+  }
 
   if (sections.length === 0) {
     return (

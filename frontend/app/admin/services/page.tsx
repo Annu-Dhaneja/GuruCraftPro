@@ -255,6 +255,56 @@ export default function AdminServicesPage() {
           </section>
 
           <section className="bg-white/5 p-8 rounded-2xl border border-white/10 backdrop-blur-sm">
+            <div className="flex justify-between items-center mb-10">
+              <h2 className="text-2xl font-bold flex items-center gap-3 text-indigo-300">
+                <span className="w-2 h-8 bg-indigo-500 rounded-full" />
+                Dynamic Products
+              </h2>
+              <Button onClick={() => addArrayItem("", "products", { title: "New Product", price: "₹0", description: "", image: "" })} className="bg-indigo-600 hover:bg-indigo-700 shadow-lg shadow-indigo-600/20">
+                <Plus className="w-4 h-4 mr-2" /> Add Product
+              </Button>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+              {(data.products || []).map((product: any, i: number) => (
+                <div key={i} className="group bg-slate-900/40 backdrop-blur-md p-6 rounded-2xl border border-white/5 hover:border-white/10 transition-all duration-300 relative">
+                  <div className="flex justify-between items-start gap-4 mb-4">
+                    <div className="flex-1 space-y-4 text-left">
+                      <div>
+                        <CMSEditor.Label>Product Title</CMSEditor.Label>
+                        <CMSEditor.Input value={product.title} onChange={(v) => handleArrayChange("", "products", i, "title", v)} />
+                      </div>
+                      <div>
+                        <CMSEditor.Label>Price</CMSEditor.Label>
+                        <CMSEditor.Input value={product.price} onChange={(v) => handleArrayChange("", "products", i, "price", v)} />
+                      </div>
+                    </div>
+                    <Button variant="destructive" size="icon" onClick={() => removeArrayItem("", "products", i)} className="shrink-0">
+                      <Trash2 className="w-4 h-4" />
+                    </Button>
+                  </div>
+                  
+                  <div className="space-y-4 text-left">
+                    <div>
+                      <CMSEditor.Label>Description</CMSEditor.Label>
+                      <CMSEditor.Input value={product.description} isTextarea onChange={(v) => handleArrayChange("", "products", i, "description", v)} />
+                    </div>
+                    <div>
+                      <CMSEditor.Label>Product Image</CMSEditor.Label>
+                      <CMSEditor.ImageUpload value={product.image} onChange={(v) => handleArrayChange("", "products", i, "image", v)} />
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+            {(!data.products || data.products.length === 0) && (
+              <div className="text-center py-12 bg-white/5 rounded-2xl border border-dashed border-white/10">
+                <p className="text-muted-foreground italic">No products added yet. Click "Add Product" to begin.</p>
+              </div>
+            )}
+          </section>
+
+          <section className="bg-white/5 p-8 rounded-2xl border border-white/10 backdrop-blur-sm">
             <h2 className="text-2xl font-bold mb-8 flex items-center gap-3 text-indigo-300">
               <span className="w-2 h-8 bg-indigo-500 rounded-full" />
               Call to Action
