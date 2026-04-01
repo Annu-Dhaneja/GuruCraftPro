@@ -400,9 +400,56 @@ def startup_db_sync() -> None:
                 "cta": { "title": "Start Editing", "link": "/contact" }
             },
             "wedding-plan": {
-                "hero": { "title": "Bespoke Wedding Planning", "subtitle": "Your Dream Day", "description": "Comprehensive design and coordination for the ultimate luxury wedding experience.", "image": "https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=2000" },
-                "features": [{"title": "Venue Design", "description": "Visualizing your perfect setting."}, {"title": "Timeline Mgmt", "description": "Stress-free coordination."}],
-                "cta": { "title": "Book a Consultation", "link": "/contact" }
+                "hero": {
+                    "badge": "Exquisite Celebrations",
+                    "title": "Crafting Your",
+                    "title_highlight": "Eternal Story",
+                    "description": "From intimate gatherings to grand royal galas, we orchestrate every detail with unparalleled precision and artistic flair.",
+                    "image": "https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=2070"
+                },
+                "heritage": {
+                    "title_prefix": "Where Vision Meets",
+                    "title_highlight": "Impeccable Execution",
+                    "description": "At Annu Design Studio, we believe a wedding is not just an event; it's a masterpiece in the making. Our holistic approach integrates traditional elegance with contemporary sophistication.",
+                    "features": [
+                        {"icon": "MapPin", "label": "Destinations", "desc": "Global Scouting"},
+                        {"icon": "Palette", "label": "Decor", "desc": "Custom Artistry"},
+                        {"icon": "Utensils", "label": "Catering", "desc": "Gourmet Cuisines"},
+                        {"icon": "Calendar", "label": "Timeline", "desc": "Seamless Flow"}
+                    ],
+                    "image": "https://images.unsplash.com/photo-1511795409834-ef04bbd61622?q=80&w=2069"
+                },
+                "packages": [
+                    {
+                        "name": "Elite",
+                        "price": "Starting ₹2.5L",
+                        "features": ["Day-of Coordination", "Vendor Liaison", "Guest Concierge", "Traditional Decor"],
+                        "highlight": False
+                    },
+                    {
+                        "name": "Royal",
+                        "price": "Starting ₹7.5L",
+                        "features": ["Full Concept Design", "Global Sourcing", "Multi-day Management", "Luxury Transfers"],
+                        "highlight": True
+                    },
+                    {
+                        "name": "Imperial",
+                        "price": "Custom Quote",
+                        "features": ["Celebrity Management", "Charters & Private Jets", "Global Destinations", "Ultra-Luxury Decor"],
+                        "highlight": False
+                    }
+                ],
+                "gallery": [
+                    "https://images.unsplash.com/photo-1519225421980-715cb0215aed",
+                    "https://images.unsplash.com/photo-1507676184212-d03ab07a01bf",
+                    "https://images.unsplash.com/photo-1522673607200-1648482ce486",
+                    "https://images.unsplash.com/photo-1469334031218-e382a71b716b"
+                ],
+                "cta": {
+                    "title": "Ready to Begin?",
+                    "description": "Every detail matters when it comes to yours forever. Let's start planning your masterpiece today.",
+                    "button_text": "Schedule Your Private Consultation"
+                }
             },
             "guru-ji-art": {
                 "hero": { "title": "Guru Ji Divine Art", "subtitle": "Spiritual Vision", "description": "Experience divine blessings through immersive AR and premium digital spiritual art.", "image": "https://images.unsplash.com/photo-1582555172866-f73bb12a2ab3?q=80&w=2000" },
@@ -415,10 +462,36 @@ def startup_db_sync() -> None:
                 "cta": { "title": "Start Building", "link": "/contact" }
             },
             "vantage-ecom": {
-                "hero": { "title": "Vantage E-com Growth", "subtitle": "Sell More", "description": "Design systems and branding strategies focused on high-conversion e-commerce.", "image": "https://images.unsplash.com/photo-1472851294608-062f824d29cc?q=80&w=2000" },
-                "features": [{"title": "Conversion UX", "description": "Reduced friction checkout."}, {"title": "Brand Strategy", "description": "Market-leading visual identity."}],
-                "cta": { "title": "Scale My Brand", "link": "/contact" }
+                "hero": {
+                    "title": "Vantage E-com Growth",
+                    "subtitle": "Smart Scale Solutions",
+                    "description": "Premium post-production and technical assets designed for high-conversion e-commerce brands.",
+                    "image": "https://images.unsplash.com/photo-1472851294608-062f824d29cc?q=80&w=2000"
+                },
+                "category_a": {
+                    "title": "Creative Product Post-Production",
+                    "items": [
+                        { "title": "Ghost Mannequin (Invisible)", "description": "Bespoke apparel editing for a premium 3D look.", "price": "From ₹499", "icon": "Wand2" },
+                        { "title": "Image Manipulation & Compositing", "description": "Turn simple photos into high-impact Hero Images.", "price": "From ₹1,299", "icon": "Layers" },
+                        { "title": "All-Brand Product Editing", "description": "Compliance-ready editing for Amazon, Etsy & Flipkart.", "price": "From ₹299", "icon": "CheckCircle2" }
+                    ]
+                },
+                "category_b": {
+                    "title": "Technical E-com Assets",
+                    "items": [
+                        { "title": "Jersey Task & Customization", "description": "Logo placement and 3D mockup preparation.", "price": "From ₹1,999", "icon": "Shirt" },
+                        { "title": "Custom Size Charts", "description": "Branded infographics to reduce return rates.", "price": "From ₹999", "icon": "Ruler" }
+                    ]
+                },
+                "category_c": {
+                    "title": "Knowledge & Strategy",
+                    "items": [
+                        { "title": "E-books & Blueprints", "description": "Strategic guides for your Digital Merchant model.", "price": "From ₹4,999", "icon": "BookOpen" }
+                    ]
+                },
+                "cta": { "title": "Scale My Brand", "link": "/contact", "description": "Optimize your store for global conversion today." }
             }
+
         }
 
         for slug, content in service_pages_content.items():
@@ -554,8 +627,25 @@ def startup_db_sync() -> None:
                 "ar_subtitle": "Our 'Guruji Ke Sakshat Darshan' feature uses high-fidelity 3D scanning and spatial computing to create an lifelike presence in your personal space.",
                 "satsang_title_prefix": "Premium Guruji",
                 "satsang_title_highlight": "Satsang Box",
-                "satsang_subtitle": "A masterpiece of spiritual art and technology. The Satsang Story Box brings the sacred sounds of Bhajans and Mantras pre-loaded in a beautifully crafted box."
+                "satsang_subtitle": "A masterpiece of spiritual art and technology. The Satsang Story Box brings the sacred sounds of Bhajans and Mantras pre-loaded in a beautifully crafted box.",
+                "products": [
+                    {
+                        "title": "Satsang Story Box v4",
+                        "description": "Pre-loaded with 100+ Bhajans, Mantras and Aarti. Premium wood finish.",
+                        "price_inr": "4,999",
+                        "image_url": "https://images.unsplash.com/photo-1598488035139-bdbb2231ce04",
+                        "buy_link": "/contact"
+                    },
+                    {
+                        "title": "Divine AR Canvas",
+                        "description": "Interactive AR-enabled portrait of Guruji for your prayer room.",
+                        "price_inr": "2,499",
+                        "image_url": "https://images.unsplash.com/photo-1514833150113-bc7519969062",
+                        "buy_link": "/contact"
+                    }
+                ]
             })
+
             print("Startup: guruji SEEDED")
             
         # Seed AI Design Lab

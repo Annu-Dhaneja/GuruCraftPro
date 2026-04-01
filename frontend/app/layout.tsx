@@ -19,10 +19,40 @@ const inter = Inter({
   display: "swap",
 });
 
-export const metadata: Metadata = {
-  title: "Annu Design Studio",
-  description: "Premium AI-Powered Design Platform",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const { getApiUrl } = await import("@/lib/utils");
+  
+  try {
+    const res = await fetch(getApiUrl("/api/v1/cms/site_config"), { 
+      next: { revalidate: 60 } 
+    });
+    
+    if (res.ok) {
+      const data = await res.json();
+      const meta = data.meta || {};
+      const brand = data.brand || {};
+      
+      return {
+        title: {
+          default: meta.title || brand.name || "GurucraftPro",
+          template: `%s | ${brand.name || "GurucraftPro"}`
+        },
+        description: meta.description || brand.tagline || "Premium AI-Powered Design Platform",
+        icons: {
+          icon: brand.logo_url || "/favicon.ico",
+        }
+      };
+    }
+  } catch (e) {
+    console.error("Layout Metadata Fetch Error:", e);
+  }
+
+  return {
+    title: "GurucraftPro | AI Design Studio",
+    description: "Premium AI-Powered Design Platform",
+  };
+}
+
 
 export const viewport = {
   width: "device-width",

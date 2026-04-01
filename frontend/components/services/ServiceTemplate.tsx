@@ -6,6 +6,8 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import Image from "next/image";
 import { GurujiArtContent } from "@/components/guruji-art/GurujiArtContent";
+import { VantageEcomContent } from "@/components/services/VantageEcomContent";
+
 
 interface Section {
   id?: number;
@@ -48,6 +50,11 @@ export function ServiceTemplate({ data }: { data: ServiceData }) {
   if (data.slug === "guru-ji-art") {
     return <GurujiArtContent data={data} />;
   }
+
+  if (data.slug === "vantage-ecom") {
+    return <VantageEcomContent data={data} />;
+  }
+
 
   if (sections.length === 0) {
     return (

@@ -17,12 +17,82 @@ import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import Link from "next/link";
 
-export function WeddingPlanContent() {
+export function WeddingPlanContent({ data }: { data?: any }) {
   const fadeUp = {
     initial: { opacity: 0, y: 20 },
     whileInView: { opacity: 1, y: 0 },
     viewport: { once: true },
     transition: { duration: 0.6 }
+  };
+
+  // Extract data with fallbacks
+  const hero = data?.hero || {
+    badge: "Exquisite Celebrations",
+    title: "Crafting Your",
+    title_highlight: "Eternal Story",
+    description: "From intimate gatherings to grand royal galas, we orchestrate every detail with unparalleled precision and artistic flair.",
+    image: "https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=2070"
+  };
+
+  const heritage = data?.heritage || {
+    title_prefix: "Where Vision Meets",
+    title_highlight: "Impeccable Execution",
+    description: "At Annu Design Studio, we believe a wedding is not just an event; it's a masterpiece in the making. Our holistic approach integrates traditional elegance with contemporary sophistication.",
+    features: [
+      { icon: "MapPin", label: "Destinations", desc: "Global Scouting" },
+      { icon: "Palette", label: "Decor", desc: "Custom Artistry" },
+      { icon: "Utensils", label: "Catering", desc: "Gourmet Cuisines" },
+      { icon: "Calendar", label: "Timeline", desc: "Seamless Flow" }
+    ],
+    image: "https://images.unsplash.com/photo-1511795409834-ef04bbd61622?q=80&w=2069"
+  };
+
+  const packages = data?.packages || [
+    {
+      name: "Elite",
+      price: "Starting ₹2.5L",
+      features: ["Day-of Coordination", "Vendor Liaison", "Guest Concierge", "Traditional Decor"],
+      highlight: false
+    },
+    {
+      name: "Royal",
+      price: "Starting ₹7.5L",
+      features: ["Full Concept Design", "Global Sourcing", "Multi-day Management", "Luxury Transfers"],
+      highlight: true
+    },
+    {
+      name: "Imperial",
+      price: "Custom Quote",
+      features: ["Celebrity Management", "Charters & Private Jets", "Global Destinations", "Ultra-Luxury Decor"],
+      highlight: false
+    }
+  ];
+
+  const gallery = data?.gallery || [
+    "https://images.unsplash.com/photo-1519225421980-715cb0215aed?q=80&w=2070",
+    "https://images.unsplash.com/photo-1507676184212-d03ab07a01bf?q=80&w=2069",
+    "https://images.unsplash.com/photo-1522673607200-1648482ce486?q=80&w=2069",
+    "https://images.unsplash.com/photo-1469334031218-e382a71b716b?q=80&w=2070"
+  ];
+
+  const cta = data?.cta || {
+    title: "Ready to Begin?",
+    description: "Every detail matters when it comes to yours forever. Let's start planning your masterpiece today.",
+    button_text: "Schedule Your Private Consultation"
+  };
+
+  // Helper to map icon names to components
+  const getIcon = (name: string) => {
+    switch (name) {
+      case "MapPin": return MapPin;
+      case "Palette": return Palette;
+      case "Utensils": return Utensils;
+      case "Calendar": return Calendar;
+      case "Heart": return Heart;
+      case "Music": return Music;
+      case "Camera": return Camera;
+      default: return Star;
+    }
   };
 
   return (
@@ -31,7 +101,7 @@ export function WeddingPlanContent() {
       <section className="relative h-screen flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 z-0">
           <Image 
-            src="https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=2070&auto=format&fit=crop"
+            src={hero.image}
             alt="Luxury Wedding"
             fill
             className="object-cover brightness-75 scale-105"
@@ -48,7 +118,7 @@ export function WeddingPlanContent() {
             className="mb-8 inline-flex items-center gap-2 px-6 py-2 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white"
           >
             <Sparkles className="w-4 h-4 text-[#D4AF37]" />
-            <span className="text-xs font-bold tracking-[0.3em] uppercase italic">Exquisite Celebrations</span>
+            <span className="text-xs font-bold tracking-[0.3em] uppercase italic">{hero.badge}</span>
           </motion.div>
 
           <motion.h1 
@@ -57,8 +127,8 @@ export function WeddingPlanContent() {
             transition={{ duration: 0.8, delay: 0.2 }}
             className="text-6xl md:text-9xl font-serif text-white mb-8 italic"
           >
-            Crafting Your <br />
-            <span className="text-[#D4AF37] not-italic drop-shadow-2xl">Eternal Story</span>
+            {hero.title} <br />
+            <span className="text-[#D4AF37] not-italic drop-shadow-2xl">{hero.title_highlight}</span>
           </motion.h1>
 
           <motion.p
@@ -67,8 +137,7 @@ export function WeddingPlanContent() {
             transition={{ duration: 0.8, delay: 0.4 }}
             className="max-w-2xl mx-auto text-lg md:text-xl text-white/90 font-light mb-12"
           >
-            From intimate gatherings to grand royal galas, we orchestrate every detail with 
-            unparalleled precision and artistic flair.
+            {hero.description}
           </motion.p>
 
           <motion.div
@@ -94,28 +163,24 @@ export function WeddingPlanContent() {
             <motion.div {...fadeUp}>
               <span className="text-[#D4AF37] font-serif italic text-2xl mb-4 block">The Art of Planning</span>
               <h2 className="text-4xl md:text-6xl font-serif mb-8 leading-tight">
-                Where Vision Meets <br />
-                <span className="italic">Impeccable Execution</span>
+                {heritage.title_prefix} <br />
+                <span className="italic">{heritage.title_highlight}</span>
               </h2>
               <p className="text-xl text-zinc-600 font-light leading-relaxed mb-10">
-                At Annu Design Studio, we believe a wedding is not just an event; it's a 
-                masterpiece in the making. Our holistic approach integrates traditional 
-                elegance with contemporary sophistication.
+                {heritage.description}
               </p>
               
               <div className="grid grid-cols-2 gap-8">
-                {[
-                  { icon: MapPin, label: "Destinations", desc: "Global Scouting" },
-                  { icon: Palette, label: "Decor", desc: "Custom Artistry" },
-                  { icon: Utensils, label: "Catering", desc: "Gourmet Cuisines" },
-                  { icon: Calendar, label: "Timeline", desc: "Seamless Flow" }
-                ].map((item, i) => (
-                  <div key={i} className="space-y-2">
-                    <item.icon className="w-8 h-8 text-[#D4AF37]" />
-                    <h4 className="font-bold text-lg">{item.label}</h4>
-                    <p className="text-zinc-500 text-sm">{item.desc}</p>
-                  </div>
-                ))}
+                {heritage.features.map((item: any, i: number) => {
+                  const IconComp = getIcon(item.icon);
+                  return (
+                    <div key={i} className="space-y-2">
+                      <IconComp className="w-8 h-8 text-[#D4AF37]" />
+                      <h4 className="font-bold text-lg">{item.label}</h4>
+                      <p className="text-zinc-500 text-sm">{item.desc}</p>
+                    </div>
+                  );
+                })}
               </div>
             </motion.div>
 
@@ -128,7 +193,7 @@ export function WeddingPlanContent() {
               transition={{ duration: 0.8 }}
             >
               <Image 
-                src="https://images.unsplash.com/photo-1511795409834-ef04bbd61622?q=80&w=2069&auto=format&fit=crop"
+                src={heritage.image}
                 alt="Decor Details"
                 fill
                 className="object-cover"
@@ -148,27 +213,7 @@ export function WeddingPlanContent() {
         </div>
 
         <div className="container px-4 grid grid-cols-1 md:grid-cols-3 gap-10">
-          {[
-            {
-              name: "Elite",
-              price: "Starting ₹2.5L",
-              features: ["Day-of Coordination", "Vendor Liaison", "Guest Concierge", "Traditional Decor"],
-              accent: "border-zinc-800"
-            },
-            {
-              name: "Royal",
-              price: "Starting ₹7.5L",
-              features: ["Full Concept Design", "Global Sourcing", "Multi-day Management", "Luxury Transfers"],
-              accent: "border-[#D4AF37]",
-              highlight: true
-            },
-            {
-              name: "Imperial",
-              price: "Custom Quote",
-              features: ["Celebrity Management", "Charters & Private Jets", "Global Destinations", "Ultra-Luxury Decor"],
-              accent: "border-zinc-800"
-            }
-          ].map((pkg, i) => (
+          {packages.map((pkg: any, i: number) => (
             <motion.div
               key={i}
               initial={{ opacity: 0, y: 30 }}
@@ -180,8 +225,8 @@ export function WeddingPlanContent() {
               <h3 className="text-3xl font-serif mb-2 italic">{pkg.name}</h3>
               <p className={`text-xl font-bold mb-8 ${pkg.highlight ? 'text-[#D4AF37]' : 'text-zinc-500'}`}>{pkg.price}</p>
               <ul className="space-y-4 mb-12 flex-grow">
-                {pkg.features.map((f, j) => (
-                  <li key={j} className="flex items-center gap-3 text-zinc-400 font-light">
+                {pkg.features.map((f: string, j: number) => (
+                  <li key={j} className="flex items-center gap-3 text-zinc-400 font-light text-left">
                     <Sparkles className="w-4 h-4 text-[#D4AF37]/50" /> {f}
                   </li>
                 ))}
@@ -205,12 +250,7 @@ export function WeddingPlanContent() {
         </div>
 
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 px-4 h-[600px]">
-          {[
-            "https://images.unsplash.com/photo-1519225421980-715cb0215aed?q=80&w=2070&auto=format&fit=crop",
-            "https://images.unsplash.com/photo-1507676184212-d03ab07a01bf?q=80&w=2069&auto=format&fit=crop",
-            "https://images.unsplash.com/photo-1522673607200-1648482ce486?q=80&w=2069&auto=format&fit=crop",
-            "https://images.unsplash.com/photo-1469334031218-e382a71b716b?q=80&w=2070&auto=format&fit=crop"
-          ].map((src, i) => (
+          {gallery.map((src: string, i: number) => (
             <motion.div
               key={i}
               initial={{ opacity: 0, scale: 1.1 }}
@@ -236,17 +276,19 @@ export function WeddingPlanContent() {
         <div className="container relative z-10 px-4">
           <motion.div {...fadeUp}>
             <Heart className="w-16 h-16 text-[#D4AF37] mx-auto mb-8 animate-pulse" />
-            <h2 className="text-5xl md:text-8xl font-serif mb-8 italic">Ready to Begin?</h2>
+            <h2 className="text-5xl md:text-8xl font-serif mb-8 italic">{cta.title}</h2>
             <p className="max-w-2xl mx-auto text-xl text-zinc-600 font-light mb-12 italic">
-              Every detail matters when it comes to yours forever. Let's start planning 
-              your masterpiece today.
+              {cta.description}
             </p>
-            <Button size="lg" className="bg-[#2C2C2C] hover:bg-black text-white rounded-full px-16 h-20 text-2xl font-serif italic shadow-2xl">
-              Schedule Your Private Consultation
-            </Button>
+            <Link href="/contact">
+              <Button size="lg" className="bg-[#2C2C2C] hover:bg-black text-white rounded-full px-16 h-20 text-2xl font-serif italic shadow-2xl">
+                {cta.button_text}
+              </Button>
+            </Link>
           </motion.div>
         </div>
       </section>
     </div>
   );
 }
+

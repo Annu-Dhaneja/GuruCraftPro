@@ -9,7 +9,9 @@ import {
   ArrowRight,
   Wifi,
   Volume2,
-  Heart
+  Heart,
+  ShoppingBag,
+  IndianRupee
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
@@ -264,6 +266,80 @@ export function GurujiDarshanContent({ data }: { data?: any }) {
           </div>
         </div>
       </section>
+
+      {/* ── Dynamic Product Shop ─────────────────────────── */}
+      {data?.products && data.products.length > 0 && (
+        <section className="py-24 md:py-32 bg-zinc-900/50 border-t border-white/5">
+          <div className="container mx-auto px-4 md:px-6">
+            <div className="text-center max-w-3xl mx-auto mb-20">
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-orange-500/10 border border-orange-500/20 mb-6"
+              >
+                <ShoppingBag className="w-4 h-4 text-orange-400" />
+                <span className="text-xs font-bold tracking-widest text-orange-400 uppercase">Spiritual Shop</span>
+              </motion.div>
+              <h2 className="text-4xl md:text-6xl font-bold tracking-tight text-white mb-6">Explore Our Curated Artifacts</h2>
+              <p className="text-zinc-400 text-lg font-light">Each piece is hand-selected and infused with divine energy to support your spiritual journey.</p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {data.products.map((product: any, idx: number) => (
+                <motion.div
+                  key={idx}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ delay: idx * 0.1 }}
+                  className="group relative bg-zinc-950 rounded-[2.5rem] border border-white/10 overflow-hidden hover:border-orange-500/30 transition-all duration-500"
+                >
+                  <div className="aspect-[4/5] relative overflow-hidden">
+                    <Image 
+                      src={product.image_url || "https://images.unsplash.com/photo-1582555172866-f73bb12a2ab3"} 
+                      alt={product.title} 
+                      fill 
+                      className="object-cover group-hover:scale-110 transition-transform duration-1000"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-950/20 to-transparent opacity-60" />
+                    <div className="absolute top-6 right-6">
+                       <div className="bg-orange-500 text-white font-bold px-4 py-2 rounded-full text-sm shadow-xl flex items-center gap-1">
+                          <IndianRupee className="w-3.5 h-3.5" />
+                          {product.price_inr}
+                       </div>
+                    </div>
+                  </div>
+                  
+                  <div className="p-10 relative">
+                    <div className="absolute -top-12 left-10 w-24 h-24 bg-zinc-900 rounded-3xl border border-white/10 flex items-center justify-center p-3 shadow-2xl group-hover:-translate-y-2 transition-transform duration-500">
+                       <div className="w-full h-full rounded-2xl bg-orange-500/10 flex items-center justify-center border border-orange-500/20">
+                          <Image 
+                            src={product.image_url || "/images/brand/logo-dark-v4.svg"} 
+                            alt="thumb" 
+                            width={100} 
+                            height={100} 
+                            className="w-full h-full object-cover rounded-xl"
+                          />
+                       </div>
+                    </div>
+
+                    <h3 className="text-2xl font-bold text-white mb-4 mt-8">{product.title}</h3>
+                    <p className="text-zinc-400 font-light text-sm leading-relaxed mb-8 min-h-[60px]">
+                      {product.description}
+                    </p>
+                    
+                    <Link href={product.buy_link || "/contact"}>
+                      <Button className="w-full bg-white/5 hover:bg-white/10 border border-white/10 text-white rounded-2xl h-14 font-bold transition-all group-hover:bg-orange-600 group-hover:border-orange-500 group-hover:text-white">
+                        Inquire Details <ArrowRight className="ml-2 w-4 h-4" />
+                      </Button>
+                    </Link>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
     </div>
   );
 }

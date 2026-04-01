@@ -1,151 +1,189 @@
 "use client";
 
 import { CMSEditor } from "@/components/admin/CMSEditor";
+import { Button } from "@/components/ui/button";
 import { 
   Settings, 
+  Globe, 
   Share2, 
-  Mail, 
-  Search, 
-  ShieldCheck,
-  Globe,
-  Facebook,
-  Twitter,
-  Instagram,
-  Linkedin,
-  Github
+  Navigation, 
+  Layout, 
+  Plus, 
+  Trash2, 
+  Shield,
+  Palette
 } from "lucide-react";
 
 export default function AdminSettingsPage() {
   return (
-    <CMSEditor 
-      segment="settings" 
-      title="General Settings" 
-      description="Control global site parameters, socials, and contact intelligence."
-    >
-      {(data, { handleNestedChange, handleArrayChange, addArrayItem, removeArrayItem }) => (
-        <div className="space-y-12 animate-in fade-in max-w-6xl mx-auto pb-20">
-          
-          {/* Site Identity */}
-          <section className="bg-slate-900/40 backdrop-blur-md p-10 rounded-[2.5rem] border border-white/5 relative overflow-hidden group">
-            <div className="absolute top-0 left-0 w-64 h-64 bg-indigo-600/5 blur-3xl rounded-full -ml-32 -mt-32 pointer-events-none group-hover:scale-125 transition-transform duration-500" />
-            
-            <h2 className="text-3xl font-black mb-10 flex items-center gap-4 text-white relative z-10">
-              <Globe className="text-indigo-500 w-8 h-8" />
-              Strategic Identity
-            </h2>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 relative z-10">
-              <div className="space-y-2">
-                <CMSEditor.Label>Platform Brand Name</CMSEditor.Label>
-                <CMSEditor.Input 
-                  value={data.site_name || ""} 
-                  onChange={(v) => handleNestedChange("", "site_name", v)} 
-                  placeholder="e.g. Gurucraftpro Analytics"
-                />
-              </div>
-              <div className="space-y-2 md:col-span-2">
-                <CMSEditor.Label>Global SEO Meta Description</CMSEditor.Label>
-                <CMSEditor.Input 
-                  value={data.meta_description || ""} 
-                  isTextarea
-                  onChange={(v) => handleNestedChange("", "meta_description", v)} 
-                  placeholder="High-level site intelligence for search engines..."
-                />
-              </div>
-            </div>
-          </section>
+    <div className="min-h-screen bg-slate-950/20 pb-20">
+      <div className="relative mb-12 py-10 overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-r from-indigo-500/10 via-purple-500/5 to-transparent border-b border-white/5" />
+        <div className="max-w-6xl mx-auto px-6 relative z-10 text-left">
+          <h1 className="text-4xl md:text-5xl font-extrabold tracking-tighter text-white">Global Configuration</h1>
+          <p className="text-muted-foreground text-lg max-w-xl mt-4">Architect the core brand identity and site-wide orchestration settings.</p>
+        </div>
+      </div>
 
-          {/* Contact Directives */}
-          <section className="bg-slate-900/40 backdrop-blur-md p-10 rounded-[2.5rem] border border-white/5 relative overflow-hidden group">
-            <div className="absolute bottom-0 right-0 w-64 h-64 bg-emerald-600/5 blur-3xl rounded-full -mr-32 -mb-32 pointer-events-none group-hover:scale-125 transition-transform duration-500" />
+      <CMSEditor 
+        segment="site_config" 
+        title="Site Core Editor" 
+        description="Modify branding, navigation, and global SEO parameters."
+      >
+        {(data, { handleNestedChange, handleArrayChange, addArrayItem, removeArrayItem }) => (
+          <div className="space-y-16 max-w-6xl mx-auto text-left">
             
-            <h2 className="text-3xl font-black mb-10 flex items-center gap-4 text-white relative z-10">
-              <Mail className="text-emerald-500 w-8 h-8" />
-              Contact Communications
-            </h2>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 relative z-10">
-              <div className="space-y-2">
-                <CMSEditor.Label>Support Intelligence Email</CMSEditor.Label>
-                <CMSEditor.Input 
-                  value={data.contact_email || ""} 
-                  onChange={(v) => handleNestedChange("", "contact_email", v)} 
-                />
-              </div>
-              <div className="space-y-2">
-                <CMSEditor.Label>Direct Telecom Number</CMSEditor.Label>
-                <CMSEditor.Input 
-                  value={data.contact_phone || ""} 
-                  onChange={(v) => handleNestedChange("", "contact_phone", v)} 
-                />
-              </div>
-              <div className="space-y-2 md:col-span-2">
-                <CMSEditor.Label>Operational Headquarters Address</CMSEditor.Label>
-                <CMSEditor.Input 
-                  value={data.address || ""} 
-                  onChange={(v) => handleNestedChange("", "address", v)} 
-                />
-              </div>
-            </div>
-          </section>
-
-          {/* Social Presence Matrix */}
-          <section className="bg-slate-900/40 backdrop-blur-md p-10 rounded-[2.5rem] border border-white/5 relative overflow-hidden group">
-            <h2 className="text-3xl font-black mb-10 flex items-center gap-4 text-white relative z-10">
-              <Share2 className="text-amber-500 w-8 h-8" />
-              Social Presence Matrix
-            </h2>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 relative z-10">
-              {[
-                { key: "facebook", icon: Facebook, label: "Facebook Page" },
-                { key: "twitter", icon: Twitter, label: "Twitter / X Profile" },
-                { key: "instagram", icon: Instagram, label: "Instagram Grid" },
-                { key: "linkedin", icon: Linkedin, label: "LinkedIn Company" },
-                { key: "github", icon: Github, label: "GitHub Repository" },
-              ].map((social) => (
-                <div key={social.key} className="p-6 bg-black/40 border border-white/5 rounded-3xl space-y-4 hover:border-amber-500/20 transition-all group/card">
-                  <div className="flex items-center gap-3">
-                    <social.icon className="w-5 h-5 text-amber-500/50 group-hover/card:text-amber-500 transition-colors" />
-                    <span className="text-xs font-black uppercase tracking-widest text-white/60">{social.label}</span>
+            {/* BRAND IDENTITY */}
+            <section className="bg-slate-900/40 backdrop-blur-md p-10 rounded-[2.5rem] border border-white/10 shadow-2xl relative group">
+              <h2 className="text-3xl font-bold mb-10 flex items-center gap-4 text-white">
+                <Palette className="w-8 h-8 text-indigo-500" /> Brand Identity
+              </h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+                <div className="space-y-6">
+                  <div>
+                    <CMSEditor.Label>Company Name</CMSEditor.Label>
+                    <CMSEditor.Input value={data.brand?.name} onChange={(v) => handleNestedChange("brand", "name", v)} />
                   </div>
-                  <CMSEditor.Input 
-                    value={data.social_links?.[social.key] || ""} 
-                    onChange={(v) => {
-                      const newSocials = { ...data.social_links, [social.key]: v };
-                      handleNestedChange("", "social_links", newSocials);
-                    }} 
-                    placeholder="https://..."
-                  />
-                </div>
-              ))}
-            </div>
-          </section>
-
-          {/* Maintenance & Security */}
-          <section className="p-10 border border-dashed border-white/10 rounded-[2.5rem] flex flex-col md:flex-row items-center justify-between gap-8 opacity-60 grayscale hover:opacity-100 hover:grayscale-0 transition-all">
-             <div className="flex items-center gap-5">
-                <div className="w-16 h-16 bg-white/5 rounded-3xl flex items-center justify-center border border-white/5">
-                   <ShieldCheck className="text-indigo-400 w-8 h-8" />
+                  <div>
+                    <CMSEditor.Label>Logo Text (Fallback)</CMSEditor.Label>
+                    <CMSEditor.Input value={data.brand?.logo_text} onChange={(v) => handleNestedChange("brand", "logo_text", v)} />
+                  </div>
                 </div>
                 <div>
-                  <h3 className="text-xl font-bold text-white">System Calibration</h3>
-                  <p className="text-sm text-muted-foreground mt-1">Maintain platform integrity and operational security.</p>
+                  <CMSEditor.Label>Logo Asset (SVG/PNG)</CMSEditor.Label>
+                  <CMSEditor.ImageUpload value={data.brand?.logo_url} onChange={(v) => handleNestedChange("brand", "logo_url", v)} />
                 </div>
-             </div>
-             <div className="flex items-center gap-4">
-               <div className="text-right hidden sm:block">
-                  <p className="text-[10px] font-black uppercase text-indigo-400">Security Key</p>
-                  <p className="text-xs font-mono text-white/40">••••••••••••••••</p>
-               </div>
-               <button className="bg-white/5 border border-white/10 hover:bg-white/10 text-white px-8 py-4 rounded-2xl font-black text-sm transition-all active:scale-95">
-                  Rotate Keys
-               </button>
-             </div>
-          </section>
+                <div className="md:col-span-2">
+                  <CMSEditor.Label>Brand Tagline</CMSEditor.Label>
+                  <CMSEditor.Input value={data.brand?.tagline} isTextarea onChange={(v) => handleNestedChange("brand", "tagline", v)} />
+                </div>
+              </div>
+            </section>
 
-        </div>
-      )}
-    </CMSEditor>
+            {/* NAVIGATION ORCHESTRATION */}
+            <section className="bg-slate-900/40 backdrop-blur-md p-10 rounded-[2.5rem] border border-white/10 shadow-2xl">
+              <div className="flex justify-between items-center mb-10">
+                <h2 className="text-3xl font-bold text-white flex items-center gap-4">
+                  <Navigation className="w-8 h-8 text-emerald-500" /> Navigation Matrix
+                </h2>
+                <Button onClick={() => addArrayItem("", "nav", { label: "New Link", href: "/", style: "default" })}>
+                  <Plus className="w-4 h-4 mr-2" /> Add Link
+                </Button>
+              </div>
+              <div className="space-y-4">
+                {(data.nav || []).map((item: any, i: number) => (
+                  <div key={i} className="p-6 rounded-3xl bg-black/40 border border-white/5 flex flex-col md:flex-row items-center gap-6 relative group">
+                    <Button 
+                      variant="destructive" size="icon" className="absolute -top-2 -right-2 opacity-0 group-hover:opacity-100 transition-opacity h-8 w-8"
+                      onClick={() => removeArrayItem("", "nav", i)}
+                    >
+                      <Trash2 className="w-3 h-3" />
+                    </Button>
+                    <div className="flex-1 w-full">
+                       <CMSEditor.Label>Label</CMSEditor.Label>
+                       <CMSEditor.Input value={item.label} onChange={(v) => handleArrayChange("", "nav", i, "label", v)} />
+                    </div>
+                    <div className="flex-1 w-full">
+                       <CMSEditor.Label>Hyperlink</CMSEditor.Label>
+                       <CMSEditor.Input value={item.href} onChange={(v) => handleArrayChange("", "nav", i, "href", v)} />
+                    </div>
+                    <div className="w-full md:w-48">
+                       <CMSEditor.Label>Style Architecture</CMSEditor.Label>
+                       <select 
+                         value={item.style} 
+                         onChange={(e) => handleArrayChange("", "nav", i, "style", e.target.value)}
+                         className="w-full bg-black/40 border border-white/10 rounded-lg px-4 py-2 text-sm text-white"
+                       >
+                         <option value="default">Standard</option>
+                         <option value="special">Highlighted (Indigo)</option>
+                         <option value="guru">Sacred (Orange)</option>
+                       </select>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </section>
+
+            {/* SOCIAL CONNECTIVITY */}
+            <section className="bg-slate-900/40 backdrop-blur-md p-10 rounded-[2.5rem] border border-white/10 shadow-2xl">
+              <h2 className="text-3xl font-bold mb-10 text-white flex items-center gap-4">
+                <Share2 className="w-8 h-8 text-pink-500" /> Social Connectivity
+              </h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {Object.keys(data.social || {}).filter(k => k !== 'accepting_projects').map((platform) => (
+                  <div key={platform}>
+                    <CMSEditor.Label>{platform.charAt(0).toUpperCase() + platform.slice(1)} URL</CMSEditor.Label>
+                    <CMSEditor.Input 
+                      value={data.social[platform]} 
+                      onChange={(v) => handleNestedChange("social", platform, v)} 
+                    />
+                  </div>
+                ))}
+                <div className="flex items-center gap-4 p-4 bg-white/5 rounded-2xl border border-white/5 lg:col-span-3">
+                   <div className="flex-1">
+                      <p className="text-sm font-bold text-white">Accepting All New Projects</p>
+                      <p className="text-xs text-muted-foreground">Toggles the "Available for work" status across the UI.</p>
+                   </div>
+                   <input 
+                      type="checkbox" 
+                      checked={data.social?.accepting_projects} 
+                      onChange={(e) => handleNestedChange("social", "accepting_projects", e.target.checked)}
+                      className="w-6 h-6 rounded-lg bg-indigo-500"
+                   />
+                </div>
+              </div>
+            </section>
+
+            {/* FOOTER ARCHITECTURE */}
+            <section className="bg-slate-900/40 backdrop-blur-md p-10 rounded-[2.5rem] border border-white/10 shadow-2xl">
+              <h2 className="text-3xl font-bold mb-10 text-white flex items-center gap-4">
+                <Layout className="w-8 h-8 text-amber-500" /> Footer Architecture
+              </h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+                <div className="space-y-6">
+                  <div className="flex justify-between items-center">
+                    <CMSEditor.Label>Explore Cluster</CMSEditor.Label>
+                    <Button size="sm" variant="ghost" onClick={() => addArrayItem("", "footer_explore", { label: "New Link", href: "/" })}>
+                      <Plus className="w-4 h-4 mr-1" /> Add
+                    </Button>
+                  </div>
+                  {(data.footer_explore || []).map((lnk: any, i: number) => (
+                    <div key={i} className="flex gap-2 items-center">
+                      <CMSEditor.Input value={lnk.label} onChange={(v) => handleArrayChange("", "footer_explore", i, "label", v)} />
+                      <CMSEditor.Input value={lnk.href} onChange={(v) => handleArrayChange("", "footer_explore", i, "href", v)} />
+                      <Button variant="destructive" size="icon" className="flex-shrink-0 h-10 w-10" onClick={() => removeArrayItem("", "footer_explore", i)}>
+                        <Trash2 className="w-4 h-4" />
+                      </Button>
+                    </div>
+                  ))}
+                </div>
+                <div className="space-y-6">
+                  <div className="flex justify-between items-center">
+                    <CMSEditor.Label>Support Cluster</CMSEditor.Label>
+                    <Button size="sm" variant="ghost" onClick={() => addArrayItem("", "footer_support", { label: "New Link", href: "/" })}>
+                      <Plus className="w-4 h-4 mr-1" /> Add
+                    </Button>
+                  </div>
+                  {(data.footer_support || []).map((lnk: any, i: number) => (
+                    <div key={i} className="flex gap-2 items-center">
+                      <CMSEditor.Input value={lnk.label} onChange={(v) => handleArrayChange("", "footer_support", i, "label", v)} />
+                      <CMSEditor.Input value={lnk.href} onChange={(v) => handleArrayChange("", "footer_support", i, "href", v)} />
+                      <Button variant="destructive" size="icon" className="flex-shrink-0 h-10 w-10" onClick={() => removeArrayItem("", "footer_support", i)}>
+                        <Trash2 className="w-4 h-4" />
+                      </Button>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              <div className="mt-12 pt-10 border-t border-white/5">
+                <CMSEditor.Label>Copyright Legal Text</CMSEditor.Label>
+                <CMSEditor.Input value={data.footer_bottom?.copyright} onChange={(v) => handleNestedChange("footer_bottom", "copyright", v)} />
+              </div>
+            </section>
+
+          </div>
+        )}
+      </CMSEditor>
+    </div>
   );
 }

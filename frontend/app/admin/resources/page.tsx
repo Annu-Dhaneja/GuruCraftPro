@@ -95,6 +95,35 @@ export default function AdminResourcesPage() {
                </div>
             </section>
 
+            {/* TUTORIALS SECTION */}
+            <section className="bg-slate-900/40 backdrop-blur-md p-10 rounded-[2.5rem] border border-white/10 shadow-2xl">
+               <div className="flex justify-between items-center mb-10">
+                 <h2 className="text-3xl font-bold text-white flex items-center gap-4">
+                   <PlayCircle className="w-8 h-8 text-rose-500" /> Video Tutorials
+                 </h2>
+                 <Button onClick={() => addArrayItem("resources_tutorials", "items", { title: "New Tutorial", category: "Design", duration: "10 mins" })}>
+                   <Plus className="w-4 h-4 mr-2" /> Add Tutorial
+                 </Button>
+               </div>
+               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                 {(data.resources_tutorials?.items || []).map((t: any, i: number) => (
+                   <div key={i} className="p-6 rounded-3xl bg-black/40 border border-white/5 relative group">
+                      <Button 
+                        variant="destructive" size="icon" className="absolute -top-2 -right-2 opacity-0 group-hover:opacity-100 transition-opacity h-8 w-8"
+                        onClick={() => removeArrayItem("resources_tutorials", "items", i)}
+                      >
+                        <Trash2 className="w-3 h-3" />
+                      </Button>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <CMSEditor.Input value={t.title} onChange={(v) => handleArrayChange("resources_tutorials", "items", i, "title", v)} placeholder="Tutorial Title" />
+                        <CMSEditor.Input value={t.category} onChange={(v) => handleArrayChange("resources_tutorials", "items", i, "category", v)} placeholder="Category" />
+                        <CMSEditor.Input value={t.duration} onChange={(v) => handleArrayChange("resources_tutorials", "items", i, "duration", v)} placeholder="Duration (e.g. 15 mins)" />
+                      </div>
+                   </div>
+                 ))}
+               </div>
+            </section>
+
             {/* PROMPT LIBRARY */}
             <section className="bg-slate-900/40 backdrop-blur-md p-10 rounded-[2.5rem] border border-white/10 shadow-2xl">
                <div className="flex justify-between items-center mb-10">
@@ -150,6 +179,30 @@ export default function AdminResourcesPage() {
                  ))}
                </div>
             </section>
+
+            {/* NEWSLETTER CTA */}
+            <section className="bg-slate-900/40 backdrop-blur-md p-10 rounded-[2.5rem] border border-white/10 shadow-2xl">
+               <h2 className="text-3xl font-bold mb-10 text-white flex items-center gap-4">
+                 <Sparkles className="w-8 h-8 text-indigo-500" /> Newsletter Section
+               </h2>
+               <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+                  <div className="space-y-6">
+                     <div>
+                       <CMSEditor.Label>CTA Title</CMSEditor.Label>
+                       <CMSEditor.Input value={data.resources_newsletter?.title} onChange={(v) => handleNestedChange("resources_newsletter", "title", v)} />
+                     </div>
+                     <div>
+                       <CMSEditor.Label>CTA Subtitle</CMSEditor.Label>
+                       <CMSEditor.Input value={data.resources_newsletter?.subtitle} onChange={(v) => handleNestedChange("resources_newsletter", "subtitle", v)} />
+                     </div>
+                  </div>
+                  <div>
+                     <CMSEditor.Label>Button Text</CMSEditor.Label>
+                     <CMSEditor.Input value={data.resources_newsletter?.button_text} onChange={(v) => handleNestedChange("resources_newsletter", "button_text", v)} />
+                  </div>
+               </div>
+            </section>
+
 
           </div>
         )}
