@@ -18,7 +18,7 @@ export default function AdminWardrobePage() {
     const [loading, setLoading] = useState(true);
     const [uploading, setUploading] = useState(false);
     const [filters, setFilters] = useState({ gender: "", age: "", style: "" });
-    const [newItem, setNewItem] = useState({ name: "", gender: "Female", age: "Adult", style: "Casual", images: [] as File[] });
+    const [newItem, setNewItem] = useState({ name: "", gender: "Female", age: "Adult", style: "Casual", images: [] as File[], imageUrl: "" });
 
     useEffect(() => {
         fetchItems();
@@ -49,20 +49,38 @@ export default function AdminWardrobePage() {
 
     const handleUpload = async (e: React.FormEvent) => {
         e.preventDefault();
-        if (newItem.images.length === 0) return;
+        if (newItem.images.length === 0 && !newItem.imageUrl) return;
 
         setUploading(true);
         const token = localStorage.getItem("token");
         
         try {
-            // Upload each image sequentially
-            for (const file of newItem.images) {
+            // 1. Process local file uploads if present
+            if (newItem.images.length > 0) {
+                for (const file of newItem.images) {
+                    const formData = new FormData();
+                    formData.append("name", newItem.name || file.name.split('.')[0]);
+                    formData.append("gender", newItem.gender);
+                    formData.append("age_group", newItem.age);
+                    formData.append("style", newItem.style);
+                    formData.append("image", file);
+
+                    await fetch(getApiUrl("/api/v1/wardrobe/items"), {
+                        method: "POST",
+                        headers: { "Authorization": `Bearer ${token}` },
+                        body: formData
+                    });
+                }
+            }
+            
+            // 2. Process external URL if present
+            if (newItem.imageUrl) {
                 const formData = new FormData();
-                formData.append("name", newItem.name || file.name.split('.')[0]); // Use file name if name not provided
+                formData.append("name", newItem.name || "External URL Piece");
                 formData.append("gender", newItem.gender);
                 formData.append("age_group", newItem.age);
                 formData.append("style", newItem.style);
-                formData.append("image", file);
+                formData.append("image_url", newItem.imageUrl);
 
                 await fetch(getApiUrl("/api/v1/wardrobe/items"), {
                     method: "POST",
@@ -71,14 +89,15 @@ export default function AdminWardrobePage() {
                 });
             }
             
-            setNewItem({ ...newItem, name: "", images: [] });
+            setNewItem({ ...newItem, name: "", images: [], imageUrl: "" });
             fetchItems();
         } catch (e) {
-            console.error("Bulk Upload Error:", e);
+            console.error("Upload Error:", e);
         } finally {
             setUploading(false);
         }
     };
+
 
     const handleDelete = async (id: number) => {
         if (!confirm("Delete this clothing item?")) return;
@@ -170,6 +189,19 @@ export default function AdminWardrobePage() {
                         </div>
 
                         <div className="space-y-1.5">
+                            <div className="flex justify-between items-center">
+                                <Label className="text-xs font-bold text-muted-foreground">External Image URL</Label>
+                                <span className="text-[10px] text-zinc-500 font-bold uppercase tracking-widest">Optional</span>
+                            </div>
+                            <Input 
+                                className="bg-white/5 border-white/10"
+                                value={newItem.imageUrl} 
+                                onChange={e => setNewItem({...newItem, imageUrl: e.target.value})} 
+                                placeholder="Paste Unsplash/Cloudinary URL..." 
+                            />
+                        </div>
+
+                        <div className="space-y-1.5">
                             <Label className="text-xs font-bold text-muted-foreground">Clothing Photos</Label>
                             <div className="relative border-2 border-dashed border-white/10 rounded-xl p-8 hover:border-indigo-500/50 transition-colors group cursor-pointer text-center bg-white/5">
                                 <input 
@@ -195,15 +227,16 @@ export default function AdminWardrobePage() {
                         <Button 
                             type="submit" 
                             className="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-bold h-12 rounded-xl transition-all active:scale-[0.98]" 
-                            disabled={uploading || newItem.images.length === 0}
+                            disabled={uploading || (newItem.images.length === 0 && !newItem.imageUrl)}
                         >
                             {uploading ? (
                                 <span className="flex items-center gap-2">
                                     <div className="w-4 h-4 border-2 border-white/20 border-t-white rounded-full animate-spin" />
-                                    Processing Bulk...
+                                    Processing...
                                 </span>
-                            ) : `Upload ${newItem.images.length} Items`}
+                            ) : `Upload ${newItem.images.length > 0 ? newItem.images.length + ' Items' : 'URL Asset'}`}
                         </Button>
+
                     </form>
                 </div>
 

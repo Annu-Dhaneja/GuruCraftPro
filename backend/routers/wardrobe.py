@@ -80,26 +80,34 @@ async def add_item(
     gender: str = Form(...),
     age_group: str = Form(...),
     style: str = Form(...),
-    image: UploadFile = File(...),
+    image: Optional[UploadFile] = File(None),
+    image_url: Optional[str] = Form(None),
     db: Session = Depends(database.get_db),
     current_user: models.User = Depends(auth.get_current_user)
 ):
-    # Save image
-    file_extension = Path(image.filename).suffix
-    file_name = f"{uuid.uuid4()}{file_extension}"
-    file_path = UPLOAD_DIR / file_name
+    final_image_url = ""
     
-    with file_path.open("wb") as buffer:
-        shutil.copyfileobj(image.file, buffer)
-    
-    image_url = f"/images/uploads/wardrobe/{file_name}"
+    if image:
+        # Save image
+        file_extension = Path(image.filename).suffix
+        file_name = f"{uuid.uuid4()}{file_extension}"
+        file_path = UPLOAD_DIR / file_name
+        
+        with file_path.open("wb") as buffer:
+            shutil.copyfileobj(image.file, buffer)
+        
+        final_image_url = f"/images/uploads/wardrobe/{file_name}"
+    elif image_url:
+        final_image_url = image_url
+    else:
+        raise HTTPException(status_code=400, detail="Either an image file or an image URL must be provided")
     
     new_item = models.ClothingPiece(
         name=name,
         gender=gender,
         age_group=age_group,
         style=style,
-        image_url=image_url
+        image_url=final_image_url
     )
     
     db.add(new_item)
@@ -107,6 +115,7 @@ async def add_item(
     db.refresh(new_item)
     
     return {"status": "success", "item": new_item}
+
 
 @router.delete("/items/{item_id}", summary="Delete wardrobe item")
 def delete_item(
