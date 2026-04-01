@@ -134,6 +134,15 @@ def update_ssot_page_content(db: Session, page_slug: str, content: Dict[str, Any
         db.add(page)
         db.flush()
 
+    # Update page-level SEO & Titles if present in meta
+    if "meta" in content and isinstance(content["meta"], dict):
+        meta = content["meta"]
+        if "title" in meta: page.meta_title = meta["title"]
+        if "description" in meta: page.meta_description = meta["description"]
+    
+    if "title" in content and content["title"]:
+        page.title = content["title"]
+
     # The content dictionary for an SSOT page usually contains section slugs as keys
     # or it contains a 'sections' array if sent in the expanded format.
     
@@ -149,6 +158,7 @@ def update_ssot_page_content(db: Session, page_slug: str, content: Dict[str, Any
             if sec_slug:
                 upsert_reusable_section(db, sec_slug, sec_type, sec_content)
                 link_section_to_page(db, page_slug, sec_slug, order=idx)
+        db.commit()
         return True
 
     # CASE 2: Flattened top-level keys (The common legacy-compatible format)
@@ -160,10 +170,13 @@ def update_ssot_page_content(db: Session, page_slug: str, content: Dict[str, Any
         # Determine type (heuristic)
         # Note: In a real system, we might look up the existing section type
         section_type = "hero"
-        if "features" in section_slug or "list" in section_slug: section_type = "features"
-        if "cta" in section_slug: section_type = "cta"
+        if "features" in section_slug or "list" in section_slug or "categories" in section_slug: 
+            section_type = "features"
+        if "cta" in section_slug or "newsletter" in section_slug: 
+            section_type = "cta"
         
         upsert_reusable_section(db, section_slug, section_type, section_content)
         link_section_to_page(db, page_slug, section_slug)
         
+    db.commit()
     return True

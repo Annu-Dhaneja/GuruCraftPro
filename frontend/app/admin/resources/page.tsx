@@ -2,160 +2,158 @@
 
 import { CMSEditor } from "@/components/admin/CMSEditor";
 import { Button } from "@/components/ui/button";
-import { Plus, Trash2 } from "lucide-react";
+import { Plus, Trash2, BookOpen, Terminal, Download, PlayCircle, Sparkles } from "lucide-react";
 
-export default function ResourcesAdminPage() {
-    return (
-        <CMSEditor
-            segment="resources"
-            title="Resources & Learn CMS"
-            description="Manage tutorials, prompts, tools, categories, and hero settings."
-        >
-            {(data, { handleNestedChange, handleArrayChange, addArrayItem, removeArrayItem, handleChange }) => (
-                <div className="space-y-12 animate-in fade-in max-w-6xl mx-auto">
-                    <section className="bg-white/5 p-8 rounded-2xl border border-white/10 backdrop-blur-sm">
-                        <h2 className="text-2xl font-bold mb-8 flex items-center gap-3 text-indigo-300">
-                            <span className="w-2 h-8 bg-indigo-500 rounded-full" />
-                            Learn Hero
-                        </h2>
-                        <div className="space-y-6 max-w-2xl">
-                            <div>
-                                <CMSEditor.Label>Title</CMSEditor.Label>
-                                <CMSEditor.Input value={data.hero?.title} onChange={(v) => handleNestedChange("hero", "title", v)} />
-                            </div>
-                            <div>
-                                <CMSEditor.Label>Description</CMSEditor.Label>
-                                <CMSEditor.Input isTextarea value={data.hero?.description} onChange={(v) => handleNestedChange("hero", "description", v)} />
-                            </div>
-                        </div>
-                    </section>
-                    
-                    <section className="bg-white/5 p-8 rounded-2xl border border-white/10 backdrop-blur-sm">
-                        <h2 className="text-2xl font-bold mb-8 flex items-center gap-3 text-indigo-300">
-                            <span className="w-2 h-8 bg-indigo-500 rounded-full" />
-                            Categories
-                        </h2>
-                        <div className="flex flex-wrap gap-3 mb-6">
-                            {data.categories?.map((cat: string, i: number) => (
-                                <div key={i} className="flex items-center gap-3 bg-indigo-500/10 px-4 py-2 rounded-xl border border-indigo-500/20 group hover:border-indigo-500/50 transition-all">
-                                    <span className="text-sm font-medium text-indigo-200">{cat}</span>
-                                    <button 
-                                        onClick={() => {
-                                            const newCats = data.categories.filter((_: any, index: number) => index !== i);
-                                            handleChange("categories", newCats);
-                                        }}
-                                        className="text-indigo-400 hover:text-destructive transition-colors text-lg leading-none"
-                                    >
-                                        ×
-                                    </button>
-                                </div>
-                            ))}
-                        </div>
-                        <div className="max-w-md">
-                            <CMSEditor.Input 
-                                value="" 
-                                onChange={(v) => {
-                                    if (v.endsWith(",")) {
-                                        const newCat = v.slice(0, -1).trim();
-                                        if (newCat && !data.categories?.includes(newCat)) {
-                                            handleChange("categories", [...(data.categories || []), newCat]);
-                                        }
-                                    }
-                                }} 
-                                placeholder="Type category and press comma to add..."
-                            />
-                        </div>
-                    </section>
+export default function AdminResourcesPage() {
+  return (
+    <div className="min-h-screen bg-slate-950/20 pb-20">
+      <div className="relative mb-12 py-10 overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-r from-amber-500/10 via-orange-500/5 to-transparent border-b border-white/5" />
+        <div className="max-w-6xl mx-auto px-6 relative z-10 text-left">
+          <h1 className="text-4xl md:text-5xl font-extrabold tracking-tighter text-white">Resources & Learn</h1>
+          <p className="text-muted-foreground text-lg max-w-xl mt-4">Manage tutorials, AI prompts, and free assets for your community.</p>
+        </div>
+      </div>
 
-                    <section>
-                        <div className="flex justify-between items-center mb-10">
-                            <h2 className="text-2xl font-bold flex items-center gap-3 text-indigo-300">
-                                <span className="w-2 h-8 bg-indigo-500 rounded-full" />
-                                Tutorials
-                            </h2>
-                            <Button 
-                                onClick={() => addArrayItem("", "tutorials", { title: "New Tutorial", category: "General", duration: "10 mins" })}
-                                className="bg-indigo-600 hover:bg-indigo-700"
-                            >
-                                <Plus className="w-4 h-4 mr-2" /> Add Tutorial
-                            </Button>
-                        </div>
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            {data.tutorials?.map((item: any, i: number) => (
-                                <div key={i} className="bg-slate-900/40 p-6 rounded-2xl border border-white/5 shadow-xl relative group">
-                                    <div className="space-y-4">
-                                        <div>
-                                            <CMSEditor.Label>Title</CMSEditor.Label>
-                                            <CMSEditor.Input value={item.title} onChange={(v) => handleArrayChange("", "tutorials", i, "title", v)} />
-                                        </div>
-                                        <div className="flex gap-4">
-                                            <div className="flex-1">
-                                                <CMSEditor.Label>Category</CMSEditor.Label>
-                                                <CMSEditor.Input value={item.category} onChange={(v) => handleArrayChange("", "tutorials", i, "category", v)} />
-                                            </div>
-                                            <div className="flex-1">
-                                                <CMSEditor.Label>Duration</CMSEditor.Label>
-                                                <CMSEditor.Input value={item.duration} onChange={(v) => handleArrayChange("", "tutorials", i, "duration", v)} />
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity">
-                                        <Button variant="ghost" size="icon" className="h-8 w-8 text-red-400 hover:bg-red-500/10 hover:text-red-500" onClick={() => removeArrayItem("", "tutorials", i)}>
-                                            <Trash2 className="h-4 w-4" />
-                                        </Button>
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
-                    </section>
-
-                    <section>
-                        <div className="flex justify-between items-center mb-10">
-                            <h2 className="text-2xl font-bold flex items-center gap-3 text-indigo-300">
-                                <span className="w-2 h-8 bg-indigo-500 rounded-full" />
-                                Prompt Library
-                            </h2>
-                            <Button 
-                                onClick={() => addArrayItem("", "prompts", { title: "New Prompt", text: "Prompt text here...", style: "Design", image: "" })}
-                                className="bg-indigo-600 hover:bg-indigo-700"
-                            >
-                                <Plus className="w-4 h-4 mr-2" /> Add Prompt
-                            </Button>
-                        </div>
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            {data.prompts?.map((item: any, i: number) => (
-                                <div key={i} className="bg-slate-900/40 p-6 rounded-2xl border border-white/5 shadow-xl relative group">
-                                    <div className="space-y-4">
-                                        <div className="flex gap-4">
-                                            <div className="flex-1">
-                                                <CMSEditor.Label>Title</CMSEditor.Label>
-                                                <CMSEditor.Input value={item.title} onChange={(v) => handleArrayChange("", "prompts", i, "title", v)} />
-                                            </div>
-                                            <div className="flex-1">
-                                                <CMSEditor.Label>Style</CMSEditor.Label>
-                                                <CMSEditor.Input value={item.style} onChange={(v) => handleArrayChange("", "prompts", i, "style", v)} />
-                                            </div>
-                                        </div>
-                                        <div>
-                                            <CMSEditor.Label>Prompt Text</CMSEditor.Label>
-                                            <CMSEditor.Input isTextarea value={item.text} onChange={(v) => handleArrayChange("", "prompts", i, "text", v)} />
-                                        </div>
-                                        <div>
-                                            <CMSEditor.Label>Image Preview</CMSEditor.Label>
-                                            <CMSEditor.ImageUpload value={item.image} onChange={(v) => handleArrayChange("", "prompts", i, "image", v)} />
-                                        </div>
-                                    </div>
-                                    <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity">
-                                        <Button variant="ghost" size="icon" className="h-8 w-8 text-red-400 hover:bg-red-500/10 hover:text-red-500" onClick={() => removeArrayItem("", "prompts", i)}>
-                                            <Trash2 className="h-4 w-4" />
-                                        </Button>
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
-                    </section>
+      <CMSEditor 
+        segment="resources" 
+        title="Resources Hub Editor" 
+        description="Full control over the educational and asset library."
+      >
+        {(data, { handleNestedChange, handleArrayChange, addArrayItem, removeArrayItem }) => (
+          <div className="space-y-16 max-w-6xl mx-auto text-left">
+            
+            {/* HERO SECTION */}
+            <section className="bg-slate-900/40 backdrop-blur-md p-10 rounded-[2.5rem] border border-white/10 shadow-2xl relative group">
+              <h2 className="text-3xl font-bold mb-10 flex items-center gap-4 text-white">
+                <Sparkles className="w-8 h-8 text-amber-500" /> Hero Section
+              </h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+                <div className="space-y-6">
+                  <div>
+                    <CMSEditor.Label>Main Title</CMSEditor.Label>
+                    <CMSEditor.Input value={data.resources_hero?.title} onChange={(v) => handleNestedChange("resources_hero", "title", v)} />
+                  </div>
+                  <div>
+                    <CMSEditor.Label>Subtitle Badge</CMSEditor.Label>
+                    <CMSEditor.Input value={data.resources_hero?.subtitle} onChange={(v) => handleNestedChange("resources_hero", "subtitle", v)} />
+                  </div>
                 </div>
-            )}
-        </CMSEditor>
-    );
+                <div>
+                    <CMSEditor.Label>Description Narrative</CMSEditor.Label>
+                    <CMSEditor.Input value={data.resources_hero?.description} isTextarea onChange={(v) => handleNestedChange("resources_hero", "description", v)} />
+                </div>
+              </div>
+            </section>
+
+            {/* CATEGORIES */}
+            <section className="bg-slate-900/40 backdrop-blur-md p-10 rounded-[2.5rem] border border-white/10 shadow-2xl">
+               <div className="flex justify-between items-center mb-10">
+                 <h2 className="text-3xl font-bold text-white flex items-center gap-4">
+                   <BookOpen className="w-8 h-8 text-indigo-500" /> Content Categories
+                 </h2>
+                 <Button onClick={() => addArrayItem("resources_categories", "items", { id: "new", name: "New Category", icon: "BookOpen" })}>
+                   <Plus className="w-4 h-4 mr-2" /> Add Category
+                 </Button>
+               </div>
+               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                 {(data.resources_categories?.items || []).map((cat: any, i: number) => (
+                   <div key={i} className="p-6 rounded-3xl bg-black/40 border border-white/5 relative group">
+                      <Button 
+                        variant="destructive" size="icon" className="absolute -top-2 -right-2 opacity-0 group-hover:opacity-100 transition-opacity h-8 w-8"
+                        onClick={() => removeArrayItem("resources_categories", "items", i)}
+                      >
+                        <Trash2 className="w-3 h-3" />
+                      </Button>
+                      <div className="space-y-4">
+                        <CMSEditor.Input value={cat.name} onChange={(v) => handleArrayChange("resources_categories", "items", i, "name", v)} placeholder="Name" />
+                        <CMSEditor.Input value={cat.id} onChange={(v) => handleArrayChange("resources_categories", "items", i, "id", v)} placeholder="Slug (e.g. tutorials)" />
+                      </div>
+                   </div>
+                 ))}
+               </div>
+            </section>
+
+            {/* FEATURED POST */}
+            <section className="bg-slate-900/40 backdrop-blur-md p-10 rounded-[2.5rem] border border-white/10 shadow-2xl">
+               <h2 className="text-3xl font-bold mb-10 text-white">Featured Masterclass</h2>
+               <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+                  <div className="space-y-6">
+                    <div>
+                      <CMSEditor.Label>Featured Title</CMSEditor.Label>
+                      <CMSEditor.Input value={data.resources_featured?.post_title} onChange={(v) => handleNestedChange("resources_featured", "post_title", v)} />
+                    </div>
+                    <div>
+                      <CMSEditor.Label>Summary</CMSEditor.Label>
+                      <CMSEditor.Input value={data.resources_featured?.description} isTextarea onChange={(v) => handleNestedChange("resources_featured", "description", v)} />
+                    </div>
+                  </div>
+                  <div>
+                     <CMSEditor.Label>Visual Asset</CMSEditor.Label>
+                     <CMSEditor.ImageUpload value={data.resources_featured?.image} onChange={(v) => handleNestedChange("resources_featured", "image", v)} />
+                  </div>
+               </div>
+            </section>
+
+            {/* PROMPT LIBRARY */}
+            <section className="bg-slate-900/40 backdrop-blur-md p-10 rounded-[2.5rem] border border-white/10 shadow-2xl">
+               <div className="flex justify-between items-center mb-10">
+                 <h2 className="text-3xl font-bold text-white flex items-center gap-4">
+                   <Terminal className="w-8 h-8 text-emerald-500" /> AI Prompt Library
+                 </h2>
+                 <Button onClick={() => addArrayItem("resources_prompts", "items", { title: "New Prompt", category: "Midjourney" })}>
+                   <Plus className="w-4 h-4 mr-2" /> Add Prompt
+                 </Button>
+               </div>
+               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                 {(data.resources_prompts?.items || []).map((p: any, i: number) => (
+                   <div key={i} className="p-6 rounded-3xl bg-black/40 border border-white/5 relative group">
+                      <Button 
+                        variant="destructive" size="icon" className="absolute -top-2 -right-2 opacity-0 group-hover:opacity-100 transition-opacity h-8 w-8"
+                        onClick={() => removeArrayItem("resources_prompts", "items", i)}
+                      >
+                        <Trash2 className="w-3 h-3" />
+                      </Button>
+                      <div className="space-y-4">
+                        <CMSEditor.Input value={p.title} onChange={(v) => handleArrayChange("resources_prompts", "items", i, "title", v)} placeholder="Prompt Name" />
+                        <CMSEditor.Input value={p.category} onChange={(v) => handleArrayChange("resources_prompts", "items", i, "category", v)} placeholder="Platform" />
+                      </div>
+                   </div>
+                 ))}
+               </div>
+            </section>
+
+            {/* FREE ASSETS */}
+            <section className="bg-slate-900/40 backdrop-blur-md p-10 rounded-[2.5rem] border border-white/10 shadow-2xl">
+               <div className="flex justify-between items-center mb-10">
+                 <h2 className="text-3xl font-bold text-white flex items-center gap-4">
+                   <Download className="w-8 h-8 text-pink-500" /> Free Design Assets
+                 </h2>
+                 <Button onClick={() => addArrayItem("resources_free_resources", "items", { title: "New Asset", type: "PDF" })}>
+                   <Plus className="w-4 h-4 mr-2" /> Add Asset
+                 </Button>
+               </div>
+               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                 {(data.resources_free_resources?.items || []).map((a: any, i: number) => (
+                   <div key={i} className="p-6 rounded-3xl bg-black/40 border border-white/5 relative group">
+                      <Button 
+                        variant="destructive" size="icon" className="absolute -top-2 -right-2 opacity-0 group-hover:opacity-100 transition-opacity h-8 w-8"
+                        onClick={() => removeArrayItem("resources_free_resources", "items", i)}
+                      >
+                        <Trash2 className="w-3 h-3" />
+                      </Button>
+                      <div className="space-y-4">
+                        <CMSEditor.Input value={a.title} onChange={(v) => handleArrayChange("resources_free_resources", "items", i, "title", v)} placeholder="Asset Name" />
+                        <CMSEditor.Input value={a.type} onChange={(v) => handleArrayChange("resources_free_resources", "items", i, "type", v)} placeholder="File Type" />
+                      </div>
+                   </div>
+                 ))}
+               </div>
+            </section>
+
+          </div>
+        )}
+      </CMSEditor>
+    </div>
+  );
 }

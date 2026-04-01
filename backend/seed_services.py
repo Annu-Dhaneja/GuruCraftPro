@@ -166,6 +166,74 @@ def seed_guruji_art():
     finally:
         db.close()
 
+def seed_resources():
+    db = SessionLocal()
+    from repositories.cms_ssot import update_ssot_page_content
+    try:
+        print("Seeding Resources page...")
+        
+        resources_data = {
+            "title": "Resources & Learn",
+            "meta": {
+                "title": "Resources & Learn | Annu Design Studio",
+                "description": "Educational tutorials, AI prompt libraries, and free design assets to help you create better."
+            },
+            "resources_hero": {
+                "title": "Level Up Your Creative Game",
+                "subtitle": "RESOURCES & LEARN",
+                "description": "Access our curated library of professional tutorials, AI-powered design tools, and premium assets—all designed to help you master the art of creation."
+            },
+            "resources_categories": {
+                "items": [
+                    {"id": "tutorials", "name": "Video Tutorials", "icon": "PlayCircle"},
+                    {"id": "prompts", "name": "AI Prompts", "icon": "Terminal"},
+                    {"id": "assets", "name": "Free Assets", "icon": "Download"},
+                    {"id": "articles", "name": "Expert Articles", "icon": "BookOpen"}
+                ]
+            },
+            "resources_featured": {
+                "title": "Featured Masterclass",
+                "post_title": "Mastering Digital Portraits with AI",
+                "description": "Learn the step-by-step process of blending traditional art techniques with modern stable diffusion models.",
+                "image": "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=2564&auto=format&fit=crop"
+            },
+            "resources_tutorials": {
+                "items": [
+                    {"title": "Color Theory for Beginners", "duration": "15 min", "level": "Easy"},
+                    {"title": "Advanced Lighting in Blender", "duration": "45 min", "level": "Expert"},
+                    {"title": "UI Design with Framer Motion", "duration": "30 min", "level": "Intermediate"}
+                ]
+            },
+            "resources_prompts": {
+                "items": [
+                    {"title": "Cinematic Lighting Prompt", "category": "Midjourney"},
+                    {"title": "Product Photography Prompt", "category": "Stable Diffusion"},
+                    {"title": "Minimalist Logo Set", "category": "DALL-E 3"}
+                ]
+            },
+            "resources_free_resources": {
+                "items": [
+                    {"title": "2024 Design Trends PDF", "type": "E-book"},
+                    {"title": "Custom Brush Pack", "type": "Tool kit"},
+                    {"title": "Social Media Templates", "type": "Figma File"}
+                ]
+            },
+            "resources_newsletter": {
+                "title": "Weekly Creative Insights",
+                "description": "Join 5,000+ creators getting weekly design tips and early access to new resources.",
+                "button_text": "Join the Circle"
+            }
+        }
+        
+        update_ssot_page_content(db, "resources", resources_data)
+        print("Successfully seeded Resources page!")
+
+    except Exception as e:
+        print(f"Error seeding Resources: {e}")
+    finally:
+        db.close()
+
 if __name__ == "__main__":
     seed_services()
     seed_guruji_art()
+    seed_resources()

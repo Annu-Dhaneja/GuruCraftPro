@@ -292,6 +292,51 @@ export function CMSEditor({
         </div>
       </div>
 
+      <div className="bg-slate-900/50 backdrop-blur-xl border border-white/10 rounded-2x p-0 shadow-2xl mb-12 overflow-hidden ring-1 ring-white/5">
+        <div className="bg-indigo-500/10 border-b border-white/10 px-8 py-4 flex items-center justify-between">
+           <div className="flex items-center gap-3">
+              <div className="w-8 h-8 rounded-lg bg-indigo-500/20 flex items-center justify-center text-indigo-400">
+                 <Save className="w-4 h-4" />
+              </div>
+              <h3 className="font-bold text-sm uppercase tracking-widest text-indigo-200">SEO & Social Metadata</h3>
+           </div>
+           <div className="text-[10px] uppercase tracking-tighter text-indigo-400 bg-indigo-500/5 px-2 py-1 rounded border border-indigo-500/20">
+              High Priority
+           </div>
+        </div>
+        
+        <div className="p-8 grid grid-cols-1 md:grid-cols-2 gap-8">
+           <div className="space-y-3">
+              <div className="flex justify-between items-center">
+                 <InputLabel>Search Title (Meta Title)</InputLabel>
+                 <span className={`text-[10px] font-mono ${(data?.meta?.title?.length || 0) > 60 ? 'text-red-400' : 'text-zinc-500'}`}>
+                    {data?.meta?.title?.length || 0}/60
+                 </span>
+              </div>
+              <Input 
+                value={data?.meta?.title || ""} 
+                onChange={(v) => setData((prev: any) => ({ ...prev, meta: { ...prev.meta, title: v } }))} 
+                placeholder="The headline that appears in Google..." 
+              />
+           </div>
+
+           <div className="space-y-3">
+              <div className="flex justify-between items-center">
+                 <InputLabel>Search Description (Meta Description)</InputLabel>
+                 <span className={`text-[10px] font-mono ${(data?.meta?.description?.length || 0) > 160 ? 'text-red-400' : 'text-zinc-500'}`}>
+                    {data?.meta?.description?.length || 0}/160
+                 </span>
+              </div>
+              <Input 
+                value={data?.meta?.description || ""} 
+                isTextarea
+                onChange={(v) => setData((prev: any) => ({ ...prev, meta: { ...prev.meta, description: v } }))} 
+                placeholder="A brief summary to entice users to click..." 
+              />
+           </div>
+        </div>
+      </div>
+
       <div className="bg-slate-900/50 backdrop-blur-xl border border-white/10 rounded-2xl p-8 shadow-2xl ring-1 ring-white/5">
         {children(data, { handleNestedChange, handleArrayChange, handleNestedArrayChange, addArrayItem, removeArrayItem, handleChange })}
       </div>

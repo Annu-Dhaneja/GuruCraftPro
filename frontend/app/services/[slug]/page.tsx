@@ -9,6 +9,22 @@ export const dynamic = 'force-dynamic';
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
   const formatTitle = (s: string) => (s || "Service").split("-").map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(" ");
+  
+  try {
+    const res = await fetch(getApiUrl(`/api/v1/cms/${slug}`), { cache: 'no-store' });
+    if (res.ok) {
+        const data = await res.json();
+        if (data.meta?.title) {
+            return {
+                title: data.meta.title,
+                description: data.meta.description || `Premium ${formatTitle(slug)} services by Gurucraftpro Design Studio.`
+            };
+        }
+    }
+  } catch (e) {
+    console.error("Service meta fetch error:", e);
+  }
+
   return {
     title: `${formatTitle(slug)} | Gurucraftpro`,
     description: `Premium ${formatTitle(slug)} services by Gurucraftpro Design Studio.`

@@ -11,10 +11,27 @@ import { ProductGrid } from "@/components/services/ProductGrid";
 import { Footer } from "@/components/footer/Footer";
 import { getApiUrl } from "@/lib/utils";
 
-export const metadata: Metadata = {
-    title: "Services & Pricing | Annu Design Studio",
-    description: "Choose the perfect design plan for your needs. From instant AI concepts to fully custom branding packages.",
-};
+export async function generateMetadata(): Promise<Metadata> {
+    try {
+        const res = await fetch(getApiUrl("/api/v1/cms/services"), { cache: 'no-store' });
+        if (res.ok) {
+            const data = await res.json();
+            if (data.meta) {
+                return {
+                    title: data.meta.title,
+                    description: data.meta.description
+                };
+            }
+        }
+    } catch (e) {
+        console.error("Metadata fetch error:", e);
+    }
+
+    return {
+        title: "Services & Pricing | Annu Design Studio",
+        description: "Choose the perfect design plan for your needs. From instant AI concepts to fully custom branding packages.",
+    };
+}
 
 export const dynamic = 'force-dynamic';
 
