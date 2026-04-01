@@ -55,6 +55,12 @@ export function ServiceTemplate({ data }: { data: ServiceData }) {
     return <VantageEcomContent data={data} />;
   }
 
+  if (data.slug === "7-day-cloths") {
+    const { redirect } = require("next/navigation");
+    redirect("/wardrobe");
+    return null;
+  }
+
 
   if (sections.length === 0) {
     return (
