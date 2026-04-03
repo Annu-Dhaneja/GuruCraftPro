@@ -261,7 +261,16 @@ export function GurujiArtContent({ data }: { data?: GurujiArtData }) {
                        <div className="flex flex-col">
                           <span className="text-[9px] text-zinc-600 font-black uppercase tracking-[0.3em] mb-2">Sacred Exchange</span>
                           <span className="text-4xl font-extrabold text-white flex items-center gap-1">
-                             <span className="text-amber-500 opacity-50 text-2xl font-light italic mr-1">₹</span> {product.price.replace('₹', '')}
+                             {product.price.includes('₹') ? (
+                               <>
+                                 <span className="text-amber-500 opacity-50 text-2xl font-light italic mr-1">₹</span> 
+                                 {product.price.replace('₹', '').trim()}
+                               </>
+                             ) : (
+                               <span className="text-shimmer bg-gradient-to-r from-amber-200 to-orange-400 bg-clip-text text-transparent">
+                                 {product.price}
+                               </span>
+                             )}
                           </span>
                        </div>
                        <Button size="icon" className="w-18 h-18 rounded-full bg-white text-black hover:bg-amber-600 hover:text-white transition-all shadow-2xl active:scale-90">
