@@ -1,0 +1,957 @@
+﻿
+> frontend@0.1.0 build
+> next build
+
+Γû▓ Next.js 16.1.1 (Turbopack)
+- Environments: .env.local
+
+  Creating an optimized production build ...
+Γ£ô Compiled successfully in 7.5s
+  Running TypeScript ...
+  Collecting page data using 7 workers ...
+  Generating static pages using 7 workers (0/53) ...
+node.exe : Layout 
+Metadata Fetch Error: 
+TypeError: fetch failed
+At C:\Program 
+Files\nodejs\npm.ps1:29 
+char:3
++   & $NODE_EXE 
+$NPM_CLI_JS $args
++   ~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~
+    + CategoryInfo      
+        : NotSpecified: 
+(L    ayout 
+Metadata...r: f    etch 
+failed:String) [    ], 
+RemoteException
+    + 
+FullyQualifiedError    
+Id : NativeCommandErr   
+ or
+ 
+    at async Module.k (E
+:\Project\virtual_try-ma
+in\frontend\.next\server
+\chunks\ssr\[root-of-the
+-server]__8e98778c._.js:
+1:5295) {
+  [cause]: 
+AggregateError: 
+      at ignore-listed 
+frames {
+    code: 'ECONNREFUSED'
+  }
+}
+Layout Metadata Fetch 
+Error: TypeError: fetch 
+failed
+    at async Module.k (E
+:\Project\virtual_try-ma
+in\frontend\.next\server
+\chunks\ssr\[root-of-the
+-server]__cc155eb6._.js:
+1:5295) {
+  [cause]: 
+AggregateError: 
+      at ignore-listed 
+frames {
+    code: 'ECONNREFUSED'
+  }
+}
+Layout Metadata Fetch 
+Error: TypeError: fetch 
+failed
+    at async Module.k (E
+:\Project\virtual_try-ma
+in\frontend\.next\server
+\chunks\ssr\[root-of-the
+-server]__cc155eb6._.js:
+1:5295) {
+  [cause]: 
+AggregateError: 
+      at ignore-listed 
+frames {
+    code: 'ECONNREFUSED'
+  }
+}
+Layout Metadata Fetch 
+Error: TypeError: fetch 
+failed
+    at async Module.k (E
+:\Project\virtual_try-ma
+in\frontend\.next\server
+\chunks\ssr\[root-of-the
+-server]__8e98778c._.js:
+1:5295) {
+  [cause]: 
+AggregateError: 
+      at ignore-listed 
+frames {
+    code: 'ECONNREFUSED'
+  }
+}
+Layout Metadata Fetch 
+Error: TypeError: fetch 
+failed
+    at async Module.k (E
+:\Project\virtual_try-ma
+in\frontend\.next\server
+\chunks\ssr\[root-of-the
+-server]__cc155eb6._.js:
+1:5295) {
+  [cause]: 
+AggregateError: 
+      at ignore-listed 
+frames {
+    code: 'ECONNREFUSED'
+  }
+}
+Layout Metadata Fetch 
+Error: TypeError: fetch 
+failed
+    at async Module.k (E
+:\Project\virtual_try-ma
+in\frontend\.next\server
+\chunks\ssr\[root-of-the
+-server]__8e98778c._.js:
+1:5295) {
+  [cause]: 
+AggregateError: 
+      at ignore-listed 
+frames {
+    code: 'ECONNREFUSED'
+  }
+}
+Layout Metadata Fetch 
+Error: TypeError: fetch 
+failed
+    at async Module.k (E
+:\Project\virtual_try-ma
+in\frontend\.next\server
+\chunks\ssr\[root-of-the
+-server]__8e98778c._.js:
+1:5295) {
+  [cause]: 
+AggregateError: 
+      at ignore-listed 
+frames {
+    code: 'ECONNREFUSED'
+  }
+}
+Layout Metadata Fetch 
+Error: TypeError: fetch 
+failed
+    at async Module.k (E
+:\Project\virtual_try-ma
+in\frontend\.next\server
+\chunks\ssr\[root-of-the
+-server]__cc155eb6._.js:
+1:5295) {
+  [cause]: 
+AggregateError: 
+      at ignore-listed 
+frames {
+    code: 'ECONNREFUSED'
+  }
+}
+Layout Metadata Fetch 
+Error: TypeError: fetch 
+failed
+    at async Module.k (E
+:\Project\virtual_try-ma
+in\frontend\.next\server
+\chunks\ssr\[root-of-the
+-server]__cc155eb6._.js:
+1:5295) {
+  [cause]: 
+AggregateError: 
+      at ignore-listed 
+frames {
+    code: 'ECONNREFUSED'
+  }
+}
+Layout Metadata Fetch 
+Error: TypeError: fetch 
+failed
+    at async Module.k (E
+:\Project\virtual_try-ma
+in\frontend\.next\server
+\chunks\ssr\[root-of-the
+-server]__8e98778c._.js:
+1:5295) {
+  [cause]: 
+AggregateError: 
+      at ignore-listed 
+frames {
+    code: 'ECONNREFUSED'
+  }
+}
+Layout Metadata Fetch 
+Error: TypeError: fetch 
+failed
+    at async Module.k (E
+:\Project\virtual_try-ma
+in\frontend\.next\server
+\chunks\ssr\[root-of-the
+-server]__cc155eb6._.js:
+1:5295) {
+  [cause]: 
+AggregateError: 
+      at ignore-listed 
+frames {
+    code: 'ECONNREFUSED'
+  }
+}
+Layout Metadata Fetch 
+Error: TypeError: fetch 
+failed
+    at async Module.k (E
+:\Project\virtual_try-ma
+in\frontend\.next\server
+\chunks\ssr\[root-of-the
+-server]__cc155eb6._.js:
+1:5295) {
+  [cause]: 
+AggregateError: 
+      at ignore-listed 
+frames {
+    code: 'ECONNREFUSED'
+  }
+}
+Layout Metadata Fetch 
+Error: TypeError: fetch 
+failed
+    at async Module.k (E
+:\Project\virtual_try-ma
+in\frontend\.next\server
+\chunks\ssr\[root-of-the
+-server]__8e98778c._.js:
+1:5295) {
+  [cause]: 
+AggregateError: 
+      at ignore-listed 
+frames {
+    code: 'ECONNREFUSED'
+  }
+}
+Layout Metadata Fetch 
+Error: TypeError: fetch 
+failed
+    at async Module.k (E
+:\Project\virtual_try-ma
+in\frontend\.next\server
+\chunks\ssr\[root-of-the
+-server]__cc155eb6._.js:
+1:5295) {
+  [cause]: 
+AggregateError: 
+      at ignore-listed 
+frames {
+    code: 'ECONNREFUSED'
+  }
+}
+Layout Metadata Fetch 
+Error: TypeError: fetch 
+failed
+    at async Module.k (E
+:\Project\virtual_try-ma
+in\frontend\.next\server
+\chunks\ssr\[root-of-the
+-server]__8e98778c._.js:
+1:5295) {
+  [cause]: 
+AggregateError: 
+      at ignore-listed 
+frames {
+    code: 'ECONNREFUSED'
+  }
+}
+Layout Metadata Fetch 
+Error: TypeError: fetch 
+failed
+    at async Module.k (E
+:\Project\virtual_try-ma
+in\frontend\.next\server
+\chunks\ssr\[root-of-the
+-server]__cc155eb6._.js:
+1:5295) {
+  [cause]: 
+AggregateError: 
+      at ignore-listed 
+frames {
+    code: 'ECONNREFUSED'
+  }
+}
+Layout Metadata Fetch 
+Error: TypeError: fetch 
+failed
+    at async Module.k (E
+:\Project\virtual_try-ma
+in\frontend\.next\server
+\chunks\ssr\[root-of-the
+-server]__8e98778c._.js:
+1:5295) {
+  [cause]: 
+AggregateError: 
+      at ignore-listed 
+frames {
+    code: 'ECONNREFUSED'
+  }
+}
+Layout Metadata Fetch 
+Error: TypeError: fetch 
+failed
+    at async Module.k (E
+:\Project\virtual_try-ma
+in\frontend\.next\server
+\chunks\ssr\[root-of-the
+-server]__cc155eb6._.js:
+1:5295) {
+  [cause]: 
+AggregateError: 
+      at ignore-listed 
+frames {
+    code: 'ECONNREFUSED'
+  }
+}
+Layout Metadata Fetch 
+Error: TypeError: fetch 
+failed
+    at async Module.k (E
+:\Project\virtual_try-ma
+in\frontend\.next\server
+\chunks\ssr\[root-of-the
+-server]__cc155eb6._.js:
+1:5295) {
+  [cause]: 
+AggregateError: 
+      at ignore-listed 
+frames {
+    code: 'ECONNREFUSED'
+  }
+}
+  Generating static pages using 7 workers (13/53) 
+Layout Metadata Fetch 
+Error: TypeError: fetch 
+failed
+    at async Module.k (E
+:\Project\virtual_try-ma
+in\frontend\.next\server
+\chunks\ssr\[root-of-the
+-server]__cc155eb6._.js:
+1:5295) {
+  [cause]: 
+AggregateError: 
+      at ignore-listed 
+frames {
+    code: 'ECONNREFUSED'
+  }
+}
+Layout Metadata Fetch 
+Error: TypeError: fetch 
+failed
+    at async Module.k (E
+:\Project\virtual_try-ma
+in\frontend\.next\server
+\chunks\ssr\[root-of-the
+-server]__cc155eb6._.js:
+1:5295) {
+  [cause]: 
+AggregateError: 
+      at ignore-listed 
+frames {
+    code: 'ECONNREFUSED'
+  }
+}
+Layout Metadata Fetch 
+Error: TypeError: fetch 
+failed
+    at async Module.k (E
+:\Project\virtual_try-ma
+in\frontend\.next\server
+\chunks\ssr\[root-of-the
+-server]__cc155eb6._.js:
+1:5295) {
+  [cause]: 
+AggregateError: 
+      at ignore-listed 
+frames {
+    code: 'ECONNREFUSED'
+  }
+}
+Layout Metadata Fetch 
+Error: TypeError: fetch 
+failed
+    at async Module.k (E
+:\Project\virtual_try-ma
+in\frontend\.next\server
+\chunks\ssr\[root-of-the
+-server]__8e98778c._.js:
+1:5295) {
+  [cause]: 
+AggregateError: 
+      at ignore-listed 
+frames {
+    code: 'ECONNREFUSED'
+  }
+}
+Layout Metadata Fetch 
+Error: TypeError: fetch 
+failed
+    at async Module.k (E
+:\Project\virtual_try-ma
+in\frontend\.next\server
+\chunks\ssr\[root-of-the
+-server]__cc155eb6._.js:
+1:5295) {
+  [cause]: 
+AggregateError: 
+      at ignore-listed 
+frames {
+    code: 'ECONNREFUSED'
+  }
+}
+Layout Metadata Fetch 
+Error: TypeError: fetch 
+failed
+    at async Module.k (E
+:\Project\virtual_try-ma
+in\frontend\.next\server
+\chunks\ssr\[root-of-the
+-server]__cc155eb6._.js:
+1:5295) {
+  [cause]: 
+AggregateError: 
+      at ignore-listed 
+frames {
+    code: 'ECONNREFUSED'
+  }
+}
+Layout Metadata Fetch 
+Error: TypeError: fetch 
+failed
+    at async Module.k (E
+:\Project\virtual_try-ma
+in\frontend\.next\server
+\chunks\ssr\[root-of-the
+-server]__cc155eb6._.js:
+1:5295) {
+  [cause]: 
+AggregateError: 
+      at ignore-listed 
+frames {
+    code: 'ECONNREFUSED'
+  }
+}
+Layout Metadata Fetch 
+Error: TypeError: fetch 
+failed
+    at async Module.k (E
+:\Project\virtual_try-ma
+in\frontend\.next\server
+\chunks\ssr\[root-of-the
+-server]__8e98778c._.js:
+1:5295) {
+  [cause]: 
+AggregateError: 
+      at ignore-listed 
+frames {
+    code: 'ECONNREFUSED'
+  }
+}
+Layout Metadata Fetch 
+Error: TypeError: fetch 
+failed
+    at async Module.k (E
+:\Project\virtual_try-ma
+in\frontend\.next\server
+\chunks\ssr\[root-of-the
+-server]__cc155eb6._.js:
+1:5295) {
+  [cause]: 
+AggregateError: 
+      at ignore-listed 
+frames {
+    code: 'ECONNREFUSED'
+  }
+}
+  Generating static pages using 7 workers (26/53) 
+Layout Metadata Fetch 
+Error: TypeError: fetch 
+failed
+    at async Module.k (E
+:\Project\virtual_try-ma
+in\frontend\.next\server
+\chunks\ssr\[root-of-the
+-server]__cc155eb6._.js:
+1:5295) {
+  [cause]: 
+AggregateError: 
+      at ignore-listed 
+frames {
+    code: 'ECONNREFUSED'
+  }
+}
+Layout Metadata Fetch 
+Error: TypeError: fetch 
+failed
+    at async Module.k (E
+:\Project\virtual_try-ma
+in\frontend\.next\server
+\chunks\ssr\[root-of-the
+-server]__8e98778c._.js:
+1:5295) {
+  [cause]: 
+AggregateError: 
+      at ignore-listed 
+frames {
+    code: 'ECONNREFUSED'
+  }
+}
+Layout Metadata Fetch 
+Error: TypeError: fetch 
+failed
+    at async Module.k (E
+:\Project\virtual_try-ma
+in\frontend\.next\server
+\chunks\ssr\[root-of-the
+-server]__cc155eb6._.js:
+1:5295) {
+  [cause]: 
+AggregateError: 
+      at ignore-listed 
+frames {
+    code: 'ECONNREFUSED'
+  }
+}
+Layout Metadata Fetch 
+Error: TypeError: fetch 
+failed
+    at async Module.k (E
+:\Project\virtual_try-ma
+in\frontend\.next\server
+\chunks\ssr\[root-of-the
+-server]__cc155eb6._.js:
+1:5295) {
+  [cause]: 
+AggregateError: 
+      at ignore-listed 
+frames {
+    code: 'ECONNREFUSED'
+  }
+}
+Layout Metadata Fetch 
+Error: TypeError: fetch 
+failed
+    at async Module.k (E
+:\Project\virtual_try-ma
+in\frontend\.next\server
+\chunks\ssr\[root-of-the
+-server]__8e98778c._.js:
+1:5295) {
+  [cause]: 
+AggregateError: 
+      at ignore-listed 
+frames {
+    code: 'ECONNREFUSED'
+  }
+}
+Layout Metadata Fetch 
+Error: TypeError: fetch 
+failed
+    at async Module.k (E
+:\Project\virtual_try-ma
+in\frontend\.next\server
+\chunks\ssr\[root-of-the
+-server]__cc155eb6._.js:
+1:5295) {
+  [cause]: 
+AggregateError: 
+      at ignore-listed 
+frames {
+    code: 'ECONNREFUSED'
+  }
+}
+Layout Metadata Fetch 
+Error: TypeError: fetch 
+failed
+    at async Module.k (E
+:\Project\virtual_try-ma
+in\frontend\.next\server
+\chunks\ssr\[root-of-the
+-server]__cc155eb6._.js:
+1:5295) {
+  [cause]: 
+AggregateError: 
+      at ignore-listed 
+frames {
+    code: 'ECONNREFUSED'
+  }
+}
+Layout Metadata Fetch 
+Error: TypeError: fetch 
+failed
+    at async Module.k (E
+:\Project\virtual_try-ma
+in\frontend\.next\server
+\chunks\ssr\[root-of-the
+-server]__8e98778c._.js:
+1:5295) {
+  [cause]: 
+AggregateError: 
+      at ignore-listed 
+frames {
+    code: 'ECONNREFUSED'
+  }
+}
+Layout Metadata Fetch 
+Error: TypeError: fetch 
+failed
+    at async Module.k (E
+:\Project\virtual_try-ma
+in\frontend\.next\server
+\chunks\ssr\[root-of-the
+-server]__cc155eb6._.js:
+1:5295) {
+  [cause]: 
+AggregateError: 
+      at ignore-listed 
+frames {
+    code: 'ECONNREFUSED'
+  }
+}
+Layout Metadata Fetch 
+Error: TypeError: fetch 
+failed
+    at async Module.k (E
+:\Project\virtual_try-ma
+in\frontend\.next\server
+\chunks\ssr\[root-of-the
+-server]__cc155eb6._.js:
+1:5295) {
+  [cause]: 
+AggregateError: 
+      at ignore-listed 
+frames {
+    code: 'ECONNREFUSED'
+  }
+}
+Layout Metadata Fetch 
+Error: TypeError: fetch 
+failed
+    at async Module.k (E
+:\Project\virtual_try-ma
+in\frontend\.next\server
+\chunks\ssr\[root-of-the
+-server]__cc155eb6._.js:
+1:5295) {
+  [cause]: 
+AggregateError: 
+      at ignore-listed 
+frames {
+    code: 'ECONNREFUSED'
+  }
+}
+Layout Metadata Fetch 
+Error: TypeError: fetch 
+failed
+    at async Module.k (E
+:\Project\virtual_try-ma
+in\frontend\.next\server
+\chunks\ssr\[root-of-the
+-server]__8e98778c._.js:
+1:5295) {
+  [cause]: 
+AggregateError: 
+      at ignore-listed 
+frames {
+    code: 'ECONNREFUSED'
+  }
+}
+Layout Metadata Fetch 
+Error: TypeError: fetch 
+failed
+    at async Module.k (E
+:\Project\virtual_try-ma
+in\frontend\.next\server
+\chunks\ssr\[root-of-the
+-server]__cc155eb6._.js:
+1:5295) {
+  [cause]: 
+AggregateError: 
+      at ignore-listed 
+frames {
+    code: 'ECONNREFUSED'
+  }
+}
+Layout Metadata Fetch 
+Error: TypeError: fetch 
+failed
+    at async Module.k (E
+:\Project\virtual_try-ma
+in\frontend\.next\server
+\chunks\ssr\[root-of-the
+-server]__cc155eb6._.js:
+1:5295) {
+  [cause]: 
+AggregateError: 
+      at ignore-listed 
+frames {
+    code: 'ECONNREFUSED'
+  }
+}
+Layout Metadata Fetch 
+Error: TypeError: fetch 
+failed
+    at async Module.k (E
+:\Project\virtual_try-ma
+in\frontend\.next\server
+\chunks\ssr\[root-of-the
+-server]__cc155eb6._.js:
+1:5295) {
+  [cause]: 
+AggregateError: 
+      at ignore-listed 
+frames {
+    code: 'ECONNREFUSED'
+  }
+}
+Layout Metadata Fetch 
+Error: TypeError: fetch 
+failed
+    at async Module.k (E
+:\Project\virtual_try-ma
+in\frontend\.next\server
+\chunks\ssr\[root-of-the
+-server]__cc155eb6._.js:
+1:5295) {
+  [cause]: 
+AggregateError: 
+      at ignore-listed 
+frames {
+    code: 'ECONNREFUSED'
+  }
+}
+Layout Metadata Fetch 
+Error: TypeError: fetch 
+failed
+    at async Module.k (E
+:\Project\virtual_try-ma
+in\frontend\.next\server
+\chunks\ssr\[root-of-the
+-server]__8e98778c._.js:
+1:5295) {
+  [cause]: 
+AggregateError: 
+      at ignore-listed 
+frames {
+    code: 'ECONNREFUSED'
+  }
+}
+  Generating static pages using 7 workers (39/53) 
+Layout Metadata Fetch 
+Error: TypeError: fetch 
+failed
+    at async Module.k (E
+:\Project\virtual_try-ma
+in\frontend\.next\server
+\chunks\ssr\[root-of-the
+-server]__cc155eb6._.js:
+1:5295) {
+  [cause]: 
+AggregateError: 
+      at ignore-listed 
+frames {
+    code: 'ECONNREFUSED'
+  }
+}
+Layout Metadata Fetch 
+Error: TypeError: fetch 
+failed
+    at async Module.k (E
+:\Project\virtual_try-ma
+in\frontend\.next\server
+\chunks\ssr\[root-of-the
+-server]__cc155eb6._.js:
+1:5295) {
+  [cause]: 
+AggregateError: 
+      at ignore-listed 
+frames {
+    code: 'ECONNREFUSED'
+  }
+}
+Layout Metadata Fetch 
+Error: TypeError: fetch 
+failed
+    at async Module.k (E
+:\Project\virtual_try-ma
+in\frontend\.next\server
+\chunks\ssr\[root-of-the
+-server]__8e98778c._.js:
+1:5295) {
+  [cause]: 
+AggregateError: 
+      at ignore-listed 
+frames {
+    code: 'ECONNREFUSED'
+  }
+}
+Layout Metadata Fetch 
+Error: TypeError: fetch 
+failed
+    at async Module.k (E
+:\Project\virtual_try-ma
+in\frontend\.next\server
+\chunks\ssr\[root-of-the
+-server]__cc155eb6._.js:
+1:5295) {
+  [cause]: 
+AggregateError: 
+      at ignore-listed 
+frames {
+    code: 'ECONNREFUSED'
+  }
+}
+Layout Metadata Fetch 
+Error: TypeError: fetch 
+failed
+    at async Module.k (E
+:\Project\virtual_try-ma
+in\frontend\.next\server
+\chunks\ssr\[root-of-the
+-server]__8e98778c._.js:
+1:5295) {
+  [cause]: 
+AggregateError: 
+      at ignore-listed 
+frames {
+    code: 'ECONNREFUSED'
+  }
+}
+Layout Metadata Fetch 
+Error: TypeError: fetch 
+failed
+    at async Module.k (E
+:\Project\virtual_try-ma
+in\frontend\.next\server
+\chunks\ssr\[root-of-the
+-server]__cc155eb6._.js:
+1:5295) {
+  [cause]: 
+AggregateError: 
+      at ignore-listed 
+frames {
+    code: 'ECONNREFUSED'
+  }
+}
+Layout Metadata Fetch 
+Error: TypeError: fetch 
+failed
+    at async Module.k (E
+:\Project\virtual_try-ma
+in\frontend\.next\server
+\chunks\ssr\[root-of-the
+-server]__8e98778c._.js:
+1:5295) {
+  [cause]: 
+AggregateError: 
+      at ignore-listed 
+frames {
+    code: 'ECONNREFUSED'
+  }
+}
+Layout Metadata Fetch 
+Error: TypeError: fetch 
+failed
+    at async Module.k (E
+:\Project\virtual_try-ma
+in\frontend\.next\server
+\chunks\ssr\[root-of-the
+-server]__8e98778c._.js:
+1:5295) {
+  [cause]: 
+AggregateError: 
+      at ignore-listed 
+frames {
+    code: 'ECONNREFUSED'
+  }
+}
+Γ£ô Generating static pages using 7 workers (53/53) in 2.2s
+  Finalizing page optimization ...
+
+Route (app)                                Revalidate  Expire
+Γöî ╞Æ /
+Γö£ Γùï /_not-found                                    1m      1y
+Γö£ ╞Æ /about
+Γö£ Γùï /admin                                         1m      1y
+Γö£ Γùï /admin/about                                   1m      1y
+Γö£ Γùï /admin/ai-lab                                  1m      1y
+Γö£ Γùï /admin/blog                                    1m      1y
+Γö£ Γùï /admin/clothes-planner                         1m      1y
+Γö£ Γùï /admin/consultation                            1m      1y
+Γö£ Γùï /admin/contact                                 1m      1y
+Γö£ Γùï /admin/contacts                                1m      1y
+Γö£ Γùï /admin/deploy                                  1m      1y
+Γö£ Γùï /admin/faq                                     1m      1y
+Γö£ Γùï /admin/guruji                                  1m      1y
+Γö£ Γùï /admin/home                                    1m      1y
+Γö£ Γùï /admin/legal                                   1m      1y
+Γö£ Γùï /admin/media                                   1m      1y
+Γö£ Γùï /admin/portfolio                               1m      1y
+Γö£ Γùï /admin/resources                               1m      1y
+Γö£ Γùï /admin/services                                1m      1y
+Γö£ ╞Æ /admin/services/[slug]
+Γö£ Γùï /admin/services/guru-ji-art                    1m      1y
+Γö£ Γùï /admin/services/vantage-ecom                   1m      1y
+Γö£ Γùï /admin/services/wedding-plan                   1m      1y
+Γö£ Γùï /admin/settings                                1m      1y
+Γö£ Γùï /admin/site-config                             1m      1y
+Γö£ Γùï /admin/users                                   1m      1y
+Γö£ Γùï /admin/wardrobe                                1m      1y
+Γö£ ╞Æ /ai-lab
+Γö£ Γùï /ai-lab/logo-generator                         1m      1y
+Γö£ Γùï /ai-lab/outfit-generator                       1m      1y
+Γö£ Γùï /ai-lab/sticker-generator                      1m      1y
+Γö£ Γùï /ai-lab/virtual-try-on                         1m      1y
+Γö£ Γùï /ai-lab/weekly-look                            1m      1y
+Γö£ Γùï /blog                                          1m      1y
+Γö£ ╞Æ /blog/[slug]
+Γö£ Γùï /book                                          1m      1y
+Γö£ Γùï /clothes-planner                               1m      1y
+Γö£ ╞Æ /contact
+Γö£ Γùï /dashboard                                     1m      1y
+Γö£ Γùï /dashboard/projects                            1m      1y
+Γö£ Γùï /dashboard/settings                            1m      1y
+Γö£ ╞Æ /faq
+Γö£ Γùï /forgot-password                               1m      1y
+Γö£ Γùï /guruji-art                                    1m      1y
+Γö£ ╞Æ /guruji-darshan
+Γö£ Γùï /login                                         1m      1y
+Γö£ ╞Æ /portfolio
+Γö£ ╞Æ /portfolio/[slug]
+Γö£ ╞Æ /portfolio/%5Bcategory%5D
+Γö£ ╞Æ /portfolio/all
+Γö£ Γùï /privacy                                       1m      1y
+Γö£ Γùï /refunds                                       1m      1y
+Γö£ Γùï /request                                       1m      1y
+Γö£ ╞Æ /resources
+Γö£ ╞Æ /services
+Γö£ ╞Æ /services/[slug]
+Γö£ Γùï /services/7-day-clothing-consultation          1m      1y
+Γö£ Γùï /services/7-day-cloths                         1m      1y
+Γö£ Γùï /services/game-design                          1m      1y
+Γö£ Γùï /services/photo-editor                         1m      1y
+Γö£ ╞Æ /services/wedding-plan
+Γö£ Γùï /signup                                        1m      1y
+Γö£ Γùï /terms                                         1m      1y
+Γö£ Γùï /vantage-ecom                                  1m      1y
+Γö£ Γùï /wardrobe                                      1m      1y
+Γöö Γùï /wedding/budget                                1m      1y
+
+
+Γùï  (Static)   prerendered as static content
+╞Æ  (Dynamic)  server-rendered on demand
+

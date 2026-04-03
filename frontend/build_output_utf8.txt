@@ -1,0 +1,65 @@
+﻿
+> frontend@0.1.0 build
+> next build
+
+Γû▓ Next.js 16.1.1 (Turbopack)
+- Environments: .env.local
+
+  Creating an optimized production build ...
+node.exe : 
+At C:\Program 
+Files\nodejs\npm.ps1:29 
+char:3
++   & $NODE_EXE 
+$NPM_CLI_JS $args
++   ~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~
+    + CategoryInfo        
+      : NotSpecified: (:  
+  String) [], RemoteExc   
+ eption
+    + FullyQualifiedError 
+   Id : NativeCommandErr  
+  or
+ 
+> Build error occurred
+Error: Turbopack build 
+failed with 2 errors:
+./app/admin/services/guru-
+ji-art/page.tsx:160:3
+Parsing ecmascript source 
+code failed
+[0m [90m 158 |[39m }
+ [90m 159 |[39m
+[31m[1m>[22m[39m[90m 
+160 |[39m   )[33m;[39m
+ [90m     |[39m   
+[31m[1m^[22m[39m
+ [90m 161 |[39m }
+ [90m 162 |[39m[0m
+
+Expression expected
+
+
+./app/admin/services/weddi
+ng-plan/page.tsx:186:3
+Parsing ecmascript source 
+code failed
+[0m [90m 184 |[39m }
+ [90m 185 |[39m
+[31m[1m>[22m[39m[90m 
+186 |[39m   )[33m;[39m
+ [90m     |[39m   
+[31m[1m^[22m[39m
+ [90m 187 |[39m }
+ [90m 188 |[39m[0m
+
+Expression expected
+
+
+    at <unknown> (./app/ad
+min/services/guru-ji-art/p
+age.tsx:160:3)
+    at <unknown> (./app/ad
+min/services/wedding-plan/
+page.tsx:186:3)

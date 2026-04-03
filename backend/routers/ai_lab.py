@@ -6,6 +6,7 @@ import asyncio
 import base64
 import os
 import io
+import urllib.request
 from PIL import Image
 import google.generativeai as genai
 from core.config import settings
@@ -24,13 +25,16 @@ class GenerationRequest(BaseModel):
 
 @router.post("/try-on")
 async def virtual_try_on(
-    user_image: UploadFile = File(...),
+    user_image: Optional[UploadFile] = File(None),
     garment_image: Optional[UploadFile] = File(None),
+    user_image_url: Optional[str] = Form(None),
+    garment_image_url: Optional[str] = Form(None),
     prompt: Optional[str] = Form(None)
 ):
     """
     Virtual Try-On Analysis using Google Gemini 1.5 Flash (Vision).
     Returns a text description of the fit/style, NOT a generated image.
+    Supports either direct file upload or image URLs.
     """
     if not settings.NANO_BANANA_API_KEY:
          return JSONResponse(
@@ -38,20 +42,43 @@ async def virtual_try_on(
             status_code=500
         )
         
-    print(f"Try-on Analysis request: User={user_image.filename}")
+    print(f"Try-on Analysis request: UserImageUpload={user_image is not None}, UserURL={user_image_url}")
+    
+    if not user_image and not user_image_url:
+        return JSONResponse(
+            content={"status": "error", "message": "You must provide either a user image file or a user image URL."},
+            status_code=400
+        )
     
     try:
-        # Read and Convert images to PIL for Gemini
-        user_image_content = await user_image.read()
-        user_img_pil = Image.open(io.BytesIO(user_image_content))
+        inputs = []
         
-        inputs = [user_img_pil]
+        # Load user image (File or URL)
+        if user_image:
+            user_image_content = await user_image.read()
+            user_img_pil = Image.open(io.BytesIO(user_image_content))
+            inputs.append(user_img_pil)
+        elif user_image_url:
+            req = urllib.request.Request(user_image_url, headers={'User-Agent': 'Mozilla/5.0'})
+            with urllib.request.urlopen(req) as url_res:
+                user_image_content = url_res.read()
+                user_img_pil = Image.open(io.BytesIO(user_image_content))
+                inputs.append(user_img_pil)
+        
         prompt_text = "You are a professional high-end fashion stylist. "
         
-        if garment_image:
-            garment_image_content = await garment_image.read()
-            garment_img_pil = Image.open(io.BytesIO(garment_image_content))
-            inputs.append(garment_img_pil)
+        # Load garment image (File or URL)
+        if garment_image or garment_image_url:
+            if garment_image:
+                garment_image_content = await garment_image.read()
+                garment_img_pil = Image.open(io.BytesIO(garment_image_content))
+                inputs.append(garment_img_pil)
+            elif garment_image_url:
+                req = urllib.request.Request(garment_image_url, headers={'User-Agent': 'Mozilla/5.0'})
+                with urllib.request.urlopen(req) as url_res:
+                    garment_image_content = url_res.read()
+                    garment_img_pil = Image.open(io.BytesIO(garment_image_content))
+                    inputs.append(garment_img_pil)
             prompt_text += "The first image is the client. The second image is the garment they want to try on. "
         else:
             prompt_text += "The image is the client. "

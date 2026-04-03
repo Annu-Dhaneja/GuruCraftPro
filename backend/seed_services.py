@@ -151,6 +151,50 @@ def seed_guruji_art():
                 ],
                 "image": "https://images.unsplash.com/photo-1549490349-8643362247b5?q=80&w=2574&auto=format&fit=crop"
             },
+            "products": [
+                { 
+                    "id": "item1", 
+                    "title": "Divine Energy Bracelet", 
+                    "slug": "divine-energy-bracelet",
+                    "description": "Handcrafted premium stone bracelets designed for spiritual balance, positive energy, and inner peace. Suitable for meditation, healing, and daily wear.",
+                    "category": "Guru Ji Art",
+                    "subCategory": "Physical Product",
+                    "price": "₹ 0", 
+                    "priceType": "Fixed",
+                    "tags": "spiritual, healing",
+                    "image": "https://images.unsplash.com/photo-1611078838275-5fc0c75ff0d1?q=80&w=2574&auto=format&fit=crop",
+                    "status": "active",
+                    "displayOrder": 1
+                },
+                { 
+                    "id": "item2", 
+                    "title": "Daily Wisdom Quotes", 
+                    "slug": "daily-wisdom-quotes",
+                    "description": "Receive beautifully designed daily motivational and spiritual quotes. Perfect for inspiration, social media content, and personal growth.",
+                    "category": "Guru Ji Art",
+                    "subCategory": "Digital Content",
+                    "price": "Free", 
+                    "priceType": "Free",
+                    "tags": "quotes, daily",
+                    "image": "https://images.unsplash.com/photo-1507699622108-4be3abd695ad?q=80&w=2671&auto=format&fit=crop",
+                    "status": "active",
+                    "displayOrder": 2
+                },
+                { 
+                    "id": "item3", 
+                    "title": "Satsang Message", 
+                    "slug": "satsang-message",
+                    "description": "Weekly spiritual insights, Guru teachings, and Vedic astrology guidance delivered in simple language for life clarity and positivity.",
+                    "category": "Guru Ji Art",
+                    "subCategory": "Subscription Content",
+                    "price": "Contact for pricing", 
+                    "priceType": "Subscription",
+                    "tags": "weekly, teachings",
+                    "image": "https://images.unsplash.com/photo-1493612276216-ee3925520721?q=80&w=2608&auto=format&fit=crop",
+                    "status": "active",
+                    "displayOrder": 3
+                }
+            ],
             "cta": {
                 "title": "Own a Masterpiece",
                 "link": "#gallery",
@@ -233,7 +277,135 @@ def seed_resources():
     finally:
         db.close()
 
+def seed_vantage_ecom():
+    db = SessionLocal()
+    try:
+        print("Seeding VantageEcom Services page...")
+        
+        vantage_data = {
+            "hero": {
+                "title": "Smart Menu Layout",
+                "subtitle": "E-COMMERCE EXCELLENCE",
+                "description": "Complete product enhancement solutions and e-commerce strategies.",
+                "image": "https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=2426&auto=format&fit=crop"
+            },
+            "category_a": {
+                "title": "Creative",
+                "items": [
+                    {
+                        "id": "srv1",
+                        "title": "Post-Production Editing",
+                        "slug": "post-production-editing",
+                        "description": "Professional photo editing including background cleanup, lighting enhancement, color correction, and high-end retouching optimized for e-commerce platforms.",
+                        "category": "Creative Product",
+                        "subCategory": "Editing",
+                        "price": "₹499 / image",
+                        "priceType": "Fixed",
+                        "tags": "editing, post-production",
+                        "image": "https://images.unsplash.com/photo-1626025211913-add5082bcac7?q=80&w=2400&auto=format&fit=crop",
+                        "status": "active",
+                        "displayOrder": 1,
+                        "icon": "Wand2"
+                    },
+                    {
+                        "id": "srv2",
+                        "title": "Ghost Mannequin Effect",
+                        "slug": "ghost-mannequin-effect",
+                        "description": "Apparel editing service that removes mannequin visibility and creates a hollow 3D look for premium clothing presentation. Ideal for fashion brands.",
+                        "category": "Creative Product",
+                        "subCategory": "Apparel",
+                        "price": "₹799 / image",
+                        "priceType": "Fixed",
+                        "tags": "apparel, fashion",
+                        "image": "https://images.unsplash.com/photo-1523381210434-271e8be1f52b?q=80&w=2670&auto=format&fit=crop",
+                        "status": "active",
+                        "displayOrder": 2,
+                        "icon": "Shirt"
+                    },
+                    {
+                        "id": "srv3",
+                        "title": "All-Brand Product Editing",
+                        "slug": "all-brand-product-editing",
+                        "description": "Product image editing according to Amazon, Flipkart, Etsy standards including background removal, shadow creation, color correction, and size optimization.",
+                        "category": "Creative Product",
+                        "subCategory": "Compliance",
+                        "price": "₹599 / image",
+                        "priceType": "Fixed",
+                        "tags": "amazon, flipkart",
+                        "image": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=2670&auto=format&fit=crop",
+                        "status": "active",
+                        "displayOrder": 3,
+                        "icon": "Layers"
+                    }
+                ]
+            },
+            "category_b": {
+                "title": "Technical",
+                "items": [
+                    {
+                        "id": "srv4",
+                        "title": "Jersey Task Editing",
+                        "slug": "jersey-task-editing",
+                        "description": "Professional jersey and sportswear editing including number customization, logo placement, wrinkle removal, and realistic texture enhancement.",
+                        "category": "Technical E-com Assets",
+                        "subCategory": "Sportswear",
+                        "price": "₹699 / image",
+                        "priceType": "Fixed",
+                        "tags": "jersey, sports",
+                        "image": "https://images.unsplash.com/photo-1508344928928-7165b67de128?q=80&w=2670&auto=format&fit=crop",
+                        "status": "active",
+                        "displayOrder": 1,
+                        "icon": "Shirt"
+                    },
+                    {
+                        "id": "srv5",
+                        "title": "Custom Size Charts",
+                        "slug": "custom-size-charts",
+                        "description": "Clean, branded, and accurate size chart designs optimized for e-commerce stores to reduce return rates and improve customer trust.",
+                        "category": "Technical E-com Assets",
+                        "subCategory": "Design",
+                        "price": "₹999 / chart",
+                        "priceType": "Fixed",
+                        "tags": "size-chart, design",
+                        "image": "https://images.unsplash.com/photo-1621535497217-062e087d0dd6?q=80&w=2574&auto=format&fit=crop",
+                        "status": "active",
+                        "displayOrder": 2,
+                        "icon": "Ruler"
+                    }
+                ]
+            },
+            "category_c": {
+                "title": "Strategy",
+                "items": [
+                    {
+                        "id": "srv6",
+                        "title": "E-books & Blueprints",
+                        "slug": "e-books-blueprints",
+                        "description": "Step-by-step digital guides explaining how to start and scale an e-commerce business using the Digital Merchant model. Includes niche research, product sourcing, and automation strategy.",
+                        "category": "Knowledge & Strategy",
+                        "subCategory": "Digital Content",
+                        "price": "₹1499",
+                        "priceType": "Fixed",
+                        "tags": "ebook, blueprint",
+                        "image": "https://images.unsplash.com/photo-1589829085413-56de8ae18c73?q=80&w=2712&auto=format&fit=crop",
+                        "status": "active",
+                        "displayOrder": 1,
+                        "icon": "BookOpen"
+                    }
+                ]
+            }
+        }
+        
+        cms_repository.update_page_content(db, "vantage-ecom", vantage_data)
+        print("Successfully seeded VantageEcom Services page!")
+
+    except Exception as e:
+        print(f"Error seeding VantageEcom Services: {e}")
+    finally:
+        db.close()
+
 if __name__ == "__main__":
     seed_services()
     seed_guruji_art()
     seed_resources()
+    seed_vantage_ecom()

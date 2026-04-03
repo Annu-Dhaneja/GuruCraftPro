@@ -74,7 +74,7 @@ export default function AdminVantageEcomPage() {
               <section className="bg-slate-900/40 p-10 rounded-[2rem] border border-white/10 backdrop-blur-sm">
                 <div className="flex justify-between items-center mb-10">
                   <h2 className="text-2xl font-bold text-indigo-300">Category A: Creative</h2>
-                  <Button variant="outline" size="sm" onClick={() => addArrayItem("category_a", "items", { title: "New Service", description: "", price: "From ₹", icon: "Wand2" })}>
+                  <Button variant="outline" size="sm" onClick={() => addArrayItem("category_a", "items", { title: "New Service", slug: "", description: "", price: "From ₹", priceType: "Fixed", category: "Creative Product", subCategory: "", tags: "", image: "", status: "active", displayOrder: 99, icon: "Wand2" })}>
                     <Plus className="w-4 h-4 mr-2" /> Add Service
                   </Button>
                 </div>
@@ -96,7 +96,7 @@ export default function AdminVantageEcomPage() {
               <section className="bg-slate-900/40 p-10 rounded-[2rem] border border-white/10 backdrop-blur-sm">
                 <div className="flex justify-between items-center mb-10">
                   <h2 className="text-2xl font-bold text-emerald-400">Category B: Technical</h2>
-                  <Button variant="outline" size="sm" onClick={() => addArrayItem("category_b", "items", { title: "New Task", description: "", price: "From ₹", icon: "Ruler" })}>
+                  <Button variant="outline" size="sm" onClick={() => addArrayItem("category_b", "items", { title: "New Task", slug: "", description: "", price: "From ₹", priceType: "Fixed", category: "Technical E-com Assets", subCategory: "", tags: "", image: "", status: "active", displayOrder: 99, icon: "Ruler" })}>
                     <Plus className="w-4 h-4 mr-2" /> Add Task
                   </Button>
                 </div>
@@ -118,7 +118,7 @@ export default function AdminVantageEcomPage() {
               <section className="bg-slate-900/40 p-10 rounded-[2rem] border border-white/10 backdrop-blur-sm">
                 <div className="flex justify-between items-center mb-10">
                   <h2 className="text-2xl font-bold text-amber-500">Category C: Strategy</h2>
-                  <Button variant="outline" size="sm" onClick={() => addArrayItem("category_c", "items", { title: "New Asset", description: "", price: "From ₹", icon: "Zap" })}>
+                  <Button variant="outline" size="sm" onClick={() => addArrayItem("category_c", "items", { title: "New Asset", slug: "", description: "", price: "From ₹", priceType: "Fixed", category: "Knowledge & Strategy", subCategory: "", tags: "", image: "", status: "active", displayOrder: 99, icon: "Zap" })}>
                     <Plus className="w-4 h-4 mr-2" /> Add Asset
                   </Button>
                 </div>
@@ -148,22 +148,52 @@ function ServiceItemEditor({ item, onUpdate, onRemove }: { item: any, onUpdate: 
       <Button variant="destructive" size="icon" className="absolute -top-2 -right-2 opacity-0 group-hover:opacity-100 transition-opacity h-8 w-8 rounded-xl" onClick={onRemove}>
         <Trash2 className="w-3 h-3" />
       </Button>
-      <div className="space-y-6">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-           <div><CMSEditor.Label>Title</CMSEditor.Label><CMSEditor.Input value={item.title} onChange={(v) => onUpdate("title", v)} /></div>
-           <div><CMSEditor.Label>Price</CMSEditor.Label><CMSEditor.Input value={item.price} onChange={(v) => onUpdate("price", v)} /></div>
-        </div>
-        <div><CMSEditor.Label>Description</CMSEditor.Label><CMSEditor.Input value={item.description} isTextarea onChange={(v) => onUpdate("description", v)} /></div>
+      <div className="grid grid-cols-1 md:grid-cols-[1fr_2fr] gap-8">
         <div>
-           <CMSEditor.Label>Visual Metaphor (Icon)</CMSEditor.Label>
-           <select value={item.icon} onChange={(e) => onUpdate("icon", e.target.value)} className="w-full bg-black/40 border border-white/10 rounded-lg px-4 py-2 text-sm text-white">
-              <option value="Wand2">Magic Wand (Creative)</option>
-              <option value="Layers">Layers (Editing)</option>
-              <option value="Shirt">Apparel (Shirt)</option>
-              <option value="Ruler">Measurement (Ruler)</option>
-              <option value="BookOpen">Learning (Book)</option>
-              <option value="Zap">Strategy (Bolt)</option>
-           </select>
+           <CMSEditor.Label>Service Image</CMSEditor.Label>
+           <CMSEditor.ImageUpload value={item.image} onChange={(v) => onUpdate("image", v)} />
+        </div>
+        <div className="space-y-6">
+          <div className="grid grid-cols-1 xl:grid-cols-2 gap-4">
+             <div><CMSEditor.Label>Title</CMSEditor.Label><CMSEditor.Input value={item.title} onChange={(v) => onUpdate("title", v)} /></div>
+             <div><CMSEditor.Label>Slug</CMSEditor.Label><CMSEditor.Input value={item.slug} onChange={(v) => onUpdate("slug", v)} /></div>
+             <div><CMSEditor.Label>Price</CMSEditor.Label><CMSEditor.Input value={item.price} onChange={(v) => onUpdate("price", v)} /></div>
+             <div>
+                <CMSEditor.Label>Price Type</CMSEditor.Label>
+                <select value={item.priceType || 'Fixed'} onChange={(e) => onUpdate("priceType", e.target.value)} className="w-full bg-black/40 border border-white/10 rounded-lg px-4 py-2.5 text-sm text-white">
+                   <option value="Fixed">Fixed</option>
+                   <option value="Free">Free</option>
+                   <option value="Subscription">Subscription</option>
+                   <option value="Custom">Custom</option>
+                </select>
+             </div>
+             <div><CMSEditor.Label>Category</CMSEditor.Label><CMSEditor.Input value={item.category} onChange={(v) => onUpdate("category", v)} /></div>
+             <div><CMSEditor.Label>Sub Category</CMSEditor.Label><CMSEditor.Input value={item.subCategory} onChange={(v) => onUpdate("subCategory", v)} /></div>
+             <div><CMSEditor.Label>Tags</CMSEditor.Label><CMSEditor.Input value={item.tags} onChange={(v) => onUpdate("tags", v)} /></div>
+             <div>
+                <CMSEditor.Label>Visual Metaphor (Icon)</CMSEditor.Label>
+                <select value={item.icon || 'Wand2'} onChange={(e) => onUpdate("icon", e.target.value)} className="w-full bg-black/40 border border-white/10 rounded-lg px-4 py-2.5 text-sm text-white">
+                   <option value="Wand2">Magic Wand (Creative)</option>
+                   <option value="Layers">Layers (Editing)</option>
+                   <option value="Shirt">Apparel (Shirt)</option>
+                   <option value="Ruler">Measurement (Ruler)</option>
+                   <option value="BookOpen">Learning (Book)</option>
+                   <option value="Zap">Strategy (Bolt)</option>
+                </select>
+             </div>
+             <div>
+                <CMSEditor.Label>Status</CMSEditor.Label>
+                <select value={item.status || 'active'} onChange={(e) => onUpdate("status", e.target.value)} className="w-full bg-black/40 border border-white/10 rounded-lg px-4 py-2.5 text-sm text-white">
+                   <option value="active">Active</option>
+                   <option value="inactive">Inactive</option>
+                </select>
+             </div>
+             <div>
+                <CMSEditor.Label>Display Order</CMSEditor.Label>
+                <input type="number" value={item.displayOrder || 0} onChange={(e) => onUpdate("displayOrder", parseInt(e.target.value) || 0)} className="w-full rounded-lg border border-white/10 bg-black/40 px-4 py-2.5 text-sm text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500/50 focus-visible:border-indigo-500/50" />
+             </div>
+          </div>
+          <div><CMSEditor.Label>Description</CMSEditor.Label><CMSEditor.Input value={item.description} isTextarea onChange={(v) => onUpdate("description", v)} /></div>
         </div>
       </div>
     </div>

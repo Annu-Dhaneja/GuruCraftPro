@@ -77,19 +77,19 @@ const ImageUploadField = ({ value, onChange }: { value: string, onChange: (v: st
   return (
     <div className="flex flex-col gap-2">
       <div className="flex gap-2">
-        <Input value={value} onChange={onChange} />
-        <div className="relative flex-shrink-0">
+        <Input value={value} onChange={onChange} placeholder="Paste Image URL or Upload..." />
+        <div className="relative flex-shrink-0 group">
           <input
             type="file"
             accept="image/*"
-            className="absolute inset-0 w-full h-full opacity-0 cursor-pointer disabled:cursor-not-allowed"
+            className="absolute inset-0 w-full h-full opacity-0 cursor-pointer disabled:cursor-not-allowed z-10"
             onChange={handleUpload}
             disabled={uploading}
             title="Upload new image"
           />
-          <Button type="button" variant="secondary" className="pointer-events-none" disabled={uploading}>
+          <Button type="button" variant="secondary" className="group-hover:bg-secondary/80 transition-colors pointer-events-none" disabled={uploading}>
             <UploadCloud className="w-4 h-4 mr-2" />
-            {uploading ? "Uploading..." : "Upload"}
+            {uploading ? "Uploading..." : "Upload File"}
           </Button>
         </div>
       </div>

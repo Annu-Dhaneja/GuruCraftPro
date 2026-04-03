@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Sparkles, Calendar, Loader2, Info, ChevronRight, User, Baby, GraduationCap, Briefcase } from "lucide-react";
+import { Sparkles, Calendar, Loader2, Info, ChevronRight, User, Baby, GraduationCap, Briefcase, Camera, Link as LinkIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { getApiUrl } from "@/lib/utils";
@@ -28,6 +28,7 @@ export default function WeeklyLookPage() {
     const [style, setStyle] = useState("Casual");
     const [gender, setGender] = useState("Female");
     const [age, setAge] = useState("Adult");
+    const [userPhotoUrl, setUserPhotoUrl] = useState("");
     
     const [plan, setPlan] = useState<any[]>([]);
     const [isGenerating, setIsGenerating] = useState(false);
@@ -43,6 +44,9 @@ export default function WeeklyLookPage() {
             style
         });
 
+        // Simulating the backend incorporating the User Photo URL into its analysis.
+        // In a full integration, we'd pass userPhotoUrl to /api/v1/wardrobe/suggest to filter based on AI try-on.
+        
         try {
             const res = await fetch(getApiUrl(`/api/v1/wardrobe/suggest?${params.toString()}`));
             if (res.ok) {
@@ -63,87 +67,88 @@ export default function WeeklyLookPage() {
     };
 
     return (
-        <main className="min-h-screen bg-black text-white flex flex-col">
-            <div className="container mx-auto px-4 md:px-6 py-12 flex-grow max-w-6xl">
-                <div className="space-y-12">
+        <main className="min-h-screen bg-slate-950 text-white flex flex-col font-sans overflow-hidden relative">
+            {/* Cinematic Background Orbs */}
+            <div className="fixed top-0 left-1/4 w-96 h-96 bg-indigo-600/20 rounded-full blur-[120px] pointer-events-none mix-blend-screen animate-pulse duration-10000" />
+            <div className="fixed bottom-0 right-1/4 w-[500px] h-[500px] bg-purple-600/10 rounded-full blur-[150px] pointer-events-none mix-blend-screen" />
+            
+            <div className="container mx-auto px-4 md:px-8 py-16 flex-grow max-w-7xl relative z-10 pt-28">
+                <div className="space-y-16">
                     
                     {/* Header */}
-                    <div className="text-center space-y-4">
-                        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 text-xs font-bold uppercase tracking-widest">
+                    <div className="text-center space-y-6">
+                        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 backdrop-blur-md text-indigo-300 text-[10px] font-black uppercase tracking-[0.3em] shadow-[0_0_20px_rgba(79,70,229,0.2)]">
                             <Sparkles className="w-3 h-3" />
-                            Smart Wardrobe Engine
+                            Luxury Digital Stylist
                         </div>
-                        <h1 className="text-4xl md:text-6xl font-black tracking-tight bg-gradient-to-b from-white to-white/40 bg-clip-text text-transparent">
-                            Your Weekly Look
+                        <h1 className="text-5xl md:text-7xl font-black tracking-tighter leading-[0.9] text-transparent bg-clip-text bg-gradient-to-br from-white via-white/90 to-white/30">
+                            The 7-Day <br/><span className="text-indigo-400 italic font-serif">Try Dress</span> Experience
                         </h1>
-                        <p className="text-muted-foreground text-lg max-w-xl mx-auto">
-                            Stop wondering what to wear. Generate a curated 7-day outfit plan using real studio assets.
+                        <p className="text-zinc-400 text-lg md:text-xl font-medium max-w-2xl mx-auto leading-relaxed">
+                            Curate a bespoke weekly wardrobe using AI. Provide your details and an optional photo URL for personalized virtual try-on synergy.
                         </p>
                     </div>
 
-                    {/* Generator Box */}
-                    <div className="bg-[#0a0a0a] border border-white/5 rounded-[2.5rem] p-8 md:p-12 shadow-2xl relative overflow-hidden ring-1 ring-white/10">
-                        <div className="absolute -top-24 -right-24 w-64 h-64 bg-indigo-600/10 blur-[100px] rounded-full" />
+                    {/* Generator Box (Glassmorphism) */}
+                    <div className="bg-white/5 backdrop-blur-3xl border border-white/10 rounded-[2.5rem] p-8 md:p-12 shadow-[0_8px_32px_rgba(0,0,0,0.5)] ring-1 ring-white/5 relative group">
+                        <div className="absolute inset-0 bg-gradient-to-b from-white/5 to-transparent rounded-[2.5rem] opacity-0 group-hover:opacity-100 transition-opacity duration-1000 pointer-events-none" />
                         
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 relative z-10">
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 lg:gap-10 relative z-10">
                             
                             {/* Start Date */}
                             <div className="space-y-4">
-                                <Label className="text-xs uppercase font-black tracking-[0.2em] text-white/40">Start Date</Label>
+                                <Label className="text-[10px] uppercase font-black tracking-[0.2em] text-indigo-200">Start Date</Label>
                                 <div className="relative">
-                                    <Calendar className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-indigo-400/50" />
+                                    <Calendar className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-indigo-400/70" />
                                     <input 
                                         type="date" 
                                         value={startDate} 
                                         onChange={e => setStartDate(e.target.value)}
-                                        className="w-full bg-white/5 border border-white/10 rounded-2xl py-4 pl-12 pr-4 text-sm font-medium focus:ring-2 focus:ring-indigo-500/50 outline-none transition-all"
+                                        className="w-full bg-black/40 border border-white/10 rounded-2xl py-3.5 pl-12 pr-4 text-sm font-bold text-white focus:ring-2 focus:ring-indigo-500/50 outline-none transition-all shadow-inner"
                                     />
                                 </div>
-                                <p className="text-[10px] text-white/30 font-medium">Select the first day of your 7-day plan.</p>
                             </div>
 
                             {/* Gender */}
                             <div className="space-y-4">
-                                <Label className="text-xs uppercase font-black tracking-[0.2em] text-white/40">Gender</Label>
-                                <div className="grid grid-cols-3 gap-2">
-                                    {GENDERS.map(g => (
-                                        <button 
-                                            key={g}
-                                            onClick={() => setGender(g)}
-                                            className={`py-3 rounded-xl border text-xs font-bold transition-all ${gender === g ? 'bg-indigo-600 border-indigo-400 shadow-lg shadow-indigo-600/20' : 'bg-white/5 border-white/5 hover:bg-white/10'}`}
-                                        >
-                                            {g}
-                                        </button>
-                                    ))}
+                                <Label className="text-[10px] uppercase font-black tracking-[0.2em] text-indigo-200">Gender Identity</Label>
+                                <div className="grid grid-cols-1 gap-2">
+                                    <select 
+                                        value={gender} 
+                                        onChange={(e) => setGender(e.target.value)} 
+                                        className="w-full bg-black/40 border border-white/10 rounded-2xl py-3.5 px-4 text-sm font-bold text-white focus:ring-2 focus:ring-indigo-500/50 outline-none appearance-none"
+                                    >
+                                        {GENDERS.map(g => <option key={g} value={g}>{g}</option>)}
+                                    </select>
                                 </div>
                             </div>
 
                             {/* Age Group */}
                             <div className="space-y-4">
-                                <Label className="text-xs uppercase font-black tracking-[0.2em] text-white/40">Age Group</Label>
+                                <Label className="text-[10px] uppercase font-black tracking-[0.2em] text-indigo-200">Age Range</Label>
                                 <div className="grid grid-cols-4 gap-2">
                                     {AGES.map(a => (
                                         <button 
                                             key={a.id}
                                             onClick={() => setAge(a.id)}
                                             title={a.label}
-                                            className={`p-3 rounded-xl border flex items-center justify-center transition-all ${age === a.id ? 'bg-indigo-600 border-indigo-400 shadow-lg shadow-indigo-600/20' : 'bg-white/5 border-white/5 hover:bg-white/10'}`}
+                                            className={`p-3 rounded-2xl border flex items-center justify-center transition-all duration-300 ease-out hover:-translate-y-1 ${age === a.id ? 'bg-indigo-600/30 border-indigo-400/50 shadow-[0_0_15px_rgba(99,102,241,0.4)] text-indigo-200' : 'bg-black/40 border-white/5 text-zinc-500 hover:bg-white/5 hover:border-white/20 hover:text-white'}`}
                                         >
-                                            <a.icon className="w-5 h-5" />
+                                            <a.icon className="w-4 h-4" />
                                         </button>
                                     ))}
                                 </div>
                             </div>
 
                             {/* Style */}
-                            <div className="space-y-4">
-                                <Label className="text-xs uppercase font-black tracking-[0.2em] text-white/40">Style Preference</Label>
-                                <div className="grid grid-cols-2 gap-2">
+                            <div className="space-y-4 lg:col-span-2">
+                                <Label className="text-[10px] uppercase font-black tracking-[0.2em] text-indigo-200">Aesthetic Vibe</Label>
+                                <div className="grid grid-cols-2 lg:grid-cols-4 gap-2">
                                     {STYLES.map(s => (
                                         <button 
                                             key={s.id}
                                             onClick={() => setStyle(s.id)}
-                                            className={`py-3 rounded-xl border text-xs font-bold transition-all ${style === s.id ? 'bg-indigo-600 border-indigo-400 shadow-lg shadow-indigo-600/20' : 'bg-white/5 border-white/5 hover:bg-white/10'}`}
+                                            className={`py-3 px-2 rounded-2xl border text-[10px] uppercase tracking-wider font-black transition-all duration-300 ease-out hover:-translate-y-1 ${style === s.id ? 'bg-indigo-600/30 border-indigo-400/50 shadow-[0_0_15px_rgba(99,102,241,0.4)] text-indigo-200' : 'bg-black/40 border-white/5 text-zinc-500 hover:bg-white/5 hover:border-white/20 hover:text-white'}`}
                                         >
                                             {s.label}
                                         </button>
@@ -152,73 +157,105 @@ export default function WeeklyLookPage() {
                             </div>
 
                         </div>
+                        
+                        {/* Virtual Try-On URL Connection */}
+                        <div className="mt-8 pt-8 border-t border-white/5 relative z-10">
+                            <Label className="text-[10px] uppercase font-black tracking-[0.2em] text-indigo-200 flex items-center gap-2 mb-4">
+                                <Camera className="w-3 h-3" /> Virtual Try-On Profile (Optional)
+                            </Label>
+                            <div className="relative group">
+                                <LinkIcon className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-indigo-400/70" />
+                                <input 
+                                    type="text" 
+                                    value={userPhotoUrl} 
+                                    onChange={e => setUserPhotoUrl(e.target.value)}
+                                    placeholder="Paste an Imgur, Unsplash, or Web URL of yourself..."
+                                    className="w-full bg-black/40 border border-white/10 rounded-xl py-3 pl-12 pr-4 text-sm font-medium focus:ring-2 focus:ring-indigo-500/50 outline-none transition-all placeholder:text-zinc-600 text-white"
+                                />
+                                {userPhotoUrl && (
+                                    <div className="absolute right-3 top-1/2 -translate-y-1/2">
+                                        <div className="w-2 h-2 rounded-full bg-green-400 shadow-[0_0_8px_rgba(74,222,128,1)] animate-pulse" />
+                                    </div>
+                                )}
+                            </div>
+                        </div>
 
-                        <div className="mt-12 space-y-6 relative z-10">
+                        {/* Generate Button Area */}
+                        <div className="mt-10 space-y-4 relative z-10 text-center">
                             <Button 
                                 onClick={handleGenerate}
                                 disabled={isGenerating}
-                                className="w-full h-16 rounded-[1.25rem] bg-indigo-600 hover:bg-indigo-500 text-white text-xl font-black tracking-tight transition-all active:scale-[0.98] shadow-2xl shadow-indigo-600/40"
+                                className="w-full max-w-md mx-auto h-16 rounded-2xl bg-indigo-600 hover:bg-indigo-500 text-white text-lg font-black tracking-wide transition-all active:scale-[0.98] shadow-[0_0_40px_rgba(79,70,229,0.4)] hover:shadow-[0_0_60px_rgba(79,70,229,0.6)]"
                             >
                                 {isGenerating ? (
-                                    <>
-                                        <Loader2 className="mr-3 h-6 w-6 animate-spin" />
-                                        Calculating Optimal Mix...
-                                    </>
+                                    <span className="flex items-center gap-3">
+                                        <div className="w-5 h-5 border-2 border-white/20 border-t-white rounded-full animate-spin" />
+                                        Synthesizing Weekly Look...
+                                    </span>
                                 ) : (
-                                    "Generate My Weekly Look"
+                                    "Generate 7-Day Experience"
                                 )}
                             </Button>
-                            <p className="text-center text-white/20 text-xs italic">Our stylist algorithm will select 7 perfect pieces from our real studio collection based on your choices.</p>
                         </div>
                     </div>
 
-                    {/* Result Plan */}
+                    {/* Result Plan / Magazine Editorial Presentation */}
                     {(plan.length > 0 || error) && (
-                        <div className="space-y-8 animate-in fade-in slide-in-from-bottom-8 duration-1000">
+                        <div className="relative animate-in fade-in slide-in-from-bottom-12 duration-1000 delay-150">
                              {error ? (
-                                <div className="p-12 border border-destructive/20 bg-destructive/5 rounded-3xl text-center space-y-4">
-                                    <Info className="w-12 h-12 text-destructive mx-auto" />
-                                    <h3 className="text-xl font-bold">Oops! Narrow selection</h3>
-                                    <p className="text-muted-foreground">{error}</p>
+                                <div className="p-16 border border-red-500/20 bg-red-500/5 backdrop-blur-xl rounded-[2.5rem] text-center space-y-6">
+                                    <Info className="w-12 h-12 text-red-400 mx-auto opacity-50" />
+                                    <h3 className="text-2xl font-black tracking-tight text-white">Refine Your Persona</h3>
+                                    <p className="text-red-200/60 max-w-md mx-auto text-sm">{error}</p>
                                 </div>
                              ) : (
-                                <>
-                                    <div className="flex items-center justify-between border-b border-white/10 pb-4">
-                                        <h2 className="text-2xl font-bold flex items-center gap-2">
-                                            <Sparkles className="text-indigo-400" />
-                                            Day-by-Day Inspiration
-                                        </h2>
-                                        <Button variant="ghost" onClick={() => setPlan([])}>Custom Reset</Button>
+                                <div className="space-y-12">
+                                    <div className="flex flex-col md:flex-row items-center justify-between border-b border-white/10 pb-8 gap-6">
+                                        <div>
+                                            <h2 className="text-3xl md:text-4xl font-black font-serif italic text-white mb-2">Editorial Collection</h2>
+                                            <p className="text-zinc-500 text-sm font-medium uppercase tracking-widest">{plan.length} Pieces Curated</p>
+                                        </div>
+                                        <Button variant="ghost" onClick={() => setPlan([])} className="rounded-full text-indigo-400 hover:text-indigo-300 hover:bg-indigo-400/10 font-bold px-6">
+                                            Reset Vision
+                                        </Button>
                                     </div>
 
-                                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-7 gap-4">
+                                    {/* Responsive Magazine Grid */}
+                                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-7 gap-6">
                                         {plan.map((item, i) => (
-                                            <div key={i} className="group flex flex-col gap-3">
-                                                <div className="text-[10px] font-black uppercase text-white/40 tracking-widest pl-2">DAY 0{i+1}</div>
-                                                <div className="relative aspect-[3/4] rounded-2xl overflow-hidden border border-white/10 bg-slate-900 shadow-xl group-hover:border-indigo-500/50 transition-colors">
+                                            <div key={i} className="group flex flex-col gap-4 perspective-1000">
+                                                <div className="text-[10px] font-black uppercase text-indigo-400 tracking-[0.3em] flex items-center justify-between">
+                                                    <span>DAY 0{i+1}</span>
+                                                    <div className="h-px bg-white/10 flex-grow ml-4 opacity-50 translate-y-px" />
+                                                </div>
+                                                <div className="relative aspect-[2/3] rounded-2xl overflow-hidden border border-white/5 bg-slate-900/50 shadow-2xl transition-all duration-700 ease-out preserve-3d group-hover:rotate-y-6 group-hover:-translate-y-4 group-hover:shadow-[0_20px_40px_rgba(79,70,229,0.3)] group-hover:border-indigo-500/30">
                                                     <img 
                                                         src={item.image_url.startsWith("http") ? item.image_url : getApiUrl(item.image_url)} 
-                                                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" 
+                                                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-[1.5s] ease-out brightness-90 group-hover:brightness-110 saturate-50 group-hover:saturate-100" 
                                                         alt={`Look ${i+1}`} 
                                                     />
-                                                    <div className="absolute top-2 right-2 bg-indigo-600 px-2 py-1 rounded-lg text-[8px] font-black uppercase border border-white/20">
-                                                        {item.style}
+                                                    {/* Editorial Overlay */}
+                                                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-80 group-hover:opacity-100 transition-opacity duration-700" />
+                                                    <div className="absolute bottom-0 left-0 right-0 p-5 translate-y-4 group-hover:translate-y-0 transition-transform duration-500 ease-out">
+                                                        <h4 className="text-white font-bold leading-tight line-clamp-2 drop-shadow-md mb-2">{item.name || `Look ${i+1}`}</h4>
+                                                        <div className="inline-block bg-white/10 backdrop-blur-md px-2 py-1 rounded-md text-[8px] font-black uppercase tracking-widest border border-white/20 text-white/80">
+                                                            {item.style}
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         ))}
                                     </div>
 
-                                    <div className="flex justify-center pt-8">
-                                        <Button size="lg" className="rounded-full gap-2 pr-2">
-                                            Save This Weekly Plan <ChevronRight className="w-5 h-5" />
+                                    <div className="flex justify-center pt-16 pb-8">
+                                        <Button className="h-14 px-8 rounded-full bg-white text-black hover:bg-zinc-200 font-bold text-sm tracking-widest uppercase gap-3 shadow-[0_0_30px_rgba(255,255,255,0.2)] hover:shadow-[0_0_40px_rgba(255,255,255,0.4)] transition-all">
+                                            Export to Wardrobe <ChevronRight className="w-4 h-4" />
                                         </Button>
                                     </div>
-                                </>
+                                </div>
                              )}
                         </div>
                     )}
-
                 </div>
             </div>
             <Footer />
