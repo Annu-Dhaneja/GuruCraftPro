@@ -28,19 +28,12 @@ interface ServiceData {
   cta?: any;
 }
 
-export function ServiceTemplate({ data }: { data: ServiceData }) {
+export function ServiceTemplate({ data, slug: passedSlug }: { data: ServiceData, slug?: string }) {
   if (!data) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-zinc-950">
-        <div className="relative">
-          <div className="absolute inset-0 bg-blue-500/20 blur-[100px] animate-pulse" />
-          <div className="relative text-zinc-500 font-bold tracking-[0.5em] uppercase italic text-sm animate-pulse">
-            Establishing Secure Connection...
-          </div>
-        </div>
-      </div>
-    );
+    // ...
   }
+
+  const slug = passedSlug || data.slug;
 
   const sections = data.sections || [
     data.hero ? { type: "hero", slug: "hero", content: data.hero } : null,
@@ -49,15 +42,15 @@ export function ServiceTemplate({ data }: { data: ServiceData }) {
   ].filter(Boolean) as Section[];
 
   // Specialized Page Mapping
-  if (data.slug === "guru-ji-art") {
+  if (slug === "guru-ji-art") {
     return <GurujiArtContent data={data} />;
   }
 
-  if (data.slug === "vantage-ecom") {
+  if (slug === "vantage-ecom") {
     return <VantageEcomContent data={data} />;
   }
 
-  if (data.slug === "7-day-cloths") {
+  if (slug === "7-day-cloths") {
     const { redirect } = require("next/navigation");
     redirect("/wardrobe");
     return null;

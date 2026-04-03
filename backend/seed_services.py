@@ -122,7 +122,7 @@ def seed_guruji_art():
                 "title": "Guru Ji Art Work",
                 "subtitle": "THE DIVINE COLLECTION",
                 "description": "Experience the intersection of sacred symbolism and contemporary artistry. Our studio crafts premium bracelets, daily wisdom, and spiritual digital assets designed to bring peace and positivity to your life.",
-                "image": "https://images.unsplash.com/photo-1550684848-fac1c5b4e853?q=80&w=2670&auto=format&fit=crop"
+                "image": "https://images.unsplash.com/photo-1573408302315-924f7a250517?q=80&w=2400&auto=format&fit=crop"
             },
             "artworks": [
                 {
@@ -134,11 +134,6 @@ def seed_guruji_art():
                     "title": "Sacred Geometry",
                     "desc": "Digital Art. The mathematical harmony of the universe.",
                     "src": "https://images.unsplash.com/photo-1542332213-31f87348057f?q=80&w=2670&auto=format&fit=crop"
-                },
-                {
-                    "title": "The Golden Lotus",
-                    "desc": "Acrylic with Gold Foil. Symbolizing purity and spiritual awakening.",
-                    "src": "https://images.unsplash.com/photo-1518173946687-a4c8892bbd9f?q=80&w=2574&auto=format&fit=crop"
                 }
             ],
             "story": {
@@ -148,7 +143,7 @@ def seed_guruji_art():
                     "Hand-painted traditional techniques",
                     "Premium archival quality materials",
                     "Each piece blessed and personalized",
-                    "International Shipping & Packaging"
+                    "International Shipping"
                 ],
                 "image": "https://images.unsplash.com/photo-1549490349-8643362247b5?q=80&w=2574&auto=format&fit=crop"
             },
@@ -159,10 +154,10 @@ def seed_guruji_art():
                     "slug": "divine-energy-bracelet",
                     "description": "Handcrafted premium stone bracelets designed for spiritual balance, positive energy, and inner peace. Suitable for meditation, healing, and daily wear.",
                     "category": "Guru Ji Art",
-                    "subCategory": "Physical Product",
+                    "subCategory": "Product",
                     "price": "₹ 0", 
                     "priceType": "Fixed",
-                    "tags": "spiritual, healing",
+                    "tags": "spiritual, bracelet",
                     "image": "https://images.unsplash.com/photo-1611078838275-5fc0c75ff0d1?q=80&w=2574&auto=format&fit=crop",
                     "status": "active",
                     "displayOrder": 1
@@ -176,8 +171,8 @@ def seed_guruji_art():
                     "subCategory": "Digital Content",
                     "price": "Free", 
                     "priceType": "Free",
-                    "tags": "quotes, daily",
-                    "image": "https://images.unsplash.com/photo-1507699622108-4be3abd695ad?q=80&w=2671&auto=format&fit=crop",
+                    "tags": "quotes, digital",
+                    "image": "https://images.unsplash.com/photo-1534067783941-51c9c23ecefd?q=80&w=2400&auto=format&fit=crop",
                     "status": "active",
                     "displayOrder": 2
                 },
@@ -188,17 +183,17 @@ def seed_guruji_art():
                     "description": "Weekly spiritual insights, Guru teachings, and Vedic astrology guidance delivered in simple language for life clarity and positivity.",
                     "category": "Guru Ji Art",
                     "subCategory": "Subscription Content",
-                    "price": "Contact for pricing", 
+                    "price": "Subscription", 
                     "priceType": "Subscription",
-                    "tags": "weekly, teachings",
-                    "image": "https://images.unsplash.com/photo-1493612276216-ee3925520721?q=80&w=2608&auto=format&fit=crop",
+                    "tags": "satsang, teachings",
+                    "image": "https://images.unsplash.com/photo-1528605248644-14dd04022da1?q=80&w=2400&auto=format&fit=crop",
                     "status": "active",
                     "displayOrder": 3
                 }
             ],
             "cta": {
                 "title": "Own a Masterpiece",
-                "link": "#gallery",
+                "link": "/contact",
                 "description": "\"A home with divine art is a home with divine protection.\" - Guruji"
             }
         }
@@ -208,73 +203,6 @@ def seed_guruji_art():
 
     except Exception as e:
         print(f"Error seeding Guru Ji Art: {e}")
-    finally:
-        db.close()
-
-def seed_resources():
-    db = SessionLocal()
-    from repositories.cms_ssot import update_ssot_page_content
-    try:
-        print("Seeding Resources page...")
-        
-        resources_data = {
-            "title": "Resources & Learn",
-            "meta": {
-                "title": "Resources & Learn | Annu Design Studio",
-                "description": "Educational tutorials, AI prompt libraries, and free design assets to help you create better."
-            },
-            "resources_hero": {
-                "title": "Level Up Your Creative Game",
-                "subtitle": "RESOURCES & LEARN",
-                "description": "Access our curated library of professional tutorials, AI-powered design tools, and premium assets—all designed to help you master the art of creation."
-            },
-            "resources_categories": {
-                "items": [
-                    {"id": "tutorials", "name": "Video Tutorials", "icon": "PlayCircle"},
-                    {"id": "prompts", "name": "AI Prompts", "icon": "Terminal"},
-                    {"id": "assets", "name": "Free Assets", "icon": "Download"},
-                    {"id": "articles", "name": "Expert Articles", "icon": "BookOpen"}
-                ]
-            },
-            "resources_featured": {
-                "title": "Featured Masterclass",
-                "post_title": "Mastering Digital Portraits with AI",
-                "description": "Learn the step-by-step process of blending traditional art techniques with modern stable diffusion models.",
-                "image": "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=2564&auto=format&fit=crop"
-            },
-            "resources_tutorials": {
-                "items": [
-                    {"title": "Color Theory for Beginners", "duration": "15 min", "level": "Easy"},
-                    {"title": "Advanced Lighting in Blender", "duration": "45 min", "level": "Expert"},
-                    {"title": "UI Design with Framer Motion", "duration": "30 min", "level": "Intermediate"}
-                ]
-            },
-            "resources_prompts": {
-                "items": [
-                    {"title": "Cinematic Lighting Prompt", "category": "Midjourney"},
-                    {"title": "Product Photography Prompt", "category": "Stable Diffusion"},
-                    {"title": "Minimalist Logo Set", "category": "DALL-E 3"}
-                ]
-            },
-            "resources_free_resources": {
-                "items": [
-                    {"title": "2024 Design Trends PDF", "type": "E-book"},
-                    {"title": "Custom Brush Pack", "type": "Tool kit"},
-                    {"title": "Social Media Templates", "type": "Figma File"}
-                ]
-            },
-            "resources_newsletter": {
-                "title": "Weekly Creative Insights",
-                "description": "Join 5,000+ creators getting weekly design tips and early access to new resources.",
-                "button_text": "Join the Circle"
-            }
-        }
-        
-        update_ssot_page_content(db, "resources", resources_data)
-        print("Successfully seeded Resources page!")
-
-    except Exception as e:
-        print(f"Error seeding Resources: {e}")
     finally:
         db.close()
 
@@ -288,111 +216,105 @@ def seed_vantage_ecom():
             "hero": {
                 "title": "VantageEcom",
                 "subtitle": "SMART MENU LAYOUT",
-                "description": "Elevate your e-commerce presence with professional post-production, technical asset creation, and strategic scaling blueprints. We transform product photography into high-conversion digital experiences.",
-                "image": "https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=2426&auto=format&fit=crop"
+                "description": "Professional-grade post-production and e-commerce growth strategies. We transform imagery into high-conversion assets.",
+                "image": "https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=2400&auto=format&fit=crop"
             },
             "category_a": {
-                "title": "Creative Product Post-Production",
+                "title": "Category A — Creative Product",
                 "items": [
                     {
                         "id": "srv1",
                         "title": "Post-Production Editing",
                         "slug": "post-production-editing",
                         "description": "Professional photo editing including background cleanup, lighting enhancement, color correction, and high-end retouching optimized for e-commerce platforms.",
-                        "category": "Creative Product",
-                        "subCategory": "Editing",
+                        "category": "VantageEcom",
+                        "subCategory": "Creative Product",
                         "price": "₹499 / image",
                         "priceType": "Fixed",
                         "tags": "editing, post-production",
                         "image": "https://images.unsplash.com/photo-1626025211913-add5082bcac7?q=80&w=2400&auto=format&fit=crop",
                         "status": "active",
-                        "displayOrder": 1,
-                        "icon": "Wand2"
+                        "displayOrder": 1
                     },
                     {
                         "id": "srv2",
                         "title": "Ghost Mannequin Effect",
                         "slug": "ghost-mannequin-effect",
                         "description": "Apparel editing service that removes mannequin visibility and creates a hollow 3D look for premium clothing presentation. Ideal for fashion brands.",
-                        "category": "Creative Product",
-                        "subCategory": "Apparel",
+                        "category": "VantageEcom",
+                        "subCategory": "Creative Product",
                         "price": "₹799 / image",
                         "priceType": "Fixed",
-                        "tags": "apparel, fashion",
-                        "image": "https://images.unsplash.com/photo-1523381210434-271e8be1f52b?q=80&w=2670&auto=format&fit=crop",
+                        "tags": "mannequin, fashion",
+                        "image": "https://images.unsplash.com/photo-1523381210434-271e8be1f52b?q=80&w=2400&auto=format&fit=crop",
                         "status": "active",
-                        "displayOrder": 2,
-                        "icon": "Shirt"
+                        "displayOrder": 2
                     },
                     {
                         "id": "srv3",
                         "title": "All-Brand Product Editing",
                         "slug": "all-brand-product-editing",
                         "description": "Product image editing according to Amazon, Flipkart, Etsy standards including background removal, shadow creation, color correction, and size optimization.",
-                        "category": "Creative Product",
-                        "subCategory": "Compliance",
+                        "category": "VantageEcom",
+                        "subCategory": "Creative Product",
                         "price": "₹599 / image",
                         "priceType": "Fixed",
-                        "tags": "amazon, flipkart",
-                        "image": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=2670&auto=format&fit=crop",
+                        "tags": "compliance, amazon",
+                        "image": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=2400&auto=format&fit=crop",
                         "status": "active",
-                        "displayOrder": 3,
-                        "icon": "Layers"
+                        "displayOrder": 3
                     }
                 ]
             },
             "category_b": {
-                "title": "Technical E-com Assets",
+                "title": "Category B — Technical E-com Assets",
                 "items": [
                     {
                         "id": "srv4",
                         "title": "Jersey Task Editing",
                         "slug": "jersey-task-editing",
                         "description": "Professional jersey and sportswear editing including number customization, logo placement, wrinkle removal, and realistic texture enhancement.",
-                        "category": "Technical E-com Assets",
-                        "subCategory": "Sportswear",
+                        "category": "VantageEcom",
+                        "subCategory": "Technical E-com Assets",
                         "price": "₹699 / image",
                         "priceType": "Fixed",
-                        "tags": "jersey, sports",
-                        "image": "https://images.unsplash.com/photo-1508344928928-7165b67de128?q=80&w=2670&auto=format&fit=crop",
+                        "tags": "sportswear, jersey",
+                        "image": "https://images.unsplash.com/photo-1551028150-64b9f398f678?q=80&w=2400&auto=format&fit=crop",
                         "status": "active",
-                        "displayOrder": 1,
-                        "icon": "Shirt"
+                        "displayOrder": 1
                     },
                     {
                         "id": "srv5",
                         "title": "Custom Size Charts",
                         "slug": "custom-size-charts",
                         "description": "Clean, branded, and accurate size chart designs optimized for e-commerce stores to reduce return rates and improve customer trust.",
-                        "category": "Technical E-com Assets",
-                        "subCategory": "Design",
+                        "category": "VantageEcom",
+                        "subCategory": "Technical E-com Assets",
                         "price": "₹999 / chart",
                         "priceType": "Fixed",
-                        "tags": "size-chart, design",
-                        "image": "https://images.unsplash.com/photo-1621535497217-062e087d0dd6?q=80&w=2574&auto=format&fit=crop",
+                        "tags": "size-chart, conversion",
+                        "image": "https://images.unsplash.com/photo-1621535497217-062e087d0dd6?q=80&w=2400&auto=format&fit=crop",
                         "status": "active",
-                        "displayOrder": 2,
-                        "icon": "Ruler"
+                        "displayOrder": 2
                     }
                 ]
             },
             "category_c": {
-                "title": "Knowledge & Strategy (Blueprints)",
+                "title": "Category C — Knowledge & Strategy",
                 "items": [
                     {
                         "id": "srv6",
                         "title": "E-books & Blueprints",
                         "slug": "e-books-blueprints",
                         "description": "Step-by-step digital guides explaining how to start and scale an e-commerce business using the Digital Merchant model. Includes niche research, product sourcing, and automation strategy.",
-                        "category": "Knowledge & Strategy",
-                        "subCategory": "Digital Content",
+                        "category": "VantageEcom",
+                        "subCategory": "Knowledge & Strategy",
                         "price": "₹1499",
                         "priceType": "Fixed",
-                        "tags": "ebook, blueprint",
-                        "image": "https://images.unsplash.com/photo-1589829085413-56de8ae18c73?q=80&w=2712&auto=format&fit=crop",
+                        "tags": "growth, strategy",
+                        "image": "https://images.unsplash.com/photo-1589829085413-56de8ae18c73?q=80&w=2400&auto=format&fit=crop",
                         "status": "active",
-                        "displayOrder": 1,
-                        "icon": "BookOpen"
+                        "displayOrder": 1
                     }
                 ]
             }
@@ -410,4 +332,5 @@ if __name__ == "__main__":
     seed_services()
     seed_guruji_art()
     seed_resources()
+    seed_vantage_ecom()
     seed_vantage_ecom()

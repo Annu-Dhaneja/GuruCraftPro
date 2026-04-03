@@ -87,7 +87,7 @@ export default async function ServicePage({ params }: { params: Promise<{ slug: 
             </div>
         )}
         
-        <ServiceTemplate data={safeData} />
+        <ServiceTemplate data={safeData} slug={slug} />
         <Footer />
     </main>
   );
