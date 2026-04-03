@@ -117,10 +117,11 @@ def seed_guruji_art():
         print("Seeding Guru Ji Art page...")
         
         guruji_data = {
+            "slug": "guru-ji-art",
             "hero": {
-                "title": "Guru Ji Art & Creation",
-                "subtitle": "THE DIVINE STUDIO",
-                "description": "\"Art is not just a visual experience; it's a spiritual journey that connects the soul to the divine frequency.\"",
+                "title": "Guru Ji Art Work",
+                "subtitle": "THE DIVINE COLLECTION",
+                "description": "Experience the intersection of sacred symbolism and contemporary artistry. Our studio crafts premium bracelets, daily wisdom, and spiritual digital assets designed to bring peace and positivity to your life.",
                 "image": "https://images.unsplash.com/photo-1550684848-fac1c5b4e853?q=80&w=2670&auto=format&fit=crop"
             },
             "artworks": [
@@ -283,14 +284,15 @@ def seed_vantage_ecom():
         print("Seeding VantageEcom Services page...")
         
         vantage_data = {
+            "slug": "vantage-ecom",
             "hero": {
-                "title": "Smart Menu Layout",
-                "subtitle": "E-COMMERCE EXCELLENCE",
-                "description": "Complete product enhancement solutions and e-commerce strategies.",
+                "title": "VantageEcom",
+                "subtitle": "SMART MENU LAYOUT",
+                "description": "Elevate your e-commerce presence with professional post-production, technical asset creation, and strategic scaling blueprints. We transform product photography into high-conversion digital experiences.",
                 "image": "https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=2426&auto=format&fit=crop"
             },
             "category_a": {
-                "title": "Creative",
+                "title": "Creative Product Post-Production",
                 "items": [
                     {
                         "id": "srv1",
@@ -340,7 +342,7 @@ def seed_vantage_ecom():
                 ]
             },
             "category_b": {
-                "title": "Technical",
+                "title": "Technical E-com Assets",
                 "items": [
                     {
                         "id": "srv4",
@@ -375,7 +377,7 @@ def seed_vantage_ecom():
                 ]
             },
             "category_c": {
-                "title": "Strategy",
+                "title": "Knowledge & Strategy (Blueprints)",
                 "items": [
                     {
                         "id": "srv6",

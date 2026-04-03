@@ -7,7 +7,8 @@ import { notFound } from "next/navigation";
 export const dynamic = 'force-dynamic';
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
-  const { slug } = await params;
+  const { slug: rawSlug } = await params;
+  const slug = rawSlug.replace(/ /g, "-");
   const formatTitle = (s: string) => (s || "Service").split("-").map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(" ");
   
   try {
@@ -34,7 +35,16 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 export default async function ServicePage({ params }: { params: Promise<{ slug: string }> }) {
   let serviceData: any = null;
   let fetchError = false;
-  const { slug } = await params;
+  const { slug: rawSlug } = await params;
+  
+  // Normalize slug: replace spaces with hyphens
+  const slug = (rawSlug || "").replace(/ /g, "-");
+  
+  // Redirect to normalized URL if spaces were present
+  const { redirect } = require("next/navigation");
+  if (rawSlug !== slug) {
+    redirect(`/services/${slug}`);
+  }
 
   try {
     const url = getApiUrl(`/api/v1/cms/${slug}`);
