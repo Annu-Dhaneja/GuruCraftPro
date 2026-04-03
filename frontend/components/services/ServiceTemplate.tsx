@@ -1,13 +1,12 @@
 "use client";
 
-import { motion } from "framer-motion";
-import { ArrowRight, CheckCircle2, Sparkles, Wand2 } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { ArrowRight, CheckCircle2, Sparkles, Wand2, Star, Shield, ArrowUpRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import Image from "next/image";
 import { GurujiArtContent } from "@/components/guruji-art/GurujiArtContent";
 import { VantageEcomContent } from "@/components/services/VantageEcomContent";
-
 
 interface Section {
   id?: number;
@@ -30,23 +29,26 @@ interface ServiceData {
 }
 
 export function ServiceTemplate({ data }: { data: ServiceData }) {
-  // Defensive check with fallback for legacy/flattened CMS structures
   if (!data) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-background">
-        <div className="animate-pulse text-muted-foreground font-bold tracking-widest uppercase italic">Loading experience...</div>
+      <div className="min-h-screen flex items-center justify-center bg-zinc-950">
+        <div className="relative">
+          <div className="absolute inset-0 bg-blue-500/20 blur-[100px] animate-pulse" />
+          <div className="relative text-zinc-500 font-bold tracking-[0.5em] uppercase italic text-sm animate-pulse">
+            Establishing Secure Connection...
+          </div>
+        </div>
       </div>
     );
   }
 
-  // If data.sections is missing, we check for direct keys (hero, features, cta) 
-  // which is the common flattened structure from our CMS repository.
   const sections = data.sections || [
     data.hero ? { type: "hero", slug: "hero", content: data.hero } : null,
     data.features ? { type: "features", slug: "features", content: { items: data.features } } : null,
     data.cta ? { type: "cta", slug: "cta", content: data.cta } : null,
   ].filter(Boolean) as Section[];
 
+  // Specialized Page Mapping
   if (data.slug === "guru-ji-art") {
     return <GurujiArtContent data={data} />;
   }
@@ -61,58 +63,85 @@ export function ServiceTemplate({ data }: { data: ServiceData }) {
     return null;
   }
 
-
+  // Fallback for Construction / Generic
   if (sections.length === 0) {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center bg-background p-4 text-center">
-        <Wand2 className="w-12 h-12 text-muted-foreground mb-4 opacity-20" />
-        <h2 className="text-xl font-bold mb-2">Experience under construction</h2>
-        <p className="text-muted-foreground text-sm max-w-xs">We're putting the finishing touches on this service. Please check back shortly.</p>
-        <Button variant="link" asChild className="mt-4"><Link href="/services">Back to Services</Link></Button>
+      <div className="min-h-screen flex flex-col items-center justify-center bg-zinc-950 p-6 text-center overflow-hidden relative">
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-indigo-500/10 blur-[150px] rounded-full" />
+        <motion.div
+           initial={{ opacity: 0, scale: 0.8 }}
+           animate={{ opacity: 1, scale: 1 }}
+           className="relative z-10"
+        >
+          <div className="w-24 h-24 rounded-full bg-indigo-500/10 flex items-center justify-center mb-10 mx-auto border border-indigo-500/20">
+             <Wand2 className="w-10 h-10 text-indigo-400 animate-spin-slow" />
+          </div>
+          <h2 className="text-5xl font-black mb-6 tracking-tighter uppercase italic text-white">Atelier Under Renovation</h2>
+          <p className="text-zinc-500 text-lg max-w-sm mx-auto font-light leading-relaxed mb-12">
+            Our artisans are currently crafting specialized digital experiences for {data.title || "this service"}. 
+          </p>
+          <div className="flex gap-4 justify-center">
+            <Button variant="outline" className="rounded-2xl border-white/10 px-8 h-14 font-bold" asChild>
+              <Link href="/services">Return to Catalog</Link>
+            </Button>
+            <Button className="rounded-2xl bg-indigo-600 px-8 h-14 font-black transition-all hover:bg-white hover:text-black shadow-xl" asChild>
+              <Link href="/contact">Priority Request</Link>
+            </Button>
+          </div>
+        </motion.div>
       </div>
     );
   }
 
   return (
-    <div className="flex flex-col min-h-screen bg-background">
-      {sections.map((section, idx) => {
-        switch (section.type) {
-          case "hero":
-            return <HeroSection key={section.slug || idx} content={section.content} />;
-          case "features":
-            return <FeaturesSection key={section.slug || idx} content={section.content} />;
-          case "cta":
-            return <CTASection key={section.slug || idx} content={section.content} />;
-          default:
-            return null;
-        }
-      })}
-    </div>
+    <AnimatePresence mode="wait">
+      <motion.div 
+        key={data.slug}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        className="flex flex-col min-h-screen bg-zinc-950 selection:bg-indigo-500/30"
+      >
+        {sections.map((section, idx) => {
+          switch (section.type) {
+            case "hero":
+              return <HeroSection key={section.slug || idx} content={section.content} />;
+            case "features":
+              return <FeaturesSection key={section.slug || idx} content={section.content} />;
+            case "cta":
+              return <CTASection key={section.slug || idx} content={section.content} />;
+            default:
+              return null;
+          }
+        })}
+      </motion.div>
+    </AnimatePresence>
   );
 }
 
 function HeroSection({ content }: { content: any }) {
-  const { title, subtitle, description, image } = content;
+  const { title, subtitle, description } = content;
   return (
-    <section className="relative min-h-[60vh] flex items-center justify-center overflow-hidden py-24 border-b border-border">
-      <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_top_right,rgba(99,102,241,0.08)_0%,transparent_50%)]" />
-      <div className="absolute bottom-0 right-0 w-full h-full bg-[radial-gradient(circle_at_bottom_left,rgba(168,85,247,0.08)_0%,transparent_50%)]" />
+    <section className="relative min-h-[85vh] flex items-center justify-center overflow-hidden py-32 border-b border-white/5">
+      {/* Cinematic Background */}
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(79,70,229,0.1)_0%,transparent_50%)]" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full neural-mesh opacity-20 pointer-events-none" />
       
-      <div className="container mx-auto px-4 md:px-6 relative z-10 text-center">
+      <div className="container relative z-10 text-center">
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 text-xs font-bold uppercase tracking-widest mb-6"
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          className="inline-flex items-center gap-3 px-6 py-2 rounded-full bg-indigo-500/5 border border-indigo-500/10 backdrop-blur-2xl text-indigo-400 text-[10px] font-black uppercase tracking-[0.4em] mb-10"
         >
-          <Sparkles className="w-3 h-3" />
-          Premium {subtitle || "Service"}
+          <Star className="w-3 h-3 fill-indigo-500" />
+          {subtitle || "Premium Service"}
         </motion.div>
         
         <motion.h1
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.1 }}
-          className="text-4xl md:text-7xl font-extrabold tracking-tighter mb-6 bg-clip-text text-transparent bg-gradient-to-b from-foreground to-foreground/70"
+          transition={{ duration: 1, ease: "easeOut" }}
+          className="text-6xl md:text-9xl font-black tracking-tighter mb-10 leading-[0.8] uppercase italic text-shimmer"
         >
           {title}
         </motion.h1>
@@ -120,11 +149,22 @@ function HeroSection({ content }: { content: any }) {
         <motion.p
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2 }}
-          className="max-w-2xl mx-auto text-lg md:text-xl text-muted-foreground leading-relaxed"
+          transition={{ duration: 1, delay: 0.3 }}
+          className="max-w-3xl mx-auto text-2xl md:text-3xl text-zinc-500 font-light leading-relaxed italic border-x border-white/5 px-12 py-4"
         >
           {description}
         </motion.p>
+
+        <motion.div
+           initial={{ opacity: 0, y: 20 }}
+           animate={{ opacity: 1, y: 0 }}
+           transition={{ delay: 0.5 }}
+           className="mt-16"
+        >
+           <Button size="lg" className="bg-indigo-600 hover:bg-white hover:text-black rounded-2xl px-16 h-20 text-xl font-black shadow-2xl transition-all">
+              LEARN MORE <ArrowRight className="ml-3 w-6 h-6" />
+           </Button>
+        </motion.div>
       </div>
     </section>
   );
@@ -133,21 +173,27 @@ function HeroSection({ content }: { content: any }) {
 function FeaturesSection({ content }: { content: any }) {
   const items = Array.isArray(content?.items) ? content.items : [];
   return (
-    <section className="py-24 container mx-auto px-4 md:px-6">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-12 max-w-5xl mx-auto">
+    <section className="py-48 container relative">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-12 max-w-6xl mx-auto">
         {items.map((item: any, idx: number) => (
           <motion.div
             key={idx}
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="group p-8 rounded-3xl border border-border bg-card/50 backdrop-blur-sm hover:border-indigo-500/30 transition-all duration-300"
+            className="group glass-card p-12 rounded-[4rem] border border-white/5 hover:border-indigo-500/20 transition-all duration-700 relative overflow-hidden"
           >
-            <div className="w-12 h-12 rounded-2xl bg-indigo-500/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-              <CheckCircle2 className="w-6 h-6 text-indigo-500" />
+            <div className="shimmer-sweep absolute inset-0 opacity-0 group-hover:opacity-100 pointer-events-none" />
+            
+            <div className="flex justify-between items-start mb-10 relative z-10">
+               <div className="w-16 h-16 rounded-2xl bg-indigo-500/10 flex items-center justify-center border border-indigo-500/20 group-hover:bg-indigo-600 transition-all duration-500 shadow-lg">
+                  <CheckCircle2 className="w-8 h-8 text-indigo-400 group-hover:text-white" />
+               </div>
+               <span className="text-[10px] font-black text-white/10 group-hover:text-indigo-500/50 transition-colors uppercase tracking-widest">Feature 0{idx+1}</span>
             </div>
-            <h3 className="text-2xl font-bold mb-3">{item.title}</h3>
-            <p className="text-muted-foreground leading-relaxed">{item.description}</p>
+            
+            <h3 className="text-3xl md:text-4xl font-black mb-6 tracking-tighter uppercase italic group-hover:text-indigo-400 transition-colors">{item.title}</h3>
+            <p className="text-zinc-500 text-xl font-light leading-relaxed line-clamp-3 italic">{item.description}</p>
           </motion.div>
         ))}
       </div>
@@ -158,14 +204,16 @@ function FeaturesSection({ content }: { content: any }) {
 function CTASection({ content }: { content: any }) {
   const { title, link, description } = content;
   return (
-    <section className="py-32 text-center container mx-auto px-4 md:px-6">
-      <div className="max-w-3xl mx-auto space-y-8">
-        <h2 className="text-3xl md:text-5xl font-bold leading-tight">
+    <section className="py-64 text-center container relative overflow-hidden">
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-indigo-600/5 blur-[180px] rounded-full" />
+      <div className="max-w-4xl mx-auto space-y-12 relative z-10 px-6">
+        <Shield className="w-16 h-16 text-indigo-500 mx-auto mb-10 animate-pulse" />
+        <h2 className="text-6xl md:text-[8rem] font-black leading-[0.8] tracking-tighter uppercase italic">
           {title || "Start Your Project"}
         </h2>
-        {description && <p className="text-lg text-muted-foreground">{description}</p>}
-        <Button size="lg" className="rounded-full px-12 h-14" asChild>
-          <Link href={link || "/contact"}>Get Started <ArrowRight className="ml-2 w-4 h-4" /></Link>
+        {description && <p className="text-2xl text-zinc-500 font-light italic max-w-2xl mx-auto border-y border-white/5 py-10">{description}</p>}
+        <Button size="lg" className="rounded-2xl px-20 h-24 text-2xl font-black bg-white text-black hover:bg-indigo-600 hover:text-white shadow-2xl transition-all" asChild>
+          <Link href={link || "/contact"}>GET STARTED <ArrowUpRight className="ml-3 w-8 h-8" /></Link>
         </Button>
       </div>
     </section>
