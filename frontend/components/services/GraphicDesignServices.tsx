@@ -89,30 +89,31 @@ const itemVariants = {
 };
 
 export function GraphicDesignServices({ data }: { data?: any }) {
-    const badgeText = data?.badge_text || "🎨 Premium Deliverables";
-    const title = data?.title || "Graphic Design Services";
+    const badgeText = data?.badge_text || "🎨 Elite Deliverables";
+    const title = data?.title || "Signature Masterpieces";
     const description = data?.description || "Professional design solutions for all your branding needs. We combine creative vision with strategic intent.";
     const designServices = data?.services || defaultDesignServices;
 
     return (
-        <section className="py-24 md:py-32 bg-zinc-50 dark:bg-zinc-950 relative overflow-hidden">
-            <div className="container mx-auto px-4 md:px-6">
-                <div className="text-center max-w-3xl mx-auto mb-20">
+        <section className="py-48 bg-zinc-950 relative overflow-hidden border-y border-white/5">
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_100%,rgba(79,70,229,0.05)_0%,transparent_50%)]" />
+            
+            <div className="container mx-auto px-4 md:px-6 relative z-10">
+                <div className="text-center max-w-4xl mx-auto mb-32">
                     <motion.div
                         initial={{ opacity: 0, scale: 0.9 }}
                         whileInView={{ opacity: 1, scale: 1 }}
                         viewport={{ once: true }}
-                        transition={{ duration: 0.5 }}
-                        className="inline-flex items-center rounded-full border border-zinc-200 bg-white px-4 py-1.5 text-sm md:text-base font-medium text-zinc-800 shadow-sm mb-6 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300"
+                        className="inline-flex items-center rounded-full border border-white/10 bg-white/5 px-6 py-2 text-xs font-black uppercase tracking-[0.4em] text-indigo-400 backdrop-blur-xl mb-10"
                     >
                         {badgeText}
                     </motion.div>
                     <motion.h2
-                        initial={{ opacity: 0, y: 20 }}
+                        initial={{ opacity: 0, y: 30 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
-                        transition={{ duration: 0.5, delay: 0.1 }}
-                        className="text-4xl md:text-5xl lg:text-6xl font-black tracking-tight mb-6"
+                        transition={{ duration: 1, ease: "easeOut" }}
+                        className="text-6xl md:text-9xl font-black tracking-tighter mb-10 uppercase italic text-shimmer"
                     >
                         {title}
                     </motion.h2>
@@ -120,8 +121,8 @@ export function GraphicDesignServices({ data }: { data?: any }) {
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
-                        transition={{ duration: 0.5, delay: 0.2 }}
-                        className="text-xl text-zinc-600 dark:text-zinc-400 leading-relaxed"
+                        transition={{ duration: 1, delay: 0.2 }}
+                        className="text-2xl text-zinc-500 max-w-2xl mx-auto font-light italic leading-relaxed border-x border-white/5 px-10 py-4"
                     >
                         {description}
                     </motion.p>
@@ -132,45 +133,39 @@ export function GraphicDesignServices({ data }: { data?: any }) {
                     initial="hidden"
                     whileInView="show"
                     viewport={{ once: true }}
-                    className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"
+                    className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12"
                 >
                     {designServices.map((service: any, index: number) => (
                         <motion.div key={index} variants={itemVariants} className="h-full">
-                            <Link href={service.link || "/contact"} className="block h-[380px] w-full group relative rounded-3xl overflow-hidden shadow-lg border border-zinc-200/50 dark:border-zinc-800/50 transition-all hover:-translate-y-2 hover:shadow-2xl">
+                            <Link href={service.link || "/contact"} className="block h-[500px] w-full group relative rounded-[3rem] overflow-hidden border border-white/5 transition-all duration-700 hover:border-white/20 glass-card">
                                 {/* Background Image */}
                                 <Image
                                     src={service.image}
                                     alt={service.title}
                                     fill
-                                    className="object-cover transition-transform duration-700 group-hover:scale-110"
+                                    className="object-cover transition-transform duration-[2s] group-hover:scale-110"
                                 />
 
-                                {/* Overlay solid dark to light gradient */}
-                                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent" />
+                                <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent z-10" />
+                                <div className="shimmer-sweep absolute inset-0 opacity-0 group-hover:opacity-100 pointer-events-none z-20" />
 
-                                {/* Colorful hover tint layer */}
-                                <div className={`absolute inset-0 opacity-0 group-hover:opacity-40 transition-opacity duration-500 bg-gradient-to-t ${service.color} mix-blend-overlay`} />
-
-                                <div className="absolute inset-0 p-6 flex flex-col">
+                                <div className="absolute inset-0 p-10 flex flex-col z-30">
                                     {/* Price tag top right */}
-                                    <div className="self-end bg-white/10 backdrop-blur-md text-white font-bold px-3 py-1.5 rounded-full border border-white/20 text-sm shadow-xl transform translate-x-4 opacity-0 group-hover:translate-x-0 group-hover:opacity-100 transition-all duration-300 delay-100">
-                                        Starting at {service.price}
+                                    <div className="self-end bg-white/10 backdrop-blur-md text-white font-black px-4 py-2 rounded-full border border-white/10 text-[10px] tracking-widest uppercase opacity-0 group-hover:opacity-100 transition-all duration-500 translate-y-2 group-hover:translate-y-0">
+                                        {service.price}
                                     </div>
 
                                     {/* Content bottom */}
-                                    <div className="mt-auto transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
-                                        <h3 className="text-2xl font-bold text-white mb-2">
+                                    <div className="mt-auto transform translate-y-6 group-hover:translate-y-0 transition-all duration-700">
+                                        <h3 className="text-3xl font-black text-white italic tracking-tight uppercase mb-4">
                                             {service.title}
                                         </h3>
-                                        <p className="text-zinc-300 text-sm leading-relaxed mb-6 opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-100 line-clamp-2">
+                                        <p className="text-zinc-400 text-sm font-light leading-relaxed mb-8 opacity-0 group-hover:opacity-100 transition-all duration-500 delay-100 line-clamp-2 italic">
                                             {service.description}
                                         </p>
 
-                                        <div className="flex items-center text-white font-semibold text-sm uppercase tracking-wider">
-                                            Order Now
-                                            <div className="ml-3 h-8 w-8 rounded-full bg-white/20 backdrop-blur flex items-center justify-center group-hover:bg-white group-hover:text-black transition-colors duration-300">
-                                                <ArrowRight className="h-4 w-4" />
-                                            </div>
+                                        <div className="flex items-center text-white text-[10px] font-black uppercase tracking-[0.4em] italic">
+                                            COMMISSION <ArrowRight className="ml-3 h-4 w-4 group-hover:translate-x-2 transition-transform" />
                                         </div>
                                     </div>
                                 </div>

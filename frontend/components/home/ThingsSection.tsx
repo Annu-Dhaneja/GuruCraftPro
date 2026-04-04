@@ -82,85 +82,71 @@ const colorMap = [
 ];
 
 export function ThingsSection({ data }: ThingsSectionProps) {
-  const badge = data?.badge || "EXPLORE";
+  const badge = data?.badge || "INSIGHTS";
   const title = data?.title || "Things You Should Know";
   const subtitle =
     data?.subtitle ||
-    "Discover the creative capabilities, signature art, and design services that set us apart.";
+    "Discover the creative capabilities, signature art, and design services that set us apart at Gurucraftpro.";
   const items = data?.items?.length ? data.items : defaultItems;
-  const featuredTitle = data?.featured_title || "Premium Guruji Satsang Box Ya Satsang Story – Pre-loaded Bhajans & Mantras";
+  const featuredTitle = data?.featured_title || "Premium Guruji Art Sanctuary";
   const featuredDescription =
     data?.featured_description ||
-    "A divine collection featuring hand-crafted spiritual masterpeices. The Satsang Box comes pre-loaded with sacred Bhajans and Mantras to create a serene atmosphere in your home.";
-  const featuredLink = data?.featured_link || "/guruji-darshan";
+    "A divine collection featuring hand-crafted spiritual masterpieces. Experience the intersection of sacred geometry and contemporary elite design.";
+  const featuredLink = data?.featured_link || "/services/guru-ji-art";
 
   return (
-    <section className="py-24 md:py-32 bg-zinc-950 relative overflow-hidden">
-      {/* Background texture */}
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:32px_32px] pointer-events-none" />
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-indigo-500/5 rounded-full blur-[120px] pointer-events-none" />
+    <section className="py-48 bg-zinc-950 relative overflow-hidden border-t border-white/5">
+      {/* Cinematic Background */}
+      <div className="absolute inset-0 neural-mesh opacity-10 pointer-events-none" />
+      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[1000px] h-[500px] bg-indigo-500/5 rounded-full blur-[150px] pointer-events-none" />
 
       <div className="container mx-auto px-4 md:px-6 relative z-10">
         {/* ── Section Header ─────────────────────────────────── */}
         <motion.div
-          initial={{ opacity: 0, y: 24 }}
+          initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.7 }}
-          className="text-center max-w-3xl mx-auto mb-20"
+          transition={{ duration: 1 }}
+          className="text-center max-w-4xl mx-auto mb-32"
         >
-          <span className="inline-block px-3 py-1 text-[10px] font-black uppercase tracking-[0.25em] text-indigo-400 bg-indigo-500/10 border border-indigo-500/20 rounded-full mb-6">
+          <span className="inline-flex items-center px-6 py-2 rounded-full border border-white/10 bg-white/5 text-[10px] font-black uppercase tracking-[0.4em] text-indigo-400 backdrop-blur-xl mb-10">
             {badge}
           </span>
-          <h2 className="text-4xl md:text-6xl font-bold tracking-tighter text-white mb-6">
-            {title.split(" ").length > 2 ? (
-              <>
-                {title.split(" ").slice(0, -2).join(" ")}{" "}
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400">
-                  {title.split(" ").slice(-2).join(" ")}
-                </span>
-              </>
-            ) : (
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400">
-                {title}
-              </span>
-            )}
+          <h2 className="text-6xl md:text-[10rem] font-black tracking-tighter text-white mb-10 leading-[0.8] uppercase italic text-shimmer">
+            {title}
           </h2>
-          <p className="text-lg md:text-xl text-zinc-400 leading-relaxed font-light">
+          <p className="text-2xl text-zinc-500 font-light italic leading-relaxed border-x border-white/5 px-10 py-4 max-w-2xl mx-auto">
             {subtitle}
           </p>
         </motion.div>
 
         {/* ── Featured "Story Box" ─────────────────────────────── */}
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          initial={{ opacity: 0, scale: 0.95 }}
+          whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
-          className="mb-16"
+          transition={{ duration: 1 }}
+          className="mb-24"
         >
-          <div className="relative group rounded-3xl overflow-hidden border border-white/10 bg-gradient-to-br from-zinc-900/80 via-zinc-900/60 to-zinc-950 backdrop-blur-xl p-8 md:p-12">
-            {/* Glow */}
-            <div className="absolute -top-20 -right-20 w-72 h-72 bg-indigo-500/10 rounded-full blur-[100px] group-hover:bg-indigo-500/20 transition-all duration-700 pointer-events-none" />
-            <div className="absolute -bottom-20 -left-20 w-72 h-72 bg-purple-500/10 rounded-full blur-[100px] group-hover:bg-purple-500/20 transition-all duration-700 pointer-events-none" />
-
-            <div className="relative z-10 flex flex-col md:flex-row justify-between items-start md:items-center gap-8">
-              <div className="max-w-2xl">
-                {/* Live indicator */}
-                <div className="flex items-center gap-2 mb-4">
-                  <span className="relative flex h-2.5 w-2.5">
-                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
-                    <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500" />
+          <div className="relative group rounded-[4rem] overflow-hidden border border-white/5 bg-zinc-900/40 backdrop-blur-3xl p-12 md:p-20 glass-card">
+            <div className="shimmer-sweep absolute inset-0 opacity-0 group-hover:opacity-100 pointer-events-none" />
+            
+            <div className="relative z-10 flex flex-col md:flex-row justify-between items-start md:items-center gap-12">
+              <div className="max-w-3xl">
+                <div className="flex items-center gap-4 mb-8">
+                  <span className="relative flex h-3 w-3">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-indigo-400 opacity-75" />
+                    <span className="relative inline-flex rounded-full h-3 w-3 bg-indigo-500" />
                   </span>
-                  <span className="text-xs font-semibold uppercase tracking-widest text-emerald-400">
-                    Featured — Live View
+                  <span className="text-[10px] font-black uppercase tracking-[0.4em] text-indigo-400">
+                    Elite Feature 01
                   </span>
                 </div>
 
-                <h3 className="text-3xl md:text-4xl font-bold text-white tracking-tight mb-4">
+                <h3 className="text-4xl md:text-6xl font-black text-white tracking-tighter mb-8 uppercase italic leading-none">
                   {featuredTitle}
                 </h3>
-                <p className="text-zinc-400 text-lg leading-relaxed">
+                <p className="text-xl text-zinc-500 font-light italic leading-relaxed">
                   {featuredDescription}
                 </p>
               </div>
@@ -168,11 +154,9 @@ export function ThingsSection({ data }: ThingsSectionProps) {
               <Link href={featuredLink}>
                 <Button
                   size="lg"
-                  className="bg-indigo-600 hover:bg-indigo-500 text-white shadow-xl shadow-indigo-600/20 rounded-xl px-8 py-6 font-bold whitespace-nowrap text-base group/btn"
+                  className="bg-white text-black hover:bg-indigo-600 hover:text-white h-24 rounded-2xl px-12 font-black transition-all shadow-2xl active:scale-95 text-xl tracking-tighter uppercase italic group/btn"
                 >
-                  <Eye className="mr-2 h-5 w-5" />
-                  View Collection
-                  <ArrowRight className="ml-2 h-4 w-4 group-hover/btn:translate-x-1 transition-transform" />
+                  EXPLORE <ArrowRight className="ml-3 h-6 w-6 group-hover/btn:translate-x-2 transition-transform" />
                 </Button>
               </Link>
             </div>
@@ -180,7 +164,7 @@ export function ThingsSection({ data }: ThingsSectionProps) {
         </motion.div>
 
         {/* ── Card Grid ────────────────────────────────────────── */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-12">
           {items.map((item, index) => {
             const Icon = iconMap[index % iconMap.length];
             const gradient = colorMap[index % colorMap.length];
@@ -188,42 +172,35 @@ export function ThingsSection({ data }: ThingsSectionProps) {
             return (
               <motion.div
                 key={item.title}
-                initial={{ opacity: 0, y: 30 }}
+                initial={{ opacity: 0, y: 40 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                className="group relative bg-zinc-900/50 backdrop-blur-sm border border-white/5 rounded-2xl p-6 hover:border-white/15 hover:bg-zinc-900/80 transition-all duration-500"
+                transition={{ duration: 0.8, delay: index * 0.1 }}
+                className="group relative bg-zinc-950/40 border border-white/5 rounded-[3rem] p-12 transition-all duration-700 hover:border-indigo-500/20 glass-card"
               >
-                {/* Icon */}
+                <div className="shimmer-sweep absolute inset-0 opacity-0 group-hover:opacity-100 pointer-events-none" />
+                
                 <div
-                  className={`w-12 h-12 rounded-xl bg-gradient-to-br ${gradient} flex items-center justify-center mb-5 shadow-lg group-hover:scale-110 transition-transform duration-300`}
+                  className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${gradient} flex items-center justify-center mb-8 shadow-2xl group-hover:scale-110 transition-transform duration-500`}
                 >
-                  <Icon className="w-6 h-6 text-white" />
+                  <Icon className="w-8 h-8 text-white" />
                 </div>
 
-                {/* Content */}
-                <h3 className="text-lg font-semibold text-white mb-2 group-hover:text-indigo-300 transition-colors duration-300">
+                <h3 className="text-2xl font-black text-white mb-4 group-hover:text-indigo-400 transition-colors uppercase italic tracking-tight">
                   {item.title}
                 </h3>
-                <p className="text-sm text-zinc-500 leading-relaxed mb-5">
+                <p className="text-base text-zinc-500 font-light italic leading-relaxed mb-8">
                   {item.description}
                 </p>
 
-                {/* Action */}
                 {item.link && (
                   <Link
                     href={item.link}
-                    className="inline-flex items-center text-sm font-medium text-indigo-400 hover:text-indigo-300 transition-colors"
+                    className="inline-flex items-center text-[10px] font-black text-indigo-400 uppercase tracking-[0.4em] italic group-hover:text-white transition-colors"
                   >
-                    Explore
-                    <ArrowRight className="ml-1.5 h-3.5 w-3.5 group-hover:translate-x-1 transition-transform duration-300" />
+                    ACCESS <ArrowRight className="ml-3 h-4 w-4 group-hover:translate-x-2 transition-transform duration-300" />
                   </Link>
                 )}
-
-                {/* Hover glow */}
-                <div
-                  className={`absolute -bottom-10 -right-10 w-32 h-32 bg-gradient-to-br ${gradient} opacity-0 group-hover:opacity-10 rounded-full blur-3xl transition-opacity duration-500 pointer-events-none`}
-                />
               </motion.div>
             );
           })}
@@ -234,17 +211,14 @@ export function ThingsSection({ data }: ThingsSectionProps) {
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.3 }}
-          className="mt-16 text-center"
+          transition={{ duration: 0.8, delay: 0.3 }}
+          className="mt-32 text-center"
         >
           <Link href="/services">
             <Button
-              variant="outline"
-              size="lg"
-              className="rounded-full border-white/10 bg-white/5 hover:bg-white/10 text-white px-8 py-6 font-semibold"
+              className="rounded-2xl border border-white/10 bg-white/5 hover:bg-white/10 text-white px-16 h-20 text-lg font-black uppercase tracking-widest transition-all italic"
             >
-              View All Services
-              <ArrowRight className="ml-2 h-4 w-4" />
+              The Full Catalog <ArrowRight className="ml-3 h-5 w-5" />
             </Button>
           </Link>
         </motion.div>
