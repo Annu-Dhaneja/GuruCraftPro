@@ -77,45 +77,47 @@ export function ServiceCategoryRail({ data }: { data?: any }) {
     }));
 
     return (
-        <section className="w-full py-12 border-b bg-background/50 overflow-hidden">
-            <div className="container px-4 md:px-6 mb-6">
-                <h2 className="text-2xl font-bold tracking-tight">{title}</h2>
+        <section className="w-full py-20 bg-slate-950 overflow-hidden relative">
+            <div className="container px-4 md:px-6 mb-12">
+                <h2 className="text-4xl md:text-6xl font-black tracking-tighter text-white">{title}</h2>
             </div>
 
             <div className="w-full relative">
-                <div className="flex w-full overflow-hidden mask-linear-gradient">
+                <div className="flex w-full overflow-hidden" 
+                     style={{ maskImage: "linear-gradient(to right, transparent, black 15%, black 85%, transparent)" }}>
                     {/* Two copies of the list for seamless looping */}
                     <motion.div
-                        className="flex gap-4 px-4 min-w-max"
+                        className="flex gap-8 px-4 min-w-max"
                         animate={{ x: "-50%" }}
                         transition={{
                             repeat: Infinity,
                             ease: "linear",
-                            duration: 20, // Adjust speed here
+                            duration: 35, // Slower for premium feel
                             repeatType: "loop"
                         }}
-                        whileHover={{ animationPlayState: "paused" }}
                     >
                         {[...categories, ...categories].map((cat: any, index: number) => (
                             <Link
                                 key={`${cat.title}-${index}`}
                                 href={cat.href}
                                 className={cn(
-                                    "relative overflow-hidden rounded-2xl w-[220px] h-[100px] flex items-center justify-between p-4 transition-transform hover:-translate-y-1 hover:shadow-lg shrink-0",
-                                    cat.color
+                                    "relative overflow-hidden rounded-[2rem] w-[320px] h-[160px] flex items-center justify-between p-8 transition-all hover:scale-105 hover:bg-white/5 border border-white/5 group bg-slate-900/50 backdrop-blur-sm shadow-xl"
                                 )}
                             >
                                 {/* Text */}
-                                <span className={cn("font-bold text-lg z-10", cat.textColor)}>
-                                    {cat.title}
-                                </span>
+                                <div className="z-10">
+                                    <span className="font-black text-2xl text-white tracking-tight uppercase">
+                                        {cat.title}
+                                    </span>
+                                    <div className="h-1 w-0 bg-primary group-hover:w-full transition-all duration-500 mt-2" />
+                                </div>
 
                                 {/* Image Visual */}
-                                <div className="w-[80px] h-[70px] bg-white/40 rounded-lg shadow-sm rotate-[5deg] translate-x-2 translate-y-2 overflow-hidden flex items-center justify-center">
+                                <div className="w-[120px] h-[120px] absolute -right-4 -bottom-4 group-hover:scale-110 group-hover:rotate-6 transition-all duration-700 opacity-40 group-hover:opacity-80">
                                     <img 
                                         src={cat.image} 
                                         alt="" 
-                                        className="w-full h-full object-cover opacity-80 mix-blend-multiply" 
+                                        className="w-full h-full object-cover rounded-2xl shadow-2xl" 
                                         onError={(e: any) => {
                                             e.target.src = "https://images.unsplash.com/photo-1542435503-956c469947f6?auto=format&fit=crop&q=80&w=200";
                                         }}

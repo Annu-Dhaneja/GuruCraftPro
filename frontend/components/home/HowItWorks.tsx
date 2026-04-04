@@ -40,16 +40,16 @@ export function HowItWorks({ data }: HowItWorksProps) {
             <div className="hidden md:block absolute top-1/2 left-0 w-full h-px bg-gradient-to-r from-transparent via-border to-transparent -translate-y-12 -z-10" />
 
             <div className="container mx-auto px-4 md:px-6">
-                <div className="text-center max-w-2xl mx-auto mb-16">
-                    <h2 className="text-3xl md:text-5xl font-bold tracking-tight mb-4">
+                <div className="text-center max-w-3xl mx-auto mb-24">
+                    <h2 className="text-5xl md:text-7xl font-black tracking-tighter mb-6 text-white">
                         {data.title}
                     </h2>
-                    <p className="text-muted-foreground text-lg">
+                    <p className="text-slate-400 text-xl md:text-2xl font-light">
                         {data.subtitle}
                     </p>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12 relative">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-10 relative">
                     {steps.map((step, index) => (
                         <motion.div
                             key={step.title}
@@ -57,21 +57,21 @@ export function HowItWorks({ data }: HowItWorksProps) {
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
                             transition={{ delay: index * 0.2 }}
-                            className="group relative flex flex-col items-center text-center bg-card p-6 rounded-2xl border border-transparent hover:border-border transition-colors"
+                            className="group relative flex flex-col items-center text-center glass-card p-10 rounded-[2.5rem] border border-white/5 hover:border-primary/20 transition-all shine-effect"
                         >
                             <div
-                                className={`w-16 h-16 rounded-2xl flex items-center justify-center mb-6 ${step.color} transition-transform group-hover:scale-110 duration-300`}
+                                className={`w-20 h-20 rounded-3xl flex items-center justify-center mb-8 ${step.color} shadow-lg transition-transform group-hover:scale-110 duration-500`}
                             >
-                                {step.icon && <step.icon className="w-8 h-8" />}
+                                {step.icon && <step.icon className="w-10 h-10" />}
                             </div>
-                            <h3 className="text-xl font-semibold mb-3">{step.title}</h3>
-                            <p className="text-muted-foreground leading-relaxed">
+                            <h3 className="text-2xl font-black mb-4 text-white tracking-tight">{step.title}</h3>
+                            <p className="text-slate-400 leading-relaxed text-lg font-light">
                                 {step.description}
                             </p>
 
                             {/* Connector line for mobile (vertical) */}
                             {index !== steps.length - 1 && (
-                                <div className="md:hidden absolute bottom-[-2rem] left-1/2 w-px h-8 bg-border -translate-x-1/2" />
+                                <div className="md:hidden absolute bottom-[-2.5rem] left-1/2 w-6 h-6 border-r-2 border-b-2 border-white/10 -translate-x-1/2 rotate-45" />
                             )}
                         </motion.div>
                     ))}

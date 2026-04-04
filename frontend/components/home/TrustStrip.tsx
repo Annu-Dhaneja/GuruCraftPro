@@ -24,13 +24,13 @@ export function TrustStrip({ data }: TrustStripProps) {
             <div className="container mx-auto px-4 md:px-6 flex flex-col md:flex-row items-center gap-10 md:gap-20 relative z-10">
 
                 {/* Stats - Clean and Bold */}
-                <div className="flex gap-12 md:gap-16 shrink-0 divide-x divide-white/10">
+                <div className="flex gap-12 md:gap-24 shrink-0 divide-x divide-white/10">
                     {stats.map((stat) => (
-                        <div key={stat.label} className="text-center pl-6 first:pl-0">
-                            <div className="text-3xl md:text-4xl font-bold tracking-tighter tabular-nums bg-clip-text text-transparent bg-gradient-to-b from-foreground to-foreground/60">
+                        <div key={stat.label} className="text-center pl-10 first:pl-0">
+                            <div className="text-4xl md:text-5xl font-black tracking-tighter tabular-nums text-white">
                                 {stat.value}
                             </div>
-                            <div className="text-[10px] md:text-xs text-muted-foreground uppercase tracking-widest font-semibold mt-1">
+                            <div className="text-[10px] md:text-xs text-slate-500 uppercase tracking-[0.2em] font-black mt-2">
                                 {stat.label}
                             </div>
                         </div>

@@ -15,26 +15,29 @@ export function VirtualDressingRoom({ data }: { data?: any }) {
     const badgeText = data?.badge_text || "AI-Powered Feature";
 
     return (
-        <section className="py-16 md:py-24 relative overflow-hidden bg-gradient-to-b from-purple-950/20 via-background to-background">
-            {/* Background Glow */}
-            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-purple-500/10 via-transparent to-transparent pointer-events-none" />
+        <section className="py-24 md:py-40 relative overflow-hidden bg-zinc-950">
+            {/* Background Mesh/Glow */}
+            <div className="absolute inset-0 z-0 text-white">
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full bg-[radial-gradient(circle_at_center,rgba(99,102,241,0.15),transparent_70%)]" />
+                <div className="absolute inset-0 opacity-[0.03] bg-[url('https://grainy-gradients.vercel.app/noise.svg')] pointer-events-none" />
+            </div>
 
             <div className="container mx-auto px-4 md:px-6 relative z-10">
                 <motion.div
                     initial={{ opacity: 0, y: 30 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
-                    transition={{ duration: 0.6 }}
-                    className="text-center mb-10"
+                    transition={{ duration: 0.8 }}
+                    className="text-center mb-20"
                 >
-                    <div className="inline-flex items-center gap-2 bg-purple-500/10 border border-purple-500/20 rounded-full px-4 py-1.5 mb-4">
-                        <Sparkles className="h-4 w-4 text-purple-400" />
-                        <span className="text-sm font-medium text-purple-400">{badgeText}</span>
+                    <div className="inline-flex items-center gap-2 bg-indigo-500/10 border border-indigo-500/20 rounded-full px-6 py-2 mb-8 backdrop-blur-md">
+                        <Sparkles className="h-5 w-5 text-indigo-400 animate-pulse" />
+                        <span className="text-sm font-black text-indigo-400 uppercase tracking-widest">{badgeText}</span>
                     </div>
-                    <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-4 text-white">
+                    <h2 className="text-6xl md:text-9xl font-black tracking-tighter mb-8 text-white leading-[0.85]">
                         {title}
                     </h2>
-                    <p className="text-muted-foreground max-w-2xl mx-auto text-lg">
+                    <p className="text-slate-400 max-w-3xl mx-auto text-xl md:text-2xl font-light leading-relaxed">
                         {description}
                     </p>
                 </motion.div>
@@ -43,36 +46,36 @@ export function VirtualDressingRoom({ data }: { data?: any }) {
                     initial={{ opacity: 0, scale: 0.95 }}
                     whileInView={{ opacity: 1, scale: 1 }}
                     viewport={{ once: true }}
-                    transition={{ duration: 0.7, delay: 0.2 }}
-                    className="relative max-w-5xl mx-auto"
+                    transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+                    className="relative max-w-6xl mx-auto group"
                 >
-                    {/* Main Image Container with Glow */}
-                    <div className="relative rounded-2xl overflow-hidden border border-purple-500/30 shadow-2xl shadow-purple-500/20">
+                    {/* Main Image Container with Elite Glow */}
+                    <div className="relative rounded-[3rem] overflow-hidden border border-white/10 shadow-[0_0_100px_rgba(99,102,241,0.1)] transition-all duration-700 group-hover:border-white/20">
                         <Image
                             src={imageUrl}
                             alt={title}
-                            width={1200}
-                            height={675}
-                            className="w-full h-auto"
+                            width={1280}
+                            height={720}
+                            className="w-full h-auto transition-transform duration-[3000ms] group-hover:scale-105"
                             priority
                         />
 
                         {/* Overlay Gradient */}
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent opacity-80" />
 
-                        {/* CTA at bottom */}
-                        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-4">
+                        {/* CTA at center-bottom */}
+                        <div className="absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-6 z-20">
                             <Link href={buttonLink}>
-                                <Button size="lg" className="bg-purple-600 hover:bg-purple-700 shadow-lg shadow-purple-500/30 gap-2 text-white">
-                                    {buttonText} <ArrowRight className="h-4 w-4" />
+                                <Button size="lg" className="h-24 px-16 text-2xl bg-white text-black hover:bg-zinc-200 rounded-[2rem] font-black shadow-[0_20px_50px_rgba(255,255,255,0.15)] transition-all hover:scale-105 group/btn">
+                                    {buttonText} <ArrowRight className="ml-3 h-8 w-8 group-hover/btn:translate-x-3 transition-transform" />
                                 </Button>
                             </Link>
                         </div>
                     </div>
 
-                    {/* Decorative Elements */}
-                    <div className="absolute -top-4 -left-4 w-24 h-24 bg-purple-500/20 rounded-full blur-2xl" />
-                    <div className="absolute -bottom-4 -right-4 w-32 h-32 bg-pink-500/20 rounded-full blur-2xl" />
+                    {/* Elite Decorative Elements */}
+                    <div className="absolute -top-12 -left-12 w-48 h-48 bg-indigo-500/20 rounded-full blur-[100px] -z-10 animate-pulse" />
+                    <div className="absolute -bottom-12 -right-12 w-64 h-64 bg-purple-500/20 rounded-full blur-[120px] -z-10 animate-pulse" />
                 </motion.div>
             </div>
         </section>
