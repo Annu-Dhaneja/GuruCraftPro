@@ -43,29 +43,33 @@ export function PortfolioPreview({ data }: { data?: any }) {
     };
 
     return (
-        <section className="py-32 md:py-48 bg-white dark:bg-black relative overflow-hidden">
+        <section className="py-48 md:py-64 bg-zinc-950 relative overflow-hidden border-b border-white/5">
+            {/* Cinematic Background */}
+            <div className="absolute inset-0 neural-mesh opacity-10 pointer-events-none" />
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1000px] h-[500px] bg-indigo-500/5 rounded-full blur-[150px] pointer-events-none" />
+
             <div className="container mx-auto px-4 md:px-6 relative z-10">
-                <div className="flex flex-col md:flex-row md:items-end justify-between mb-24 gap-8">
-                    <div className="max-w-3xl">
+                <div className="flex flex-col md:flex-row md:items-end justify-between mb-32 gap-10">
+                    <div className="max-w-4xl">
                         <motion.div
                             initial={{ opacity: 0, x: -20 }}
                             whileInView={{ opacity: 1, x: 0 }}
                             viewport={{ once: true }}
-                            className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 mb-8"
+                            className="inline-flex items-center gap-3 px-6 py-2 rounded-full border border-white/10 bg-white/5 mb-10 backdrop-blur-xl"
                         >
                             <div className="h-2 w-2 rounded-full bg-indigo-500 animate-pulse" />
-                            <span className="text-xs font-black uppercase tracking-widest text-zinc-500 dark:text-zinc-400">{badgeText}</span>
+                            <span className="text-[10px] font-black uppercase tracking-[0.4em] text-indigo-400">{badgeText}</span>
                         </motion.div>
-                        <h2 className="text-5xl md:text-8xl font-black tracking-tighter mb-10 leading-[0.85] whitespace-pre-line text-zinc-950 dark:text-white">
+                        <h2 className="text-6xl md:text-[8rem] font-black tracking-tighter mb-10 leading-[0.8] whitespace-pre-line text-white uppercase italic text-shimmer">
                             {title}
                         </h2>
-                        <p className="text-zinc-500 dark:text-zinc-400 text-xl md:text-2xl font-light leading-relaxed max-w-2xl">
+                        <p className="text-2xl text-zinc-500 font-light italic leading-relaxed max-w-2xl border-x border-white/5 px-10 py-4">
                             {description}
                         </p>
                     </div>
-                    <Button size="lg" variant="outline" className="h-20 px-12 text-xl rounded-[2rem] border-zinc-200 dark:border-zinc-800 font-black group hover:bg-zinc-950 hover:text-white dark:hover:bg-white dark:hover:text-black transition-all" asChild>
+                    <Button size="lg" className="h-24 px-16 text-2xl rounded-[2.5rem] bg-white text-black hover:bg-indigo-600 hover:text-white font-black group shadow-2xl transition-all uppercase italic" asChild>
                         <Link href={buttonLink}>
-                            {buttonText} <ArrowUpRight className="ml-3 h-6 w-6 transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
+                            {buttonText} <ArrowUpRight className="ml-4 h-8 w-8 transition-transform group-hover:translate-x-2 group-hover:-translate-y-2" />
                         </Link>
                     </Button>
                 </div>

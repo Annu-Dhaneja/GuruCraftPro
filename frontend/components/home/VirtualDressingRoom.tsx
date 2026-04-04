@@ -15,11 +15,12 @@ export function VirtualDressingRoom({ data }: { data?: any }) {
     const badgeText = data?.badge_text || "AI-Powered Feature";
 
     return (
-        <section className="py-24 md:py-40 relative overflow-hidden bg-zinc-950">
+        <section className="py-48 md:py-64 relative overflow-hidden bg-zinc-950 border-b border-white/5">
             {/* Background Mesh/Glow */}
             <div className="absolute inset-0 z-0 text-white">
                 <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full bg-[radial-gradient(circle_at_center,rgba(99,102,241,0.15),transparent_70%)]" />
                 <div className="absolute inset-0 opacity-[0.03] bg-[url('https://grainy-gradients.vercel.app/noise.svg')] pointer-events-none" />
+                <div className="absolute top-0 left-0 w-full h-full neural-mesh opacity-10 pointer-events-none" />
             </div>
 
             <div className="container mx-auto px-4 md:px-6 relative z-10">
@@ -28,16 +29,16 @@ export function VirtualDressingRoom({ data }: { data?: any }) {
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     transition={{ duration: 0.8 }}
-                    className="text-center mb-20"
+                    className="text-center mb-28"
                 >
-                    <div className="inline-flex items-center gap-2 bg-indigo-500/10 border border-indigo-500/20 rounded-full px-6 py-2 mb-8 backdrop-blur-md">
+                    <div className="inline-flex items-center gap-2 bg-indigo-500/10 border border-indigo-500/20 rounded-full px-6 py-2.5 mb-10 backdrop-blur-md">
                         <Sparkles className="h-5 w-5 text-indigo-400 animate-pulse" />
-                        <span className="text-sm font-black text-indigo-400 uppercase tracking-widest">{badgeText}</span>
+                        <span className="text-[10px] font-black tracking-[0.4em] text-indigo-400 uppercase">{badgeText}</span>
                     </div>
-                    <h2 className="text-6xl md:text-9xl font-black tracking-tighter mb-8 text-white leading-[0.85]">
+                    <h2 className="text-6xl md:text-9xl font-black tracking-tighter mb-10 text-white leading-[0.85] uppercase italic text-shimmer">
                         {title}
                     </h2>
-                    <p className="text-slate-400 max-w-3xl mx-auto text-xl md:text-2xl font-light leading-relaxed">
+                    <p className="text-2xl text-zinc-500 font-light italic leading-relaxed max-w-3xl mx-auto border-x border-white/5 px-10 py-4">
                         {description}
                     </p>
                 </motion.div>

@@ -14,24 +14,32 @@ export function FinalCTA({ data }: { data?: any }) {
     const secondaryButtonLink = data?.secondary_button_link || "/request";
 
     return (
-        <section className="py-40 relative overflow-hidden bg-slate-950">
+        <section className="py-48 md:py-64 relative overflow-hidden bg-slate-950 border-t border-white/5">
             {/* Background Effects */}
             <div className="absolute inset-0 z-0">
                 <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_50%_-20%,rgba(120,119,198,0.3),rgba(255,255,255,0))]" />
                 <div className="absolute bottom-0 right-0 w-1/2 h-1/2 bg-indigo-500/10 blur-[120px] rounded-full" />
                 <div className="absolute top-1/2 left-0 w-1/3 h-1/3 bg-purple-500/10 blur-[120px] rounded-full" />
+                <div className="absolute inset-0 neural-mesh opacity-10 pointer-events-none" />
             </div>
 
-            {/* Sparkles/Stars Effect could go here */}
-
-            <div className="container mx-auto px-4 md:px-6 text-center text-white">
-                <div className="max-w-3xl mx-auto">
+            <div className="container mx-auto px-4 md:px-6 text-center text-white relative z-10">
+                <div className="max-w-5xl mx-auto">
+                    <motion.div
+                        initial={{ opacity: 0, scale: 0.9 }}
+                        whileInView={{ opacity: 1, scale: 1 }}
+                        viewport={{ once: true }}
+                        className="inline-flex items-center gap-3 px-6 py-2 rounded-full border border-white/10 bg-white/5 text-[10px] font-black uppercase tracking-[0.4em] text-indigo-400 backdrop-blur-xl mb-10"
+                    >
+                        <Sparkles className="h-4 w-4" />
+                        TERMINATION LAYER
+                    </motion.div>
                     <motion.h2 
                         initial={{ opacity: 0, scale: 0.95 }}
                         whileInView={{ opacity: 1, scale: 1 }}
                         viewport={{ once: true }}
                         transition={{ duration: 0.8 }}
-                        className="text-6xl md:text-9xl font-black tracking-tighter mb-10 leading-[0.85] text-white"
+                        className="text-6xl md:text-[10rem] font-black tracking-tighter mb-10 leading-[0.8] text-white uppercase italic text-shimmer"
                     >
                         {title}
                     </motion.h2>
@@ -40,7 +48,7 @@ export function FinalCTA({ data }: { data?: any }) {
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         transition={{ duration: 0.8, delay: 0.2 }}
-                        className="text-2xl md:text-3xl text-slate-400 mb-16 leading-relaxed max-w-3xl mx-auto font-light"
+                        className="text-2xl md:text-3xl text-slate-500 mb-16 leading-relaxed max-w-3xl mx-auto font-light italic border-x border-white/5 px-10"
                     >
                         {description}
                     </motion.p>

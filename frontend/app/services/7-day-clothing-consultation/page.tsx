@@ -144,11 +144,11 @@ export default function ClothingConsultationPage() {
                       {/* Column 01: Schedule & Global Preferences */}
                       <div className="space-y-16">
                         <section className="space-y-8">
-                          <div className="flex items-center gap-4">
-                            <div className="w-10 h-10 rounded-2xl bg-indigo-500/10 flex items-center justify-center border border-indigo-500/20 text-indigo-400">
-                                <Calendar className="w-5 h-5" />
+                          <div className="flex items-center gap-6 mb-10">
+                            <div className="w-14 h-14 rounded-2xl bg-indigo-500/10 flex items-center justify-center border border-indigo-500/20 text-indigo-400 group-hover:bg-indigo-600 group-hover:text-white transition-all duration-500 shadow-xl">
+                                <Calendar className="w-6 h-6" />
                             </div>
-                            <h3 className="text-sm font-black text-white uppercase tracking-[0.2em]">01. Temporal Setting</h3>
+                            <h3 className="text-xl font-black text-white uppercase tracking-[0.4em] italic text-shimmer">01. Temporal Setting</h3>
                           </div>
                           
                           <div className="relative group/input">
@@ -165,11 +165,11 @@ export default function ClothingConsultationPage() {
                         </section>
 
                         <section className="space-y-8">
-                          <div className="flex items-center gap-4">
-                            <div className="w-10 h-10 rounded-2xl bg-purple-500/10 flex items-center justify-center border border-purple-500/20 text-purple-400">
-                                <Palette className="w-5 h-5" />
+                          <div className="flex items-center gap-6 mb-10">
+                            <div className="w-14 h-14 rounded-2xl bg-purple-500/10 flex items-center justify-center border border-purple-500/20 text-purple-400 group-hover:bg-purple-600 group-hover:text-white transition-all duration-500 shadow-xl">
+                                <Palette className="w-6 h-6" />
                             </div>
-                            <h3 className="text-sm font-black text-white uppercase tracking-[0.2em]">02. Aesthetic Universe</h3>
+                            <h3 className="text-xl font-black text-white uppercase tracking-[0.4em] italic text-shimmer">02. Aesthetic Universe</h3>
                           </div>
                           <div className="grid grid-cols-2 gap-4">
                             {STYLES.map(s => (
@@ -189,11 +189,11 @@ export default function ClothingConsultationPage() {
                       {/* Column 02: Biological Matrix & Engine Activation */}
                       <div className="space-y-16 flex flex-col justify-between">
                         <section className="space-y-10">
-                          <div className="flex items-center gap-4">
-                            <div className="w-10 h-10 rounded-2xl bg-emerald-500/10 flex items-center justify-center border border-emerald-500/20 text-emerald-400">
-                                <Users className="w-5 h-5" />
+                          <div className="flex items-center gap-6 mb-10">
+                            <div className="w-14 h-14 rounded-2xl bg-emerald-500/10 flex items-center justify-center border border-emerald-500/20 text-emerald-400 group-hover:bg-emerald-600 group-hover:text-white transition-all duration-500 shadow-xl">
+                                <Users className="w-6 h-6" />
                             </div>
-                            <h3 className="text-sm font-black text-white uppercase tracking-[0.2em]">03. Identity Matrix</h3>
+                            <h3 className="text-xl font-black text-white uppercase tracking-[0.4em] italic text-shimmer">03. Identity Matrix</h3>
                           </div>
                           
                           <div className="space-y-8">

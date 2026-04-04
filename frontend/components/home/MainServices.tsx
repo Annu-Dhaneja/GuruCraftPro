@@ -4,7 +4,7 @@ import { useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Layers } from "lucide-react";
 
 interface Service {
     title: string;
@@ -39,25 +39,30 @@ export function MainServices({ data }: MainServicesProps) {
     const opacity = useTransform(scrollYProgress, [0, 0.2, 0.9, 1], [0, 1, 1, 0]);
 
     return (
-        <section ref={containerRef} className="py-24 md:py-32 bg-zinc-950 relative overflow-hidden">
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:24px_24px] pointer-events-none" />
+        <section ref={containerRef} className="py-48 md:py-64 bg-zinc-950 relative overflow-hidden border-b border-white/5">
+            <div className="absolute inset-0 neural-mesh opacity-10 pointer-events-none" />
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1000px] h-[500px] bg-indigo-500/5 rounded-full blur-[150px] pointer-events-none" />
 
             <div className="container mx-auto px-4 md:px-6 relative z-10">
                 <motion.div
-                    initial={{ opacity: 0, y: 20 }}
+                    initial={{ opacity: 0, y: 30 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
-                    transition={{ duration: 0.8 }}
-                    className="flex flex-col md:flex-row justify-between items-end mb-16 gap-6"
+                    transition={{ duration: 1, ease: "easeOut" }}
+                    className="flex flex-col md:flex-row justify-between items-end mb-32 gap-10"
                 >
-                    <div className="max-w-3xl">
-                        <h2 className="text-5xl md:text-8xl font-black tracking-tighter text-white mb-8 leading-[0.85] md:leading-[0.85]">
+                    <div className="max-w-4xl">
+                        <div className="inline-flex items-center gap-3 px-6 py-2 rounded-full border border-white/10 bg-white/5 mb-10 backdrop-blur-xl">
+                            <Layers className="h-4 w-4 text-indigo-400" />
+                            <span className="text-[10px] font-black uppercase tracking-[0.4em] text-indigo-400">Core Ecosystem</span>
+                        </div>
+                        <h2 className="text-6xl md:text-[10rem] font-black tracking-tighter text-white mb-10 leading-[0.8] uppercase italic">
                             {title_prefix} <br />
-                            <span className="text-shimmer drop-shadow-[0_0_40px_rgba(139,92,246,0.2)]">
+                            <span className="text-shimmer drop-shadow-[0_0_60px_rgba(139,92,246,0.3)]">
                                 {title_target}
                             </span>
                         </h2>
-                        <p className="text-xl md:text-2xl text-zinc-400 leading-relaxed font-light max-w-2xl">
+                        <p className="text-2xl text-zinc-500 font-light italic leading-relaxed max-w-2xl border-x border-white/5 px-10 py-4">
                             {subtitle}
                         </p>
                     </div>

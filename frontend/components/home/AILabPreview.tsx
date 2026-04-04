@@ -27,11 +27,12 @@ export function AILabPreview({ data }: { data?: any }) {
     };
 
     return (
-        <section className="py-32 md:py-48 bg-zinc-950 relative overflow-hidden">
-            {/* Massive Background Accents */}
+        <section className="py-48 md:py-64 bg-zinc-950 relative overflow-hidden border-b border-white/5">
+            {/* Cinematic Background */}
             <div className="absolute inset-0 z-0">
                 <div className="absolute top-1/4 left-1/4 w-full h-full bg-indigo-500/10 blur-[150px] rounded-full" />
                 <div className="absolute bottom-1/4 right-1/4 w-full h-full bg-purple-500/10 blur-[150px] rounded-full" />
+                <div className="absolute inset-0 neural-mesh opacity-10" />
             </div>
 
             <div className="container mx-auto px-4 md:px-6 relative z-10">
@@ -39,25 +40,25 @@ export function AILabPreview({ data }: { data?: any }) {
 
                     {/* Text Content */}
                     <div className="flex flex-col gap-10 order-2 lg:order-1">
-                        <div className="inline-flex items-center gap-3 px-6 py-2 rounded-full border border-indigo-500/20 bg-indigo-500/5 backdrop-blur-md">
+                        <div className="inline-flex items-center gap-3 px-6 py-2 rounded-full border border-white/10 bg-white/5 backdrop-blur-xl mb-4">
                             <Wand2 className="h-6 w-6 text-indigo-400 animate-pulse" />
-                            <span className="text-sm font-black text-indigo-400 uppercase tracking-[0.2em]">Elite Design Lab</span>
+                            <span className="text-[10px] font-black text-indigo-400 uppercase tracking-[0.4em]">Elite Design Lab</span>
                         </div>
-                        <h2 className="text-6xl md:text-8xl font-black tracking-tighter leading-[0.85] text-white">
+                        <h2 className="text-6xl md:text-9xl font-black tracking-tighter leading-[0.85] text-white uppercase italic text-shimmer">
                             {title_prefix} <br />
-                            <span className="text-shimmer drop-shadow-[0_0_50px_rgba(139,92,246,0.3)]">
+                            <span className="drop-shadow-[0_0_50px_rgba(139,92,246,0.3)]">
                                 {title_highlight}
                             </span>
                         </h2>
-                        <p className="text-xl md:text-2xl text-zinc-400 font-light leading-relaxed max-w-2xl">
+                        <p className="text-2xl text-zinc-500 font-light italic leading-relaxed max-w-2xl border-x border-white/5 px-10 py-4">
                             {description}
                         </p>
 
-                        <div className="flex flex-col sm:flex-row gap-6">
-                            <Button size="lg" asChild className="h-20 px-12 text-xl bg-white text-zinc-950 hover:bg-zinc-200 rounded-[2rem] font-black shadow-2xl transition-all hover:scale-105">
+                        <div className="flex flex-col sm:flex-row gap-10 mt-6">
+                            <Button size="lg" asChild className="h-24 px-16 text-2xl bg-white text-zinc-950 hover:bg-indigo-600 hover:text-white rounded-[2rem] font-black shadow-2xl transition-all uppercase italic">
                                 <Link href={primary_button_link}>{primary_button_text}</Link>
                             </Button>
-                            <Button size="lg" variant="outline" asChild className="h-20 px-12 text-xl border-zinc-800 text-white hover:bg-white/5 rounded-[2rem] font-black transition-all">
+                            <Button size="lg" variant="outline" asChild className="h-24 px-12 text-2xl border-white/10 text-white hover:bg-white/5 rounded-[2rem] font-black transition-all uppercase italic">
                                 <Link href={secondary_button_link}>{secondary_button_text}</Link>
                             </Button>
                         </div>

@@ -29,27 +29,29 @@ const results = [
 
 export function SevenDayTrial() {
     return (
-        <section className="py-32 md:py-48 bg-white dark:bg-black relative overflow-hidden">
-            {/* Background Text / Branding */}
-            <div className="absolute top-0 left-0 w-full h-full flex items-center justify-center pointer-events-none opacity-[0.02] dark:opacity-[0.05] z-0">
-                <span className="text-[30vw] font-black leading-none uppercase select-none">SPRINT</span>
+        <section className="py-48 md:py-64 bg-zinc-950 relative overflow-hidden border-b border-white/5">
+            {/* Cinematic Background */}
+            <div className="absolute inset-0 z-0">
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full bg-indigo-500/5 blur-[150px] rounded-full pointer-events-none" />
+                <div className="absolute inset-0 neural-mesh opacity-10 pointer-events-none" />
+                <span className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[35vw] font-black leading-none uppercase select-none opacity-[0.03] text-white">SPRINT</span>
             </div>
 
             <div className="container mx-auto px-4 md:px-6 relative z-10">
-                <div className="text-center max-w-4xl mx-auto mb-32">
+                <div className="text-center max-w-5xl mx-auto mb-32">
                     <motion.div
                         initial={{ opacity: 0, scale: 0.9 }}
                         whileInView={{ opacity: 1, scale: 1 }}
-                        className="inline-flex items-center gap-3 px-6 py-2 rounded-full bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 mb-10"
+                        className="inline-flex items-center gap-3 px-6 py-2 rounded-full border border-white/10 bg-white/5 mb-10 backdrop-blur-xl"
                     >
                         <Zap className="h-5 w-5 text-indigo-500 fill-indigo-500" />
-                        <span className="text-xs font-black uppercase tracking-[0.3em] text-zinc-600 dark:text-zinc-400">Rapid Elite Execution</span>
+                        <span className="text-[10px] font-black uppercase tracking-[0.4em] text-indigo-400">Rapid Elite Execution</span>
                     </motion.div>
-                    <h2 className="text-6xl md:text-9xl font-black tracking-tighter mb-10 leading-[0.85] text-zinc-950 dark:text-white uppercase italic">
+                    <h2 className="text-6xl md:text-[10rem] font-black tracking-tighter mb-10 leading-[0.8] text-white uppercase italic text-shimmer">
                         The 7-Day <br />
-                        <span className="text-shimmer">Design Trial</span>
+                        <span className="drop-shadow-[0_0_50px_rgba(139,92,246,0.3)]">Design Trial</span>
                     </h2>
-                    <p className="text-xl md:text-3xl text-zinc-500 dark:text-zinc-400 font-light leading-relaxed">
+                    <p className="text-2xl text-zinc-500 font-light italic leading-relaxed max-w-3xl mx-auto border-x border-white/5 px-10 py-4">
                         Experience our highest-tier service in a condensed timeframe. From blank canvas to market-ready masterpiece in exactly 168 hours.
                     </p>
                 </div>
