@@ -1,6 +1,7 @@
 # Virtual Try – Gurucraftpro
 
-Virtual Try – Gurucraftpro is a premium AI-powered design platform with Virtual Try-On capability.  
+Virtual Try – Gurucraftpro is a premium AI-powered design platform with Virtual Try-On capability.
+
 The project combines a modern Next.js frontend and a scalable FastAPI backend for high-performance AI experiences.
 
 ---
@@ -23,106 +24,103 @@ The project combines a modern Next.js frontend and a scalable FastAPI backend fo
 
 # 📁 Project Structure
 
-virtual-try-gurucraftpro/
+```
+virtual-try-gurucraftpro
 │
-├── frontend/          # Next.js app
-│   ├── app/
-│   ├── components/
-│   ├── lib/
-│   └── public/
+├── frontend
+│   ├── app
+│   ├── components
+│   ├── lib
+│   └── public
 │
-├── backend/           # FastAPI app
+├── backend
 │   ├── main.py
-│   ├── routes/
-│   ├── services/
-│   ├── models/
-│   └── utils/
+│   ├── routes
+│   ├── services
+│   ├── models
+│   └── utils
 │
 └── README.md
+```
 
 ---
 
 # 🛠️ Installation & Setup
 
 ## Prerequisites
-Make sure you have installed:
 - Node.js >= 18
 - Python >= 3.10
 - Git
 
 ---
 
-# 1️⃣ Backend Setup (FastAPI)
+# 1️⃣ Backend Setup
 
-Go to backend folder:
-
-```bash
+```
 cd backend
 ```
 
 Create virtual environment:
 
-```bash
+```
 python -m venv venv
 ```
 
-Activate environment:
+Activate:
 
 Windows:
-```bash
+```
 venv\Scripts\activate
 ```
 
 Mac/Linux:
-```bash
+```
 source venv/bin/activate
 ```
 
 Install dependencies:
 
-```bash
+```
 pip install -r requirements.txt
 ```
 
-Run backend server:
+Run server:
 
-```bash
+```
 uvicorn main:app --reload
 ```
 
-Backend URL:
+Backend runs at:
 ```
 http://localhost:8000
 ```
 
-API Docs:
+Docs:
 ```
 http://localhost:8000/docs
 ```
 
 ---
 
-# 2️⃣ Frontend Setup (Next.js)
+# 2️⃣ Frontend Setup
 
-Go to frontend folder:
-
-```bash
+```
 cd frontend
 ```
 
 Install dependencies:
 
-```bash
+```
 npm install
 ```
 
-Run development server:
+Run:
 
-```bash
+```
 npm run dev
 ```
 
-Frontend URL:
+Frontend runs at:
 ```
 http://localhost:3000
 ```
@@ -131,14 +129,14 @@ http://localhost:3000
 
 # 🔑 Environment Variables
 
-Create .env inside backend folder:
+backend/.env
 
 ```
 NANO_BANANA_API_KEY=your_api_key_here
 CORS_ORIGINS=http://localhost:3000
 ```
 
-Create .env.local inside frontend folder:
+frontend/.env.local
 
 ```
 NEXT_PUBLIC_API_URL=http://localhost:8000
@@ -148,32 +146,23 @@ NEXT_PUBLIC_API_URL=http://localhost:8000
 
 # ✨ Features
 
-## 🎨 AI Design Lab
-AI-powered design generation and editing tools.
+### AI Design Lab
+AI-powered design generation tools.
 
-## 👕 Virtual Try-On
-Upload user image and preview:
+### Virtual Try-On
+Upload image and preview:
 - clothing
 - accessories
-- digital fashion
-- product mockups
+- mockups
 
-## 📱 Responsive Layout
-Optimized for:
-- mobile
-- tablet
-- desktop
+### Responsive UI
+Works on mobile, tablet, desktop.
 
-## 💎 Premium UI
-- glassmorphism effects
-- smooth animations
-- modern UI components
-- clean UX
+### Premium UI
+Glassmorphism, smooth animations, modern UX.
 
-## ⚡ FastAPI Backend
-- async APIs
-- scalable structure
-- optimized performance
+### FastAPI Backend
+Async endpoints and scalable structure.
 
 ---
 
@@ -181,17 +170,17 @@ Optimized for:
 
 ## Backend (Render)
 
-Build Command:
-```bash
+Build:
+```
 pip install -r requirements.txt
 ```
 
-Start Command:
-```bash
+Start:
+```
 uvicorn main:app --host 0.0.0.0 --port $PORT
 ```
 
-Environment Variables:
+Environment:
 ```
 NANO_BANANA_API_KEY=your_key
 CORS_ORIGINS=https://your-frontend-domain.vercel.app
@@ -201,24 +190,16 @@ CORS_ORIGINS=https://your-frontend-domain.vercel.app
 
 ## Frontend (Vercel)
 
-Steps:
-1. Connect GitHub repo to Vercel
-2. Add environment variable:
+Add environment variable:
 
 ```
 NEXT_PUBLIC_API_URL=https://your-render-app.onrender.com
 ```
 
-3. Deploy
-
----
-
-# 📊 Architecture Flow
-
-User → Next.js Frontend → FastAPI Backend → AI Model → Response
+Deploy normally.
 
 ---
 
 # 📄 License
 
-MIT License
+MIT
