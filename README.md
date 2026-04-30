@@ -1,4 +1,4 @@
-# Virtual Try – Gurucraftpro
+# Virtual Try – Gurucraftpro 
 
 Virtual Try – Gurucraftpro is a premium AI-powered design platform with Virtual Try-On capability.
 
@@ -191,6 +191,7 @@ CORS_ORIGINS=https://your-frontend-domain.vercel.app
 ## Frontend (Vercel)
 
 Add environment variable:
+
 
 ```
 NEXT_PUBLIC_API_URL=https://your-render-app.onrender.com
