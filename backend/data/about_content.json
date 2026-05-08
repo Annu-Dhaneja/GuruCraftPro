@@ -6,25 +6,51 @@
     "description": "Gurucraftpro blends AI-powered efficiency with human creativity to craft visuals that truly connect and communicate."
   },
   "founder": {
-    "name": "Annu Dhaneja",
-    "title": "Founder",
-    "badge": "About Gurucraftpro",
-    "main_title": "Your trusted digital creative partner",
-    "main_description": "At Gurucraftpro, we believe in delivering exceptional digital services that help businesses and individuals bring their creative visions to life. Under Annu Dhaneja's leadership, our team of expert designers and developers work tirelessly to ensure every project exceeds expectations.",
-    "image": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=1000&auto=format&fit=crop",
+    "name": "Annu Dhanjeja",
+    "title": "Founder & Creative Lead",
+    "badge": "Our Visionary",
+    "main_title": "Bridging Art & Intelligence",
+    "main_description": "Under Annu Dhanjeja's leadership, Annu Design Studio has pioneered the integration of AI-assisted workflows with traditional artistic principles, delivering high-impact visual identities for global brands.",
+    "image": "https://api.dicebear.com/7.x/avataaars/svg?seed=Annu",
     "tags": [
-      "Creative Director",
-      "Digital Strategist",
-      "Design Expert"
+      "Creative Lead",
+      "AI Strategy",
+      "Visual Artist"
     ],
     "bio": [
-      "Annu Dhaneja is the visionary founder of Gurucraftpro, dedicated to transforming creative ideas into stunning digital realities.",
-      "With years of expertise in design, branding, and digital services, Annu leads our team with passion and innovation. Her approach ensures that every project is not only efficiently delivered but also deeply rooted in human creativity, strategic intent, and quality."
+      "Annu Dhanjeja is a multidisciplinary artist and the founder of Annu Design Studio. With over a decade of experience in graphic design and video editing, she has built a studio that prioritizes clarity, beauty, and impact.",
+      "Her work explores the intersection of human intuition and generative technology, ensuring that every project maintains its 'soul' while benefiting from the speed and scalability of modern AI tools."
+    ]
+  },
+  "team": {
+    "title": "The Core Collective",
+    "subtitle": "The humans behind the machines.",
+    "members": [
+      {
+        "name": "Annu Dhanjeja",
+        "role": "Creative Lead",
+        "image": "https://api.dicebear.com/7.x/avataaars/svg?seed=Annu",
+        "skills": ["Brand Identity", "Video Production"],
+        "social": {
+          "instagram": "https://instagram.com/gurucraftpro",
+          "linkedin": "#"
+        }
+      },
+      {
+        "name": "Om Prakash",
+        "role": "Lead Developer",
+        "image": "https://api.dicebear.com/7.x/avataaars/svg?seed=Om",
+        "skills": ["Full Stack Architecture", "AI Integration"],
+        "social": {
+          "github": "https://github.com/om-prakash16",
+          "linkedin": "#"
+        }
+      }
     ]
   },
   "philosophy": {
-    "title": "Design should be smart, simple, and purposeful.",
-    "description": "Our core values guide every pixel we place and every decision we make."
+    "title": "Intelligence made visible.",
+    "description": "We believe that good design is a strategic advantage. Our core values guide every pixel we place and every decision we make."
   },
   "ai_human": {
     "title": "The Perfect Blend of Machine & Soul",

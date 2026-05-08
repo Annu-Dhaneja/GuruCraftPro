@@ -10,98 +10,140 @@
     "stats": [
       {
         "label": "Designs Delivered",
-        "value": "150+"
+        "value": "250+"
       },
       {
         "label": "Client Satisfaction",
-        "value": "98%"
+        "value": "99%"
       },
       {
         "label": "AI Turnaround",
-        "value": "24h"
+        "value": "12h"
       }
     ],
     "companies": [
       {
-        "name": "sdfhjj",
-        "logo": "https://cdn.simpleicons.org/adobe"
+        "name": "Adobe",
+        "logo": "https://cdn.simpleicons.org/adobe/white"
       },
       {
         "name": "Figma",
-        "logo": "https://cdn.simpleicons.org/figma"
+        "logo": "https://cdn.simpleicons.org/figma/white"
       },
       {
         "name": "Webflow",
-        "logo": "https://cdn.simpleicons.org/webflow"
+        "logo": "https://cdn.simpleicons.org/webflow/white"
       },
       {
         "name": "Vercel",
-        "logo": "https://cdn.simpleicons.org/vercel"
+        "logo": "https://cdn.simpleicons.org/vercel/white"
       },
       {
         "name": "Stripe",
-        "logo": "/images/uploads/b483a70b-ca1d-42d5-8ba1-16da9b6a1d36.jpeg"
+        "logo": "https://cdn.simpleicons.org/stripe/white"
       }
     ]
   },
   "service_category_rail": {
-    "title": "",
-    "categories": []
-  },
-  "virtual_dressing_room": {
-    "badge_text": "Live Demo",
-    "title": "Experience Your Vision",
-    "description": "Our AI Virtual Try-On technology allows you to see how designs look on real world items instantly.",
-    "image": "/images/generated/generated-image-2026-02-23_14-29-23.jpg",
-    "button_text": "Launch Try-On Lab",
-    "button_link": "/ai-lab/virtual-try-on"
-  },
-  "portfolio_preview": {
-    "badge_text": "Selected Works",
-    "title": "Crafted with passion,\nengineered for impact.",
-    "description": "A curated selection of our recent projects, ranging from brand identities to complex digital interfaces.",
-    "button_text": "View All Projects",
-    "button_link": "/portfolio",
-    "projects": [
+    "title": "ELITE TEMPLATES",
+    "categories": [
       {
-        "id": "logo-modern tech",
-        "title": "Fintech Rebrand",
-        "category": "Branding",
-        "image": "https://images.unsplash.com/photo-1561070791-2526d30994b5?q=80&w=1000&auto=format&fit=crop",
-        "size": "large",
-        "case_study_url": "/portfolio/logo-modern-tech",
-        "live_url": "https://example.com",
-        "colors": [
-          "#000000",
-          "#FFFFFF"
-        ]
+        "title": "Branding",
+        "href": "/services",
+        "image": "https://images.unsplash.com/photo-1561070791-2526d30994b5?q=80&w=1000",
+        "color": "from-indigo-500/80"
+      },
+      {
+        "title": "UI/UX Design",
+        "href": "/services",
+        "image": "https://images.unsplash.com/photo-1586717791821-3f44a563dc4c?q=80&w=1000",
+        "color": "from-purple-500/80"
       }
     ]
   },
-  "ai_lab_preview": {
-    "title_prefix": "Pushing the boundaries of ",
-    "title_highlight": "AI Design.",
-    "description": "Experiment with our custom AI tools for background removal, outfit try-ons, and instant generation.",
-    "primary_button_text": "Try Design Lab",
-    "primary_button_link": "/ai-lab",
-    "secondary_button_text": "Virtual Try-On",
-    "secondary_button_link": "/ai-lab/virtual-try-on"
+  "seven_day_trial": {
+    "badge": "Rapid Elite Execution",
+    "title": "The 7-Day Design Trial",
+    "description": "Experience our highest-tier service in a condensed timeframe. From blank canvas to market-ready masterpiece in exactly 168 hours.",
+    "button_text": "START YOUR TRIAL",
+    "button_link": "/services/7-day-clothing-consultation",
+    "steps": [
+      {
+        "day": "Day 01",
+        "title": "Concept & Strategy",
+        "image": "https://images.unsplash.com/photo-1542435503-956c469947f6?q=80&w=2000",
+        "desc": "Deep analysis of your brand identity and market positioning."
+      },
+      {
+        "day": "Day 04",
+        "title": "High-Fidelity Design",
+        "image": "https://images.unsplash.com/photo-1586717791821-3f44a563dc4c?q=80&w=2000",
+        "desc": "Transforming concepts into pixel-perfect, premium visuals."
+      },
+      {
+        "day": "Day 07",
+        "title": "Final Handoff",
+        "image": "https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=2000",
+        "desc": "Complete asset delivery and production-ready implementation."
+      }
+    ]
   },
   "how_it_works": {
     "title": "From idea to reality in minutes.",
     "subtitle": "A streamlined process designed for speed without compromising on creativity.",
     "steps": [
       {
-        "title": "1gg. Describe or Uplofaddf",
-        "description": "Enter a simple text prompt or upload refegffrence images to guide the AI."
+        "title": "1. Describe or Upload",
+        "description": "Enter a simple text prompt or upload reference images to guide the AI engine."
       },
       {
         "title": "2. Generate & Refine",
-        "description": "Our AI generates options instantly. Gurucraftpro refines the best ones for perfection."
+        "description": "Our AI generates options instantly. We refine the best ones to professional standards."
       },
       {
         "title": "3. Download & Launch",
         "description": "Get production-ready files in all formats. Ready to use immediately."
+      }
+    ]
+  },
+  "graphic_design_services": {
+    "badge_text": "🎨 Elite Deliverables",
+    "title": "Signature Masterpieces",
+    "description": "Professional design solutions for all your branding needs. We combine creative vision with strategic intent.",
+    "services": [
+      {
+        "title": "Logo Design",
+        "description": "Custom logo designs that represent your brand identity",
+        "price": "₹999+",
+        "image": "/images/user_provided/generated-image-2026-02-24_10-45-45 (1).jpg",
+        "link": "/portfolio?category=Logo Design"
+      },
+      {
+        "title": "Wedding Plan",
+        "description": "Bespoke wedding design and coordination services",
+        "price": "₹4999+",
+        "image": "/images/user_provided/generated-image-2026-02-24_08-35-13 (1).jpg",
+        "link": "/services/wedding-plan"
+      }
+    ]
+  },
+  "things_section": {
+    "badge": "EXPLORE",
+    "title": "Things You Should Know",
+    "subtitle": "Discover the creative capabilities and signature art that set us apart.",
+    "featured_title": "Premium Guruji AR Experience",
+    "featured_description": "Immersive 3D darshan bringing divine blessings to your home using spatial computing.",
+    "featured_link": "/guruji-darshan",
+    "items": [
+      {
+        "title": "AI Try-On",
+        "description": "Experience fashion virtually with our real-time mapping engine.",
+        "link": "/ai-lab"
+      },
+      {
+        "title": "Custom Artistry",
+        "description": "Hand-painted traditional techniques meeting modern digital tools.",
+        "link": "/services"
       }
     ]
   },

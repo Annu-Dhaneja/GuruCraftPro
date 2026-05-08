@@ -6,7 +6,25 @@ import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import Link from "next/link";
 
-const results = [
+interface TrialStep {
+    day: string;
+    title: string;
+    image: string;
+    desc: string;
+}
+
+interface SevenDayTrialProps {
+    data?: {
+        badge?: string;
+        title?: string;
+        description?: string;
+        button_text?: string;
+        button_link?: string;
+        steps?: TrialStep[];
+    };
+}
+
+const defaultSteps: TrialStep[] = [
     {
         day: "Day 01",
         title: "Concept & Strategy",
@@ -27,7 +45,14 @@ const results = [
     }
 ];
 
-export function SevenDayTrial() {
+export function SevenDayTrial({ data }: SevenDayTrialProps) {
+    const badge = data?.badge || "Rapid Elite Execution";
+    const title = data?.title || "The 7-Day Design Trial";
+    const description = data?.description || "Experience our highest-tier service in a condensed timeframe. From blank canvas to market-ready masterpiece in exactly 168 hours.";
+    const steps = data?.steps?.length ? data.steps : defaultSteps;
+    const buttonText = data?.button_text || "START YOUR TRIAL";
+    const buttonLink = data?.button_link || "/services/7-day-clothing-consultation";
+
     return (
         <section className="py-48 md:py-64 bg-zinc-950 relative overflow-hidden border-b border-white/5">
             {/* Cinematic Background */}
@@ -45,19 +70,19 @@ export function SevenDayTrial() {
                         className="inline-flex items-center gap-3 px-6 py-2 rounded-full border border-white/10 bg-white/5 mb-10 backdrop-blur-xl"
                     >
                         <Zap className="h-5 w-5 text-indigo-500 fill-indigo-500" />
-                        <span className="text-[10px] font-black uppercase tracking-[0.4em] text-indigo-400">Rapid Elite Execution</span>
+                        <span className="text-[10px] font-black uppercase tracking-[0.4em] text-indigo-400">{badge}</span>
                     </motion.div>
                     <h2 className="text-6xl md:text-[10rem] font-black tracking-tighter mb-10 leading-[0.8] text-white uppercase italic text-shimmer">
-                        The 7-Day <br />
-                        <span className="drop-shadow-[0_0_50px_rgba(139,92,246,0.3)]">Design Trial</span>
+                        {title.split(' ').slice(0, -2).join(' ')} <br />
+                        <span className="drop-shadow-[0_0_50px_rgba(139,92,246,0.3)]">{title.split(' ').slice(-2).join(' ')}</span>
                     </h2>
                     <p className="text-2xl text-zinc-500 font-light italic leading-relaxed max-w-3xl mx-auto border-x border-white/5 px-10 py-4">
-                        Experience our highest-tier service in a condensed timeframe. From blank canvas to market-ready masterpiece in exactly 168 hours.
+                        {description}
                     </p>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-10 md:gap-16">
-                    {results.map((result, i) => (
+                    {steps.map((result, i) => (
                         <motion.div
                             key={i}
                             initial={{ opacity: 0, y: 40 }}
@@ -107,8 +132,8 @@ export function SevenDayTrial() {
                         </div>
                     </div>
                     <Button size="lg" className="h-24 px-20 text-2xl bg-zinc-950 dark:bg-white text-white dark:text-black hover:scale-105 rounded-[2rem] font-black shadow-2xl transition-all" asChild>
-                        <Link href="/services/7-day-clothing-consultation">
-                            START YOUR TRIAL <ArrowRight className="ml-4 h-8 w-8" />
+                        <Link href={buttonLink}>
+                            {buttonText} <ArrowRight className="ml-4 h-8 w-8" />
                         </Link>
                     </Button>
                 </motion.div>

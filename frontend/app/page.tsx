@@ -92,7 +92,7 @@ export default async function Home() {
             <VirtualDressingRoom data={safeData.virtual_dressing_room} />
             <PortfolioPreview data={safeData.portfolio_preview} />
             <AILabPreview data={safeData.ai_lab_preview} />
-            <SevenDayTrial />
+            <SevenDayTrial data={safeData.seven_day_trial} />
 
             {safeData.how_it_works && <HowItWorks data={safeData.how_it_works} />}
             {safeData.main_services && <MainServices data={safeData.main_services} />}
