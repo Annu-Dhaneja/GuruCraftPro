@@ -422,13 +422,13 @@ def startup_db_sync() -> None:
                 "packages": [
                     {
                         "name": "Elite",
-                        "price": "Starting ₹2.5L",
+                        "price": "Starting ₹2,49,999",
                         "features": ["Day-of Coordination", "Vendor Liaison", "Guest Concierge", "Traditional Decor"],
                         "highlight": False
                     },
                     {
                         "name": "Royal",
-                        "price": "Starting ₹7.5L",
+                        "price": "Starting ₹7,49,999",
                         "features": ["Full Concept Design", "Global Sourcing", "Multi-day Management", "Luxury Transfers"],
                         "highlight": True
                     },
@@ -534,30 +534,34 @@ def startup_db_sync() -> None:
                 "badge": "ABOUT US",
                 "title_prefix": "Where Technology Meets",
                 "title_highlight": "Thoughtful Design",
-                "description": "We are on a mission to redefine the creative workflow."
+                "description": "We are a multidisciplinary studio obsessed with the intersection of art and technology. Our mission is to redefine the creative workflow using the best of human and artificial intelligence."
             },
             "founder": {
-                "name": "Annu", "title": "Founder & Creative Lead",
-                "badge": "THE VISIONARY", "main_title": "Artist. Designer. AI Explorer.",
-                "main_description": "Passionate about bridging the gap between human intuition and machine intelligence.",
-                "image": "", "tags": ["Artist", "Tech Enthusiast"], "bio": ["A decade of design excellence."]
+                "name": "Annu Dhanjeja", "title": "Founder & Creative Lead",
+                "badge": "OUR VISIONARY", "main_title": "Bridging Art & Intelligence",
+                "main_description": "Under Annu Dhanjeja's leadership, Annu Design Studio has pioneered the integration of AI-assisted workflows with traditional artistic principles.",
+                "image": "https://api.dicebear.com/7.x/avataaars/svg?seed=Annu", "tags": ["Creative Lead", "AI Strategy", "Visual Artist"], 
+                "bio": [
+                    "Annu Dhanjeja is a multidisciplinary artist and the founder of Annu Design Studio.",
+                    "Her work explores the intersection of human intuition and generative technology, ensuring every project maintains its soul."
+                ]
             },
             "team": {
-                "title": "Our Team", "subtitle": "The humans behind the machines.",
+                "title": "The Core Collective", "subtitle": "The humans behind the machines.",
                 "members": [
                     { 
                         "name": "Annu Dhanjeja", 
-                        "role": "Head / Lead Designer", 
+                        "role": "Founder & Creative Lead", 
                         "image": "https://api.dicebear.com/7.x/avataaars/svg?seed=Annu",
-                        "skills": ["Graphic Designer", "Video Editor"],
-                        "social": { "instagram": "https://instagram.com/gurucraftpro", "linkedin": "#", "behance": "#" }
+                        "skills": ["Brand Identity", "Video Production"],
+                        "social": { "instagram": "https://instagram.com/gurucraftpro", "linkedin": "#" }
                     },
                     { 
                         "name": "Om Prakash", 
                         "role": "Lead Developer", 
                         "image": "https://api.dicebear.com/7.x/avataaars/svg?seed=Om",
-                        "skills": ["Full Stack Developer", "Python Expert"],
-                        "social": { "github": "#", "linkedin": "#", "twitter": "#" }
+                        "skills": ["Full Stack Architecture", "AI Integration"],
+                        "social": { "github": "https://github.com/om-prakash16", "linkedin": "#" }
                     }
                 ]
             },
