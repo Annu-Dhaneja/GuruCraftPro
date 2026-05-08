@@ -20,12 +20,12 @@ const inter = Inter({
 });
 
 export async function generateMetadata(): Promise<Metadata> {
-  const { getApiUrl } = await import("@/lib/utils");
+  const { getApiUrl, safeFetch } = await import("@/lib/utils");
   
   try {
-    const res = await fetch(getApiUrl("/api/v1/cms/site_config"), { 
+    const res = await safeFetch(getApiUrl("/api/v1/cms/site_config"), { 
       next: { revalidate: 60 } 
-    });
+    }, 5000); // 5 second timeout for metadata
     
     if (res.ok) {
       const data = await res.json();

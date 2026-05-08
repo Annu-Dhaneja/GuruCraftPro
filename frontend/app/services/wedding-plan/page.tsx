@@ -1,14 +1,14 @@
 import type { Metadata } from "next";
 import { WeddingPlanContent } from "@/components/services/WeddingPlanContent";
 import { Footer } from "@/components/footer/Footer";
-import { getApiUrl } from "@/lib/utils";
+import { getApiUrl, safeFetch } from "@/lib/utils";
 
 export const dynamic = 'force-dynamic';
 
 
 export async function generateMetadata(): Promise<Metadata> {
     try {
-        const res = await fetch(getApiUrl("/api/v1/cms/wedding-plan"), { cache: 'no-store' });
+        const res = await safeFetch(getApiUrl("/api/v1/cms/wedding-plan"), { cache: 'no-store' }, 5000);
         if (res.ok) {
             const data = await res.json();
             if (data.meta) {
@@ -30,7 +30,7 @@ export async function generateMetadata(): Promise<Metadata> {
 export default async function WeddingPlanPage() {
     let weddingData = null;
     try {
-        const res = await fetch(getApiUrl("/api/v1/cms/wedding-plan"), { cache: 'no-store' });
+        const res = await safeFetch(getApiUrl("/api/v1/cms/wedding-plan"), { cache: 'no-store' }, 10000);
         if (res.ok) {
             weddingData = await res.json();
         }

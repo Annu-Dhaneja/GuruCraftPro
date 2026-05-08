@@ -27,7 +27,7 @@ import { BlogPreview } from "@/components/home/BlogPreview";
 import { SevenDayTrial } from "@/components/home/SevenDayTrial";
 import { FinalCTA } from "@/components/home/FinalCTA";
 import { Footer } from "@/components/footer/Footer";
-import { getApiUrl } from "@/lib/utils";
+import { getApiUrl, safeFetch } from "@/lib/utils";
 
 export const dynamic = 'force-dynamic';
 
@@ -49,12 +49,12 @@ export default async function Home() {
         const url = getApiUrl("/api/v1/cms/home");
         console.log(`[CMS] Fetching home content from: ${url}`);
         
-        const res = await fetch(url, {
+        const res = await safeFetch(url, {
             cache: 'no-store',
             headers: {
                 'Accept': 'application/json'
             }
-        });
+        }, 10000);
         
         if (res.ok) {
             const contentType = res.headers.get("content-type");

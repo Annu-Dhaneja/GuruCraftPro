@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { ServiceTemplate } from "@/components/services/ServiceTemplate";
 import { Footer } from "@/components/footer/Footer";
-import { getApiUrl } from "@/lib/utils";
+import { getApiUrl, safeFetch } from "@/lib/utils";
 import { notFound } from "next/navigation";
 
 export const dynamic = 'force-dynamic';
@@ -12,7 +12,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const formatTitle = (s: string) => (s || "Service").split("-").map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(" ");
   
   try {
-    const res = await fetch(getApiUrl(`/api/v1/cms/${slug}`), { cache: 'no-store' });
+    const res = await safeFetch(getApiUrl(`/api/v1/cms/${slug}`), { cache: 'no-store' }, 5000);
     if (res.ok) {
         const data = await res.json();
         if (data.meta?.title) {
@@ -50,12 +50,12 @@ export default async function ServicePage({ params }: { params: Promise<{ slug: 
     const url = getApiUrl(`/api/v1/cms/${slug}`);
     console.log(`[CMS] Fetching content for service: ${slug} from: ${url}`);
     
-    const res = await fetch(url, {
+    const res = await safeFetch(url, {
       cache: 'no-store',
       headers: {
         'Accept': 'application/json'
       }
-    });
+    }, 10000);
     
     if (res.ok) {
         const contentType = res.headers.get("content-type");

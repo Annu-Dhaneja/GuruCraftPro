@@ -57,3 +57,30 @@ export function unslugify(slug: string) {
     .map(word => word.charAt(0).toUpperCase() + word.slice(1))
     .join(' ');
 }
+export async function safeFetch(url: string, options: RequestInit = {}, timeout = 8000) {
+  const controller = new AbortController();
+  const id = setTimeout(() => controller.abort(), timeout);
+
+  try {
+    const response = await fetch(url, {
+      ...options,
+      signal: controller.signal,
+    });
+    clearTimeout(id);
+    return response;
+  } catch (error: any) {
+    clearTimeout(id);
+    if (error.name === 'AbortError') {
+      console.warn(`[CMS] Fetch timed out for URL: ${url} after ${timeout}ms`);
+    } else {
+      console.error(`[CMS] Fetch error for URL: ${url}:`, error.message);
+    }
+    // Return a fake "not ok" response so callers can handle it gracefully
+    return {
+      ok: false,
+      status: 408,
+      statusText: 'Request Timeout',
+      json: async () => ({})
+    } as Response;
+  }
+}

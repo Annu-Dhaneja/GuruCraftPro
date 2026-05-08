@@ -3,7 +3,7 @@ import { LearnHero } from "@/components/resources/LearnHero";
 
 export async function generateMetadata(): Promise<Metadata> {
     try {
-        const res = await fetch(getApiUrl("/api/v1/cms/resources"), { cache: 'no-store' });
+        const res = await safeFetch(getApiUrl("/api/v1/cms/resources"), { cache: 'no-store' }, 5000);
         if (res.ok) {
             const data = await res.json();
             if (data.meta) {
@@ -30,7 +30,7 @@ import { PromptLibrary } from "@/components/resources/PromptLibrary";
 import { FreeResources } from "@/components/resources/FreeResources";
 import { NewsletterCTA } from "@/components/resources/NewsletterCTA";
 import { Footer } from "@/components/footer/Footer";
-import { getApiUrl } from "@/lib/utils";
+import { getApiUrl, safeFetch } from "@/lib/utils";
 
 export const dynamic = 'force-dynamic';
 
@@ -38,9 +38,9 @@ export default async function LearnPage() {
     let resourcesData: any = {};
     
     try {
-        const res = await fetch(getApiUrl("/api/v1/cms/resources"), {
+        const res = await safeFetch(getApiUrl("/api/v1/cms/resources"), {
             cache: 'no-store'
-        });
+        }, 10000);
         if (res.ok) {
             resourcesData = await res.json();
         }

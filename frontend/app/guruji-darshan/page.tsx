@@ -7,7 +7,7 @@ export const metadata: Metadata = {
     description: "Experience the divine presence with Guruji Ke Sakshat Darshan (AR 3D View) and Premium Guruji Satsang Box.",
 };
 
-import { getApiUrl } from "@/lib/utils";
+import { getApiUrl, safeFetch } from "@/lib/utils";
 
 export const dynamic = 'force-dynamic';
 
@@ -19,12 +19,12 @@ export default async function GurujiDarshanPage() {
         const url = getApiUrl("/api/v1/cms/guruji");
         console.log(`[CMS] Fetching guruji content from: ${url}`);
         
-        const res = await fetch(url, {
+        const res = await safeFetch(url, {
             cache: 'no-store',
             headers: {
                 'Accept': 'application/json'
             }
-        });
+        }, 10000);
         
         if (res.ok) {
             const contentType = res.headers.get("content-type");

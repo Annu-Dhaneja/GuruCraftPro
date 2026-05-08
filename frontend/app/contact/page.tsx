@@ -12,7 +12,7 @@ import { ContactProcess } from "@/components/contact/ContactProcess";
 import { ContactFAQ } from "@/components/contact/ContactFAQ";
 import { ContactCTA } from "@/components/contact/ContactCTA";
 import { Footer } from "@/components/footer/Footer";
-import { getApiUrl } from "@/lib/utils";
+import { getApiUrl, safeFetch } from "@/lib/utils";
 
 export const dynamic = 'force-dynamic';
 
@@ -24,12 +24,12 @@ export default async function ContactPage() {
         const url = getApiUrl("/api/v1/cms/contact");
         console.log(`[CMS] Fetching contact content from: ${url}`);
         
-        const res = await fetch(url, {
+        const res = await safeFetch(url, {
             cache: 'no-store',
             headers: {
                 'Accept': 'application/json'
             }
-        });
+        }, 10000);
         
         if (res.ok) {
             const contentType = res.headers.get("content-type");

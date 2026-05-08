@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { FAQHero } from "@/components/faq/FAQHero";
 import { FAQAccordion } from "@/components/faq/FAQAccordion";
 import { Footer } from "@/components/footer/Footer";
-import { getApiUrl } from "@/lib/utils";
+import { getApiUrl, safeFetch } from "@/lib/utils";
 
 export const metadata: Metadata = {
     title: "FAQ | Annu Design Studio",
@@ -19,12 +19,12 @@ export default async function FAQPage() {
         const url = getApiUrl("/api/v1/cms/faq");
         console.log(`[CMS] Fetching FAQ content from: ${url}`);
         
-        const res = await fetch(url, {
+        const res = await safeFetch(url, {
             cache: 'no-store',
             headers: {
                 'Accept': 'application/json'
             }
-        });
+        }, 10000);
         
         if (res.ok) {
             const contentType = res.headers.get("content-type");

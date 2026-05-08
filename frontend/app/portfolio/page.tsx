@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { PortfolioLayout } from "@/components/portfolio/PortfolioLayout";
-import { getApiUrl } from "@/lib/utils";
+import { getApiUrl, safeFetch } from "@/lib/utils";
 
 export const metadata: Metadata = {
     title: "Portfolio | Annu Design Studio",
@@ -12,7 +12,7 @@ export const dynamic = 'force-dynamic';
 async function getPortfolioData() {
     try {
         const url = getApiUrl("/api/v1/cms/portfolio");
-        const res = await fetch(url, { cache: 'no-store' });
+        const res = await safeFetch(url, { cache: 'no-store' }, 10000);
         if (res.ok) return await res.json();
     } catch (error) {
         console.error("Failed to fetch portfolio data:", error);
