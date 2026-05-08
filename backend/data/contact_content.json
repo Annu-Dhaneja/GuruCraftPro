@@ -1,0 +1,26 @@
+{
+  "hero": {
+    "title": "Let's Build Something Exceptional",
+    "description": "Ready to transform your vision into a digital masterpiece? Our team is available for custom commissions and strategic partnerships."
+  },
+  "alternatives": {
+    "title": "Prefer a direct connection?",
+    "email": "hello@gurucraftpro.com",
+    "phone": "+91 8527837527",
+    "booking_link": "https://calendly.com/gurucraftpro",
+    "whatsapp_link": "https://wa.me/918527837527"
+  },
+  "locations": [
+    {
+      "city": "Digital First",
+      "address": "Global Operations • Based in India",
+      "timezone": "IST (UTC+5:30)"
+    }
+  ],
+  "social_links": {
+    "instagram": "https://instagram.com/gurucraftpro",
+    "linkedin": "https://linkedin.com/in/gurucraftpro",
+    "twitter": "https://twitter.com/gurucraftpro",
+    "github": "https://github.com/om-prakash16"
+  }
+}

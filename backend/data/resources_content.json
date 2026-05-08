@@ -1,0 +1,49 @@
+{
+  "hero": {
+    "title": "Elite Design Resources",
+    "description": "A curated collection of tutorials, premium UI kits, and advanced AI prompt libraries to accelerate your creative workflow."
+  },
+  "categories": [
+    "All Resources",
+    "Design Tutorials",
+    "AI Prompting",
+    "Free UI Kits",
+    "Branding Guides"
+  ],
+  "tutorials": [
+    {
+      "title": "Mastering Auto-Layout in Figma",
+      "category": "Design Tutorials",
+      "duration": "15 mins",
+      "image": "https://images.unsplash.com/photo-1586717791821-3f44a563dc4c?q=80&w=1000"
+    },
+    {
+      "title": "Advanced Midjourney V6 Parameters",
+      "category": "AI Prompting",
+      "duration": "22 mins",
+      "image": "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=1000"
+    },
+    {
+      "title": "Color Theory for Luxury Brands",
+      "category": "Branding Guides",
+      "duration": "10 mins",
+      "image": "https://images.unsplash.com/photo-1550684848-fac1c5b4e853?q=80&w=1000"
+    }
+  ],
+  "prompts": [
+    {
+      "id": 1,
+      "title": "Hyper-Realistic Streetwear Mockup",
+      "text": "Cyberpunk aesthetic, cinematic lighting, 8k resolution, raw style, fashion photography...",
+      "style": "Fashion",
+      "image": "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?q=80&w=1000"
+    },
+    {
+      "id": 2,
+      "title": "Minimalist SaaS Landing Page",
+      "text": "Clean UI, glassmorphism, pastel gradients, high-end typography, Figma style...",
+      "style": "Web Design",
+      "image": "https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=1000"
+    }
+  ]
+}
