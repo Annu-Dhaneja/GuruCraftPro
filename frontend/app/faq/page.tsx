@@ -24,7 +24,7 @@ export default async function FAQPage() {
             headers: {
                 'Accept': 'application/json'
             }
-        }, 10000);
+        }, 8000);
         
         if (res.ok) {
             const contentType = res.headers.get("content-type");

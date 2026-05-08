@@ -30,7 +30,7 @@ export async function generateMetadata(): Promise<Metadata> {
 export default async function WeddingPlanPage() {
     let weddingData = null;
     try {
-        const res = await safeFetch(getApiUrl("/api/v1/cms/wedding-plan"), { cache: 'no-store' }, 10000);
+        const res = await safeFetch(getApiUrl("/api/v1/cms/wedding-plan"), { cache: 'no-store' }, 8000);
         if (res.ok) {
             weddingData = await res.json();
         }

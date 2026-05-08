@@ -12,7 +12,7 @@ export const dynamic = 'force-dynamic';
 async function getPortfolioData() {
     try {
         const url = getApiUrl("/api/v1/cms/portfolio");
-        const res = await safeFetch(url, { cache: 'no-store' }, 10000);
+        const res = await safeFetch(url, { cache: 'no-store' }, 8000);
         if (res.ok) return await res.json();
     } catch (error) {
         console.error("Failed to fetch portfolio data:", error);

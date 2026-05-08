@@ -40,7 +40,7 @@ export default async function LearnPage() {
     try {
         const res = await safeFetch(getApiUrl("/api/v1/cms/resources"), {
             cache: 'no-store'
-        }, 10000);
+        }, 8000);
         if (res.ok) {
             resourcesData = await res.json();
         }
