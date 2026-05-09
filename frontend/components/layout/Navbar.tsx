@@ -34,17 +34,17 @@ export function Navbar() {
     return (
         <header
             className={cn(
-                "fixed top-0 left-0 right-0 z-50 transition-all duration-300 ease-in-out border-b border-transparent",
+                "fixed top-0 left-0 right-0 z-50 transition-all duration-500 ease-in-out border-b",
                 scrolled
-                    ? "bg-background/80 backdrop-blur-md border-border shadow-sm py-2"
-                    : "bg-transparent py-4"
+                    ? "bg-background/70 backdrop-blur-xl border-border/50 py-3 shadow-sm"
+                    : "bg-transparent py-5 border-transparent"
             )}
         >
             <div className="container mx-auto px-4 md:px-6 flex items-center justify-between">
                 {/* Logo / Brand */}
                 <Link href="/" className="flex items-center gap-2 z-50 group">
                     {config?.brand?.logo_url ? (
-                        <div className="relative h-14 w-48 md:h-16 md:w-56 transition-transform group-hover:scale-105">
+                        <div className="relative h-10 w-40 md:h-12 md:w-48 transition-transform group-hover:scale-[1.02]">
                             {/* If it's the default logo, it has a dark/light version. Otherwise, just show the uploaded image as-is. */}
                             {typeof config.brand.logo_url === 'string' && config.brand.logo_url.includes('dark-v4.svg') ? (
                                 <>

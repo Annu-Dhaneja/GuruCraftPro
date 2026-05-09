@@ -37,30 +37,27 @@ export function Hero({ data }: HeroProps) {
             <div className="container px-4 md:px-6 relative z-10 flex flex-col items-center text-center mx-auto">
 
                 <motion.div
-                    initial={{ opacity: 0, scale: 0.9 }}
-                    animate={{ opacity: 1, scale: 1 }}
+                    initial={{ opacity: 0, y: -20 }}
+                    animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.5 }}
-                    className="inline-flex items-center gap-3 rounded-full border border-white/10 bg-white/5 backdrop-blur-xl px-5 py-2 text-sm font-bold text-primary mb-10 ring-1 ring-white/20 shadow-[0_0_20px_rgba(255,255,255,0.05)]"
+                    className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 backdrop-blur-md px-4 py-1.5 text-xs font-medium text-indigo-300 mb-8 tracking-wider uppercase shadow-inner"
                 >
-                    <div className="w-2 h-2 rounded-full bg-primary animate-ping" />
-                    <span className="tracking-widest uppercase">{badge}</span>
+                    <div className="w-1.5 h-1.5 rounded-full bg-indigo-500 animate-pulse" />
+                    <span>{badge}</span>
                 </motion.div>
 
                 {/* Headline */}
                 <motion.h1
-                    initial={{ opacity: 0, y: 30 }}
+                    initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.8, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-                    className="text-6xl md:text-8xl lg:text-9xl font-black tracking-tighter mb-10 leading-[0.9] md:leading-[0.85] text-white"
+                    className="text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight mb-8 leading-[1.1] text-white max-w-5xl"
                 >
                     {headlinePrefix}
                     {headlineHighlight ? (
-                        <>
-                            {" "}
-                            <span className="text-shimmer drop-shadow-[0_0_30px_rgba(99,102,241,0.3)]">
-                                {headlineHighlight}
-                            </span>
-                        </>
+                        <span className="text-shimmer bg-clip-text text-transparent bg-gradient-to-r from-indigo-400 via-purple-400 to-indigo-400">
+                            {" "}{headlineHighlight}
+                        </span>
                     ) : null}
                     {headlineSuffix ? ` ${headlineSuffix}` : null}
                 </motion.h1>
@@ -70,7 +67,7 @@ export function Hero({ data }: HeroProps) {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.5, delay: 0.2 }}
-                    className="text-xl md:text-2xl text-slate-400 max-w-3xl mb-16 leading-relaxed font-light"
+                    className="text-lg md:text-xl text-slate-400 max-w-2xl mb-12 leading-relaxed font-normal"
                 >
                     {subheadline}
                 </motion.p>
@@ -80,21 +77,16 @@ export function Hero({ data }: HeroProps) {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.5, delay: 0.3 }}
-                    className="flex flex-col sm:flex-row gap-6 w-full sm:w-auto mb-20"
+                    className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto mb-20"
                 >
-                    <Button size="lg" className="rounded-2xl text-xl h-20 px-12 bg-white text-black hover:bg-slate-200 shadow-2xl transition-all hover:scale-105 font-black group" asChild>
+                    <Button size="lg" className="rounded-full text-base h-14 px-10 bg-white text-black hover:bg-white/90 shadow-lg transition-all font-semibold group" asChild>
                         <Link href="/request">
-                            Start Project <ArrowRight className="ml-3 h-6 w-6 group-hover:translate-x-2 transition-transform" />
+                            Start Project <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
                         </Link>
                     </Button>
-                    <Button size="lg" variant="outline" className="rounded-2xl text-xl h-20 px-12 border-white/10 bg-white/5 backdrop-blur-md hover:bg-white/10 text-white font-bold transition-all" asChild>
+                    <Button size="lg" variant="outline" className="rounded-full text-base h-14 px-10 border-white/10 bg-white/5 backdrop-blur-md hover:bg-white/10 text-white font-medium transition-all" asChild>
                         <Link href="/ai-lab">
-                            <Wand2 className="mr-3 h-6 w-6" /> Explore AI
-                        </Link>
-                    </Button>
-                    <Button size="lg" variant="ghost" className="rounded-2xl text-xl h-20 px-12 text-amber-600 dark:text-amber-400 hover:bg-amber-500/10 font-bold" asChild>
-                        <Link href="/guruji-darshan">
-                            Guru Ji Darshan <Sparkles className="ml-3 h-6 w-6" />
+                            <Wand2 className="mr-2 h-4 w-4" /> Explore AI
                         </Link>
                     </Button>
                 </motion.div>

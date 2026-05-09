@@ -51,6 +51,24 @@ const portfolioItems = [
     },
 ];
 
+const creativeLabItems = [
+    {
+        title: "AI Design Lab",
+        href: "/ai-lab",
+        description: "Explore the future of creativity with our AI-powered design tools.",
+    },
+    {
+        title: "Virtual Try-On",
+        href: "/ai-lab/virtual-try-on",
+        description: "Instantly see how garments look on you with AI technology.",
+    },
+    {
+        title: "Guru Ji Art Work",
+        href: "/guruji-darshan",
+        description: "Divine hand-painted and digital masterpieces for your space.",
+    },
+];
+
 export function NavLinks() {
     return (
         <NavigationMenu className="hidden lg:flex" delayDuration={0}>
@@ -64,9 +82,9 @@ export function NavLinks() {
                 </NavigationMenuItem>
 
                 <NavigationMenuItem>
-                    <NavigationMenuTrigger>Portfolio</NavigationMenuTrigger>
+                    <NavigationMenuTrigger>Expertise</NavigationMenuTrigger>
                     <NavigationMenuContent>
-                        <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] bg-popover/95 backdrop-blur-sm">
+                        <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] bg-popover/95 backdrop-blur-xl">
                             {portfolioItems.map((item) => (
                                 <ListItem
                                     key={item.title}
@@ -81,33 +99,27 @@ export function NavLinks() {
                 </NavigationMenuItem>
 
                 <NavigationMenuItem>
-                    <NavigationMenuLink asChild>
-                        <Link href="/ai-lab" className={cn(navigationMenuTriggerStyle(), "bg-gradient-to-r from-indigo-500/10 to-purple-500/10 hover:from-indigo-500/20 hover:to-purple-500/20 text-indigo-500 hover:text-indigo-600 font-medium")}>
-                            AI Design Lab
-                        </Link>
-                    </NavigationMenuLink>
-                </NavigationMenuItem>
-
-                <NavigationMenuItem>
-                    <NavigationMenuLink asChild>
-                        <Link href="/ai-lab/virtual-try-on" className={cn(navigationMenuTriggerStyle(), "bg-gradient-to-r from-pink-500/10 to-rose-500/10 hover:from-pink-500/20 hover:to-rose-500/20 text-pink-500 hover:text-pink-600 font-medium")}>
-                            Virtual Try-On
-                        </Link>
-                    </NavigationMenuLink>
-                </NavigationMenuItem>
-
-                <NavigationMenuItem>
-                    <NavigationMenuLink asChild>
-                        <Link href="/guruji-darshan" className={cn(navigationMenuTriggerStyle(), "bg-gradient-to-r from-amber-500/10 to-orange-500/10 hover:from-amber-500/20 hover:to-orange-500/20 text-orange-600 dark:text-orange-400 font-bold")}>
-                            Guru Ji Art Work
-                        </Link>
-                    </NavigationMenuLink>
+                    <NavigationMenuTrigger className="text-indigo-500 font-semibold">Creative Lab</NavigationMenuTrigger>
+                    <NavigationMenuContent>
+                        <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] lg:w-[400px] bg-popover/95 backdrop-blur-xl">
+                            {creativeLabItems.map((item) => (
+                                <ListItem
+                                    key={item.title}
+                                    title={item.title}
+                                    href={item.href}
+                                    className="hover:bg-indigo-500/5"
+                                >
+                                    {item.description}
+                                </ListItem>
+                            ))}
+                        </ul>
+                    </NavigationMenuContent>
                 </NavigationMenuItem>
 
                 <NavigationMenuItem>
                     <NavigationMenuLink asChild>
                         <Link href="/services" className={navigationMenuTriggerStyle()}>
-                            Services
+                            Pricing
                         </Link>
                     </NavigationMenuLink>
                 </NavigationMenuItem>
