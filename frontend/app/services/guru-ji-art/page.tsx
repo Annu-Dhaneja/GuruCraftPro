@@ -1,0 +1,61 @@
+import type { Metadata } from "next";
+import { GurujiArtEcommerce } from "@/components/guruji-art/GurujiArtEcommerce";
+import { Footer } from "@/components/footer/Footer";
+import { getApiUrl, safeFetch } from "@/lib/utils";
+
+export const metadata: Metadata = {
+    title: "Guruji Art & Creation | Divine Studio",
+    description: "Discover the divine artistry of Guruji. Sacred masterpieces, traditional oil paintings, and digital spiritual art collections.",
+};
+
+export const dynamic = 'force-dynamic';
+
+export default async function GurujiArtPage() {
+    let gurujiData: any = {};
+    let fetchError = false;
+    
+    try {
+        const url = getApiUrl("/api/v1/cms/guruji");
+        console.log(`[CMS] Fetching guruji content for art page from: ${url}`);
+        
+        const res = await safeFetch(url, {
+            cache: 'no-store',
+            headers: {
+                'Accept': 'application/json'
+            }
+        }, 8000);
+        
+        if (res.ok) {
+            const contentType = res.headers.get("content-type");
+            if (contentType && contentType.includes("application/json")) {
+                gurujiData = await res.json();
+                console.log(`[CMS] Successfully fetched guruji content`);
+            } else {
+                console.warn(`[CMS] Expected JSON but got ${contentType}`);
+                fetchError = true;
+            }
+        } else {
+            console.error(`[CMS] Failed to fetch guruji content: ${res.status} ${res.statusText}`);
+            fetchError = true;
+        }
+    } catch (error) {
+        console.error("Failed to fetch guruji content:", error);
+        fetchError = true;
+    }
+
+    // Default structure for sub-components to prevent crashes
+    const safeData = gurujiData || {};
+
+    return (
+        <main className="flex min-h-screen flex-col bg-zinc-950 overflow-x-hidden w-full">
+            {fetchError && (
+                <div className="bg-yellow-500/10 border-b border-yellow-500/20 py-2 text-center text-sm text-yellow-600 dark:text-yellow-400 mt-20">
+                    Running in offline/fallback mode. Some sections may show default content.
+                </div>
+            )}
+            
+            <GurujiArtEcommerce data={safeData} />
+            <Footer />
+        </main>
+    );
+}
