@@ -138,6 +138,41 @@ def master_sync():
         db.commit()
         print("[SUCCESS] SSOT Settings synced.")
 
+        # 7. SEED INITIAL PRODUCTS
+        print("[PROCESS] Seeding Luxury Products...")
+        initial_products = [
+            {
+                "name": "Divine Aura Bracelet",
+                "slug": "divine-aura-bracelet",
+                "price": 2499,
+                "category": "Spiritual Art",
+                "image_url": "https://images.unsplash.com/photo-1611078838275-5fc0c75ff0d1?q=80&w=800",
+                "description": "Handcrafted sacred bracelet with divine energy."
+            },
+            {
+                "name": "Vantage Master Bundle",
+                "slug": "vantage-master-bundle",
+                "price": 9999,
+                "category": "E-commerce Assets",
+                "image_url": "https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=800",
+                "description": "Complete industrial editing and strategy suite."
+            }
+        ]
+        
+        for p_data in initial_products:
+            product = db.query(models.Product).filter(models.Product.slug == p_data["slug"]).first()
+            if not product:
+                print(f"  [SYNC] Creating product: {p_data['name']}")
+                product = models.Product(**p_data)
+                db.add(product)
+            else:
+                print(f"  [SYNC] Updating product: {p_data['name']}")
+                for k, v in p_data.items():
+                    setattr(product, k, v)
+        
+        db.commit()
+        print("[SUCCESS] Products synced.")
+
         print("--- MASTER SYNC COMPLETE ---")
 
     except Exception as e:

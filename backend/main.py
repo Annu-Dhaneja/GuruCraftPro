@@ -9,7 +9,7 @@ from core.config import settings
 from core.database import Base, engine, get_db
 from routers import (
     admin_cms, admin_contacts, ai_lab, clothing_consultation, 
-    contact, user, wardrobe, site_config, outfits
+    contact, user, wardrobe, site_config, outfits, wedding
 )
 from services.seeding_service import SeedingService
 
@@ -68,6 +68,7 @@ app.include_router(admin_contacts.router, prefix="/api/v1/admin", tags=["admin"]
 app.include_router(wardrobe.router, prefix="/api/v1/wardrobe", tags=["wardrobe"])
 app.include_router(site_config.router, prefix="/api/v1/site-config", tags=["site-config"])
 app.include_router(outfits.router, prefix="/api/v1/outfits", tags=["outfits"])
+app.include_router(wedding.router, prefix="/api/v1/wedding", tags=["wedding"])
 
 # ── Static Files ─────────────────────────────────────────────────────
 static_path = os.path.join(os.path.dirname(__file__), "static")
