@@ -9,7 +9,7 @@ import { ArrowRight, Sparkles } from "lucide-react";
 export function VirtualDressingRoom({ data }: { data?: any }) {
     const title = data?.title || "Virtual Dressing Room";
     const description = data?.description || "Upload your photo and try on outfits virtually. Our AI stylist analyzes the fit, color compatibility, and overall look.";
-    const imageUrl = data?.image || "/virtualtry.jpeg";
+    const imageUrl = data?.image || "https://images.unsplash.com/photo-1539109136881-3be0616acf4b?q=80&w=2564&auto=format&fit=crop";
     const buttonText = data?.button_text || "Try It Now";
     const buttonLink = data?.button_link || "/ai-lab/virtual-try-on";
     const badgeText = data?.badge_text || "AI-Powered Feature";
@@ -19,7 +19,7 @@ export function VirtualDressingRoom({ data }: { data?: any }) {
             {/* Background Mesh/Glow */}
             <div className="absolute inset-0 z-0 text-white">
                 <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full bg-[radial-gradient(circle_at_center,rgba(99,102,241,0.15),transparent_70%)]" />
-                <div className="absolute inset-0 opacity-[0.03] bg-[url('https://grainy-gradients.vercel.app/noise.svg')] pointer-events-none" />
+                <div className="absolute inset-0 opacity-[0.03] bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] pointer-events-none" />
                 <div className="absolute top-0 left-0 w-full h-full neural-mesh opacity-10 pointer-events-none" />
             </div>
 
@@ -38,7 +38,7 @@ export function VirtualDressingRoom({ data }: { data?: any }) {
                     <h2 className="text-6xl md:text-9xl font-black tracking-tighter mb-10 text-white leading-[0.85] uppercase italic text-shimmer">
                         {title}
                     </h2>
-                    <p className="text-2xl text-zinc-500 font-light italic leading-relaxed max-w-3xl mx-auto border-x border-white/5 px-10 py-4">
+                    <p className="text-2xl text-zinc-400 font-light italic leading-relaxed max-w-3xl mx-auto border-x border-white/5 px-10 py-4">
                         {description}
                     </p>
                 </motion.div>

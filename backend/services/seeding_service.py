@@ -116,9 +116,9 @@ class SeedingService:
                         {"label": "AI Turnaround", "value": "24h"}
                     ],
                     "companies": [
-                        {"name": "Adobe", "logo": "https://cdn.simpleicons.org/adobe/white"},
-                        {"name": "Figma", "logo": "https://cdn.simpleicons.org/figma/white"},
-                        {"name": "Stripe", "logo": "https://cdn.simpleicons.org/stripe/white"}
+                        {"name": "Adobe", "logo": "https://cdn.simpleicons.org/adobe/ffffff"},
+                        {"name": "Figma", "logo": "https://cdn.simpleicons.org/figma/ffffff"},
+                        {"name": "Stripe", "logo": "https://cdn.simpleicons.org/stripe/ffffff"}
                     ]
                 }
             },
@@ -134,9 +134,11 @@ class SeedingService:
         }
         for slug, data in pages.items():
             try:
-                if not db.query(models.Page).filter(models.Page.slug == slug).first():
+                # Always update home to ensure latest visual content
+                existing = db.query(models.Page).filter(models.Page.slug == slug).first()
+                if not existing or slug == "home":
                     cms_repository.update_page_content(db, slug, data)
-                    print(f"SeedingService: {slug} SEEDED")
+                    print(f"SeedingService: {slug} SEEDED/UPDATED")
             except Exception as e:
                 print(f"SeedingService: {slug} seed failed: {e}")
 

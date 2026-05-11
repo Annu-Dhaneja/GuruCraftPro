@@ -6,11 +6,13 @@ class Settings(BaseSettings):
     CORS_ORIGINS: list = ["*"]
     DATABASE_URL: str = "sqlite:///./sql_app.db"
     
-    # API Keys
-    # Note: NANO_BANANA_API_KEY is currently used for Google Gemini Key
-    NANO_BANANA_API_KEY: str = ""
-    NANO_BANANA_API_URL: str = "https://api.banana.dev/v1/models/try-on/predict" 
+    # AI Service Keys
+    GEMINI_API_KEY: str = ""
     OPENAI_API_KEY: str = ""
+    
+    # Virtual Try-On (Legacy/External)
+    NANO_BANANA_API_KEY: str = ""
+    NANO_BANANA_API_URL: str = "https://api.banana.dev/v1/models/try-on/predict"
 
     model_config = SettingsConfigDict(env_file=".env", extra="ignore")
 

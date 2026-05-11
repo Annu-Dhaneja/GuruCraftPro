@@ -1,15 +1,16 @@
 import type { Metadata } from "next";
-import { Outfit, Inter } from "next/font/google";
+import { Sora, Inter } from "next/font/google";
 
 // export const runtime = 'edge';
 import "./globals.css";
 import { Navbar } from "@/components/layout/Navbar";
 
 import { ThemeProvider } from "@/components/layout/ThemeProvider";
+import { MobileBottomNav } from "@/components/layout/MobileBottomNav";
 
-const outfit = Outfit({
+const sora = Sora({
   subsets: ["latin"],
-  variable: "--font-outfit",
+  variable: "--font-sora",
   display: "swap",
 });
 
@@ -34,8 +35,8 @@ export async function generateMetadata(): Promise<Metadata> {
       
       return {
         title: {
-          default: meta.title || brand.name || "GurucraftPro",
-          template: `%s | ${brand.name || "GurucraftPro"}`
+          default: meta.title || brand.name || "GuruCraft Pro",
+          template: `%s | ${brand.name || "GuruCraft Pro"}`
         },
         description: meta.description || brand.tagline || "Premium AI-Powered Design Platform",
         icons: {
@@ -48,7 +49,7 @@ export async function generateMetadata(): Promise<Metadata> {
   }
 
   return {
-    title: "GurucraftPro | AI Design Studio",
+    title: "GuruCraft Pro | AI Design Studio",
     description: "Premium AI-Powered Design Platform",
   };
 }
@@ -71,7 +72,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning className="overflow-x-hidden">
       <body
-        className={`${outfit.variable} ${inter.variable} antialiased bg-background text-foreground overflow-x-hidden w-full`}
+        className={`${sora.variable} ${inter.variable} antialiased bg-background text-foreground overflow-x-hidden w-full`}
       >
         <ThemeProvider
           attribute="class"
@@ -82,6 +83,7 @@ export default function RootLayout({
           <SiteConfigProvider>
             <Navbar />
             {children}
+            <MobileBottomNav />
             <WhatsAppButton />
           </SiteConfigProvider>
         </ThemeProvider>

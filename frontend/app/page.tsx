@@ -27,12 +27,12 @@ import { getApiUrl, safeFetch } from "@/lib/utils";
 export const dynamic = 'force-dynamic';
 
 const fallbackHomeHero = {
-  badge: "The Future of Design",
-  headline_prefix: "Design at the speed of imagination",
-  headline_highlight: "",
-  headline_suffix: ".",
+  badge: "SYSTEM ACTIVATED V4.0",
+  headline_prefix: "AI-Powered Luxury Commerce",
+  headline_highlight: "& Lifestyle Platform",
+  headline_suffix: "",
   subheadline:
-    "Combine AI-powered generation with expert human refinement to create polished brand, UI, and marketing assets faster.",
+    "Fashion AI, Wedding Planning, Spiritual Artistry, Luxury Editing & Intelligent Creative Tools in one premium ecosystem.",
 };
 
 export default async function Home() {
