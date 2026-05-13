@@ -4,16 +4,20 @@ from sqlalchemy.orm import sessionmaker
 import os
 
 # Database configuration
-# 💡 For local testing without passwords/ports, we use SQLite by default.
-# For production/remote, set the DATABASE_URL environment variable.
-SQLALCHEMY_DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///./sql_app.db")
+# We check for standard DATABASE_URL, and Vercel-specific Supabase/Postgres variables
+SQLALCHEMY_DATABASE_URL = (
+    os.getenv("DATABASE_URL") or 
+    os.getenv("VTO_POSTGRES_URL") or 
+    os.getenv("POSTGRES_URL") or 
+    "sqlite:///./sql_app.db"
+)
 
-# Handle Render's legacy 'postgres://' prefix
+# Handle legacy 'postgres://' prefix (Standard in Render/Heroku/Supabase URIs)
 if SQLALCHEMY_DATABASE_URL.startswith("postgres://"):
     SQLALCHEMY_DATABASE_URL = SQLALCHEMY_DATABASE_URL.replace("postgres://", "postgresql://", 1)
 
-# Automatic SSL enforcement for Remote Postgres (Render)
-if "render.com" in SQLALCHEMY_DATABASE_URL and "sslmode" not in SQLALCHEMY_DATABASE_URL:
+# Automatic SSL enforcement for Remote Postgres (Render/Supabase)
+if ("render.com" in SQLALCHEMY_DATABASE_URL or "supabase.co" in SQLALCHEMY_DATABASE_URL) and "sslmode" not in SQLALCHEMY_DATABASE_URL:
     delimiter = "&" if "?" in SQLALCHEMY_DATABASE_URL else "?"
     SQLALCHEMY_DATABASE_URL += f"{delimiter}sslmode=require"
 
