@@ -4,10 +4,11 @@ from sqlalchemy.orm import sessionmaker
 import os
 
 # Database configuration
-# We check for standard DATABASE_URL, and Vercel-specific Supabase/Postgres variables
+# We check for various Vercel/Supabase/Render environment variables
 SQLALCHEMY_DATABASE_URL = (
     os.getenv("DATABASE_URL") or 
     os.getenv("VTO_POSTGRES_URL") or 
+    os.getenv("VTO_POSTGRES_URL_NON_POOLING") or 
     os.getenv("POSTGRES_URL") or 
     "sqlite:///./sql_app.db"
 )
