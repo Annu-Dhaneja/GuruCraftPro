@@ -5,20 +5,33 @@ import os
 
 # Database configuration
 # We check for various Vercel/Supabase/Render environment variables
-SQLALCHEMY_DATABASE_URL = (
+# Database configuration
+raw_url = (
     os.getenv("DATABASE_URL") or 
-    os.getenv("VTO_POSTGRES_URL") or 
     os.getenv("VTO_POSTGRES_URL_NON_POOLING") or 
+    os.getenv("VTO_POSTGRES_URL") or 
     os.getenv("POSTGRES_URL") or 
     "sqlite:///./sql_app.db"
 )
 
-# Handle legacy 'postgres://' prefix (Standard in Render/Heroku/Supabase URIs)
+# Clean the URL (remove quotes, whitespace, etc. which often cause "invalid dsn" errors)
+SQLALCHEMY_DATABASE_URL = raw_url.strip().strip("'").strip('"')
+
+# Handle legacy 'postgres://' prefix and ensure it's treated as a URI
 if SQLALCHEMY_DATABASE_URL.startswith("postgres://"):
     SQLALCHEMY_DATABASE_URL = SQLALCHEMY_DATABASE_URL.replace("postgres://", "postgresql://", 1)
 
+# Debug helper (Safe: masks password)
+def get_safe_url(url):
+    if "@" in url:
+        parts = url.split("@")
+        return f"{parts[0].split(':')[0]}:***@{parts[1]}"
+    return url
+
+print(f"Connecting to Database: {get_safe_url(SQLALCHEMY_DATABASE_URL)}")
+
 # Automatic SSL enforcement for Remote Postgres (Render/Supabase)
-if ("render.com" in SQLALCHEMY_DATABASE_URL or "supabase.co" in SQLALCHEMY_DATABASE_URL) and "sslmode" not in SQLALCHEMY_DATABASE_URL:
+if ("supabase.co" in SQLALCHEMY_DATABASE_URL or "pooler.supabase.com" in SQLALCHEMY_DATABASE_URL) and "sslmode" not in SQLALCHEMY_DATABASE_URL:
     delimiter = "&" if "?" in SQLALCHEMY_DATABASE_URL else "?"
     SQLALCHEMY_DATABASE_URL += f"{delimiter}sslmode=require"
 

@@ -33,12 +33,15 @@ app = FastAPI(
 async def global_exception_handler(request: Request, exc: Exception):
     print(f"GLOBAL ERROR: {str(exc)}")
     traceback.print_exc()
+    # We check if DEBUG exists in settings, default to False if not
+    debug_mode = getattr(settings, "DEBUG", False)
+    
     return JSONResponse(
         status_code=500,
         content={
             "status": "error",
             "message": "Internal Server Error",
-            "detail": str(exc) if settings.DEBUG else "An unexpected error occurred"
+            "detail": str(exc) if debug_mode else "An unexpected error occurred"
         },
     )
 
