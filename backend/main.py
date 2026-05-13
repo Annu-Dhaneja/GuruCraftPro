@@ -69,6 +69,16 @@ def startup_event():
         print(f"Startup Event Error (General): {e}")
         traceback.print_exc()
 
+# ── Welcome Route ───────────────────────────────────────────────────
+@app.get("/")
+def read_root():
+    return {
+        "message": "Welcome to GurucraftPro API",
+        "status": "online",
+        "documentation": "/docs",
+        "health": "/health"
+    }
+
 # ── Health Check ─────────────────────────────────────────────────────
 @app.get("/health")
 def health_check():
