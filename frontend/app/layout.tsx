@@ -64,6 +64,7 @@ export const viewport = {
 import { SiteConfigProvider } from "@/components/layout/SiteConfigProvider";
 import WhatsAppButton from "@/components/ui/WhatsAppButton";
 import { CartSidebar } from "@/components/layout/CartSidebar";
+import { Toaster } from "sonner";
 
 export default function RootLayout({
   children,
@@ -84,6 +85,7 @@ export default function RootLayout({
           <SiteConfigProvider>
             <Navbar />
             {children}
+            <Toaster position="top-right" richColors closeButton />
             <CartSidebar />
             <MobileBottomNav />
             <WhatsAppButton />

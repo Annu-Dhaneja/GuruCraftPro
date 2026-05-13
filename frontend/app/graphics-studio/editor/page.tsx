@@ -304,7 +304,7 @@ export default function DesignEditorPage() {
                                                 value={[selectedLayer.fontSize || 0]} 
                                                 max={200} 
                                                 step={1} 
-                                                onValueChange={([val]) => updateLayer(selectedLayer.id, { fontSize: val })}
+                                                onValueChange={([val]: number[]) => updateLayer(selectedLayer.id, { fontSize: val })}
                                             />
                                         </div>
                                         <div className="space-y-2">

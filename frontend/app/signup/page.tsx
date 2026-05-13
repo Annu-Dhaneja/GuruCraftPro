@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { ArrowLeft, Loader2, UserPlus, Mail, Lock, User } from "lucide-react";
-import { toast } from "sonner"; // Assuming sonner is used, if not we'll use alert
+import { toast } from "sonner";
 
 export default function SignupPage() {
     const router = useRouter();
@@ -24,7 +24,7 @@ export default function SignupPage() {
         e.preventDefault();
         
         if (formData.password !== formData.confirmPassword) {
-            alert("Passwords do not match");
+            toast.error("Passwords do not match");
             return;
         }
 
@@ -50,14 +50,14 @@ export default function SignupPage() {
                 localStorage.setItem("token", data.access_token);
                 localStorage.setItem("username", formData.username);
                 
-                alert("Account created successfully!");
+                toast.success("Account created successfully!");
                 router.push("/shop"); // Redirect to shop or dashboard
             } else {
-                alert(data.detail || "Signup failed. Please try again.");
+                toast.error(data.detail || "Signup failed. Please try again.");
             }
         } catch (error) {
             console.error("Signup error:", error);
-            alert("An error occurred during signup.");
+            toast.error("An error occurred during signup.");
         } finally {
             setIsLoading(false);
         }

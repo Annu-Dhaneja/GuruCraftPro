@@ -165,7 +165,7 @@ export default function AIPhotoEditorPage() {
                                         <Slider 
                                             value={[settings.brightness]} 
                                             max={200} 
-                                            onValueChange={([v]) => setSettings({...settings, brightness: v})} 
+                                            onValueChange={([v]: number[]) => setSettings({...settings, brightness: v})} 
                                         />
                                     </div>
                                     <div className="space-y-4">
@@ -176,7 +176,7 @@ export default function AIPhotoEditorPage() {
                                         <Slider 
                                             value={[settings.contrast]} 
                                             max={200} 
-                                            onValueChange={([v]) => setSettings({...settings, contrast: v})} 
+                                            onValueChange={([v]: number[]) => setSettings({...settings, contrast: v})} 
                                         />
                                     </div>
                                 </div>
