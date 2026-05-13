@@ -72,9 +72,9 @@ export default function SignupPage() {
             } else {
                 toast.error(data.detail || "Signup failed. Please check your details.");
             }
-        } catch (error) {
-            console.error("Signup error:", error);
-            toast.error("An error occurred during account creation.");
+        } catch (error: any) {
+            console.error("Signup core error:", error);
+            toast.error(`Account creation failed: ${error.message || "Unknown Error"}`);
         } finally {
             setIsLoading(false);
         }
