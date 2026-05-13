@@ -64,7 +64,7 @@ def list_items(
     age_group: Optional[str] = None,
     style: Optional[str] = None,
     db: Session = Depends(database.get_db),
-    current_user: models.User = Depends(auth.get_current_user)
+    admin: models.User = Depends(auth.require_admin)
 ):
     query = db.query(models.ClothingPiece)
     if gender:
@@ -86,7 +86,7 @@ async def add_item(
     image: Optional[UploadFile] = File(None),
     image_url: Optional[str] = Form(None),
     db: Session = Depends(database.get_db),
-    current_user: models.User = Depends(auth.get_current_user)
+    admin: models.User = Depends(auth.require_admin)
 ):
     final_image_url = ""
     
@@ -124,7 +124,7 @@ async def add_item(
 def delete_item(
     item_id: int,
     db: Session = Depends(database.get_db),
-    current_user: models.User = Depends(auth.get_current_user)
+    admin: models.User = Depends(auth.require_admin)
 ):
     item = db.query(models.ClothingPiece).filter(models.ClothingPiece.id == item_id).first()
     if not item:

@@ -9,6 +9,8 @@ import { cn } from "@/lib/utils";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { getApiUrl } from "@/lib/utils";
+import { toast } from "sonner";
 
 // Mock Services
 const services = [
@@ -22,6 +24,14 @@ export function BookingScheduler() {
     const [selectedService, setSelectedService] = useState<string | null>(null);
     const [selectedDate, setSelectedDate] = useState<string | null>(null);
     const [selectedTime, setSelectedTime] = useState<string | null>(null);
+    const [loading, setLoading] = useState(false);
+    const [completed, setCompleted] = useState(false);
+    const [formData, setFormData] = useState({
+        firstName: "",
+        lastName: "",
+        email: "",
+        notes: ""
+    });
 
     const handleServiceSelect = (id: string) => {
         setSelectedService(id);
@@ -32,6 +42,37 @@ export function BookingScheduler() {
         setSelectedTime(time);
         setSelectedDate(date);
         setStep(3);
+    };
+
+    const handleBookingSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        setLoading(true);
+
+        const data = new FormData();
+        const serviceName = services.find(s => s.id === selectedService)?.title || selectedService;
+        data.append("name", `${formData.firstName} ${formData.lastName}`);
+        data.append("email", formData.email);
+        data.append("inquiry_type", "Booking: " + serviceName);
+        data.append("message", `Service: ${serviceName}\nDate: ${selectedDate}\nTime: ${selectedTime}\n\nNotes: ${formData.notes}`);
+        data.append("deadline", selectedDate || "");
+
+        try {
+            const res = await fetch(getApiUrl("/api/v1/contact/"), {
+                method: "POST",
+                body: data,
+            });
+
+            if (res.ok) {
+                setCompleted(true);
+                toast.success("Booking request sent! We'll confirm shortly.");
+            } else {
+                toast.error("Failed to send booking request.");
+            }
+        } catch (err) {
+            toast.error("Connection error. Please try again.");
+        } finally {
+            setLoading(false);
+        }
     };
 
     return (
@@ -156,29 +197,67 @@ export function BookingScheduler() {
                             <p className="text-muted-foreground">Enter your details to confirm your {selectedService} on {selectedDate} at {selectedTime}.</p>
                         </div>
 
-                        <form className="space-y-6 border border-border rounded-xl p-8 bg-card" onSubmit={(e) => e.preventDefault()}>
+                        <form className="space-y-6 border border-border rounded-xl p-8 bg-card" onSubmit={handleBookingSubmit}>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div className="space-y-2">
                                     <Label>First Name</Label>
-                                    <Input placeholder="John" />
+                                    <Input 
+                                        placeholder="John" 
+                                        required 
+                                        value={formData.firstName}
+                                        onChange={e => setFormData({...formData, firstName: e.target.value})}
+                                    />
                                 </div>
                                 <div className="space-y-2">
                                     <Label>Last Name</Label>
-                                    <Input placeholder="Doe" />
+                                    <Input 
+                                        placeholder="Doe" 
+                                        required 
+                                        value={formData.lastName}
+                                        onChange={e => setFormData({...formData, lastName: e.target.value})}
+                                    />
                                 </div>
                             </div>
                             <div className="space-y-2">
                                 <Label>Email Address</Label>
-                                <Input type="email" placeholder="john@company.com" />
+                                <Input 
+                                    type="email" 
+                                    placeholder="john@company.com" 
+                                    required 
+                                    value={formData.email}
+                                    onChange={e => setFormData({...formData, email: e.target.value})}
+                                />
                             </div>
                             <div className="space-y-2">
                                 <Label>Anything we should know?</Label>
-                                <Textarea placeholder="Briefly describe what you'd like to discuss..." />
+                                <Textarea 
+                                    placeholder="Briefly describe what you'd like to discuss..." 
+                                    value={formData.notes}
+                                    onChange={e => setFormData({...formData, notes: e.target.value})}
+                                />
                             </div>
-                            <Button className="w-full bg-indigo-600 hover:bg-indigo-700 h-11 text-lg">
-                                Confirm Booking
+                            <Button className="w-full bg-indigo-600 hover:bg-indigo-700 h-11 text-lg" disabled={loading}>
+                                {loading ? "Sending Request..." : "Confirm Booking"}
                             </Button>
                         </form>
+                    </motion.div>
+                )}
+                
+                {completed && (
+                     <motion.div
+                        key="success"
+                        initial={{ opacity: 0, scale: 0.95 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        className="text-center py-20"
+                    >
+                        <div className="h-20 w-20 bg-green-500/10 text-green-500 rounded-full flex items-center justify-center mx-auto mb-8">
+                            <Check className="h-10 w-10" />
+                        </div>
+                        <h2 className="text-3xl font-bold mb-4">Request Sent!</h2>
+                        <p className="text-muted-foreground text-lg mb-8 max-w-md mx-auto">
+                            We've received your booking request for {selectedDate}. Our team will review the slot and send a calendar invite to {formData.email}.
+                        </p>
+                        <Button onClick={() => window.location.reload()} variant="outline">Schedule Another</Button>
                     </motion.div>
                 )}
             </AnimatePresence>

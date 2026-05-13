@@ -8,20 +8,66 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Upload, Send, Loader2, ArrowRight, CheckCircle2 } from "lucide-react";
+import { fetchWithAuth, getApiUrl, cn } from "@/lib/utils";
+import { toast } from "sonner";
 
 export function ProjectIntakeForm() {
     const [step, setStep] = useState(1);
     const [loading, setLoading] = useState(false);
     const [completed, setCompleted] = useState(false);
+    
+    // Form State
+    const [formData, setFormData] = useState({
+        name: "",
+        email: "",
+        company: "",
+        category: "",
+        brief: "",
+        budget: "",
+        timeline: ""
+    });
+    const [file, setFile] = useState<File | null>(null);
 
-    // Mock submission handler
-    const handleSubmit = (e: React.FormEvent) => {
+    const updateField = (field: string, value: string) => {
+        setFormData(prev => ({ ...prev, [field]: value }));
+    };
+
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setLoading(true);
-        setTimeout(() => {
+        
+        try {
+            const data = new FormData();
+            data.append("name", formData.name);
+            data.append("email", formData.email);
+            data.append("company", formData.company);
+            data.append("inquiry_type", formData.category);
+            data.append("message", formData.brief);
+            data.append("budget", formData.budget);
+            data.append("deadline", formData.timeline);
+            
+            if (file) {
+                data.append("attachment", file);
+            }
+
+            const res = await fetch(getApiUrl("/api/v1/contact/"), {
+                method: "POST",
+                body: data,
+            });
+
+            if (res.ok) {
+                setCompleted(true);
+                toast.success("Request submitted successfully!");
+            } else {
+                const err = await res.json();
+                toast.error(err.detail || "Failed to submit request.");
+            }
+        } catch (error) {
+            console.error("Submission error:", error);
+            toast.error("Connection failed. Please try again.");
+        } finally {
             setLoading(false);
-            setCompleted(true);
-        }, 2000);
+        }
     };
 
     if (completed) {
@@ -65,16 +111,34 @@ export function ProjectIntakeForm() {
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <div className="space-y-2">
                                     <Label htmlFor="name">Full Name *</Label>
-                                    <Input id="name" placeholder="Jane Doe" required />
+                                    <Input 
+                                        id="name" 
+                                        placeholder="Jane Doe" 
+                                        required 
+                                        value={formData.name}
+                                        onChange={(e) => updateField("name", e.target.value)}
+                                    />
                                 </div>
                                 <div className="space-y-2">
                                     <Label htmlFor="email">Work Email *</Label>
-                                    <Input id="email" type="email" placeholder="jane@company.com" required />
+                                    <Input 
+                                        id="email" 
+                                        type="email" 
+                                        placeholder="jane@company.com" 
+                                        required 
+                                        value={formData.email}
+                                        onChange={(e) => updateField("email", e.target.value)}
+                                    />
                                 </div>
                             </div>
                             <div className="space-y-2">
                                 <Label htmlFor="company">Company / Organization</Label>
-                                <Input id="company" placeholder="Acme Inc." />
+                                <Input 
+                                    id="company" 
+                                    placeholder="Acme Inc." 
+                                    value={formData.company}
+                                    onChange={(e) => updateField("company", e.target.value)}
+                                />
                             </div>
                             <Button type="button" onClick={() => setStep(2)} className="w-full h-12">
                                 Next Step <ArrowRight className="ml-2 h-4 w-4" />
@@ -87,7 +151,11 @@ export function ProjectIntakeForm() {
                         <div className="space-y-6">
                             <div className="space-y-2">
                                 <Label htmlFor="category">Project Category *</Label>
-                                <Select required>
+                                <Select 
+                                    required 
+                                    value={formData.category} 
+                                    onValueChange={(val) => updateField("category", val)}
+                                >
                                     <SelectTrigger>
                                         <SelectValue placeholder="Select Category" />
                                     </SelectTrigger>
@@ -107,6 +175,8 @@ export function ProjectIntakeForm() {
                                     placeholder="Describe your project, goals, target audience, and any inspiration..."
                                     className="min-h-[200px]"
                                     required
+                                    value={formData.brief}
+                                    onChange={(e) => updateField("brief", e.target.value)}
                                 />
                             </div>
                             <div className="flex gap-4">
@@ -126,7 +196,10 @@ export function ProjectIntakeForm() {
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <div className="space-y-2">
                                     <Label htmlFor="budget">Estimated Budget</Label>
-                                    <Select>
+                                    <Select 
+                                        value={formData.budget}
+                                        onValueChange={(val) => updateField("budget", val)}
+                                    >
                                         <SelectTrigger>
                                             <SelectValue placeholder="Select Range" />
                                         </SelectTrigger>
@@ -140,15 +213,31 @@ export function ProjectIntakeForm() {
                                 </div>
                                 <div className="space-y-2">
                                     <Label htmlFor="timeline">Ideal Timeline</Label>
-                                    <Input id="timeline" placeholder="e.g. 4-6 weeks" />
+                                    <Input 
+                                        id="timeline" 
+                                        placeholder="e.g. 4-6 weeks" 
+                                        value={formData.timeline}
+                                        onChange={(e) => updateField("timeline", e.target.value)}
+                                    />
                                 </div>
                             </div>
 
                             <div className="space-y-2">
                                 <Label>Reference Files (Optional)</Label>
-                                <div className="border-2 border-dashed border-border rounded-xl p-8 text-center hover:bg-muted/50 transition-colors cursor-pointer">
-                                    <Upload className="h-8 w-8 mx-auto text-muted-foreground mb-3" />
-                                    <p className="text-sm font-medium">Drop files here or click to upload</p>
+                                <div 
+                                    className={cn(
+                                        "border-2 border-dashed border-border rounded-xl p-8 text-center hover:bg-muted/50 transition-colors cursor-pointer relative",
+                                        file && "border-indigo-500 bg-indigo-500/5"
+                                    )}
+                                >
+                                    <input 
+                                        type="file" 
+                                        accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
+                                        className="absolute inset-0 opacity-0 cursor-pointer" 
+                                        onChange={(e) => setFile(e.target.files?.[0] || null)}
+                                    />
+                                    <Upload className={cn("h-8 w-8 mx-auto mb-3", file ? "text-indigo-500" : "text-muted-foreground")} />
+                                    <p className="text-sm font-medium">{file ? file.name : "Drop files here or click to upload"}</p>
                                     <p className="text-xs text-muted-foreground mt-1">PDF, JPG, PNG (Max 20MB)</p>
                                 </div>
                             </div>

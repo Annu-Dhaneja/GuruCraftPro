@@ -41,11 +41,26 @@ def fix_schema():
                 print(f"Adding column '{col}' to 'users' table...")
                 try:
                     conn.execute(text(f"ALTER TABLE users ADD COLUMN {col} {col_type}"))
-                    print(f"✅ Added {col}")
+                    print(f"Added {col}")
                 except Exception as e:
-                    print(f"❌ Failed to add {col}: {e}")
+                    print(f"Failed to add {col}: {e}")
         
         conn.commit()
+
+        # 2. Fix 'contact_submissions' table
+        print("Checking 'contact_submissions' table...")
+        if "sqlite" in SQLALCHEMY_DATABASE_URL:
+            result = conn.execute(text("PRAGMA table_info(contact_submissions)"))
+            columns = [row[1] for row in result.fetchall()]
+        else:
+            result = conn.execute(text("SELECT column_name FROM information_schema.columns WHERE table_name = 'contact_submissions'"))
+            columns = [row[0] for row in result.fetchall()]
+        
+        if "attachment_url" not in columns:
+            print("Adding column 'attachment_url' to 'contact_submissions'...")
+            conn.execute(text("ALTER TABLE contact_submissions ADD COLUMN attachment_url VARCHAR"))
+            conn.commit()
+
         print("Schema fix complete.")
 
 if __name__ == "__main__":

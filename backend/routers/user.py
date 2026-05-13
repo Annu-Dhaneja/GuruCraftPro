@@ -5,7 +5,7 @@ from datetime import timedelta
 from pydantic import BaseModel
 from typing import Optional
 from core import auth, database, models
-
+from schemas.user import UserOut, UserCreate, UserUpdate
 from services.user import user_service
 
 router = APIRouter()
@@ -138,6 +138,10 @@ async def signup(
         )
 
 
-@router.get("/users")
-async def list_users(db: Session = Depends(database.get_db)):
+@router.get("/users", response_model=list[UserOut])
+async def list_users(
+    db: Session = Depends(database.get_db),
+    admin: models.User = Depends(auth.require_admin)
+):
+    """List all registered users (Admin only)."""
     return db.query(models.User).all()

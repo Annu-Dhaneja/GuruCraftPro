@@ -93,6 +93,7 @@ class ContactSubmission(Base):
     message = Column(Text)
     budget = Column(String, nullable=True)
     deadline = Column(String, nullable=True)
+    attachment_url = Column(String, nullable=True)
     created_at = Column(DateTime, default=datetime.utcnow)
 
 

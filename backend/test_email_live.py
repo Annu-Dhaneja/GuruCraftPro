@@ -9,9 +9,9 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 try:
     from dotenv import load_dotenv
     load_dotenv(os.path.join(os.path.dirname(os.path.abspath(__file__)), '.env'))
-    print("✅ .env loaded")
+    print("OK: .env loaded")
 except ImportError:
-    print("⚠️ python-dotenv not available")
+    print("Warning: python-dotenv not available")
 
 email = os.getenv("SMTP_EMAIL", "andad622@gmail.com")
 password = os.getenv("SMTP_PASSWORD", "")
@@ -25,31 +25,31 @@ print(f"Password:  {'*' * len(password)} (length={len(password)})")
 password_clean = password.replace(" ", "")
 
 try:
-    print("\n🔌 Connecting to smtp.gmail.com:587 ...")
+    print("\nConnecting to smtp.gmail.com:587 ...")
     server = smtplib.SMTP("smtp.gmail.com", 587, timeout=15)
     server.ehlo()
     server.starttls()
     server.ehlo()
-    print("🔑 Logging in ...")
+    print("Logging in ...")
     server.login(email, password_clean)
     
     # Build and send test message
     msg = MIMEMultipart()
     msg["From"] = email
     msg["To"] = receiver
-    msg["Subject"] = "✅ Email Feature Working - Virtual Try Studio"
+    msg["Subject"] = "Email Feature Working - Virtual Try Studio"
     msg.attach(MIMEText("This is a live test email from your Virtual Try Studio contact form email feature. It's working correctly!", "plain"))
     
     server.sendmail(email, receiver, msg.as_string())
     server.quit()
-    print(f"\n✅ SUCCESS! Test email sent to {receiver}")
-    print("👉 Please check your Gmail inbox (and Spam folder).")
+    print(f"\nSUCCESS! Test email sent to {receiver}")
+    print("Please check your Gmail inbox (and Spam folder).")
 except smtplib.SMTPAuthenticationError as e:
-    print(f"\n❌ AUTH FAILED: {e}")
-    print("👉 The App Password in backend/.env is wrong or expired.")
+    print(f"\nAUTH FAILED: {e}")
+    print("The App Password in backend/.env is wrong or expired.")
     print("   Please re-generate at: https://myaccount.google.com/apppasswords")
 except smtplib.SMTPConnectError as e:
-    print(f"\n❌ CONNECTION FAILED: {e}")
+    print(f"\nCONNECTION FAILED: {e}")
     print("   Network may be blocking port 587.")
 except Exception as e:
-    print(f"\n❌ UNEXPECTED ERROR: {type(e).__name__}: {e}")
+    print(f"\nUNEXPECTED ERROR: {type(e).__name__}: {e}")

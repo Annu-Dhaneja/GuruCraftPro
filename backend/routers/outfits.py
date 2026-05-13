@@ -2,8 +2,9 @@ from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy.orm import Session
 from sqlalchemy.sql import func
 from typing import List, Optional
+from core import auth
 from core.database import get_db
-from core.models import ClothingPiece
+from core.models import ClothingPiece, User
 from schemas.outfits import ClothingPiece as ClothingPieceSchema, ClothingPieceCreate
 
 router = APIRouter()
@@ -102,12 +103,19 @@ def suggest_outfits(
     ]
 
 @router.get("/", response_model=List[ClothingPieceSchema])
-def list_outfits(db: Session = Depends(get_db)):
-    """List all outfits for the admin panel."""
+def list_outfits(
+    db: Session = Depends(get_db),
+    admin: User = Depends(auth.require_admin)
+):
+    """List all outfits for the admin panel (Admin only)."""
     return db.query(ClothingPiece).order_by(ClothingPiece.created_at.desc()).all()
 
 @router.post("/", response_model=ClothingPieceSchema)
-def create_outfit(outfit: ClothingPieceCreate, db: Session = Depends(get_db)):
+def create_outfit(
+    outfit: ClothingPieceCreate, 
+    db: Session = Depends(get_db),
+    admin: User = Depends(auth.require_admin)
+):
     """Add a new outfit to the library."""
     db_outfit = ClothingPiece(**outfit.dict())
     db.add(db_outfit)
@@ -116,7 +124,12 @@ def create_outfit(outfit: ClothingPieceCreate, db: Session = Depends(get_db)):
     return db_outfit
 
 @router.put("/{outfit_id}", response_model=ClothingPieceSchema)
-def update_outfit(outfit_id: int, updates: dict, db: Session = Depends(get_db)):
+def update_outfit(
+    outfit_id: int, 
+    updates: dict, 
+    db: Session = Depends(get_db),
+    admin: User = Depends(auth.require_admin)
+):
     """Update an existing outfit."""
     db_outfit = db.query(ClothingPiece).filter(ClothingPiece.id == outfit_id).first()
     if not db_outfit:
@@ -130,7 +143,11 @@ def update_outfit(outfit_id: int, updates: dict, db: Session = Depends(get_db)):
 
 
 @router.delete("/{outfit_id}")
-def delete_outfit(outfit_id: int, db: Session = Depends(get_db)):
+def delete_outfit(
+    outfit_id: int, 
+    db: Session = Depends(get_db),
+    admin: User = Depends(auth.require_admin)
+):
     """Remove an outfit from the library."""
     db_outfit = db.query(ClothingPiece).filter(ClothingPiece.id == outfit_id).first()
     if not db_outfit:

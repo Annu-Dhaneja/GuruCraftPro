@@ -4,10 +4,13 @@ from schemas.contact import ContactResponse
 from core.database import get_db
 from core.models import ContactSubmission
 from repositories.contact import contact_repository
+import os
+import uuid
+from pathlib import Path
 
 router = APIRouter()
 
-def _send_email_background(name: str, email: str, message: str, inquiry_type: str, attachment_filename: str = None, attachment_data: bytes = None):
+def _send_email_background(name: str, email: str, message: str, inquiry_type: str, company: str = None, budget: str = None, deadline: str = None, attachment_filename: str = None, attachment_data: bytes = None):
     """Run email sending in a background task."""
     try:
         # Import here to ensure env vars are already loaded by main.py
@@ -17,6 +20,9 @@ def _send_email_background(name: str, email: str, message: str, inquiry_type: st
             email=email,
             message_body=message,
             inquiry_type=inquiry_type,
+            company=company,
+            budget=budget,
+            deadline=deadline,
             attachment_filename=attachment_filename,
             attachment_data=attachment_data
         )
@@ -46,23 +52,51 @@ async def submit_contact_form(
         inquiry_type=inquiry_type,
         message=message,
         budget=budget,
-        deadline=deadline
+        deadline=deadline,
+        attachment_url=None
     )
-    db_contact = contact_repository.create(db, new_submission)
     
     attachment_filename = None
     attachment_data = None
-    if attachment and attachment.filename:
-        attachment_filename = attachment.filename
-        attachment_data = await attachment.read()
     
-    # Use FastAPI BackgroundTasks for better life-cycle management
-    background_tasks.add_task(
-        _send_email_background,
+    if attachment and attachment.filename:
+        # Create upload directory if it doesn't exist
+        upload_dir = Path("static/uploads/contact")
+        upload_dir.mkdir(parents=True, exist_ok=True)
+        
+        # Save file to disk
+        file_extension = Path(attachment.filename).suffix
+        unique_filename = f"{uuid.uuid4()}{file_extension}"
+        file_path = upload_dir / unique_filename
+        
+        attachment_data = await attachment.read()
+        
+        # On Vercel/Serverless, the filesystem is read-only.
+        # We try to save, but if it fails, we still send the email.
+        try:
+            with open(file_path, "wb") as f:
+                f.write(attachment_data)
+            new_submission.attachment_url = f"/images/uploads/contact/{unique_filename}"
+            print(f"File saved to disk: {file_path}")
+        except Exception as e:
+            print(f"Skipping disk save (likely Vercel/Read-only): {e}")
+            new_submission.attachment_url = None
+        
+        attachment_filename = attachment.filename
+
+    db_contact = contact_repository.create(db, new_submission)
+    
+    # On Vercel, BackgroundTasks are unreliable because the function instance
+    # might be killed immediately after the response is sent.
+    # We send the email synchronously here to guarantee delivery.
+    _send_email_background(
         name, 
         email, 
         message, 
         inquiry_type, 
+        company,
+        budget,
+        deadline,
         attachment_filename, 
         attachment_data
     )

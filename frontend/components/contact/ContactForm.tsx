@@ -123,7 +123,12 @@ export function ContactForm({ data }: { data?: any }) {
                     <div className="space-y-2">
                         <Label>Attachments (Optional)</Label>
                         <div className="relative border-2 border-dashed border-border rounded-xl p-6 text-center hover:bg-muted/50 transition-colors cursor-pointer overflow-hidden group">
-                           <input type="file" name="attachment" className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" />
+                           <input 
+                               type="file" 
+                               name="attachment" 
+                               accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
+                               className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" 
+                           />
                             <Upload className="h-6 w-6 mx-auto text-muted-foreground mb-2 group-hover:text-primary transition-colors" />
                             <p className="text-sm font-medium">Click to upload or drag & drop</p>
                             <p className="text-xs text-muted-foreground">PDF, JPG, PNG (Max 10MB)</p>

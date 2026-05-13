@@ -20,6 +20,7 @@ class ContactSubmissionSchema(BaseModel):
     message: str
     budget: str | None
     deadline: str | None
+    attachment_url: str | None
     created_at: datetime
 
     class Config:

@@ -119,7 +119,10 @@ def get_post_by_slug(slug: str, db: Session = Depends(database.get_db)):
 
 
 @router.get("/media", summary="List All Uploaded Assets")
-def list_media(db: Session = Depends(database.get_db)):
+def list_media(
+    db: Session = Depends(database.get_db),
+    admin: models.User = Depends(auth.require_admin)
+):
     from core.models import Media
     return db.query(Media).order_by(Media.uploaded_at.desc()).all()
 

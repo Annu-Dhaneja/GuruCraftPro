@@ -18,22 +18,25 @@ class EmailService:
         if not self.sender_password:
             print("WARNING: SMTP_PASSWORD env var is not set! Email will fail.")
 
-    def send_contact_notification(self, name: str, email: str, message_body: str, inquiry_type: Optional[str] = None, attachment_filename: Optional[str] = None, attachment_data: Optional[bytes] = None):
+    def send_contact_notification(self, name: str, email: str, message_body: str, inquiry_type: Optional[str] = None, company: Optional[str] = None, budget: Optional[str] = None, deadline: Optional[str] = None, attachment_filename: Optional[str] = None, attachment_data: Optional[bytes] = None):
         """
         Send an email notification when a new contact form is submitted.
         """
-        subject = f"New Contact Form Submission: {name}"
+        subject = f"New Project Request: {name}"
         if inquiry_type:
             subject += f" ({inquiry_type})"
 
         body = f"""
-        New contact form submission received:
+        New project request received:
         
         Name: {name}
         Email: {email}
+        Company: {company or 'N/A'}
         Inquiry Type: {inquiry_type or 'N/A'}
+        Budget: {budget or 'Not specified'}
+        Timeline: {deadline or 'Not specified'}
         
-        Message:
+        Project Brief:
         {message_body}
         """
 
