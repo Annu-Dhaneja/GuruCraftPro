@@ -15,6 +15,19 @@ import {
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 
+const iconMap: Record<string, any> = { Shirt, Heart, Sparkles, Zap, Cpu, Layout, Palette, Wand2 };
+
+interface FeatureItem {
+    title: string;
+    description: string;
+    icon: any;
+    href: string;
+    className: string;
+    accent: string;
+    bg: string;
+    tags: string[];
+}
+
 const ecosystem = [
     {
         title: "AI Wardrobe",
@@ -78,7 +91,15 @@ const ecosystem = [
     }
 ];
 
-export function FeaturesGrid() {
+export function FeaturesGrid({ items }: { items?: any[] }) {
+    const displayItems = items || ecosystem;
+    
+    // Map icons if they are strings from CMS
+    const mappedItems = displayItems.map(item => ({
+        ...item,
+        icon: typeof item.icon === 'string' ? (iconMap[item.icon] || Layout) : item.icon
+    }));
+
     return (
         <section className="relative py-32 overflow-hidden bg-[#020617]">
             <div className="container px-4 md:px-8 mx-auto relative z-10">
@@ -113,7 +134,7 @@ export function FeaturesGrid() {
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 auto-rows-[240px]">
-                    {ecosystem.map((item, index) => (
+                    {mappedItems.map((item, index) => (
                         <motion.div
                             key={item.title}
                             initial={{ opacity: 0, y: 20 }}
@@ -135,7 +156,7 @@ export function FeaturesGrid() {
                                 
                                 <div className="mt-auto">
                                     <div className="flex gap-2 mb-3">
-                                        {item.tags.map(tag => (
+                                        {item.tags.map((tag: string) => (
                                             <span key={tag} className="text-[9px] font-black tracking-widest uppercase px-2 py-0.5 rounded-full bg-white/5 border border-white/10 text-slate-500">
                                                 {tag}
                                             </span>

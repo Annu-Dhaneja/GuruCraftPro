@@ -20,8 +20,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { cn } from "@/lib/utils";
-import { getApiUrl } from "@/lib/utils";
+import { cn, getApiUrl, fetchWithAuth } from "@/lib/utils";
 
 export default function VirtualTryOnPage() {
     const [personImage, setPersonImage] = useState<File | null>(null);
@@ -64,7 +63,7 @@ export default function VirtualTryOnPage() {
         formData.append("prompt", "Analyze style fit and aesthetic compatibility.");
 
         try {
-            const response = await fetch(getApiUrl("/api/v1/ai-lab/try-on"), {
+            const response = await fetchWithAuth("/api/v1/ai-lab/try-on", {
                 method: "POST",
                 body: formData,
             });

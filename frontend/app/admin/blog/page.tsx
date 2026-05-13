@@ -16,7 +16,7 @@ import {
   FileText
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { getApiUrl } from "@/lib/utils";
+import { getApiUrl, fetchWithAuth } from "@/lib/utils";
 
 export default function AdminBlogPage() {
   const [posts, setPosts] = useState<any[]>([]);
@@ -39,7 +39,7 @@ export default function AdminBlogPage() {
   const fetchPosts = async () => {
     setLoading(true);
     try {
-      const res = await fetch(getApiUrl("/api/v1/cms/posts"));
+      const res = await fetchWithAuth("/api/v1/cms/posts");
       const data = await res.json();
       setPosts(Array.isArray(data) ? data : []);
     } catch (err) {
@@ -69,19 +69,14 @@ export default function AdminBlogPage() {
   const submitForm = async () => {
     if (!form.title || !form.content) return alert("Title and Content are required");
     
-    const token = localStorage.getItem("token");
     const method = editingPost ? "PUT" : "POST";
-    const url = editingPost 
-      ? getApiUrl(`/api/v1/cms/posts/${editingPost.id}`)
-      : getApiUrl("/api/v1/cms/posts");
+    const path = editingPost 
+      ? `/api/v1/cms/posts/${editingPost.id}`
+      : "/api/v1/cms/posts";
 
     try {
-      const res = await fetch(url, {
+      const res = await fetchWithAuth(path, {
         method,
-        headers: { 
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${token}`
-        },
         body: JSON.stringify(form)
       });
 
@@ -96,11 +91,9 @@ export default function AdminBlogPage() {
 
   const handleDelete = async (id: number) => {
     if (!confirm("Delete this article forever?")) return;
-    const token = localStorage.getItem("token");
     try {
-      const res = await fetch(getApiUrl(`/api/v1/cms/posts/${id}`), {
-        method: "DELETE",
-        headers: { "Authorization": `Bearer ${token}` }
+      const res = await fetchWithAuth(`/api/v1/cms/posts/${id}`, {
+        method: "DELETE"
       });
       if (res.ok) fetchPosts();
     } catch (err) {

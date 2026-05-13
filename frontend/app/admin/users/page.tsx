@@ -14,7 +14,7 @@ import {
   MoreVertical
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { getApiUrl } from "@/lib/utils";
+import { getApiUrl, fetchWithAuth } from "@/lib/utils";
 
 export default function AdminUsersPage() {
   const [users, setUsers] = useState<any[]>([]);
@@ -22,11 +22,7 @@ export default function AdminUsersPage() {
 
   useEffect(() => {
     // This endpoint would need to be created in the backend
-    fetch(getApiUrl("/api/v1/auth/users"), {
-        headers: {
-            'Authorization': `Bearer ${localStorage.getItem('token')}`
-        }
-    })
+    fetchWithAuth("/api/v1/auth/users")
       .then(res => res.json())
       .then(data => {
         setUsers(Array.isArray(data) ? data : []);

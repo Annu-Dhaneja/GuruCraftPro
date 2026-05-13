@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { 
     Zap, 
@@ -18,11 +18,28 @@ import {
     Package
 } from "lucide-react";
 import Link from "next/link";
-import { cn } from "@/lib/utils";
+import { cn, getApiUrl, fetchWithAuth } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { FeaturesGrid } from "@/components/home/FeaturesGrid";
 
 export default function LandingPage() {
+    const [cmsData, setCmsData] = useState<any>(null);
+
+    useEffect(() => {
+        fetchWithAuth("/api/v1/cms/home")
+            .then(res => res.ok ? res.json() : null)
+            .then(data => setCmsData(data))
+            .catch(err => console.error("Home CMS fetch error:", err));
+    }, []);
+
+    const hero = cmsData?.hero || {
+        badge: "Intelligence Beyond Design",
+        headline_prefix: "GURU",
+        headline_highlight: "CRAFT",
+        headline_suffix: "ULTRA PRO",
+        subheadline: "The world's first AI-powered luxury ecosystem merging Elite Graphics, Divine Artistry, and Strategic Commerce into one cinematic experience."
+    };
+
     return (
         <div className="min-h-screen bg-[#020617] text-white selection:bg-primary/30">
             {/* Cinematic Global Mesh */}
@@ -59,7 +76,7 @@ export default function LandingPage() {
                         className="inline-flex items-center gap-2 px-6 py-2 rounded-full bg-white/5 border border-white/10 text-[10px] font-black tracking-[0.4em] uppercase text-primary mb-10 backdrop-blur-xl"
                     >
                         <Zap className="w-3 h-3 fill-primary" />
-                        <span>Intelligence Beyond Design</span>
+                        <span>{hero.badge}</span>
                     </motion.div>
 
                     <motion.h1 
@@ -68,8 +85,8 @@ export default function LandingPage() {
                         transition={{ delay: 0.1, duration: 0.8 }}
                         className="text-[13vw] md:text-[8vw] font-black tracking-tighter uppercase italic leading-[0.8] mb-12 mix-blend-plus-lighter"
                     >
-                        <span className="text-white block">GURU<span className="text-primary italic">CRAFT</span></span>
-                        <span className="text-shimmer bg-clip-text text-transparent bg-gradient-to-r from-primary via-amber-200 to-primary block">ULTRA PRO</span>
+                        <span className="text-white block">{hero.headline_prefix}<span className="text-primary italic">{hero.headline_highlight}</span></span>
+                        <span className="text-shimmer bg-clip-text text-transparent bg-gradient-to-r from-primary via-amber-200 to-primary block">{hero.headline_suffix}</span>
                     </motion.h1>
 
                     <motion.p 
@@ -77,9 +94,8 @@ export default function LandingPage() {
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.2, duration: 0.8 }}
                         className="text-slate-400 text-lg md:text-2xl font-light italic leading-relaxed max-w-3xl mx-auto mb-16 px-4"
-                    >
-                        The world's first AI-powered luxury ecosystem merging <span className="text-white font-bold">Elite Graphics</span>, <span className="text-white font-bold">Divine Artistry</span>, and <span className="text-white font-bold">Strategic Commerce</span> into one cinematic experience.
-                    </motion.p>
+                        dangerouslySetInnerHTML={{ __html: hero.subheadline }}
+                    />
 
                     <motion.div 
                         initial={{ opacity: 0, scale: 0.9 }}
@@ -120,7 +136,7 @@ export default function LandingPage() {
                         </h2>
                     </div>
                     
-                    <FeaturesGrid />
+                    <FeaturesGrid items={cmsData?.service_category_rail?.categories} />
                 </div>
             </section>
 

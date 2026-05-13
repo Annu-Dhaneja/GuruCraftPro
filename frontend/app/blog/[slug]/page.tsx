@@ -12,7 +12,7 @@ import {
   ChevronLeft
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { getApiUrl } from "@/lib/utils";
+import { getApiUrl, fetchWithAuth } from "@/lib/utils";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 
@@ -25,7 +25,7 @@ export default function BlogPostReaderPage() {
   useEffect(() => {
     if (!slug) return;
     
-    fetch(getApiUrl(`/api/v1/cms/posts/slug/${slug}`))
+    fetchWithAuth(`/api/v1/cms/posts/slug/${slug}`)
       .then(res => {
         if (!res.ok) throw new Error();
         return res.json();

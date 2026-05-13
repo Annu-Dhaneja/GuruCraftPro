@@ -13,7 +13,7 @@ import {
   Calendar
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { getApiUrl } from "@/lib/utils";
+import { getApiUrl, fetchWithAuth } from "@/lib/utils";
 import Link from "next/link";
 
 export default function BlogListingPage() {
@@ -21,7 +21,7 @@ export default function BlogListingPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch(getApiUrl("/api/v1/cms/posts"))
+    fetchWithAuth("/api/v1/cms/posts")
       .then(res => res.json())
       .then(data => {
         setPosts(Array.isArray(data) ? data.filter(p => p.status === 'published') : []);

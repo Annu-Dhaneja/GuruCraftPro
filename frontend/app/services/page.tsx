@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { 
   ArrowRight, 
@@ -18,9 +19,9 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import Image from "next/image";
 import { Footer } from "@/components/footer/Footer";
+import { getApiUrl, fetchWithAuth } from "@/lib/utils";
 
-export default function ServicesPage() {
-  const categories = [
+const defaultCategories = [
     {
       id: "creative",
       title: "Category A: Creative Product Post-Production",
@@ -49,6 +50,27 @@ export default function ServicesPage() {
       features: ["E-books & Blueprints", "Scaling Strategies", "Market Analysis"]
     }
   ];
+
+const iconMap: Record<string, any> = { Wand2, Monitor, BookOpen, Sparkles, Cpu, Palette };
+
+export default function ServicesPage() {
+  const [categories, setCategories] = useState(defaultCategories);
+
+  useEffect(() => {
+    fetchWithAuth("/api/v1/cms/services")
+      .then(res => res.ok ? res.json() : null)
+      .then(data => {
+        if (data?.categories && Array.isArray(data.categories)) {
+          const mapped = data.categories.map((c: any, i: number) => ({
+            ...c,
+            icon: iconMap[c.iconName] || defaultCategories[i]?.icon || Sparkles,
+            accent: c.accent || defaultCategories[i]?.accent || "from-indigo-500 to-blue-600"
+          }));
+          setCategories(mapped);
+        }
+      })
+      .catch(err => console.error("Services CMS error:", err));
+  }, []);
 
   return (
     <div className="min-h-screen bg-slate-950 text-white selection:bg-indigo-500/30 overflow-hidden relative">

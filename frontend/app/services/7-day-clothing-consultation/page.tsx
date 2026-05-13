@@ -9,7 +9,7 @@ import {
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Footer } from "@/components/footer/Footer";
-import { getApiUrl } from "@/lib/utils";
+import { getApiUrl, fetchWithAuth } from "@/lib/utils";
 
 // --- Design Tokens & Constants ---
 const STYLES = ["Formal", "Casual", "Traditional", "Fusion"];
@@ -43,7 +43,7 @@ export default function ClothingConsultationPage() {
   });
 
   useEffect(() => {
-    fetch(getApiUrl("/api/v1/cms/7-day-clothing-consultation"))
+    fetchWithAuth("/api/v1/cms/7-day-clothing-consultation")
       .then(res => res.json())
       .then(data => setCmsData(data))
       .catch(err => console.error("CMS Fetch Error:", err));
@@ -58,7 +58,7 @@ export default function ClothingConsultationPage() {
         age: form.age
       }).toString();
 
-      const res = await fetch(getApiUrl(`/api/v1/outfits/suggest?${query}`));
+      const res = await fetchWithAuth(`/api/v1/outfits/suggest?${query}`);
       if (res.ok) {
         const data = await res.json();
         setOutfits(data);

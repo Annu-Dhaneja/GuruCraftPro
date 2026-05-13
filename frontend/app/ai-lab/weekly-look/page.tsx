@@ -4,7 +4,7 @@ import { useState } from "react";
 import { Sparkles, Calendar, Loader2, Info, ChevronRight, User, Baby, GraduationCap, Briefcase, Camera, Link as LinkIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
-import { getApiUrl } from "@/lib/utils";
+import { getApiUrl, fetchWithAuth } from "@/lib/utils";
 import { Footer } from "@/components/footer/Footer";
 
 const STYLES = [
@@ -48,7 +48,7 @@ export default function WeeklyLookPage() {
         // In a full integration, we'd pass userPhotoUrl to /api/v1/wardrobe/suggest to filter based on AI try-on.
         
         try {
-            const res = await fetch(getApiUrl(`/api/v1/wardrobe/suggest?${params.toString()}`));
+            const res = await fetchWithAuth(`/api/v1/wardrobe/suggest?${params.toString()}`);
             if (res.ok) {
                 const data = await res.json();
                 if (data.items.length > 0) {

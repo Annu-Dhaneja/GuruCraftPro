@@ -17,7 +17,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
-import { getApiUrl } from "@/lib/utils";
+import { getApiUrl, fetchWithAuth } from "@/lib/utils";
 
 interface WardrobeItem {
   id: number;
@@ -43,22 +43,8 @@ export function WardrobeGrid() {
   const fetchItems = async () => {
     setLoading(true);
     try {
-      const token = localStorage.getItem("token");
-      if (!token) {
-        setLoading(false);
-        return;
-      }
-
-      let url = `${API_URL}/api/v1/wardrobe/items?`;
-      if (filter.gender) url += `gender=${filter.gender}&`;
-      if (filter.style) url += `style=${filter.style}&`;
-      if (filter.age_group) url += `age_group=${filter.age_group}&`;
-
-      const response = await fetch(url, {
-        headers: {
-          "Authorization": `Bearer ${token}`
-        }
-      });
+      const urlPath = `/api/v1/wardrobe/items?${new URLSearchParams(filter as any).toString()}`;
+      const response = await fetchWithAuth(urlPath);
 
       if (!response.ok) throw new Error("Failed to fetch wardrobe");
       const data = await response.json();

@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Save, UploadCloud } from "lucide-react";
-import { getApiUrl } from "@/lib/utils";
+import { getApiUrl, fetchWithAuth } from "@/lib/utils";
 
 /**
  * A Reusable CMS Editor component that handles fetching, saving, and image uploading
@@ -51,12 +51,8 @@ const ImageUploadField = ({ value, onChange }: { value: string, onChange: (v: st
     formData.append("file", file);
 
     try {
-      const token = localStorage.getItem("token");
-      const res = await fetch(getApiUrl("/api/v1/cms/upload-image"), {
+      const res = await fetchWithAuth("/api/v1/cms/upload-image", {
         method: "POST",
-        headers: {
-          "Authorization": `Bearer ${token}`
-        },
         body: formData,
       });
 
@@ -134,12 +130,7 @@ export function CMSEditor({
   const [status, setStatus] = useState("");
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    fetch(getApiUrl(`/api/v1/cms/${segment}`), {
-      headers: {
-        "Authorization": `Bearer ${token}`
-      }
-    })
+    fetchWithAuth(`/api/v1/cms/${segment}`)
       .then(res => {
         if (!res.ok) throw new Error(`Server returned ${res.status}`);
         return res.json();
@@ -156,15 +147,10 @@ export function CMSEditor({
   }, [segment]);
 
   const handleSave = async () => {
-    const token = localStorage.getItem("token");
     setStatus("Saving...");
     try {
-      const res = await fetch(getApiUrl(`/api/v1/cms/${segment}`), {
+      const res = await fetchWithAuth(`/api/v1/cms/${segment}`, {
         method: "PUT",
-        headers: { 
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${token}`
-        },
         body: JSON.stringify(data)
       });
 

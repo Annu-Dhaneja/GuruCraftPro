@@ -14,7 +14,7 @@ import {
   Check
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { getApiUrl } from "@/lib/utils";
+import { getApiUrl, fetchWithAuth } from "@/lib/utils";
 import { BulkUrlImportModal } from "@/components/admin/media/BulkUrlImportModal";
 import { Link as LinkIcon } from "lucide-react";
 
@@ -26,7 +26,7 @@ export default function AdminMediaPage() {
 
   const fetchMedia = () => {
     setLoading(true);
-    fetch(getApiUrl("/api/v1/cms/media"))
+    fetchWithAuth("/api/v1/cms/media")
       .then(res => res.json())
       .then(data => {
         setMedia(Array.isArray(data) ? data : []);

@@ -9,7 +9,7 @@ from core.config import settings
 from core.database import Base, engine, get_db
 from routers import (
     admin_cms, admin_contacts, ai_lab, clothing_consultation, 
-    contact, user, wardrobe, site_config, outfits, wedding
+    contact, user, wardrobe, site_config, outfits, wedding, products
 )
 from services.seeding_service import SeedingService
 from universal_schema_fix import fix_schema
@@ -102,6 +102,7 @@ app.include_router(wardrobe.router, prefix="/api/v1/wardrobe", tags=["wardrobe"]
 app.include_router(site_config.router, prefix="/api/v1/site-config", tags=["site-config"])
 app.include_router(outfits.router, prefix="/api/v1/outfits", tags=["outfits"])
 app.include_router(wedding.router, prefix="/api/v1/wedding", tags=["wedding"])
+app.include_router(products.router, prefix="/api/v1/products", tags=["products"])
 
 # ── Static Files ─────────────────────────────────────────────────────
 static_path = os.path.join(os.path.dirname(__file__), "static")

@@ -24,7 +24,7 @@ import {
     Check
 } from "lucide-react";
 import Link from "next/link";
-import { cn } from "@/lib/utils";
+import { cn, fetchWithAuth } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
 
@@ -55,7 +55,7 @@ export default function AIPhotoEditorPage() {
                              tool === 'upscale' ? '/api/v1/ai-lab/upscale' : 
                              '/api/v1/ai-lab/relight';
 
-            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'}${endpoint}`, {
+            const response = await fetchWithAuth(endpoint, {
                 method: 'POST',
                 body: formData
             });

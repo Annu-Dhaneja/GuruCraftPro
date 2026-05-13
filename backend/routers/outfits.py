@@ -115,6 +115,20 @@ def create_outfit(outfit: ClothingPieceCreate, db: Session = Depends(get_db)):
     db.refresh(db_outfit)
     return db_outfit
 
+@router.put("/{outfit_id}", response_model=ClothingPieceSchema)
+def update_outfit(outfit_id: int, updates: dict, db: Session = Depends(get_db)):
+    """Update an existing outfit."""
+    db_outfit = db.query(ClothingPiece).filter(ClothingPiece.id == outfit_id).first()
+    if not db_outfit:
+        raise HTTPException(status_code=404, detail="Outfit not found")
+    for key, value in updates.items():
+        if hasattr(db_outfit, key) and key != "id":
+            setattr(db_outfit, key, value)
+    db.commit()
+    db.refresh(db_outfit)
+    return db_outfit
+
+
 @router.delete("/{outfit_id}")
 def delete_outfit(outfit_id: int, db: Session = Depends(get_db)):
     """Remove an outfit from the library."""

@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { ArrowLeft, Save, Plus, Trash2, UploadCloud } from "lucide-react";
-import { getApiUrl } from "@/lib/utils";
+import { getApiUrl, fetchWithAuth } from "@/lib/utils";
 
 const InputLabel = ({ children }: { children: React.ReactNode }) => (
   <label className="block text-sm font-semibold text-indigo-300 mb-2 tracking-wide uppercase">{children}</label>
@@ -47,7 +47,7 @@ const ImageUploadField = ({ value, onChange }: { value: string, onChange: (v: st
     formData.append("file", file);
 
     try {
-      const res = await fetch(getApiUrl("/api/v1/cms/upload-image"), {
+      const res = await fetchWithAuth("/api/v1/cms/upload-image", {
         method: "POST",
         body: formData,
       });
@@ -128,12 +128,7 @@ export default function AdminHomePage() {
   useEffect(() => {
     setLoading(true);
     setError(null);
-    const token = localStorage.getItem("token");
-    fetch(getApiUrl("/api/v1/cms/home"), {
-      headers: {
-        "Authorization": `Bearer ${token}`
-      }
-    })
+    fetchWithAuth("/api/v1/cms/home")
       .then(res => {
         if (!res.ok) throw new Error(`Server returned ${res.status}`);
         return res.json();
@@ -150,17 +145,11 @@ export default function AdminHomePage() {
         setLoading(false);
       });
   }, []);
-
   const handleSave = async () => {
     setStatus("Saving...");
-    const token = localStorage.getItem("token");
     try {
-      const res = await fetch(getApiUrl("/api/v1/cms/home"), {
+      const res = await fetchWithAuth("/api/v1/cms/home", {
         method: "PUT",
-        headers: { 
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${token}`
-        },
         body: JSON.stringify(data)
       });
       if (res.ok) {

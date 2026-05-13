@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { getApiUrl } from "@/lib/utils";
+import { getApiUrl, fetchWithAuth } from "@/lib/utils";
 import Link from "next/link";
 
 const GENDERS = ["Male", "Female", "Unisex"];
@@ -26,16 +26,13 @@ export default function AdminWardrobePage() {
 
     const fetchItems = async () => {
         setLoading(true);
-        const token = localStorage.getItem("token");
         const query = new URLSearchParams();
         if (filters.gender && filters.gender !== "null") query.append("gender", filters.gender);
         if (filters.age && filters.age !== "null") query.append("age_group", filters.age);
         if (filters.style && filters.style !== "null") query.append("style", filters.style);
 
         try {
-            const res = await fetch(getApiUrl(`/api/v1/wardrobe/items?${query.toString()}`), {
-                headers: { "Authorization": `Bearer ${token}` }
-            });
+            const res = await fetchWithAuth(`/api/v1/wardrobe/items?${query.toString()}`);
             if (res.ok) {
                 const data = await res.json();
                 setItems(data);
@@ -52,7 +49,6 @@ export default function AdminWardrobePage() {
         if (newItem.images.length === 0 && !newItem.imageUrl) return;
 
         setUploading(true);
-        const token = localStorage.getItem("token");
         
         try {
             // 1. Process local file uploads if present
@@ -65,9 +61,8 @@ export default function AdminWardrobePage() {
                     formData.append("style", newItem.style);
                     formData.append("image", file);
 
-                    await fetch(getApiUrl("/api/v1/wardrobe/items"), {
+                    await fetchWithAuth("/api/v1/wardrobe/items", {
                         method: "POST",
-                        headers: { "Authorization": `Bearer ${token}` },
                         body: formData
                     });
                 }
@@ -82,9 +77,8 @@ export default function AdminWardrobePage() {
                 formData.append("style", newItem.style);
                 formData.append("image_url", newItem.imageUrl);
 
-                await fetch(getApiUrl("/api/v1/wardrobe/items"), {
+                await fetchWithAuth("/api/v1/wardrobe/items", {
                     method: "POST",
-                    headers: { "Authorization": `Bearer ${token}` },
                     body: formData
                 });
             }
@@ -101,11 +95,9 @@ export default function AdminWardrobePage() {
 
     const handleDelete = async (id: number) => {
         if (!confirm("Delete this clothing item?")) return;
-        const token = localStorage.getItem("token");
         try {
-            const res = await fetch(getApiUrl(`/api/v1/wardrobe/items/${id}`), {
-                method: "DELETE",
-                headers: { "Authorization": `Bearer ${token}` }
+            const res = await fetchWithAuth(`/api/v1/wardrobe/items/${id}`, {
+                method: "DELETE"
             });
             if (res.ok) fetchItems();
         } catch (e) {

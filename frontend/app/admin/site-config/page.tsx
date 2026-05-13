@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Save, Plus, Trash2 } from "lucide-react";
-import { getApiUrl } from "@/lib/utils";
+import { getApiUrl, fetchWithAuth } from "@/lib/utils";
 
 const InputLabel = ({ children }: { children: React.ReactNode }) => (
   <label className="block text-sm font-semibold text-indigo-300 mb-2 tracking-wide uppercase">{children}</label>
@@ -37,10 +37,7 @@ export default function SiteConfigAdmin() {
 
   const fetchData = async () => {
     try {
-      const token = localStorage.getItem("token");
-      const res = await fetch(getApiUrl("/api/v1/cms/site_config"), {
-        headers: { "Authorization": `Bearer ${token}` }
-      });
+      const res = await fetchWithAuth("/api/v1/cms/site_config");
       if (!res.ok) throw new Error("Failed to fetch site config data");
       const json = await res.json();
       
@@ -64,13 +61,8 @@ export default function SiteConfigAdmin() {
     setSaving(true);
     setError(null);
     try {
-      const token = localStorage.getItem("token");
-      const res = await fetch(getApiUrl("/api/v1/cms/site_config"), {
+      const res = await fetchWithAuth("/api/v1/cms/site_config", {
         method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${token}`
-        },
         body: JSON.stringify(data)
       });
       if (!res.ok) throw new Error("Failed to save changes");

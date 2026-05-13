@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Footer } from "@/components/footer/Footer";
-import { getApiUrl } from "@/lib/utils";
+import { getApiUrl, fetchWithAuth } from "@/lib/utils";
 
 export default function StickerGeneratorPage() {
     const [prompt, setPrompt] = useState("");
@@ -25,9 +25,8 @@ export default function StickerGeneratorPage() {
         setResultImage(null);
 
         try {
-            const response = await fetch(getApiUrl("/api/v1/ai-lab/generate-sticker"), {
+            const response = await fetchWithAuth("/api/v1/ai-lab/generate-sticker", {
                 method: "POST",
-                headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ prompt }),
             });
 

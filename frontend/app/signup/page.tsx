@@ -19,7 +19,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
-import { cn } from "@/lib/utils";
+import { cn, fetchWithAuth } from "@/lib/utils";
 
 export default function SignupPage() {
     const router = useRouter();
@@ -43,10 +43,8 @@ export default function SignupPage() {
         setIsLoading(true);
 
         try {
-            const { getApiUrl } = await import("@/lib/utils");
-            const response = await fetch(getApiUrl("/api/v1/auth/signup"), {
+            const response = await fetchWithAuth("/api/v1/auth/signup", {
                 method: "POST",
-                headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
                     username: formData.username,
                     email: formData.email,

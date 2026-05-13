@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { getApiUrl } from "@/lib/utils";
+import { getApiUrl, fetchWithAuth } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Loader2, Mail, Building2, Calendar, MessageSquare, Clock } from "lucide-react";
 
@@ -24,25 +24,14 @@ export default function ContactsAdminPage() {
 
   useEffect(() => {
     const fetchSubmissions = async () => {
-      const token = localStorage.getItem("token");
-      if (!token) {
-        window.location.href = "/login";
-        return;
-      }
-
       try {
-        const res = await fetch(getApiUrl("/api/v1/admin/submissions"), {
-          headers: {
-            "Authorization": `Bearer ${token}`
-          }
-        });
+        const res = await fetchWithAuth("/api/v1/admin/submissions");
 
         if (res.ok) {
           const data = await res.json();
           setSubmissions(data);
         } else {
           if (res.status === 401) {
-            localStorage.removeItem("token");
             window.location.href = "/login";
           }
           setError("Failed to load submissions.");

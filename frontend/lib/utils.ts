@@ -26,20 +26,20 @@ export function getApiUrl(path: string = "") {
 
   return cleanPath ? `${cleanBase}/${cleanPath}` : cleanBase;
 }
+
 export function slugify(text: string) {
   return text
     .toString()
     .toLowerCase()
     .trim()
-    .replace(/\s+/g, '-')     // Replace spaces with -
-    .replace(/[^\w-]+/g, '')     // Remove all non-word chars
-    .replace(/--+/g, '-')       // Replace multiple - with single -
-    .replace(/^-+/, '')          // Trim - from start of text
-    .replace(/-+$/, '');         // Trim - from end of text
+    .replace(/\s+/g, '-')
+    .replace(/[^\w-]+/g, '')
+    .replace(/--+/g, '-')
+    .replace(/^-+/, '')
+    .replace(/-+$/, '');
 }
 
 export function unslugify(slug: string) {
-  // Special cases for exact matches provided by user
   const specialCases: Record<string, string> = {
     "guru-ji-art": "GURU JI ART",
     "vantage-ecom": "VANTAGE ECOM",
@@ -56,6 +56,7 @@ export function unslugify(slug: string) {
     .map(word => word.charAt(0).toUpperCase() + word.slice(1))
     .join(' ');
 }
+
 export async function safeFetch(url: string, options: RequestInit = {}, timeout = 8000) {
   const controller = new AbortController();
   const id = setTimeout(() => controller.abort(), timeout);
@@ -74,12 +75,36 @@ export async function safeFetch(url: string, options: RequestInit = {}, timeout 
     } else {
       console.error(`[CMS] Fetch error for URL: ${url}:`, error.message);
     }
-    // Return a fake "not ok" response so callers can handle it gracefully
     return {
       ok: false,
       status: 408,
       statusText: 'Request Timeout',
-      json: async () => ({})
+      json: async () => ({}),
+      headers: new Headers(),
     } as Response;
   }
+}
+
+/**
+ * Reusable authenticated fetch wrapper.
+ * Automatically injects the JWT token from localStorage.
+ * Use this for all admin/protected API calls to avoid duplicate code.
+ */
+export async function fetchWithAuth(
+  path: string,
+  options: RequestInit = {}
+): Promise<Response> {
+  const token = typeof window !== 'undefined' ? localStorage.getItem("token") : null;
+  const url = getApiUrl(path);
+  const headers: Record<string, string> = {
+    ...((options.headers as Record<string, string>) || {}),
+  };
+  if (token) {
+    headers["Authorization"] = `Bearer ${token}`;
+  }
+  // Only set Content-Type for non-FormData bodies
+  if (options.body && !(options.body instanceof FormData)) {
+    headers["Content-Type"] = headers["Content-Type"] || "application/json";
+  }
+  return fetch(url, { ...options, headers });
 }

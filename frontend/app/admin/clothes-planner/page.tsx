@@ -20,7 +20,7 @@ import {
   PenTool
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { getApiUrl } from "@/lib/utils";
+import { getApiUrl, fetchWithAuth } from "@/lib/utils";
 import { useDropzone } from "react-dropzone";
 import Link from "next/link";
 
@@ -69,7 +69,7 @@ export default function AdminClothesPlanner() {
     if (!confirm(`Delete ${selectedIds.length} selected items?`)) return;
     try {
       for (const id of selectedIds) {
-        await fetch(getApiUrl(`/api/v1/outfits/${id}`), { method: "DELETE" });
+        await fetchWithAuth(`/api/v1/outfits/${id}`, { method: "DELETE" });
       }
       setSelectedIds([]);
       fetchOutfits();
@@ -85,7 +85,7 @@ export default function AdminClothesPlanner() {
   const fetchOutfits = async () => {
     setLoading(true);
     try {
-      const res = await fetch(getApiUrl("/api/v1/outfits/"));
+      const res = await fetchWithAuth("/api/v1/outfits/");
       const data = await res.json();
       setOutfits(data);
     } catch (err) {
@@ -116,9 +116,8 @@ export default function AdminClothesPlanner() {
       for (const file of files) {
         const base64 = await toBase64(file);
         
-        await fetch(getApiUrl("/api/v1/outfits/"), {
+        await fetchWithAuth("/api/v1/outfits/", {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             image_url: base64,
             gender: batchTags.gender,
@@ -149,7 +148,7 @@ export default function AdminClothesPlanner() {
   const handleDelete = async (id: number) => {
     if (!confirm("Delete this outfit?")) return;
     try {
-      const res = await fetch(getApiUrl(`/api/v1/outfits/${id}`), { method: "DELETE" });
+      const res = await fetchWithAuth(`/api/v1/outfits/${id}`, { method: "DELETE" });
       if (res.ok) fetchOutfits();
     } catch (err) {
       console.error("Delete error:", err);

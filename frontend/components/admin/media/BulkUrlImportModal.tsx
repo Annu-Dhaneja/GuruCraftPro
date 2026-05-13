@@ -11,7 +11,7 @@ import {
   DialogFooter
 } from "@/components/ui/dialog";
 import { Link as LinkIcon, Loader2, CheckCircle2, AlertCircle } from "lucide-react";
-import { getApiUrl } from "@/lib/utils";
+import { getApiUrl, fetchWithAuth } from "@/lib/utils";
 
 interface BulkUrlImportModalProps {
   isOpen: boolean;
@@ -32,13 +32,8 @@ export function BulkUrlImportModal({ isOpen, onClose, onSuccess }: BulkUrlImport
     setResults(null);
 
     try {
-      const token = localStorage.getItem("token");
-      const res = await fetch(getApiUrl("/api/v1/cms/media/bulk-url-import"), {
+      const res = await fetchWithAuth("/api/v1/cms/media/bulk-url-import", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${token}`
-        },
         body: JSON.stringify({ urls: urlList })
       });
 
