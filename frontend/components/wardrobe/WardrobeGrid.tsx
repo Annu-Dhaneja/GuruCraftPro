@@ -17,6 +17,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
+import { getApiUrl } from "@/lib/utils";
 
 interface WardrobeItem {
   id: number;
@@ -33,7 +34,7 @@ export function WardrobeGrid() {
   const [filter, setFilter] = useState({ gender: "", style: "", age_group: "" });
   const [searchTerm, setSearchTerm] = useState("");
 
-  const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+  const API_URL = getApiUrl();
 
   useEffect(() => {
     fetchItems();

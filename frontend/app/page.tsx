@@ -87,9 +87,11 @@ export default function LandingPage() {
                         transition={{ delay: 0.3, duration: 0.8 }}
                         className="flex flex-wrap justify-center gap-8"
                     >
-                        <Button className="h-20 px-12 rounded-[2.5rem] bg-primary text-black font-black text-sm uppercase tracking-[0.2em] shadow-[0_20px_50px_rgba(197,160,89,0.4)] hover:scale-105 transition-all group">
-                            ENTER THE ECOSYSTEM <ArrowRight className="w-5 h-5 ml-3 group-hover:translate-x-1 transition-transform" />
-                        </Button>
+                        <Link href="/services">
+                            <Button className="h-20 px-12 rounded-[2.5rem] bg-primary text-black font-black text-sm uppercase tracking-[0.2em] shadow-[0_20px_50px_rgba(197,160,89,0.4)] hover:scale-105 transition-all group">
+                                ENTER THE ECOSYSTEM <ArrowRight className="w-5 h-5 ml-3 group-hover:translate-x-1 transition-transform" />
+                            </Button>
+                        </Link>
                         <Button variant="outline" className="h-20 px-12 rounded-[2.5rem] border-white/10 text-white font-black text-sm uppercase tracking-[0.2em] hover:bg-white/5 transition-all gap-4">
                             <Play className="w-5 h-5 fill-white" /> WATCH SHOWREEL
                         </Button>
@@ -158,9 +160,11 @@ export default function LandingPage() {
                                 </div>
                             ))}
                         </div>
-                        <Button className="h-16 px-10 rounded-2xl bg-white text-black font-black uppercase tracking-widest text-xs hover:bg-slate-200">
-                            LAUNCH AI LAB
-                        </Button>
+                        <Link href="/ai-lab">
+                            <Button className="h-16 px-10 rounded-2xl bg-white text-black font-black uppercase tracking-widest text-xs hover:bg-slate-200">
+                                LAUNCH AI LAB
+                            </Button>
+                        </Link>
                     </div>
                 </div>
             </section>

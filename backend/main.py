@@ -14,7 +14,14 @@ from routers import (
 from services.seeding_service import SeedingService
 
 # Create tables if they don't exist
-Base.metadata.create_all(bind=engine)
+try:
+    print("Startup: Creating database tables...")
+    Base.metadata.create_all(bind=engine)
+    print("Startup: Database tables verified.")
+except Exception as e:
+    print(f"Startup Error: Failed to create/verify tables: {e}")
+    # We don't exit here to allow the app to potentially start and show 500s 
+    # instead of crashing the whole process immediately.
 
 app = FastAPI(
     title=settings.PROJECT_NAME,
@@ -47,11 +54,20 @@ app.add_middleware(
 # ── Startup Events ───────────────────────────────────────────────────
 @app.on_event("startup")
 def startup_event():
-    db = next(get_db())
     try:
-        SeedingService.run_all(db)
-    finally:
-        db.close()
+        print("Startup Event: Running seeding/migration...")
+        db = next(get_db())
+        try:
+            SeedingService.run_all(db)
+            print("Startup Event: Seeding/migration completed.")
+        except Exception as seed_err:
+            print(f"Startup Event Error (Seeding): {seed_err}")
+            traceback.print_exc()
+        finally:
+            db.close()
+    except Exception as e:
+        print(f"Startup Event Error (General): {e}")
+        traceback.print_exc()
 
 # ── Health Check ─────────────────────────────────────────────────────
 @app.get("/health")

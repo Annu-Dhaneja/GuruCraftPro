@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+import { getApiUrl } from '@/lib/utils';
 
 interface WeddingTask {
     id: number;
@@ -66,7 +67,7 @@ export const useWeddingStore = create<WeddingStore>((set) => ({
     fetchDashboard: async () => {
         set({ loading: true, error: null });
         try {
-            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'}/api/v1/wedding/dashboard`);
+            const response = await fetch(getApiUrl("/api/v1/wedding/dashboard"));
             if (!response.ok) throw new Error('Failed to fetch wedding dashboard');
             const data = await response.ok ? await response.json() : null;
             if (data) {
