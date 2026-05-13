@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from core.database import get_db
 from core.models import SiteConfig
-from core.auth import get_current_user
+from core.auth import require_admin
 import json
 
 router = APIRouter()
@@ -22,7 +22,7 @@ def get_config(key: str, db: Session = Depends(get_db)):
     return json.loads(config.value)
 
 @router.post("/")
-def update_config(key: str, data: dict, db: Session = Depends(get_db), current_user = Depends(get_current_user)):
+def update_config(key: str, data: dict, db: Session = Depends(get_db), admin = Depends(require_admin)):
     config = db.query(SiteConfig).filter(SiteConfig.key == key).first()
     if not config:
         config = SiteConfig(key=key, value=json.dumps(data))

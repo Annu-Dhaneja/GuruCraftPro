@@ -12,6 +12,7 @@ from routers import (
     contact, user, wardrobe, site_config, outfits, wedding
 )
 from services.seeding_service import SeedingService
+from universal_schema_fix import fix_schema
 
 # Create tables if they don't exist
 try:
@@ -58,6 +59,9 @@ app.add_middleware(
 @app.on_event("startup")
 def startup_event():
     try:
+        print("Startup Event: Running schema repairs...")
+        fix_schema()
+        
         print("Startup Event: Running seeding/migration...")
         db = next(get_db())
         try:

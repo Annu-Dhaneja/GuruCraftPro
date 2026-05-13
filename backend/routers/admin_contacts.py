@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 from typing import List
 from core.database import get_db
 from core.models import ContactSubmission, User
-from core.auth import get_current_user
+from core.auth import require_admin
 from pydantic import BaseModel
 from datetime import datetime
 
@@ -28,7 +28,7 @@ class ContactSubmissionSchema(BaseModel):
 @router.get("/submissions", response_model=List[ContactSubmissionSchema])
 async def get_contact_submissions(
     db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_user)
+    admin: User = Depends(require_admin)
 ):
     """
     Get all contact form submissions. Protected by admin login.

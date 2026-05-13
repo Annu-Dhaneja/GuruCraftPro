@@ -44,10 +44,14 @@ async def login_for_access_token(
             )
 
         token = auth.create_access_token(
-            data={"sub": user.username},
+            data={"sub": user.username, "role": user.role},
             expires_delta=timedelta(minutes=auth.ACCESS_TOKEN_EXPIRE_MINUTES),
         )
-        return {"access_token": token, "token_type": "bearer"}
+        return {
+            "access_token": token, 
+            "token_type": "bearer",
+            "role": user.role
+        }
 
     except HTTPException:
         raise
@@ -103,12 +107,13 @@ async def signup(
 
         # Auto-login: return token
         token = auth.create_access_token(
-            data={"sub": new_user.username},
+            data={"sub": new_user.username, "role": new_user.role},
             expires_delta=timedelta(minutes=auth.ACCESS_TOKEN_EXPIRE_MINUTES),
         )
         return {
             "access_token": token,
             "token_type": "bearer",
+            "role": new_user.role,
             "message": f"Account '{body.username}' created successfully",
         }
 

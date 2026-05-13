@@ -1,12 +1,26 @@
 "use client";
 
-import { useState } from "react";
-import { Upload, Shirt, Sparkles, AlertCircle, Loader2, Bot } from "lucide-react";
+import React, { useState } from "react";
+import { 
+    Upload, 
+    Shirt, 
+    Sparkles, 
+    AlertCircle, 
+    Loader2, 
+    Bot, 
+    ChevronLeft, 
+    Check, 
+    Zap,
+    Download,
+    Eye
+} from "lucide-react";
 import ReactMarkdown from 'react-markdown';
+import Link from "next/link";
+import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Footer } from "@/components/footer/Footer";
+import { cn } from "@/lib/utils";
 import { getApiUrl } from "@/lib/utils";
 
 export default function VirtualTryOnPage() {
@@ -14,11 +28,8 @@ export default function VirtualTryOnPage() {
     const [garmentImage, setGarmentImage] = useState<File | null>(null);
     const [personPreview, setPersonPreview] = useState<string | null>(null);
     const [garmentPreview, setGarmentPreview] = useState<string | null>(null);
-    // Result Image State
-    const [generatedImage, setGeneratedImage] = useState<string | null>(null);
-
-    // State for Analysis Result
     const [analysisResult, setAnalysisResult] = useState<string | null>(null);
+    const [generatedImage, setGeneratedImage] = useState<string | null>(null);
     const [isProcessing, setIsProcessing] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
@@ -40,7 +51,7 @@ export default function VirtualTryOnPage() {
 
     const handleTryOn = async () => {
         if (!personImage || !garmentImage) {
-            setError("Please upload both a person image and a garment image.");
+            setError("Both assets are required for neural mapping.");
             return;
         }
 
@@ -50,7 +61,7 @@ export default function VirtualTryOnPage() {
         const formData = new FormData();
         formData.append("user_image", personImage);
         formData.append("garment_image", garmentImage);
-        formData.append("prompt", "Analyze style fit");
+        formData.append("prompt", "Analyze style fit and aesthetic compatibility.");
 
         try {
             const response = await fetch(getApiUrl("/api/v1/ai-lab/try-on"), {
@@ -58,180 +69,217 @@ export default function VirtualTryOnPage() {
                 body: formData,
             });
 
-            if (!response.ok) {
-                throw new Error("Failed to process request.");
-            }
+            if (!response.ok) throw new Error("Neural Engine connection failed.");
 
             const data = await response.json();
             if (data.status === "success") {
                 setAnalysisResult(data.results.analysis);
-                if (data.results.generated_image) {
-                    setGeneratedImage(data.results.generated_image);
-                }
+                if (data.results.generated_image) setGeneratedImage(data.results.generated_image);
             } else {
-                setError(data.message || "Something went wrong.");
+                setError(data.message || "Mapping error occurred.");
             }
         } catch (err) {
-            setError(err instanceof Error ? err.message : "An unexpected error occurred.");
+            setError(err instanceof Error ? err.message : "An unexpected core error occurred.");
         } finally {
             setIsProcessing(false);
         }
     };
 
     return (
-        <main className="min-h-screen bg-background flex flex-col">
-            <div className="container mx-auto px-4 md:px-6 py-12 flex-grow">
-                <div className="max-w-5xl mx-auto space-y-8">
+        <main className="min-h-screen bg-[#020617] text-white selection:bg-indigo-500/30 overflow-x-hidden flex flex-col">
+            {/* Top Navigation */}
+            <header className="h-16 border-b border-white/5 bg-[#020617]/90 backdrop-blur-2xl flex items-center justify-between px-8 sticky top-0 z-50">
+                <div className="flex items-center gap-6">
+                    <Link href="/ai-lab" className="flex items-center gap-2 text-slate-500 hover:text-white transition-colors group">
+                        <ChevronLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
+                        <span className="text-[10px] font-black uppercase tracking-[0.3em]">Back to Lab</span>
+                    </Link>
+                    <div className="h-6 w-px bg-white/10" />
+                    <h1 className="text-[10px] font-black tracking-[0.4em] uppercase italic text-indigo-400">
+                        VIRTUAL <span className="text-white">TRY-ON ENGINE</span>
+                    </h1>
+                </div>
+                <div className="flex items-center gap-4 text-[9px] font-black uppercase tracking-widest text-slate-600">
+                    <span className="flex items-center gap-2 text-emerald-500"><Check className="w-3 h-3" /> Ready</span>
+                    <span>v4.2-stable</span>
+                </div>
+            </header>
 
-                    {/* Header */}
-                    <div className="text-center space-y-2">
-                        <h1 className="text-3xl font-bold tracking-tight">AI Stylist & Try-On Analysis</h1>
-                        <p className="text-muted-foreground">Upload your photo and a dress. Our AI will analyze the fit and style match.</p>
-                    </div>
+            <div className="flex-1 py-16 px-8 max-w-6xl mx-auto w-full space-y-16">
+                {/* Hero Header */}
+                <div className="text-center space-y-4">
+                    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-[9px] font-black tracking-widest uppercase text-indigo-400">
+                        <Sparkles className="w-3 h-3" /> Elite Stylist AI
+                    </motion.div>
+                    <h2 className="text-5xl font-black uppercase italic tracking-tighter">Neural <span className="text-indigo-400">Fitting</span> Room</h2>
+                    <p className="text-slate-400 text-lg font-light italic max-w-2xl mx-auto">Upload your profile and the garment. Our AI will perform a deep aesthetic analysis and virtual mapping.</p>
+                </div>
 
-                    {/* Upload Section */}
-                    <div className="grid md:grid-cols-2 gap-8">
-                        {/* Person Image Upload */}
-                        <div className="space-y-4">
-                            <Label className="text-base font-semibold">1. Upload Your Photo</Label>
-                            <div className="border border-border/50 rounded-2xl overflow-hidden relative group hover:border-indigo-500/50 transition-colors shadow-sm cursor-pointer aspect-[3/4] bg-muted w-full max-w-sm mx-auto">
-                                <img src={personPreview || "/images/user_provided/generated-image-2026-02-24_10-45-46 (2).jpg"} alt="Person Example" className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
-
-                                {!personPreview && (
-                                    <div className="absolute top-4 left-4 right-4 flex justify-between items-center z-10">
-                                        <div className="bg-black/50 backdrop-blur-md text-white text-xs font-bold px-3 py-1.5 rounded-full">Example Photo</div>
-                                    </div>
+                {/* Upload Grid */}
+                <div className="grid md:grid-cols-2 gap-12">
+                    {/* User Profile */}
+                    <div className="space-y-6">
+                        <div className="flex items-center justify-between">
+                            <span className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-500">01. User Profile</span>
+                            <span className="text-[10px] font-bold text-indigo-400 italic">Full Body Preferred</span>
+                        </div>
+                        <div 
+                            className="aspect-[3/4] rounded-[3rem] border border-white/5 bg-white/5 relative group overflow-hidden cursor-pointer hover:border-indigo-500/30 transition-all"
+                            onClick={() => document.getElementById('person-upload')?.click()}
+                        >
+                            <AnimatePresence mode="wait">
+                                {personPreview ? (
+                                    <motion.img 
+                                        key="preview"
+                                        initial={{ opacity: 0 }} 
+                                        animate={{ opacity: 1 }} 
+                                        src={personPreview} 
+                                        className="absolute inset-0 w-full h-full object-cover" 
+                                    />
+                                ) : (
+                                    <motion.div key="empty" className="absolute inset-0 flex flex-col items-center justify-center p-12 text-center space-y-6">
+                                        <div className="w-20 h-20 rounded-3xl bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center">
+                                            <Upload className="w-8 h-8 text-indigo-400" />
+                                        </div>
+                                        <div className="space-y-2">
+                                            <p className="text-xs font-black uppercase tracking-widest">Select Profile</p>
+                                            <p className="text-[10px] text-slate-500 italic">Drop image or click to browse</p>
+                                        </div>
+                                    </motion.div>
                                 )}
-
-                                <div className={`absolute inset-0 flex flex-col items-center justify-center transition-all duration-300 ${personPreview ? 'bg-black/50 opacity-0 group-hover:opacity-100' : 'bg-gradient-to-t from-black/80 via-black/20 to-transparent'}`}>
-                                    <Button variant={personPreview ? "secondary" : "default"} className={personPreview ? "" : "mt-auto mb-8 shadow-xl"} onClick={(e) => { e.stopPropagation(); document.getElementById('person-upload')?.click(); }}>
-                                        {personPreview ? "Change Photo" : <><Upload className="mr-2 h-4 w-4" /> Upload Your Photo</>}
-                                    </Button>
-                                    {!personPreview && <p className="text-xs text-white/80 mb-6 drop-shadow-md font-medium">Full body shots work best</p>}
-                                </div>
-
-                                <Input
-                                    id="person-upload"
-                                    type="file"
-                                    accept="image/*"
-                                    className="hidden"
-                                    onChange={(e) => handleImageChange(e, 'person')}
-                                />
-                                <div className="absolute inset-0 w-full h-full" onClick={() => document.getElementById('person-upload')?.click()} />
+                            </AnimatePresence>
+                            <div className="absolute inset-0 bg-indigo-500/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center backdrop-blur-sm">
+                                <Button variant="secondary" className="rounded-full font-black text-[10px] uppercase tracking-widest px-8">Change Image</Button>
                             </div>
                         </div>
-
-                        {/* Garment Image Upload */}
-                        <div className="space-y-4">
-                            <Label className="text-base font-semibold">2. Upload Dress / Outfit</Label>
-                            <div className="border border-border/50 rounded-2xl overflow-hidden relative group hover:border-pink-500/50 transition-colors shadow-sm cursor-pointer aspect-[3/4] bg-muted w-full max-w-sm mx-auto">
-                                <img src={garmentPreview || "/images/user_provided/generated-image-2026-02-23_14-29-25 (6).jpg"} alt="Garment Example" className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
-
-                                {!garmentPreview && (
-                                    <div className="absolute top-4 left-4 right-4 flex justify-between items-center z-10">
-                                        <div className="bg-black/50 backdrop-blur-md text-white text-xs font-bold px-3 py-1.5 rounded-full">Example Dress</div>
-                                    </div>
-                                )}
-
-                                <div className={`absolute inset-0 flex flex-col items-center justify-center transition-all duration-300 ${garmentPreview ? 'bg-black/50 opacity-0 group-hover:opacity-100' : 'bg-gradient-to-t from-black/80 via-black/20 to-transparent'}`}>
-                                    <Button variant={garmentPreview ? "secondary" : "default"} className={garmentPreview ? "" : "mt-auto mb-8 shadow-xl bg-pink-600 hover:bg-pink-700"} onClick={(e) => { e.stopPropagation(); document.getElementById('garment-upload')?.click(); }}>
-                                        {garmentPreview ? "Change Outfit" : <><Shirt className="mr-2 h-4 w-4" /> Upload Outfit</>}
-                                    </Button>
-                                    {!garmentPreview && <p className="text-xs text-white/80 mb-6 drop-shadow-md font-medium">Clear front view is recommended</p>}
-                                </div>
-
-                                <Input
-                                    id="garment-upload"
-                                    type="file"
-                                    accept="image/*"
-                                    className="hidden"
-                                    onChange={(e) => handleImageChange(e, 'garment')}
-                                />
-                                <div className="absolute inset-0 w-full h-full" onClick={() => document.getElementById('garment-upload')?.click()} />
-                            </div>
-                        </div>
+                        <input id="person-upload" type="file" accept="image/*" className="hidden" onChange={(e) => handleImageChange(e, 'person')} />
                     </div>
 
-                    {/* Action Area */}
-                    <div className="flex flex-col items-center justify-center space-y-4 pt-4">
+                    {/* Garment Selection */}
+                    <div className="space-y-6">
+                        <div className="flex items-center justify-between">
+                            <span className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-500">02. Garment Asset</span>
+                            <span className="text-[10px] font-bold text-rose-400 italic">High-Res Required</span>
+                        </div>
+                        <div 
+                            className="aspect-[3/4] rounded-[3rem] border border-white/5 bg-white/5 relative group overflow-hidden cursor-pointer hover:border-rose-500/30 transition-all"
+                            onClick={() => document.getElementById('garment-upload')?.click()}
+                        >
+                            <AnimatePresence mode="wait">
+                                {garmentPreview ? (
+                                    <motion.img 
+                                        key="preview"
+                                        initial={{ opacity: 0 }} 
+                                        animate={{ opacity: 1 }} 
+                                        src={garmentPreview} 
+                                        className="absolute inset-0 w-full h-full object-cover" 
+                                    />
+                                ) : (
+                                    <motion.div key="empty" className="absolute inset-0 flex flex-col items-center justify-center p-12 text-center space-y-6">
+                                        <div className="w-20 h-20 rounded-3xl bg-rose-500/10 border border-rose-500/20 flex items-center justify-center">
+                                            <Shirt className="w-8 h-8 text-rose-400" />
+                                        </div>
+                                        <div className="space-y-2">
+                                            <p className="text-xs font-black uppercase tracking-widest">Select Garment</p>
+                                            <p className="text-[10px] text-slate-500 italic">Drop image or click to browse</p>
+                                        </div>
+                                    </motion.div>
+                                )}
+                            </AnimatePresence>
+                            <div className="absolute inset-0 bg-rose-500/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center backdrop-blur-sm">
+                                <Button variant="secondary" className="rounded-full font-black text-[10px] uppercase tracking-widest px-8">Change Asset</Button>
+                            </div>
+                        </div>
+                        <input id="garment-upload" type="file" accept="image/*" className="hidden" onChange={(e) => handleImageChange(e, 'garment')} />
+                    </div>
+                </div>
+
+                {/* Processing Button */}
+                <div className="flex flex-col items-center gap-6">
+                    <AnimatePresence>
                         {error && (
-                            <div className="bg-destructive/10 text-destructive px-4 py-2 rounded-lg flex items-center gap-2 text-sm">
-                                <AlertCircle className="h-4 w-4" />
-                                {error}
+                            <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} className="bg-rose-500/10 border border-rose-500/20 text-rose-400 px-6 py-2 rounded-full text-[10px] font-black uppercase tracking-widest flex items-center gap-2">
+                                <AlertCircle className="w-4 h-4" /> {error}
+                            </motion.div>
+                        )}
+                    </AnimatePresence>
+
+                    <Button 
+                        disabled={isProcessing || !personImage || !garmentImage}
+                        onClick={handleTryOn}
+                        className="h-20 px-16 rounded-[2.5rem] bg-indigo-500 hover:bg-indigo-400 text-white font-black text-sm uppercase tracking-[0.2em] shadow-[0_20px_50px_rgba(99,102,241,0.3)] disabled:opacity-50 disabled:grayscale transition-all"
+                    >
+                        {isProcessing ? (
+                            <div className="flex items-center gap-4">
+                                <Loader2 className="w-6 h-6 animate-spin" />
+                                Neural Mapping...
+                            </div>
+                        ) : (
+                            <div className="flex items-center gap-4">
+                                <Zap className="w-6 h-6 fill-white" />
+                                Launch AI Stylist
                             </div>
                         )}
+                    </Button>
+                </div>
 
-                        <Button
-                            className="h-12 px-8 text-lg bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-700 hover:to-indigo-700 transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5"
-                            onClick={handleTryOn}
-                            disabled={isProcessing || !personImage || !garmentImage}
-                        >
-                            {isProcessing ? (
-                                <>
-                                    <Loader2 className="mr-2 h-5 w-5 animate-spin" />
-                                    Analyzing Style...
-                                </>
-                            ) : (
-                                <>
-                                    <Bot className="mr-2 h-5 w-5" />
-                                    Ask AI Stylist
-                                </>
-                            )}
-                        </Button>
-                    </div>
-
-                    {/* Result Section */}
+                {/* Results Section */}
+                <AnimatePresence>
                     {analysisResult && (
-                        <div className="animate-in fade-in slide-in-from-bottom-4 duration-700 max-w-3xl mx-auto">
-                            <div className="bg-card border border-border rounded-xl p-6 shadow-lg">
-                                <div className="flex items-center gap-3 mb-4 border-b pb-4">
-                                    <div className="p-2 bg-indigo-100 rounded-full dark:bg-indigo-900/30">
-                                        <Bot className="h-6 w-6 text-indigo-600 dark:text-indigo-400" />
-                                    </div>
-                                    <div>
-                                        <h3 className="text-lg font-bold">Stylist Analysis & Preview</h3>
-                                        <p className="text-xs text-muted-foreground">Powered by Gurucraftpro AI</p>
-                                    </div>
-                                </div>
-
-                                {/* Generated Image Result */}
-                                {generatedImage && (
-                                    <div className="mb-8 p-4 bg-muted/30 rounded-lg border border-border/50">
-                                        <h4 className="text-sm font-semibold mb-4 text-center">Virtual Preview Result</h4>
-                                        <div className="relative aspect-[3/4] max-w-sm mx-auto rounded-lg overflow-hidden shadow-xl border border-border ring-1 ring-white/20">
-                                            {/* eslint-disable-next-line @next/next/no-img-element */}
-                                            <img
-                                                src={generatedImage}
-                                                alt="Virtual Try-On Result"
-                                                className="w-full h-full object-cover"
-                                            />
-                                            <div className="absolute top-3 right-3 bg-indigo-600 text-white text-[10px] px-2 py-1 rounded-full uppercase font-bold tracking-wider shadow-md">
-                                                AI Generated
-                                            </div>
+                        <motion.div 
+                            initial={{ opacity: 0, y: 40 }} 
+                            animate={{ opacity: 1, y: 0 }}
+                            className="space-y-12 pt-16 border-t border-white/5"
+                        >
+                            <div className="grid lg:grid-cols-2 gap-16">
+                                {/* Analysis Text */}
+                                <div className="space-y-8">
+                                    <div className="flex items-center gap-4">
+                                        <div className="w-12 h-12 rounded-2xl bg-indigo-500/10 flex items-center justify-center">
+                                            <Bot className="w-6 h-6 text-indigo-400" />
+                                        </div>
+                                        <div>
+                                            <h3 className="text-xl font-black uppercase italic">AI Stylist Report</h3>
+                                            <p className="text-[10px] font-bold text-slate-500 tracking-widest">REAL-TIME MULTIMODAL ANALYSIS</p>
                                         </div>
                                     </div>
-                                )}
+                                    
+                                    <div className="prose prose-invert prose-sm max-w-none prose-p:text-slate-400 prose-headings:text-white prose-strong:text-indigo-400">
+                                        <ReactMarkdown>{analysisResult}</ReactMarkdown>
+                                    </div>
+                                </div>
 
-                                <div className="prose prose-sm dark:prose-invert max-w-none text-base leading-relaxed">
-                                    <ReactMarkdown
-                                        components={{
-                                            strong: ({ ...props }) => <span className="font-bold text-indigo-600 dark:text-indigo-400" {...props} />,
-                                            ul: ({ ...props }) => <ul className="list-disc pl-5 space-y-1 my-2" {...props} />,
-                                            li: ({ ...props }) => <li className="pl-1" {...props} />,
-                                            h1: ({ ...props }) => <h3 className="text-xl font-bold mt-4 mb-2" {...props} />,
-                                            h2: ({ ...props }) => <h4 className="text-lg font-bold mt-3 mb-2" {...props} />,
-                                            h3: ({ ...props }) => <h5 className="text-base font-bold mt-3 mb-1" {...props} />,
-                                        }}
-                                    >
-                                        {analysisResult}
-                                    </ReactMarkdown>
+                                {/* Result Preview */}
+                                <div className="space-y-8">
+                                    <div className="flex items-center justify-between">
+                                        <h3 className="text-xl font-black uppercase italic">Neural Preview</h3>
+                                        <div className="flex gap-2">
+                                            <Button variant="ghost" size="icon" className="text-slate-500"><Download className="w-4 h-4" /></Button>
+                                            <Button variant="ghost" size="icon" className="text-slate-500"><Eye className="w-4 h-4" /></Button>
+                                        </div>
+                                    </div>
+                                    <div className="aspect-[3/4] rounded-[3rem] bg-white/5 border border-white/10 overflow-hidden relative group">
+                                        {generatedImage ? (
+                                            <img src={generatedImage} alt="Neural Result" className="absolute inset-0 w-full h-full object-cover" />
+                                        ) : (
+                                            <div className="absolute inset-0 flex flex-col items-center justify-center p-12 text-center text-slate-500 italic">
+                                                <Sparkles className="w-12 h-12 mb-4 opacity-20" />
+                                                <p className="text-xs">Processing neural texture mapping...</p>
+                                            </div>
+                                        )}
+                                        <div className="absolute top-8 right-8 bg-indigo-500 text-[8px] font-black px-4 py-1.5 rounded-full tracking-[0.2em] uppercase shadow-2xl">AI GENERATED</div>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        </motion.div>
                     )}
-                </div>
+                </AnimatePresence>
             </div>
-            <Footer />
+
+            {/* Footer */}
+            <footer className="h-12 border-t border-white/5 bg-[#020617] flex items-center justify-center px-8">
+                <p className="text-[9px] font-black uppercase tracking-[0.4em] text-slate-700">© 2026 GURUCRaft NEURAL ENGINE v4.2.1</p>
+            </footer>
         </main>
     );
 }

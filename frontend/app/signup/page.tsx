@@ -3,11 +3,23 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { motion, AnimatePresence } from "framer-motion";
+import { 
+    ArrowLeft, 
+    Loader2, 
+    UserPlus, 
+    Mail, 
+    Lock, 
+    User, 
+    ShieldCheck, 
+    Zap,
+    Check
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { ArrowLeft, Loader2, UserPlus, Mail, Lock, User } from "lucide-react";
 import { toast } from "sonner";
+import { cn } from "@/lib/utils";
 
 export default function SignupPage() {
     const router = useRouter();
@@ -31,7 +43,7 @@ export default function SignupPage() {
         setIsLoading(true);
 
         try {
-            const apiBase = process.env.NEXT_PUBLIC_API_URL || "https://guru-craft-pro.vercel.app";
+            const apiBase = process.env.NEXT_PUBLIC_API_URL || "https://virtual-trys.onrender.com";
             const response = await fetch(`${apiBase}/api/v1/auth/signup`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
@@ -46,18 +58,23 @@ export default function SignupPage() {
             const data = await response.json();
 
             if (response.ok) {
-                // Save token
                 localStorage.setItem("token", data.access_token);
                 localStorage.setItem("username", formData.username);
+                localStorage.setItem("role", data.role || "user");
                 
                 toast.success("Account created successfully!");
-                router.push("/shop"); // Redirect to shop or dashboard
+                
+                if (data.role === "admin") {
+                    router.push("/admin");
+                } else {
+                    router.push("/ai-lab"); 
+                }
             } else {
-                toast.error(data.detail || "Signup failed. Please try again.");
+                toast.error(data.detail || "Signup failed. Please check your details.");
             }
         } catch (error) {
             console.error("Signup error:", error);
-            toast.error("An error occurred during signup.");
+            toast.error("An error occurred during account creation.");
         } finally {
             setIsLoading(false);
         }
@@ -71,77 +88,91 @@ export default function SignupPage() {
     };
 
     return (
-        <main className="min-h-screen grid grid-cols-1 lg:grid-cols-2 bg-background">
-            {/* Left Side - Visual */}
-            <div className="hidden lg:block relative bg-zinc-900 overflow-hidden">
-                <div className="absolute inset-0">
-                    <img
-                        src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?q=80&w=2670&auto=format&fit=crop"
-                        alt="Fashion Design"
-                        className="w-full h-full object-cover opacity-40 scale-105"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent" />
-                </div>
+        <main className="min-h-screen bg-[#020617] text-white flex flex-col lg:flex-row overflow-hidden selection:bg-indigo-500/30">
+            {/* Left Side - Cinematic Brand Reveal */}
+            <div className="hidden lg:flex lg:w-1/2 relative bg-slate-950 items-center justify-center p-24">
+                {/* Background Grid & Orbs */}
+                <div className="absolute inset-0 opacity-[0.03]" style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, white 1px, transparent 0)', backgroundSize: '40px 40px' }} />
+                <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-indigo-500/10 blur-[150px] rounded-full animate-pulse" />
                 
-                <div className="absolute bottom-12 left-12 right-12 text-white">
-                    <Link href="/" className="font-bold text-2xl tracking-tighter mb-12 block group">
-                        <span className="inline-block transition-transform group-hover:-translate-x-1">Annu</span>
-                        <span className="text-indigo-500">.</span>
+                <div className="relative z-10 max-w-lg space-y-12">
+                    <Link href="/" className="inline-flex items-center gap-3 group">
+                        <div className="w-10 h-10 rounded-xl bg-indigo-500 flex items-center justify-center font-black italic shadow-lg shadow-indigo-500/20 group-hover:scale-110 transition-transform">GP</div>
+                        <span className="text-2xl font-black uppercase tracking-tighter italic">GURUCRaft <span className="text-indigo-400">Pro</span></span>
                     </Link>
-                    
+
                     <div className="space-y-6">
-                        <div className="inline-flex items-center px-3 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 text-xs font-bold uppercase tracking-widest">
-                            New Collection Live
+                        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/5 border border-white/10 text-[10px] font-black tracking-[0.4em] uppercase text-indigo-400">
+                            <Zap className="w-3 h-3 fill-indigo-400" />
+                            <span>Neural Membership</span>
                         </div>
-                        <h2 className="text-5xl font-black leading-none tracking-tight font-serif">
-                            Elevate Your <br />
-                            <span className="text-indigo-400 italic">Personal</span> Style.
+                        <h2 className="text-6xl font-black uppercase italic tracking-tighter leading-[0.9]">
+                            JOIN THE <br />
+                            <span className="text-shimmer bg-clip-text text-transparent bg-gradient-to-r from-indigo-400 to-indigo-100">ELITE 1%.</span>
                         </h2>
-                        <p className="text-xl text-white/60 max-w-md font-light leading-relaxed">
-                            Join our community to unlock personalized consultations and virtual try-ons.
+                        <p className="text-slate-400 text-xl font-light italic leading-relaxed">
+                            Unlock the full power of our neural design ecosystem and high-fidelity fashion analysis.
                         </p>
+                    </div>
+
+                    <div className="space-y-4 pt-12 border-t border-white/5">
+                        {[
+                            "Neural Texture Mapping",
+                            "High-Resolution Upscaling",
+                            "AI Studio Lighting Core"
+                        ].map(feature => (
+                            <div key={feature} className="flex items-center gap-3 text-[10px] font-black uppercase tracking-widest text-slate-500">
+                                <Check className="w-4 h-4 text-emerald-500" />
+                                {feature}
+                            </div>
+                        ))}
                     </div>
                 </div>
             </div>
 
             {/* Right Side - Signup Form */}
-            <div className="flex flex-col justify-center items-center p-8 lg:p-24 relative">
-                <div className="absolute top-8 left-8 lg:left-24">
-                    <Button variant="ghost" size="sm" className="rounded-full hover:bg-zinc-100" asChild>
-                        <Link href="/"><ArrowLeft className="mr-2 w-4 h-4" /> Home</Link>
+            <div className="flex-1 flex flex-col justify-center items-center p-8 lg:p-24 relative bg-[#020617]">
+                {/* Mobile Header */}
+                <div className="absolute top-8 left-8 flex items-center gap-4">
+                    <Button variant="ghost" size="icon" className="rounded-full text-slate-500 hover:text-white" asChild>
+                        <Link href="/"><ArrowLeft className="w-5 h-5" /></Link>
                     </Button>
                 </div>
 
-                <div className="w-full max-w-md space-y-8">
-                    <div className="space-y-2 text-center lg:text-left">
-                        <h1 className="text-4xl font-black tracking-tight">Create Account</h1>
-                        <p className="text-muted-foreground">Start your journey with Annu Design Studio today.</p>
+                <motion.div 
+                    initial={{ opacity: 0, x: 20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    className="w-full max-w-md space-y-12"
+                >
+                    <div className="space-y-4">
+                        <h1 className="text-4xl font-black tracking-tight uppercase italic">Initialize <span className="text-indigo-400">Profile</span></h1>
+                        <p className="text-slate-500 text-sm font-medium italic">Enter your credentials to access the neural core.</p>
                     </div>
 
-                    <form onSubmit={handleSubmit} className="space-y-5">
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div className="space-y-2">
-                                <Label htmlFor="name">Full Name</Label>
-                                <div className="relative">
-                                    <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                    <form onSubmit={handleSubmit} className="space-y-6">
+                        <div className="grid grid-cols-2 gap-4">
+                            <div className="space-y-3">
+                                <Label htmlFor="name" className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-500">Full Name</Label>
+                                <div className="relative group">
+                                    <User className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-600 group-focus-within:text-indigo-400 transition-colors" />
                                     <Input 
                                         id="name" 
-                                        placeholder="John Doe" 
-                                        className="pl-10 h-12 rounded-xl bg-zinc-50 border-zinc-200 focus:bg-white transition-all" 
+                                        placeholder="ALEX RIVIERA" 
+                                        className="pl-12 h-14 rounded-2xl bg-white/5 border-white/10 text-white font-bold placeholder:text-slate-700 focus:border-indigo-500/50 focus:ring-0 transition-all" 
                                         required
                                         value={formData.name}
                                         onChange={handleChange}
                                     />
                                 </div>
                             </div>
-                            <div className="space-y-2">
-                                <Label htmlFor="username">Username</Label>
-                                <div className="relative">
-                                    <UserPlus className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                            <div className="space-y-3">
+                                <Label htmlFor="username" className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-500">Username</Label>
+                                <div className="relative group">
+                                    <UserPlus className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-600 group-focus-within:text-indigo-400 transition-colors" />
                                     <Input 
                                         id="username" 
-                                        placeholder="johndoe" 
-                                        className="pl-10 h-12 rounded-xl bg-zinc-50 border-zinc-200 focus:bg-white transition-all" 
+                                        placeholder="ALEX_PRO" 
+                                        className="pl-12 h-14 rounded-2xl bg-white/5 border-white/10 text-white font-bold placeholder:text-slate-700 focus:border-indigo-500/50 focus:ring-0 transition-all" 
                                         required
                                         value={formData.username}
                                         onChange={handleChange}
@@ -150,15 +181,15 @@ export default function SignupPage() {
                             </div>
                         </div>
 
-                        <div className="space-y-2">
-                            <Label htmlFor="email">Email Address</Label>
-                            <div className="relative">
-                                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                        <div className="space-y-3">
+                            <Label htmlFor="email" className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-500">Email Address</Label>
+                            <div className="relative group">
+                                <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-600 group-focus-within:text-indigo-400 transition-colors" />
                                 <Input 
                                     id="email" 
                                     type="email" 
-                                    placeholder="name@example.com" 
-                                    className="pl-10 h-12 rounded-xl bg-zinc-50 border-zinc-200 focus:bg-white transition-all" 
+                                    placeholder="ALEX@GURUCRaft.PRO" 
+                                    className="pl-12 h-14 rounded-2xl bg-white/5 border-white/10 text-white font-bold placeholder:text-slate-700 focus:border-indigo-500/50 focus:ring-0 transition-all" 
                                     required
                                     value={formData.email}
                                     onChange={handleChange}
@@ -166,14 +197,14 @@ export default function SignupPage() {
                             </div>
                         </div>
 
-                        <div className="space-y-2">
-                            <Label htmlFor="password">Password</Label>
-                            <div className="relative">
-                                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                        <div className="space-y-3">
+                            <Label htmlFor="password" title="At least 8 characters" className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-500">Secure Password</Label>
+                            <div className="relative group">
+                                <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-600 group-focus-within:text-indigo-400 transition-colors" />
                                 <Input 
                                     id="password" 
                                     type="password" 
-                                    className="pl-10 h-12 rounded-xl bg-zinc-50 border-zinc-200 focus:bg-white transition-all" 
+                                    className="pl-12 h-14 rounded-2xl bg-white/5 border-white/10 text-white font-bold focus:border-indigo-500/50 focus:ring-0 transition-all" 
                                     required
                                     value={formData.password}
                                     onChange={handleChange}
@@ -181,14 +212,14 @@ export default function SignupPage() {
                             </div>
                         </div>
 
-                        <div className="space-y-2">
-                            <Label htmlFor="confirmPassword">Confirm Password</Label>
-                            <div className="relative">
-                                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                        <div className="space-y-3">
+                            <Label htmlFor="confirmPassword" className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-500">Confirm Identity</Label>
+                            <div className="relative group">
+                                <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-600 group-focus-within:text-indigo-400 transition-colors" />
                                 <Input 
                                     id="confirmPassword" 
                                     type="password" 
-                                    className="pl-10 h-12 rounded-xl bg-zinc-50 border-zinc-200 focus:bg-white transition-all" 
+                                    className="pl-12 h-14 rounded-2xl bg-white/5 border-white/10 text-white font-bold focus:border-indigo-500/50 focus:ring-0 transition-all" 
                                     required
                                     value={formData.confirmPassword}
                                     onChange={handleChange}
@@ -198,35 +229,34 @@ export default function SignupPage() {
 
                         <Button 
                             type="submit" 
-                            className="w-full h-14 rounded-2xl bg-zinc-900 hover:bg-black text-white font-bold text-lg shadow-xl shadow-zinc-200 transition-all active:scale-[0.98]" 
+                            className="w-full h-16 rounded-[2rem] bg-indigo-500 hover:bg-indigo-400 text-white font-black text-xs uppercase tracking-[0.3em] shadow-2xl shadow-indigo-500/20 transition-all active:scale-[0.98]" 
                             disabled={isLoading}
                         >
                             {isLoading ? (
                                 <>
                                     <Loader2 className="mr-2 h-5 w-5 animate-spin" />
-                                    Creating Account...
+                                    Synchronizing...
                                 </>
                             ) : (
-                                "Sign Up"
+                                "Confirm Access"
                             )}
                         </Button>
                     </form>
 
-                    <div className="text-center pt-4">
-                        <p className="text-sm text-muted-foreground">
-                            Already have an account?{" "}
-                            <Link href="/login" className="text-indigo-600 font-bold hover:underline underline-offset-4">
-                                Log in
+                    <div className="text-center space-y-6">
+                        <p className="text-xs text-slate-500 font-bold uppercase tracking-widest">
+                            Authorized Already?{" "}
+                            <Link href="/login" className="text-indigo-400 hover:text-white transition-colors">
+                                Authenticate Here
                             </Link>
                         </p>
+                        
+                        <div className="flex items-center gap-4 justify-center text-[9px] font-black uppercase tracking-[0.4em] text-slate-700">
+                            <ShieldCheck className="w-3 h-3" />
+                            Secure Neural Encryption Active
+                        </div>
                     </div>
-
-                    <p className="text-xs text-center text-muted-foreground pt-8">
-                        By clicking Sign Up, you agree to our{" "}
-                        <Link href="/terms" className="underline underline-offset-2">Terms of Service</Link> and{" "}
-                        <Link href="/privacy" className="underline underline-offset-2">Privacy Policy</Link>.
-                    </p>
-                </div>
+                </motion.div>
             </div>
         </main>
     );

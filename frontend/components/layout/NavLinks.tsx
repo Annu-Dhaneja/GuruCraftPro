@@ -26,7 +26,7 @@ const portfolioItems = [
     },
     {
         title: "Photo Editing",
-        href: "/services/photo-editor",
+        href: "/photo-editor",
         description: "High-end retouching and professional image editing.",
     },
     {

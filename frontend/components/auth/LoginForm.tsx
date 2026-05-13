@@ -5,8 +5,9 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Loader2, ArrowRight, Github, Eye, EyeOff } from "lucide-react";
+import { Loader2, ArrowRight, Eye, EyeOff, Lock, User, ShieldCheck } from "lucide-react";
 import { getApiUrl } from "@/lib/utils";
+import { cn } from "@/lib/utils";
 
 export function LoginForm() {
     const [loading, setLoading] = useState(false);
@@ -19,7 +20,7 @@ export function LoginForm() {
         setError(null);
         
         const formData = new FormData(e.target as HTMLFormElement);
-        const username = formData.get("admin_id") as string;
+        const username = formData.get("username") as string;
         const password = formData.get("password") as string;
 
         try {
@@ -36,60 +37,77 @@ export function LoginForm() {
             if (res.ok) {
                 const data = await res.json();
                 localStorage.setItem("token", data.access_token);
-                window.location.href = "/admin"; // Redirect to overview for stability
+                localStorage.setItem("username", username);
+                localStorage.setItem("role", data.role || "user");
+                
+                if (data.role === "admin") {
+                    window.location.href = "/admin";
+                } else {
+                    window.location.href = "/ai-lab";
+                }
             } else {
                 const errData = await res.json();
                 const detail = errData.detail;
-                if (typeof detail === 'object' && detail !== null) {
-                    setError(detail.error || detail.msg || JSON.stringify(detail));
-                } else {
-                    setError(detail || "Login failed. Please check your credentials.");
-                }
+                setError(typeof detail === 'string' ? detail : "Authentication failed. Check your identity.");
             }
         } catch (err) {
-            setError("Could not connect to the server.");
+            setError("Neural Core connection timeout.");
         } finally {
             setLoading(false);
         }
     };
 
     return (
-        <div className="w-full max-w-md mx-auto p-6">
-            <div className="text-center mb-10">
-                <h1 className="text-3xl font-bold mb-2">Welcome Back</h1>
-                <p className="text-muted-foreground">Enter your credentials to access your account.</p>
+        <div className="w-full space-y-12">
+            <div className="space-y-4">
+                <h1 className="text-4xl font-black tracking-tight uppercase italic text-center lg:text-left">Initialize <span className="text-indigo-400">Session</span></h1>
+                <p className="text-slate-500 text-sm font-medium italic text-center lg:text-left">Authenticate your identity to continue.</p>
             </div>
 
             <form onSubmit={handleSubmit} className="space-y-6" noValidate>
                 {error && (
-                    <div className="p-3 rounded-lg bg-red-500/10 border border-red-500/20 text-red-400 text-sm">
+                    <div className="p-4 rounded-2xl bg-rose-500/10 border border-rose-500/20 text-rose-400 text-[10px] font-black uppercase tracking-widest flex items-center gap-3">
+                        <ShieldCheck className="w-4 h-4" />
                         {error}
                     </div>
                 )}
-                <div className="space-y-2">
-                    <Label htmlFor="admin_id">Admin ID</Label>
-                    <Input id="admin_id" name="admin_id" type="text" placeholder="annuad@#05" required />
+                
+                <div className="space-y-3">
+                    <Label htmlFor="username" className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-500">Identity Identifier</Label>
+                    <div className="relative group">
+                        <User className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-600 group-focus-within:text-indigo-400 transition-colors" />
+                        <Input 
+                            id="username" 
+                            name="username" 
+                            type="text" 
+                            placeholder="USER_IDENTITY_X" 
+                            required 
+                            className="pl-12 h-14 rounded-2xl bg-white/5 border-white/10 text-white font-bold placeholder:text-slate-700 focus:border-indigo-500/50 focus:ring-0 transition-all"
+                        />
+                    </div>
                 </div>
-                <div className="space-y-2">
+
+                <div className="space-y-3">
                     <div className="flex items-center justify-between">
-                        <Label htmlFor="password">Password</Label>
-                        <Link href="/forgot-password" className="text-xs text-indigo-500 hover:text-indigo-600 hover:underline">
-                            Forgot password?
+                        <Label htmlFor="password" title="Encrypted password" className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-500">Security Key</Label>
+                        <Link href="/forgot-password" className="text-[9px] font-black uppercase tracking-widest text-indigo-500 hover:text-white transition-colors">
+                            Recover Key?
                         </Link>
                     </div>
-                    <div className="relative">
+                    <div className="relative group">
+                        <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-600 group-focus-within:text-indigo-400 transition-colors" />
                         <Input 
                             id="password" 
                             name="password" 
                             type={showPassword ? "text" : "password"} 
                             placeholder="••••••••" 
                             required 
-                            className="pr-10"
+                            className="pl-12 pr-12 h-14 rounded-2xl bg-white/5 border-white/10 text-white font-bold placeholder:text-slate-700 focus:border-indigo-500/50 focus:ring-0 transition-all"
                         />
                         <button
                             type="button"
                             onClick={() => setShowPassword(!showPassword)}
-                            className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
+                            className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-600 hover:text-white transition-colors"
                         >
                             {showPassword ? (
                                 <EyeOff className="h-4 w-4" />
@@ -100,30 +118,32 @@ export function LoginForm() {
                     </div>
                 </div>
 
-                <Button type="submit" className="w-full h-11 bg-indigo-600 hover:bg-indigo-700 text-white" disabled={loading}>
-                    {loading ? <Loader2 className="animate-spin h-5 w-5" /> : "Sign In"}
+                <Button 
+                    type="submit" 
+                    className="w-full h-16 rounded-[2rem] bg-indigo-500 hover:bg-indigo-400 text-white font-black text-xs uppercase tracking-[0.3em] shadow-2xl shadow-indigo-500/20 transition-all active:scale-[0.98]" 
+                    disabled={loading}
+                >
+                    {loading ? (
+                        <div className="flex items-center gap-3">
+                            <Loader2 className="animate-spin h-5 w-5" />
+                            Authorizing...
+                        </div>
+                    ) : (
+                        <div className="flex items-center gap-3">
+                            Access Core <ArrowRight className="h-4 w-4" />
+                        </div>
+                    )}
                 </Button>
             </form>
 
-            <div className="relative my-8">
-                <div className="absolute inset-0 flex items-center">
-                    <span className="w-full border-t border-muted/50" />
-                </div>
-                <div className="relative flex justify-center text-xs uppercase">
-                    <span className="bg-background px-2 text-muted-foreground">Or continue with</span>
-                </div>
+            <div className="text-center space-y-6 pt-4">
+                <p className="text-xs text-slate-500 font-bold uppercase tracking-widest">
+                    New Identity?{" "}
+                    <Link href="/signup" className="text-indigo-400 hover:text-white transition-colors">
+                        Request Profile
+                    </Link>
+                </p>
             </div>
-
-            <Button variant="outline" className="w-full h-11" type="button">
-                <Github className="mr-2 h-4 w-4" /> Github
-            </Button>
-
-            <p className="mt-8 text-center text-sm text-muted-foreground">
-                Don't have an account?{" "}
-                <Link href="/signup" className="text-indigo-500 hover:text-indigo-600 font-medium hover:underline">
-                    Sign up
-                </Link>
-            </p>
         </div>
     );
 }

@@ -1,173 +1,169 @@
-import type { Metadata } from "next";
-import { AIHero } from "@/components/ai/AIHero";
+"use client";
 
-export const metadata: Metadata = {
-    title: "AI Design Lab | Annu Design Studio",
-    description: "Experience the future of design. Generate concepts instantly with our AI tools and refine them with professional expertise.",
-};
+import React from "react";
 import Link from "next/link";
-import { ArrowRight, Shirt, Sparkles, PenTool, Sticker } from "lucide-react";
+import { motion } from "framer-motion";
+import { 
+    ArrowRight, 
+    Shirt, 
+    Sparkles, 
+    PenTool, 
+    Sticker, 
+    Wand2, 
+    Zap, 
+    ChevronLeft,
+    ShieldCheck
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Footer } from "@/components/footer/Footer";
-import { getApiUrl } from "@/lib/utils";
+import { cn } from "@/lib/utils";
 
-export const dynamic = 'force-dynamic';
-
-const DEFAULT_TOOLS = [
+const TOOLS = [
     {
-        title: "Virtual Dress Change Room",
-        description: "Upload your photo and a dress to see how it fits instantly.",
+        title: "Virtual Try-On",
+        description: "Experience high-fidelity garment mapping. Upload your photo and see the future of fashion instantly.",
         href: "/ai-lab/virtual-try-on",
         icon: Shirt,
-        color: "text-rose-500",
+        color: "text-rose-400",
         bg: "bg-rose-500/10",
-        gradient: "from-rose-500/80 to-pink-500/80",
-        image: "/images/uploads/generated-image-2026-02-24_10-15-32.jpg"
+        image: "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?q=80&w=1200"
     },
     {
-        title: "Outfit Generator",
-        description: "Generate complete outfit ideas from simple text prompts.",
+        title: "Photo Core Editor",
+        description: "Industrial-grade AI editing. Neural upscaling, background removal, and studio relighting.",
+        href: "/photo-editor",
+        icon: Wand2,
+        color: "text-indigo-400",
+        bg: "bg-indigo-500/10",
+        image: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=1200"
+    },
+    {
+        title: "Outfit Architect",
+        description: "Generate complete collections from simple text prompts using our neural design engine.",
         href: "/ai-lab/outfit-generator",
         icon: Sparkles,
-        color: "text-amber-500",
+        color: "text-amber-400",
         bg: "bg-amber-500/10",
-        gradient: "from-amber-500/80 to-orange-500/80",
-        image: "/images/uploads/generated-image-2026-02-24_10-09-43.jpg"
+        image: "https://images.unsplash.com/photo-1490481651871-ab68de25d43d?q=80&w=1200"
     },
     {
-        title: "Logo & Design Generator",
-        description: "Create professional logos and brand assets in seconds.",
+        title: "Identity Generator",
+        description: "Create professional logos and brand assets with strategic aesthetic alignment.",
         href: "/ai-lab/logo-generator",
         icon: PenTool,
-        color: "text-indigo-500",
-        bg: "bg-indigo-500/10",
-        gradient: "from-indigo-600/80 to-blue-600/80",
-        image: "/images/uploads/generated-image-2026-02-23_14-29-18 (1).jpg"
-    },
-    {
-        title: "Sticker Generator",
-        description: "Design fun, custom stickers for social media and messaging.",
-        href: "/ai-lab/sticker-generator",
-        icon: Sticker,
-        color: "text-emerald-500",
+        color: "text-emerald-400",
         bg: "bg-emerald-500/10",
-        gradient: "from-emerald-500/80 to-green-500/80",
-        image: "/images/uploads/generated-image-2026-02-23_14-31-53.jpg"
+        image: "https://images.unsplash.com/photo-1626785774573-4b79931256ce?q=80&w=1200"
     }
 ];
 
-export default async function AILabPage() {
-    let aiLabData: any = {};
-    let fetchError = false;
-    
-    try {
-        const url = getApiUrl("/api/v1/cms/ai_lab");
-        console.log(`[CMS] Fetching AI Lab content from: ${url}`);
-        
-        const res = await fetch(url, {
-            cache: 'no-store',
-            headers: {
-                'Accept': 'application/json'
-            }
-        });
-        
-        if (res.ok) {
-            const contentType = res.headers.get("content-type");
-            if (contentType && contentType.includes("application/json")) {
-                aiLabData = await res.json();
-                console.log(`[CMS] Successfully fetched AI Lab content`);
-            } else {
-                console.warn(`[CMS] Expected JSON but got ${contentType}`);
-                fetchError = true;
-            }
-        } else {
-            console.error(`[CMS] Failed to fetch AI Lab content: ${res.status} ${res.statusText}`);
-            fetchError = true;
-        }
-    } catch (error) {
-        console.error("Failed to fetch AI Lab content:", error);
-        fetchError = true;
-    }
-
-    // Default structure for sub-components to prevent crashes
-    const safeData = aiLabData || {};
-    const hero = safeData.hero;
-    const dynamicTools = safeData.tools;
-    const activeTools = dynamicTools?.length > 0 ? dynamicTools : DEFAULT_TOOLS;
-    
-    // Helper to dynamically render imported lucide icons based on string names returned from CMS
-    const getIcon = (iconName: string) => {
-        switch (iconName) {
-            case 'Shirt': return Shirt;
-            case 'PenTool': return PenTool;
-            case 'Sticker': return Sticker;
-            case 'Sparkles':
-            default: return Sparkles;
-        }
-    };
-
+export default function AILabPage() {
     return (
-        <main className="min-h-screen bg-background flex flex-col pt-16">
-            {fetchError && (
-                <div className="bg-yellow-500/10 border-b border-yellow-500/20 py-2 text-center text-sm text-yellow-600 dark:text-yellow-400">
-                    Running in offline/fallback mode. Some sections may show default content.
-                </div>
-            )}
-            {/* Hero Section */}
-            <section className="relative py-24 px-4 md:px-6 overflow-hidden">
-                <div className="absolute inset-0 bg-grid-slate-200/50 [mask-image:linear-gradient(0deg,white,rgba(255,255,255,0.6))] -z-10" />
-                <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/10 via-purple-500/5 to-pink-500/10 blur-3xl -z-20" />
+        <main className="min-h-screen bg-[#020617] text-white selection:bg-indigo-500/30 overflow-hidden">
+            {/* Cinematic Background */}
+            <div className="fixed inset-0 z-0">
+                <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,#1e1b4b_0%,#020617_100%)]" />
+                <div className="absolute inset-0 opacity-[0.03]" style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, white 1px, transparent 0)', backgroundSize: '40px 40px' }} />
+            </div>
 
-                <div className="container mx-auto max-w-4xl text-center space-y-6">
-                    <div className="inline-flex items-center rounded-full border border-indigo-200 bg-indigo-50 px-3 py-1 text-sm text-indigo-800 backdrop-blur-sm">
-                        <Sparkles className="mr-2 h-3 w-3" />
-                        <span>{hero?.badge || "AI Design Lab"}</span>
+            <div className="relative z-10">
+                {/* Header Navigation */}
+                <header className="h-20 border-b border-white/5 bg-[#020617]/50 backdrop-blur-2xl flex items-center justify-between px-8">
+                    <Link href="/" className="flex items-center gap-2 text-slate-500 hover:text-white transition-colors group">
+                        <ChevronLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
+                        <span className="text-[10px] font-black uppercase tracking-[0.3em]">Return to Core</span>
+                    </Link>
+                    <div className="flex items-center gap-3">
+                        <div className="w-8 h-8 rounded-lg bg-indigo-500 flex items-center justify-center">
+                            <Sparkles className="w-4 h-4 text-white" />
+                        </div>
+                        <h1 className="text-sm font-black tracking-tight uppercase italic">
+                            AI <span className="text-indigo-400">LAB CORE</span>
+                        </h1>
                     </div>
-                    <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight bg-gradient-to-r from-gray-900 to-gray-600 bg-clip-text text-transparent">
-                        {hero?.title || "Unleash Your Creativity with AI"}
-                    </h1>
-                    <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-                        {hero?.description || "Explore our suite of AI-powered modeling and design tools. From virtual try-ons to instant branding, create professional assets in seconds."}
-                    </p>
-                </div>
-            </section>
+                    <div className="flex items-center gap-6">
+                        <span className="flex items-center gap-2 text-[9px] font-black uppercase tracking-widest text-emerald-500">
+                            <ShieldCheck className="w-3 h-3" /> System Stable
+                        </span>
+                    </div>
+                </header>
 
-            {/* Tools Grid */}
-            <section className="container mx-auto px-4 md:px-6 pb-24">
-                <div className="grid md:grid-cols-2 gap-6 max-w-5xl mx-auto">
-                    {activeTools.map((tool: any, idx: number) => {
-                        const IconComponent = typeof tool.icon === 'string' ? getIcon(tool.icon) : tool.icon;
-                        
-                        return (
-                        <Link key={idx} href={tool.href || "#"} className="group">
-                            <div className="min-h-[300px] h-full relative overflow-hidden rounded-3xl border bg-card p-8 transition-all hover:shadow-xl hover:-translate-y-1 group-hover:border-indigo-500/50">
-                                {/* Background Image */}
-                                {tool.image && (
-                                    <img src={tool.image} alt={tool.title} className="absolute inset-0 w-full h-full object-cover opacity-20 group-hover:scale-105 transition-transform duration-700" />
-                                )}
-                                <div className="absolute inset-0 bg-background/80 backdrop-blur-[2px] transition-colors group-hover:bg-background/60" />
+                {/* Hero Section */}
+                <section className="py-24 px-8 max-w-7xl mx-auto">
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        className="text-center space-y-8 mb-24"
+                    >
+                        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/5 border border-white/10 text-[10px] font-black tracking-[0.4em] uppercase text-indigo-400 mb-4">
+                            <Zap className="w-3 h-3 fill-indigo-400" />
+                            <span>Neural Intelligence v4.2</span>
+                        </div>
+                        <h2 className="text-6xl md:text-8xl font-black uppercase italic tracking-tighter leading-none">
+                            UNLIMITED <br />
+                            <span className="text-shimmer bg-clip-text text-transparent bg-gradient-to-r from-indigo-400 to-indigo-100">POSSIBILITY.</span>
+                        </h2>
+                        <p className="text-slate-400 text-xl font-light italic max-w-2xl mx-auto leading-relaxed">
+                            Explore our ecosystem of high-fidelity AI tools designed for elite fashion houses and strategic commerce.
+                        </p>
+                    </motion.div>
 
-                                <div className={`absolute inset-0 opacity-0 group-hover:opacity-10 transition-opacity bg-gradient-to-br ${tool.gradient || 'from-indigo-500 to-purple-500'}`} />
-
-                                <div className="relative z-10 flex flex-col h-full">
-                                    <div className={`h-12 w-12 rounded-2xl ${tool.bg || 'bg-indigo-500/10'} flex items-center justify-center mb-6 shadow-sm`}>
-                                        <IconComponent className={`h-6 w-6 ${tool.color || 'text-indigo-500'}`} />
+                    {/* Tools Grid */}
+                    <div className="grid md:grid-cols-2 gap-8">
+                        {TOOLS.map((tool, idx) => (
+                            <motion.div
+                                key={tool.title}
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ delay: idx * 0.1 }}
+                            >
+                                <Link href={tool.href} className="group block relative h-[450px] rounded-[3rem] overflow-hidden border border-white/5 hover:border-indigo-500/50 transition-all duration-700">
+                                    {/* Image Layer */}
+                                    <img 
+                                        src={tool.image} 
+                                        alt={tool.title} 
+                                        className="absolute inset-0 w-full h-full object-cover transition-transform duration-[3s] group-hover:scale-110" 
+                                    />
+                                    <div className="absolute inset-0 bg-gradient-to-t from-[#020617] via-[#020617]/40 to-transparent opacity-90 group-hover:opacity-70 transition-opacity" />
+                                    
+                                    {/* Content Layer */}
+                                    <div className="absolute inset-0 p-12 flex flex-col justify-end">
+                                        <div className={cn("w-16 h-16 rounded-2xl flex items-center justify-center mb-6", tool.bg)}>
+                                            <tool.icon className={cn("w-8 h-8", tool.color)} />
+                                        </div>
+                                        <h3 className="text-4xl font-black uppercase italic tracking-tighter mb-4 group-hover:translate-x-2 transition-transform">
+                                            {tool.title}
+                                        </h3>
+                                        <p className="text-slate-400 text-lg font-medium italic mb-8 max-w-sm group-hover:translate-x-2 transition-transform delay-75">
+                                            {tool.description}
+                                        </p>
+                                        <div className="flex items-center gap-3 text-[10px] font-black uppercase tracking-[0.3em] text-white group-hover:text-indigo-400 transition-colors">
+                                            Launch Module <ArrowRight className="w-4 h-4 group-hover:translate-x-2 transition-transform" />
+                                        </div>
                                     </div>
 
-                                    <h3 className="text-2xl font-bold mb-3">{tool.title}</h3>
-                                    <p className="text-muted-foreground mb-8 flex-grow pr-4 leading-relaxed font-medium">{tool.description}</p>
-
-                                    <div className="flex items-center font-bold text-sm text-foreground mt-auto bg-background/50 w-fit px-4 py-2 rounded-full backdrop-blur-md border border-border group-hover:border-indigo-500/30">
-                                        Try it now <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+                                    {/* Animated Border/Glow */}
+                                    <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
+                                        <div className="absolute inset-0 bg-gradient-to-tr from-indigo-500/20 via-transparent to-transparent" />
                                     </div>
-                                </div>
-                            </div>
-                        </Link>
-                    )})}
-                </div>
-            </section>
+                                </Link>
+                            </motion.div>
+                        ))}
+                    </div>
+                </section>
 
-            <Footer />
+                {/* Footer Status */}
+                <footer className="py-12 border-t border-white/5 bg-[#020617]/50 backdrop-blur-xl">
+                    <div className="container mx-auto px-8 flex justify-between items-center text-[10px] font-black uppercase tracking-[0.4em] text-slate-600">
+                        <span>© 2026 GURUCRaft Pro</span>
+                        <div className="flex gap-8">
+                            <span>Terms</span>
+                            <span>Privacy</span>
+                            <span>API Docs</span>
+                        </div>
+                        <span>v4.2.1-Stable</span>
+                    </div>
+                </footer>
+            </div>
         </main>
     );
 }

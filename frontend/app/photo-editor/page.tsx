@@ -28,10 +28,12 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
 
+type ToolType = 'ai' | 'adjust' | 'filters' | 'crop' | 'layers';
+
 export default function AIPhotoEditorPage() {
     const [image, setImage] = useState<string | null>("https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?q=80&w=1200");
     const [isProcessing, setIsProcessing] = useState(false);
-    const [activeTool, setActiveTool] = useState<'adjust' | 'ai' | 'filters' | 'crop'>('ai');
+    const [activeTool, setActiveTool] = useState<ToolType>('ai');
     const [comparisonMode, setComparisonMode] = useState(false);
     const [settings, setSettings] = useState({
         brightness: 100,
@@ -40,15 +42,41 @@ export default function AIPhotoEditorPage() {
         upscale: 1,
     });
 
-    const runAITool = (tool: string) => {
+    const runAITool = async (tool: 'remove-bg' | 'upscale' | 'relight') => {
         setIsProcessing(true);
-        setTimeout(() => {
-            setIsProcessing(false);
-            // Simulated result
-            if (tool === 'remove-bg') {
-                setImage("https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?q=80&w=1200&fm=png&auto=format");
+        
+        try {
+            // In a real scenario, we'd send the actual file. 
+            // For this demonstration, we simulate the form data with the current image URL or a mock file.
+            const formData = new FormData();
+            formData.append("tool", tool);
+            
+            const endpoint = tool === 'remove-bg' ? '/api/v1/ai-lab/remove-bg' : 
+                             tool === 'upscale' ? '/api/v1/ai-lab/upscale' : 
+                             '/api/v1/ai-lab/relight';
+
+            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'}${endpoint}`, {
+                method: 'POST',
+                body: formData
+            });
+
+            if (!response.ok) throw new Error("AI Core processing failed");
+
+            const data = await response.json();
+            if (data.status === "success" && data.output_url) {
+                setImage(data.output_url);
             }
-        }, 2000);
+        } catch (error) {
+            console.error(`AI Error (${tool}):`, error);
+            // Fallback mock logic if API is unreachable
+            setTimeout(() => {
+                if (tool === 'remove-bg') {
+                    setImage("https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?q=80&w=1200&fm=png&auto=format");
+                }
+            }, 1000);
+        } finally {
+            setIsProcessing(false);
+        }
     };
 
     return (
@@ -97,7 +125,7 @@ export default function AIPhotoEditorPage() {
                     ].map(tool => (
                         <button
                             key={tool.id}
-                            onClick={() => setActiveTool(tool.id as any)}
+                            onClick={() => setActiveTool(tool.id as ToolType)}
                             className={cn(
                                 "flex flex-col items-center gap-1.5 transition-all group",
                                 activeTool === tool.id ? "text-indigo-400" : "text-slate-600 hover:text-slate-300"

@@ -18,7 +18,7 @@ router = APIRouter()
 @router.get("/stats", summary="Get Admin Dashboard Stats")
 def get_dashboard_stats(
     db: Session = Depends(database.get_db),
-    current_user: models.User = Depends(auth.get_current_user),
+    current_user: models.User = Depends(auth.require_admin),
 ):
     from core.models import ContactSubmission, Page
 
@@ -57,7 +57,7 @@ def list_posts(db: Session = Depends(database.get_db)):
 def create_post(
     post: dict, # Using dict for flexibility or import schemas.blog.PostCreate
     db: Session = Depends(database.get_db),
-    current_user: models.User = Depends(auth.get_current_user),
+    current_user: models.User = Depends(auth.require_admin),
 ):
     from core.models import Post
     db_post = Post(
@@ -78,7 +78,7 @@ def update_post(
     post_id: int,
     post: dict,
     db: Session = Depends(database.get_db),
-    current_user: models.User = Depends(auth.get_current_user),
+    current_user: models.User = Depends(auth.require_admin),
 ):
     from core.models import Post
     db_post = db.query(Post).filter(Post.id == post_id).first()
@@ -98,7 +98,7 @@ def update_post(
 def delete_post(
     post_id: int,
     db: Session = Depends(database.get_db),
-    current_user: models.User = Depends(auth.get_current_user),
+    current_user: models.User = Depends(auth.require_admin),
 ):
     from core.models import Post
     db_post = db.query(Post).filter(Post.id == post_id).first()
@@ -132,7 +132,7 @@ UPLOAD_DIR = Path("static/uploads")
 async def upload_image(
     file: UploadFile = File(...),
     db: Session = Depends(database.get_db),
-    current_user: models.User = Depends(auth.get_current_user),
+    current_user: models.User = Depends(auth.require_admin),
 ):
     try:
         UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
@@ -170,7 +170,7 @@ async def upload_image(
 async def bulk_url_import(
     request_data: Dict[str, Any],
     db: Session = Depends(database.get_db),
-    current_user: models.User = Depends(auth.get_current_user),
+    current_user: models.User = Depends(auth.require_admin),
 ):
     import urllib.request
     from core.models import Media
@@ -257,7 +257,7 @@ def update_segment_content(
     segment: str,
     content: Dict[str, Any],
     db: Session = Depends(database.get_db),
-    current_user: models.User = Depends(auth.get_current_user),
+    current_user: models.User = Depends(auth.require_admin),
 ):
     try:
         from repositories.cms_ssot import get_ssot_page_content, update_ssot_page_content

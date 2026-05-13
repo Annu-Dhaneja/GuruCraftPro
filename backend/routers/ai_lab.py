@@ -157,6 +157,46 @@ async def virtual_try_on(
             status_code=500
         )
 
+@router.post("/remove-bg")
+async def remove_background(image: UploadFile = File(...)):
+    """
+    Simulated AI Background Removal.
+    In production, this would use 'rembg' or a similar model.
+    """
+    await asyncio.sleep(1.5) # Simulate processing
+    return JSONResponse(content={
+        "status": "success",
+        "mode": "remove-bg",
+        "output_url": "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?q=80&w=1200&fm=png&auto=format", # Mock PNG result
+        "message": "Background removed successfully (Simulated)"
+    })
+
+@router.post("/upscale")
+async def ai_upscale(image: UploadFile = File(...)):
+    """
+    Simulated AI 4X Upscaling.
+    """
+    await asyncio.sleep(2.5) # Simulate heavy processing
+    return JSONResponse(content={
+        "status": "success",
+        "mode": "upscale",
+        "output_url": "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?q=80&w=2400", # Mock high-res result
+        "message": "Image upscaled to 4K successfully (Simulated)"
+    })
+
+@router.post("/relight")
+async def ai_relight(image: UploadFile = File(...)):
+    """
+    Simulated AI Studio Lighting.
+    """
+    await asyncio.sleep(2.0)
+    return JSONResponse(content={
+        "status": "success",
+        "mode": "relight",
+        "output_url": "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?q=80&w=1200",
+        "message": "Studio lighting applied successfully (Simulated)"
+    })
+
 # ... Keep other endpoints mock or disabled if they rely on OpenAI ...
 # For now, let's keep them simply returning errors or mocks if called
 # since user only has Google key.
