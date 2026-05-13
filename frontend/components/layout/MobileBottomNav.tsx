@@ -44,7 +44,11 @@ export function MobileBottomNav() {
     const pathname = usePathname();
 
     // Hide bottom nav on dashboard or admin pages if they have their own navigation
-    if (pathname && (pathname.startsWith('/admin'))) {
+    if (pathname && (
+        pathname.startsWith('/admin') ||
+        pathname.startsWith('/login') ||
+        pathname.startsWith('/signup')
+    )) {
         return null;
     }
 
