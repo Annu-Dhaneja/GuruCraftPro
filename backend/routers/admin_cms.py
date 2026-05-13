@@ -182,7 +182,11 @@ async def bulk_url_import(
     results = []
     
     # Ensure upload directory exists
-    UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
+    try:
+        UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
+    except Exception as e:
+        print(f"Bulk Import Warning: Could not create directory {UPLOAD_DIR}: {e}")
+        # Note: We continue because if the directory already exists (baked into the build), it might still work.
     
     for url in urls:
         if not url or not url.startswith("http"):

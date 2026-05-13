@@ -13,7 +13,10 @@ router = APIRouter()
 
 # Directory for wardrobe uploads
 UPLOAD_DIR = Path("static/uploads/wardrobe")
-UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
+try:
+    UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
+except Exception as e:
+    print(f"Startup Warning: Could not create upload directory {UPLOAD_DIR}: {e}")
 
 @router.get("/suggest", summary="Get 7-day outfit suggestion")
 def suggest_outfits(
