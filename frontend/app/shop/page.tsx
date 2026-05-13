@@ -16,6 +16,7 @@ import {
     X,
     Check
 } from "lucide-react";
+import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { useCartStore } from "@/store/cartStore"; // I'll create this store next
