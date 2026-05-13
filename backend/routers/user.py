@@ -85,13 +85,17 @@ async def signup(
                 )
 
         # Create user
+        # Check if this is the very first user to assign Admin role
+        user_count = db.query(models.User).count()
+        assigned_role = "admin" if user_count == 0 else "user"
+
         hashed = auth.get_password_hash(body.password)
         new_user = models.User(
             username=body.username,
             hashed_password=hashed,
             name=body.name or body.username,
             email=body.email if body.email else None,
-            role="admin",
+            role=assigned_role,
         )
         db.add(new_user)
         db.commit()
