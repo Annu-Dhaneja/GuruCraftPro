@@ -88,9 +88,13 @@ app.include_router(wedding.router, prefix="/api/v1/wedding", tags=["wedding"])
 
 # ── Static Files ─────────────────────────────────────────────────────
 static_path = os.path.join(os.path.dirname(__file__), "static")
-os.makedirs(os.path.join(static_path, "uploads"), exist_ok=True)
+try:
+    os.makedirs(os.path.join(static_path, "uploads"), exist_ok=True)
+except Exception as e:
+    print(f"Startup Warning: Could not create static uploads directory: {e}")
 
-app.mount("/static", StaticFiles(directory=static_path), name="static")
+if os.path.exists(static_path):
+    app.mount("/static", StaticFiles(directory=static_path), name="static")
 
 # Mount frontend images if local
 frontend_images = os.path.join(os.path.dirname(__file__), "..", "frontend", "public", "images")
