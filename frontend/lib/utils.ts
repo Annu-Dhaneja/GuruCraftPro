@@ -6,8 +6,7 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export function getApiUrl(path: string = "") {
-  const defaultProdUrl = "https://virtual-trys.onrender.com";
-  let baseUrl = process.env.NEXT_PUBLIC_API_URL || defaultProdUrl;
+  let baseUrl = process.env.NEXT_PUBLIC_API_URL || "";
 
   // Ensure absolute URL on server-side if baseUrl is relative
   if (typeof window === 'undefined' && !baseUrl.startsWith('http')) {
@@ -17,7 +16,7 @@ export function getApiUrl(path: string = "") {
       baseUrl = `https://${vUrl}${baseUrl.startsWith('/') ? '' : '/'}${baseUrl}`;
     } else {
       // Fallback for local server-side if no VERCEL_URL
-      baseUrl = defaultProdUrl;
+      baseUrl = "";
     }
   }
 
