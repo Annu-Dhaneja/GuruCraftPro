@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { ServiceTemplate } from "@/components/services/ServiceTemplate";
-import { Footer } from "@/components/footer/Footer";
 import { getApiUrl, safeFetch } from "@/lib/utils";
 import { notFound } from "next/navigation";
 
@@ -88,7 +87,7 @@ export default async function ServicePage({ params }: { params: Promise<{ slug: 
         )}
         
         <ServiceTemplate data={safeData} slug={slug} />
-        <Footer />
     </main>
   );
 }
+

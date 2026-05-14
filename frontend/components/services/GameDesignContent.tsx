@@ -16,7 +16,10 @@ import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import Link from "next/link";
 
-export function GameDesignContent() {
+export function GameDesignContent({ data }: { data?: any }) {
+  const safeHero = data?.hero || {};
+  const safeFeatures = data?.features || {};
+
   const containerVariants = {
     initial: { opacity: 0 },
     whileInView: { opacity: 1 },
@@ -50,7 +53,7 @@ export function GameDesignContent() {
                 className="mb-8 inline-flex items-center gap-3 px-6 py-2 rounded-xl bg-cyan-500/10 border border-cyan-500/20 backdrop-blur-xl group cursor-pointer"
             >
                 <div className="w-2 h-2 rounded-full bg-cyan-500 animate-ping" />
-                <span className="text-xs font-bold tracking-[0.4em] uppercase text-cyan-300">Next Gen Assets</span>
+                <span className="text-xs font-bold tracking-[0.4em] uppercase text-cyan-300">{safeHero.badge || "Next Gen Assets"}</span>
             </motion.div>
 
             <motion.h1 
@@ -59,9 +62,9 @@ export function GameDesignContent() {
                 transition={{ duration: 1, ease: "circOut" }}
                 className="text-7xl md:text-[10rem] font-black tracking-tighter mb-8 italic"
             >
-                LEVEL <br />
+                {safeHero.title_prefix || "LEVEL"} <br />
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-purple-500 to-pink-500 drop-shadow-[0_0_30px_rgba(34,211,238,0.4)] uppercase">
-                    BEYOND
+                    {safeHero.title_highlight || "BEYOND"}
                 </span>
             </motion.h1>
 
@@ -71,8 +74,7 @@ export function GameDesignContent() {
                 transition={{ duration: 0.8, delay: 0.4 }}
                 className="max-w-3xl mx-auto text-xl md:text-2xl text-zinc-400 font-medium mb-16 leading-relaxed"
             >
-                We architect immersive digital realms. High-fidelity 3D assets, cinematic environments, 
-                and core gameplay mechanics crafted for the boldest creators.
+                {safeHero.description || "We architect immersive digital realms. High-fidelity 3D assets, cinematic environments, and core gameplay mechanics crafted for the boldest creators."}
             </motion.p>
 
             <motion.div
@@ -94,27 +96,29 @@ export function GameDesignContent() {
       {/* ── Capabilities Grid ─────────────────────────── */}
       <section className="py-40 bg-[#050505]">
         <div className="container px-4 text-center mb-32">
-            <h2 className="text-5xl md:text-8xl font-black mb-8 italic">POWER SYSTEM</h2>
-            <p className="text-zinc-500 text-xl">Integrated solutions for AAA-Grade Game Architecture.</p>
+            <h2 className="text-5xl md:text-8xl font-black mb-8 italic">{safeFeatures.title || "POWER SYSTEM"}</h2>
+            <p className="text-zinc-500 text-xl">{safeFeatures.description || "Integrated solutions for AAA-Grade Game Architecture."}</p>
         </div>
 
         <motion.div 
             variants={containerVariants}
             className="container px-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8"
         >
-            {[
-                { icon: Layers, title: "Environment", desc: "Procedural world-building & cinematic lighting." },
-                { icon: Box, title: "3D Assets", desc: "Optimized high-poly to low-poly modeling." },
-                { icon: Zap, title: "FX System", desc: "Advanced particle effects & visual impact." },
-                { icon: Cpu, title: "AI Logic", desc: "Complex NPC behavior & state machines." }
-            ].map((skill, i) => (
+            {(safeFeatures.items || [
+                { icon: "Layers", title: "Environment", desc: "Procedural world-building & cinematic lighting." },
+                { icon: "Box", title: "3D Assets", desc: "Optimized high-poly to low-poly modeling." },
+                { icon: "Zap", title: "FX System", desc: "Advanced particle effects & visual impact." },
+                { icon: "Cpu", title: "AI Logic", desc: "Complex NPC behavior & state machines." }
+            ]).map((skill: any, i: number) => (
                 <motion.div
                     key={i}
                     variants={itemVariants}
                     className="p-10 rounded-[40px] border border-white/5 bg-white/[0.03] backdrop-blur-3xl hover:border-cyan-500/50 hover:bg-cyan-500/[0.05] transition-all group"
                 >
                     <div className="w-16 h-16 rounded-2xl bg-cyan-500/10 flex items-center justify-center mb-8 border border-cyan-500/20 group-hover:scale-110 transition-transform">
-                        <skill.icon className="w-8 h-8 text-cyan-400" />
+                        <div className="w-8 h-8 text-cyan-400 flex items-center justify-center">
+                            {skill.icon === "Layers" ? <Layers /> : skill.icon === "Box" ? <Box /> : skill.icon === "Cpu" ? <Cpu /> : <Zap />}
+                        </div>
                     </div>
                     <h3 className="text-3xl font-bold mb-4">{skill.title}</h3>
                     <p className="text-zinc-500 leading-relaxed font-medium">{skill.desc}</p>

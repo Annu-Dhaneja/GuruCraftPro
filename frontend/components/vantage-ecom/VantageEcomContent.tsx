@@ -17,8 +17,11 @@ import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import Link from "next/link";
 
-export function VantageEcomContent() {
-  const stats = [
+export function VantageEcomContent({ data }: { data?: any }) {
+  const safeHero = data?.hero || {};
+  const safeFeatures = data?.features || {};
+  
+  const stats = safeHero.stats || [
     { label: "Conversion Lift", value: "+40%" },
     { label: "Page Speed", value: "< 1.2s" },
     { label: "Uptime", value: "99.9%" },
@@ -42,18 +45,16 @@ export function VantageEcomContent() {
                 className="space-y-8"
             >
                 <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-600/10 border border-blue-600/20 text-blue-600 text-sm font-bold uppercase tracking-widest">
-                    <Zap className="w-4 h-4 fill-blue-600" /> VANTAGE PLATFORM V2.0
+                    <Zap className="w-4 h-4 fill-blue-600" /> {safeHero.badge || "VANTAGE PLATFORM V2.0"}
                 </div>
                 
                 <h1 className="text-6xl md:text-8xl font-black tracking-tight leading-[0.9] text-slate-900">
-                    The Future of <br />
-                    <span className="text-blue-600">E-Commerce</span>
+                    {safeHero.title_prefix || "The Future of"} <br />
+                    <span className="text-blue-600">{safeHero.title_highlight || "E-Commerce"}</span>
                 </h1>
 
                 <p className="max-w-2xl text-xl md:text-2xl text-slate-500 font-light leading-relaxed">
-                    Vantage is more than a store—it's a high-performance ecosystem. 
-                    AI-driven automation, lightning-fast interfaces, and data-backed 
-                    conversion science.
+                    {safeHero.description || "Vantage is more than a store—it's a high-performance ecosystem. AI-driven automation, lightning-fast interfaces, and data-backed conversion science."}
                 </p>
 
                 <div className="flex flex-wrap gap-6 pt-4">
@@ -66,7 +67,7 @@ export function VantageEcomContent() {
                 </div>
 
                 <div className="pt-12 grid grid-cols-2 md:grid-cols-4 gap-8">
-                    {stats.map((s, i) => (
+                    {stats.map((s: any, i: number) => (
                         <div key={i} className="space-y-1">
                             <p className="text-3xl font-black text-slate-900">{s.value}</p>
                             <p className="text-sm font-bold text-slate-400 uppercase tracking-widest">{s.label}</p>
@@ -107,22 +108,21 @@ export function VantageEcomContent() {
       {/* ── Feature Grid ─────────────────────────────────── */}
       <section className="py-32 container px-4">
         <div className="text-center max-w-3xl mx-auto mb-24">
-            <h2 className="text-4xl md:text-6xl font-black mb-8 tracking-tight">Built for Scale</h2>
+            <h2 className="text-4xl md:text-6xl font-black mb-8 tracking-tight">{safeFeatures.title || "Built for Scale"}</h2>
             <p className="text-xl text-slate-500 font-light">
-                Enterprise-grade architecture tailored for high-growth brands. 
-                Everything you need to dominate your niche.
+                {safeFeatures.description || "Enterprise-grade architecture tailored for high-growth brands. Everything you need to dominate your niche."}
             </p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
-            {[
-                { icon: Layout, title: "Modern Storefront", desc: "Headless CMS integration with Next.js for sub-second page loads." },
-                { icon: ShoppingCart, title: "Smart Checkout", desc: "1-click payments and dynamic cart recovery systems." },
-                { icon: BarChart3, title: "Deep Analytics", desc: "Track every customer touchpoint with integrated BI tools." },
-                { icon: Globe, title: "Global Ready", desc: "Multi-currency, multi-language, and localized tax systems." },
-                { icon: ShieldCheck, title: "Safe & Secure", desc: "PCI compliance and advanced fraud protection built-in." },
-                { icon: Cloud, title: "Cloud Scale", desc: "Auto-scaling infrastructure to handle massive traffic spikes." }
-            ].map((f, i) => (
+            {(safeFeatures.items || [
+                { icon: "Layout", title: "Modern Storefront", desc: "Headless CMS integration with Next.js for sub-second page loads." },
+                { icon: "ShoppingCart", title: "Smart Checkout", desc: "1-click payments and dynamic cart recovery systems." },
+                { icon: "BarChart3", title: "Deep Analytics", desc: "Track every customer touchpoint with integrated BI tools." },
+                { icon: "Globe", title: "Global Ready", desc: "Multi-currency, multi-language, and localized tax systems." },
+                { icon: "ShieldCheck", title: "Safe & Secure", desc: "PCI compliance and advanced fraud protection built-in." },
+                { icon: "Cloud", title: "Cloud Scale", desc: "Auto-scaling infrastructure to handle massive traffic spikes." }
+            ]).map((f: any, i: number) => (
                 <motion.div
                     key={i}
                     initial={{ opacity: 0, y: 20 }}
@@ -132,7 +132,9 @@ export function VantageEcomContent() {
                     className="p-10 rounded-3xl bg-slate-50 border border-slate-100 hover:border-blue-600/20 hover:bg-blue-600/[0.02] transition-all group"
                 >
                     <div className="w-14 h-14 rounded-2xl bg-white shadow-sm flex items-center justify-center mb-8 group-hover:scale-110 transition-transform">
-                        <f.icon className="w-7 h-7 text-blue-600" />
+                        <div className="w-7 h-7 text-blue-600 flex items-center justify-center">
+                            {f.icon === "Layout" ? <Layout /> : f.icon === "ShoppingCart" ? <ShoppingCart /> : f.icon === "BarChart3" ? <BarChart3 /> : f.icon === "Globe" ? <Globe /> : f.icon === "ShieldCheck" ? <ShieldCheck /> : f.icon === "Cloud" ? <Cloud /> : <Zap />}
+                        </div>
                     </div>
                     <h3 className="text-2xl font-bold mb-4">{f.title}</h3>
                     <p className="text-slate-500 leading-relaxed">{f.desc}</p>

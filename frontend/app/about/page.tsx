@@ -8,7 +8,7 @@ import { ToolsWorkflow } from "@/components/about/ToolsWorkflow";
 import { ServicesPreview } from "@/components/about/ServicesPreview";
 import { TrustSection } from "@/components/about/TrustSection";
 import { AboutCTA } from "@/components/about/AboutCTA";
-import { Footer } from "@/components/footer/Footer";
+
 import { getApiUrl } from "@/lib/utils";
 
 export const metadata: Metadata = {
@@ -81,7 +81,8 @@ export default async function AboutPage() {
             <ServicesPreview data={safeData.services_preview} />
             <TrustSection data={safeData.trust_section} />
             <AboutCTA data={safeData.about_cta} />
-            <Footer />
+            
         </main>
     );
 }
+

@@ -9,7 +9,6 @@ import { PortfolioHero } from "@/components/portfolio/PortfolioHero";
 import { PortfolioGrid } from "@/components/portfolio/PortfolioGrid";
 import { PortfolioFilters } from "@/components/portfolio/PortfolioFilters";
 import { PortfolioCTA } from "@/components/portfolio/PortfolioCTA";
-import { Footer } from "@/components/footer/Footer";
 
 // --- Data Simulation ---
 // In a real app, this would come from a CMS or Database
@@ -356,7 +355,6 @@ export default async function PortfolioItemPage({ params }: PageProps) {
                     secondaryBtnText={config.ctaSecondary}
                     secondaryBtnLink={config.ctaSecondaryLink}
                 />
-                <Footer />
             </main>
         );
     }
@@ -386,7 +384,8 @@ export default async function PortfolioItemPage({ params }: PageProps) {
             />
             <ProjectGallery images={project.gallery} />
             <ProjectNavigation />
-            <Footer />
         </main>
     );
 }
+
+

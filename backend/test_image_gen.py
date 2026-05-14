@@ -1,14 +1,13 @@
-import os
-import google.generativeai as genai
+from google import genai
+from google.genai import types
 from dotenv import load_dotenv
-from PIL import Image
-import io
+import os
+import sys
 
 # Load env variables
 load_dotenv()
 
 # Redirect all output to file
-import sys
 sys.stdout = open("debug_image_gen.txt", "w")
 sys.stderr = sys.stdout
 
@@ -19,36 +18,32 @@ if not api_key:
     print("ERROR: No API Key found")
     exit(1)
 
-genai.configure(api_key=api_key)
+client = genai.Client(api_key=api_key)
 
 try:
-    # Target the alternative image generation model
-    model_name = 'gemini-2.5-flash-image'
+    # Target Imagen 3
+    model_name = 'imagen-3.0-generate-002'
     print(f"Testing model: {model_name}")
     
-    # Simple generation test
-    # Note: The exact syntax for image generation in the python SDK might differ 
-    # from generate_content. For some versions it is model.generate_images or similar.
-    # We will try standard generate_content first as some multimodal models return images in parts.
-    
-    model = genai.GenerativeModel(model_name)
-    
-    response = model.generate_content("Generate an image of a futuristic fashion runway with neon lights.")
+    response = client.models.generate_images(
+        model=model_name,
+        prompt='A futuristic fashion runway with neon lights, high fashion models, photorealistic style',
+        config=types.GenerateImagesConfig(
+            number_of_images=1,
+            output_mime_type='image/jpeg'
+        )
+    )
     
     print(f"Response Type: {type(response)}")
-    print(f"Response Parts: {len(response.parts)}")
     
-    for part in response.parts:
-        print(f"Part mime_type: {part.mime_type}")
-        if part.mime_type == 'image/jpeg':
-            print("SUCCESS: Image generated!")
-            # Save it to prove it works
-            img = Image.open(io.BytesIO(part.inline_data.data))
-            img.save("test_gen_output.jpg")
-            print("Saved to test_gen_output.jpg")
+    for i, generated_image in enumerate(response.generated_images):
+        print(f"SUCCESS: Image {i} generated!")
+        image = generated_image.image
+        image.save(f"test_gen_output_{i}.jpg")
+        print(f"Saved to test_gen_output_{i}.jpg")
     
-    if not response.parts:
-        print(f"Response text (if any): {response.text}")
+    if not response.generated_images:
+        print("No images generated.")
 
 except Exception as e:
     import traceback

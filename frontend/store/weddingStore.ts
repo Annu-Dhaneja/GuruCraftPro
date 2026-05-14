@@ -44,7 +44,7 @@ interface WeddingPlan {
 
 interface WeddingStore {
     plan: WeddingPlan | null;
-    stats: any;
+    stats: Record<string, number | string | any> | null;
     tasks: WeddingTask[];
     guests: WeddingGuest[];
     vendors: WeddingVendor[];
@@ -81,8 +81,9 @@ export const useWeddingStore = create<WeddingStore>((set) => ({
                     loading: false
                 });
             }
-        } catch (error: any) {
-            set({ error: error.message, loading: false });
+        } catch (error: unknown) {
+            const errorMessage = error instanceof Error ? error.message : 'An unknown error occurred';
+            set({ error: errorMessage, loading: false });
         }
     },
 }));

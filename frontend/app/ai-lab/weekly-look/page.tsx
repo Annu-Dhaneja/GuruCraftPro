@@ -5,7 +5,6 @@ import { Sparkles, Calendar, Loader2, Info, ChevronRight, User, Baby, Graduation
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { getApiUrl, fetchWithAuth } from "@/lib/utils";
-import { Footer } from "@/components/footer/Footer";
 
 const STYLES = [
     { id: "Formal", label: "Formal", desc: "Suits & blazers" },
@@ -258,7 +257,7 @@ export default function WeeklyLookPage() {
                     )}
                 </div>
             </div>
-            <Footer />
-        </main>
+                    </main>
     );
 }
+

@@ -63,14 +63,14 @@ export function MobileBottomNav() {
                             key={item.label}
                             href={item.href}
                             className={cn(
-                                "flex flex-col items-center justify-center gap-1 w-16 h-16 rounded-[2rem] transition-all duration-500",
+                                "flex flex-col items-center justify-center gap-1 flex-1 h-14 rounded-[2rem] transition-all duration-500",
                                 isActive 
-                                    ? "bg-primary text-white scale-110 shadow-[0_0_20px_rgba(124,58,237,0.4)]" 
+                                    ? "bg-primary text-white scale-105 shadow-[0_0_20px_rgba(124,58,237,0.4)]" 
                                     : "text-slate-400 hover:text-white"
                             )}
                         >
-                            <item.icon className={cn("w-6 h-6", isActive ? "animate-pulse" : "")} />
-                            <span className="text-[10px] font-bold uppercase tracking-tighter">
+                            <item.icon className={cn("w-5 h-5", isActive ? "animate-pulse" : "")} />
+                            <span className="text-[9px] font-bold uppercase tracking-tighter">
                                 {item.label}
                             </span>
                         </Link>

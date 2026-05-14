@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { RequestHero } from "@/components/request/RequestHero";
 import { ProjectIntakeForm } from "@/components/request/ProjectIntakeForm";
-import { Footer } from "@/components/footer/Footer";
+
 
 export const metadata: Metadata = {
     title: "Request Custom Design | Annu Design Studio",
@@ -13,7 +13,8 @@ export default function RequestPage() {
         <main className="min-h-screen bg-background flex flex-col pt-16">
             <RequestHero />
             <ProjectIntakeForm />
-            <Footer />
+            
         </main>
     );
 }
+

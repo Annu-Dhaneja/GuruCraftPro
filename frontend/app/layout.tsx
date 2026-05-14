@@ -65,6 +65,7 @@ import { SiteConfigProvider } from "@/components/layout/SiteConfigProvider";
 import WhatsAppButton from "@/components/ui/WhatsAppButton";
 import { CartSidebar } from "@/components/layout/CartSidebar";
 import { Toaster } from "sonner";
+import { Footer } from "@/components/footer/Footer";
 
 export default function RootLayout({
   children,
@@ -84,7 +85,10 @@ export default function RootLayout({
         >
           <SiteConfigProvider>
             <Navbar />
-            {children}
+            <main className="min-h-[70vh]">
+              {children}
+            </main>
+            <Footer />
             <Toaster position="top-right" richColors closeButton />
             <CartSidebar />
             <MobileBottomNav />
@@ -95,3 +99,4 @@ export default function RootLayout({
     </html>
   );
 }
+

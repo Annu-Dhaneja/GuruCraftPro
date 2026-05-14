@@ -13,9 +13,12 @@ def get_wedding_dashboard(db: Session = Depends(get_db)):
     plan = db.query(models.WeddingPlan).first()
     if not plan:
         # Create a default plan if none exists
+        from datetime import datetime, timedelta
+        future_date = (datetime.now() + timedelta(days=120)).strftime("%Y-%m-%d")
         plan = models.WeddingPlan(
             partner_names="Aditya & Ananya",
             location="Udaipur Palace",
+            wedding_date=future_date,
             total_budget=5000000,
             guest_count=250
         )
@@ -36,8 +39,18 @@ def get_wedding_dashboard(db: Session = Depends(get_db)):
     rsvp_confirmed = len([g for g in guests if g.status == "confirmed"])
     total_spent = sum([b.spent_amount for b in budget])
 
+    # Calculate real days remaining
+    days_rem = 0
+    if plan.wedding_date:
+        from datetime import datetime
+        try:
+            target = datetime.strptime(plan.wedding_date, "%Y-%m-%d")
+            days_rem = (target - datetime.now()).days
+        except:
+            days_rem = 0
+
     stats = {
-        "days_remaining": 42, # Mocked for now, can calculate from plan.wedding_date
+        "days_remaining": max(0, days_rem),
         "tasks_completed": f"{int(progress)}%",
         "guest_count": str(len(guests)),
         "budget_spent": f"₹{total_spent / 100000:.1f}L",

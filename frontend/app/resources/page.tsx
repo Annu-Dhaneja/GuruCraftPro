@@ -29,7 +29,7 @@ import { TutorialList } from "@/components/resources/TutorialList";
 import { PromptLibrary } from "@/components/resources/PromptLibrary";
 import { FreeResources } from "@/components/resources/FreeResources";
 import { NewsletterCTA } from "@/components/resources/NewsletterCTA";
-import { Footer } from "@/components/footer/Footer";
+
 import { getApiUrl, safeFetch } from "@/lib/utils";
 
 export const dynamic = 'force-dynamic';
@@ -57,7 +57,8 @@ export default async function LearnPage() {
             <PromptLibrary data={resourcesData.resources_prompts} />
             <FreeResources data={resourcesData.resources_free_resources} />
             <NewsletterCTA data={resourcesData.resources_newsletter} />
-            <Footer />
+            
         </main>
     );
 }
+

@@ -13,8 +13,13 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
   useEffect(() => {
     const token = localStorage.getItem("token");
+    const role = localStorage.getItem("role");
+    
     if (!token) {
       router.push("/login");
+    } else if (role !== "admin") {
+      // If logged in but not an admin, redirect to user dashboard
+      router.push("/dashboard");
     } else {
       setIsAuthorized(true);
     }

@@ -18,7 +18,7 @@ import {
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import Image from "next/image";
-import { Footer } from "@/components/footer/Footer";
+
 import { getApiUrl, fetchWithAuth } from "@/lib/utils";
 
 const defaultCategories = [
@@ -226,8 +226,9 @@ export default function ServicesPage() {
         </motion.div>
       </section>
 
-      <Footer />
+      
     </div>
   );
 }
+
 

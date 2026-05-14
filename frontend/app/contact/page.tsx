@@ -11,7 +11,7 @@ import { AlternateContacts } from "@/components/contact/AlternateContacts";
 import { ContactProcess } from "@/components/contact/ContactProcess";
 import { ContactFAQ } from "@/components/contact/ContactFAQ";
 import { ContactCTA } from "@/components/contact/ContactCTA";
-import { Footer } from "@/components/footer/Footer";
+
 import { getApiUrl, safeFetch } from "@/lib/utils";
 
 export const dynamic = 'force-dynamic';
@@ -67,7 +67,8 @@ export default async function ContactPage() {
             <ContactProcess data={safeData.process || {}} />
             <ContactFAQ data={safeData.faq || []} />
             <ContactCTA data={safeData.cta || {}} />
-            <Footer />
+            
         </main>
     );
 }
+

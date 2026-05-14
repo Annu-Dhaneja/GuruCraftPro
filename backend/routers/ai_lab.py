@@ -8,16 +8,19 @@ import os
 import io
 import urllib.request
 from PIL import Image
-import google.generativeai as genai
+from google import genai
 from core.config import settings
+
+from core.auth import get_current_user, require_admin
+from core import models
 
 router = APIRouter()
 
-# Initialize Gemini
+# Initialize Gemini Client
 # Using NANO_BANANA_API_KEY as it holds the Google Key in .env currently
-# In a real scenario, we should rename this env var, but to avoid confusing the user further, we use it.
+client = None
 if settings.NANO_BANANA_API_KEY:
-    genai.configure(api_key=settings.NANO_BANANA_API_KEY)
+    client = genai.Client(api_key=settings.NANO_BANANA_API_KEY)
 
 class GenerationRequest(BaseModel):
     prompt: str
@@ -29,16 +32,17 @@ async def virtual_try_on(
     garment_image: Optional[UploadFile] = File(None),
     user_image_url: Optional[str] = Form(None),
     garment_image_url: Optional[str] = Form(None),
-    prompt: Optional[str] = Form(None)
+    prompt: Optional[str] = Form(None),
+    current_user: models.User = Depends(get_current_user)
 ):
     """
-    Virtual Try-On Analysis using Google Gemini 1.5 Flash (Vision).
+    Virtual Try-On Analysis using Google Gemini.
     Returns a text description of the fit/style, NOT a generated image.
     Supports either direct file upload or image URLs.
     """
-    if not settings.NANO_BANANA_API_KEY:
+    if not client:
          return JSONResponse(
-            content={"status": "error", "message": "Backend Error: Google API Key is missing."},
+            content={"status": "error", "message": "Backend Error: Google API Client is not initialized (check API key)."},
             status_code=500
         )
         
@@ -91,43 +95,45 @@ async def virtual_try_on(
 
         inputs.append(prompt_text)
 
-        # Gemini generation trigger (Sync call wrapped)
+        # Gemini generation trigger
         # Dynamically find a working model
-        valid_model_name = "gemini-2.5-flash" # Updated default based on available models
+        valid_model_name = "gemini-2.0-flash" 
         
         try:
             # List available models to find a valid one
             available_models = []
-            for m in genai.list_models():
-                if 'generateContent' in m.supported_generation_methods:
+            for m in client.models.list():
+                # In the new SDK, m.supported_generation_methods might be different or not present in the same way
+                # We check if it's a 'models/' name and not 'tunedModels/'
+                if m.name.startswith("models/"):
                     available_models.append(m.name)
             
             print(f"DEBUG: Available Gemini Models: {available_models}")
             
-            # Smart selection logic
-            if "models/gemini-2.5-flash" in available_models:
-                valid_model_name = "gemini-2.5-flash"
-            elif "models/gemini-2.5-pro" in available_models:
-                valid_model_name = "gemini-2.5-pro"
-            elif "models/gemini-2.0-flash" in available_models:
+            # Smart selection logic (using full model names with prefix)
+            if "models/gemini-2.0-flash" in available_models:
                 valid_model_name = "gemini-2.0-flash"
             elif "models/gemini-1.5-flash" in available_models:
                 valid_model_name = "gemini-1.5-flash"
+            elif available_models:
+                # Pick the first one that looks like a flash or pro model
+                valid_model_name = next((m for m in available_models if "flash" in m or "pro" in m), available_models[0])
+                # Remove prefix if needed (the SDK usually handles it, but let's be safe)
+                if valid_model_name.startswith("models/"):
+                    valid_model_name = valid_model_name[7:]
             
-            # If user has absolutely no valid models
-            if not available_models:
-                raise Exception("No available models found for this API Key.")
-                
         except Exception as list_err:
             print(f"Warning determining models: {list_err}")
-            # Fallback to hardcoded if list fails
-            valid_model_name = "gemini-2.5-flash"
+            # Fallback
+            valid_model_name = "gemini-2.0-flash"
 
         print(f"DEBUG: Selected Model: {valid_model_name}")
-        model = genai.GenerativeModel(valid_model_name)
 
         loop = asyncio.get_running_loop()
-        response = await loop.run_in_executor(None, lambda: model.generate_content(inputs))
+        response = await loop.run_in_executor(
+            None, 
+            lambda: client.models.generate_content(model=valid_model_name, contents=inputs)
+        )
         
         analysis_text = response.text
         
@@ -158,7 +164,10 @@ async def virtual_try_on(
         )
 
 @router.post("/remove-bg")
-async def remove_background(image: UploadFile = File(...)):
+async def remove_background(
+    image: UploadFile = File(...),
+    current_user: models.User = Depends(get_current_user)
+):
     """
     Simulated AI Background Removal.
     In production, this would use 'rembg' or a similar model.
@@ -172,7 +181,10 @@ async def remove_background(image: UploadFile = File(...)):
     })
 
 @router.post("/upscale")
-async def ai_upscale(image: UploadFile = File(...)):
+async def ai_upscale(
+    image: UploadFile = File(...),
+    current_user: models.User = Depends(get_current_user)
+):
     """
     Simulated AI 4X Upscaling.
     """
@@ -185,7 +197,10 @@ async def ai_upscale(image: UploadFile = File(...)):
     })
 
 @router.post("/relight")
-async def ai_relight(image: UploadFile = File(...)):
+async def ai_relight(
+    image: UploadFile = File(...),
+    current_user: models.User = Depends(get_current_user)
+):
     """
     Simulated AI Studio Lighting.
     """
@@ -202,7 +217,10 @@ async def ai_relight(image: UploadFile = File(...)):
 # since user only has Google key.
 
 @router.post("/generate-outfit")
-async def generate_outfit(request: GenerationRequest):
+async def generate_outfit(
+    request: GenerationRequest,
+    current_user: models.User = Depends(get_current_user)
+):
     return JSONResponse(content={
         "status": "success", 
         "output_url": "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=800&q=80",
@@ -210,7 +228,10 @@ async def generate_outfit(request: GenerationRequest):
     })
 
 @router.post("/generate-logo")
-async def generate_logo(request: GenerationRequest):
+async def generate_logo(
+    request: GenerationRequest,
+    current_user: models.User = Depends(get_current_user)
+):
     return JSONResponse(content={
         "status": "success", 
         "output_url": "https://images.unsplash.com/photo-1626785774573-4b79931256ce?w=800&q=80",
@@ -218,7 +239,10 @@ async def generate_logo(request: GenerationRequest):
     })
 
 @router.post("/generate-sticker")
-async def generate_sticker(request: GenerationRequest):
+async def generate_sticker(
+    request: GenerationRequest,
+    current_user: models.User = Depends(get_current_user)
+):
     return JSONResponse(content={
         "status": "success", 
         "output_url": "https://cdn-icons-png.flaticon.com/512/4712/4712109.png",

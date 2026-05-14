@@ -156,7 +156,7 @@ export function FeaturesGrid({ items }: { items?: any[] }) {
                                 
                                 <div className="mt-auto">
                                     <div className="flex gap-2 mb-3">
-                                        {item.tags.map((tag: string) => (
+                                        {item.tags?.map((tag: string) => (
                                             <span key={tag} className="text-[9px] font-black tracking-widest uppercase px-2 py-0.5 rounded-full bg-white/5 border border-white/10 text-slate-500">
                                                 {tag}
                                             </span>

@@ -32,11 +32,11 @@ export default function LandingPage() {
             .catch(err => console.error("Home CMS fetch error:", err));
     }, []);
 
-    const hero = cmsData?.hero || {
+    const hero = cmsData?.["home-hero"] || cmsData?.hero || {
         badge: "Intelligence Beyond Design",
         headline_prefix: "GURU",
         headline_highlight: "CRAFT",
-        headline_suffix: "ULTRA PRO",
+        headline_suffix: "PRO",
         subheadline: "The world's first AI-powered luxury ecosystem merging Elite Graphics, Divine Artistry, and Strategic Commerce into one cinematic experience."
     };
 
@@ -211,27 +211,7 @@ export default function LandingPage() {
                 </div>
             </section>
 
-            {/* Footer */}
-            <footer className="py-20 border-t border-white/5 relative z-10 px-16">
-                <div className="flex flex-col md:flex-row justify-between items-center gap-12">
-                    <div className="flex items-center gap-4">
-                        <div className="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center font-black italic">GP</div>
-                        <span className="text-xl font-black uppercase tracking-tighter italic">GURUCRaft <span className="text-primary">Pro</span></span>
-                    </div>
-                    <div className="flex gap-12">
-                        {['Services', 'Ecosystem', 'Lab', 'Shop'].map(item => (
-                            <Link key={item} href="#" className="text-[10px] font-black uppercase tracking-widest text-slate-500 hover:text-white transition-colors">{item}</Link>
-                        ))}
-                    </div>
-                    <div className="flex items-center gap-8">
-                        <p className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-600">Production Version 4.2.0</p>
-                        <div className="flex gap-4">
-                            <Globe className="w-4 h-4 text-slate-600" />
-                            <ShieldCheck className="w-4 h-4 text-slate-600" />
-                        </div>
-                    </div>
-                </div>
-            </footer>
         </div>
     );
 }
+

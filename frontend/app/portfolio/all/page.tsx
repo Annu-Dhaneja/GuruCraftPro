@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { PortfolioAll } from "@/components/portfolio/PortfolioAll";
-import { Footer } from "@/components/footer/Footer";
 import { getApiUrl } from "@/lib/utils";
 
 export const metadata: Metadata = {
@@ -27,7 +26,7 @@ export default async function PortfolioAllPage() {
     return (
         <main className="min-h-screen bg-background flex flex-col">
             <PortfolioAll initialProjects={portfolioData.projects} />
-            <Footer />
-        </main>
+                    </main>
     );
 }
+

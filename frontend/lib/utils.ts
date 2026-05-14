@@ -68,12 +68,13 @@ export async function safeFetch(url: string, options: RequestInit = {}, timeout 
     });
     clearTimeout(id);
     return response;
-  } catch (error: any) {
+  } catch (error: unknown) {
     clearTimeout(id);
-    if (error.name === 'AbortError') {
+    const errorMessage = error instanceof Error ? error.message : String(error);
+    if (error instanceof Error && error.name === 'AbortError') {
       console.warn(`[CMS] Fetch timed out for URL: ${url} after ${timeout}ms`);
     } else {
-      console.error(`[CMS] Fetch error for URL: ${url}:`, error.message);
+      console.error(`[CMS] Fetch error for URL: ${url}:`, errorMessage);
     }
     return {
       ok: false,

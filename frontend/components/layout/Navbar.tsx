@@ -31,7 +31,10 @@ export function Navbar() {
         pathname.startsWith('/dashboard') || 
         pathname.startsWith('/admin') ||
         pathname.startsWith('/login') ||
-        pathname.startsWith('/signup')
+        pathname.startsWith('/signup') ||
+        pathname.startsWith('/ai-lab') ||
+        pathname.startsWith('/portfolio/') ||
+        pathname.startsWith('/wedding')
     )) {
         return null;
     }

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { FAQHero } from "@/components/faq/FAQHero";
 import { FAQAccordion } from "@/components/faq/FAQAccordion";
-import { Footer } from "@/components/footer/Footer";
+
 import { getApiUrl, safeFetch } from "@/lib/utils";
 
 export const metadata: Metadata = {
@@ -65,7 +65,8 @@ export default async function FAQPage() {
             
             <FAQHero />
             <FAQAccordion data={faqData} />
-            <Footer />
+            
         </main>
     );
 }
+

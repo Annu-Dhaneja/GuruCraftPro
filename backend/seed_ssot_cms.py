@@ -13,7 +13,7 @@ from repositories.cms_ssot import upsert_reusable_section, link_section_to_page,
 def seed_ssot_cms():
     db = SessionLocal()
     try:
-        print("🚀 Starting SSOT CMS Seeding...")
+        print("Starting SSOT CMS Seeding...")
         
         # 1. Global Settings
         print("--- Global Settings ---")
@@ -34,7 +34,7 @@ def seed_ssot_cms():
                 "twitter": "https://twitter.com/gurucraftpro"
             }
         })
-        print("✅ Global settings seeded.")
+        print("Global settings seeded.")
 
         # 2. About Page
         print("\n--- About Page ---")
@@ -116,7 +116,7 @@ def seed_ssot_cms():
         for i, sec in enumerate(about_sections):
             upsert_reusable_section(db, sec["slug"], sec["type"], sec["content"])
             link_section_to_page(db, "about", sec["slug"], order=i)
-        print("✅ About page seeded.")
+        print("About page seeded.")
 
         # 3. Services Page
         print("\n--- Services Page ---")
@@ -159,14 +159,14 @@ def seed_ssot_cms():
         for i, sec in enumerate(services_sections):
             upsert_reusable_section(db, sec["slug"], sec["type"], sec["content"])
             link_section_to_page(db, "services", sec["slug"], order=i)
-        print("✅ Services page seeded.")
+        print("Services page seeded.")
 
         db.commit()
-        print("\n✅ SSOT CMS Seeding COMPLETE!")
+        print("SSOT CMS Seeding COMPLETE!")
 
     except Exception as e:
         db.rollback()
-        print(f"❌ Error seeding SSOT CMS: {e}")
+        print(f"Error seeding SSOT CMS: {e}")
     finally:
         db.close()
 

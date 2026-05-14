@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { WeddingPlanContent } from "@/components/services/WeddingPlanContent";
-import { Footer } from "@/components/footer/Footer";
 import { getApiUrl, safeFetch } from "@/lib/utils";
 
 export const dynamic = 'force-dynamic';
@@ -41,8 +40,8 @@ export default async function WeddingPlanPage() {
     return (
         <main className="min-h-screen bg-[#FCFBF7]">
             <WeddingPlanContent data={weddingData} />
-            <Footer />
-        </main>
+                    </main>
     );
 }
+
 

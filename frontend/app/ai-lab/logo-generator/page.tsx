@@ -5,7 +5,7 @@ import { PenTool, Loader2, AlertCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Footer } from "@/components/footer/Footer";
+
 import { getApiUrl, fetchWithAuth } from "@/lib/utils";
 
 export default function LogoGeneratorPage() {
@@ -120,7 +120,8 @@ export default function LogoGeneratorPage() {
                     )}
                 </div>
             </div>
-            <Footer />
+            
         </main>
     );
 }
+

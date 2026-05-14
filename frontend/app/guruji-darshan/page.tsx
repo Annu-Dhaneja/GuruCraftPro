@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { GurujiDarshanContent } from "@/components/home/GurujiDarshanContent";
-import { Footer } from "@/components/footer/Footer";
+
 
 export const metadata: Metadata = {
     title: "Guruji Ke Sakshat Darshan | Annu Design Studio",
@@ -56,7 +56,8 @@ export default async function GurujiDarshanPage() {
             )}
             
             <GurujiDarshanContent data={safeData} />
-            <Footer />
+            
         </main>
     );
 }
+

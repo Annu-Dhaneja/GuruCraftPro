@@ -105,3 +105,34 @@ async def submit_contact_form(
         "id": db_contact.id,
         "message": "Thank you for reaching out! We received your request."
     }
+
+@router.get("/test-smtp")
+async def test_smtp_connection():
+    """
+    Debug endpoint to explicitly test SMTP credentials and connectivity.
+    This will reveal exactly why Vercel is failing to send emails.
+    """
+    try:
+        from services.email_service import email_service
+        import smtplib
+        
+        server = smtplib.SMTP(email_service.smtp_server, email_service.smtp_port, timeout=10)
+        server.set_debuglevel(1)
+        server.starttls()
+        
+        clean_password = email_service.sender_password.replace(" ", "")
+        if not clean_password:
+            return {"status": "error", "message": "SMTP_PASSWORD environment variable is MISSING on Vercel!"}
+            
+        server.login(email_service.sender_email, clean_password)
+        server.quit()
+        return {
+            "status": "success", 
+            "message": f"Successfully authenticated as {email_service.sender_email} on {email_service.smtp_server}:{email_service.smtp_port}"
+        }
+    except Exception as e:
+        return {
+            "status": "error",
+            "message": str(e),
+            "hint": "Check Vercel Environment Variables. If authentication failed, ensure you generated a Google App Password."
+        }

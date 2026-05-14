@@ -8,7 +8,6 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { Footer } from "@/components/footer/Footer";
 import { getApiUrl, fetchWithAuth } from "@/lib/utils";
 
 // --- Design Tokens & Constants ---
@@ -345,8 +344,7 @@ export default function ClothingConsultationPage() {
         </div>
       </section>
 
-      <Footer />
-      
+            
       <style jsx global>{`
         @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100;400;700;900&display=swap');
         .font-outfit { font-family: 'Outfit', sans-serif; }
@@ -361,3 +359,4 @@ export default function ClothingConsultationPage() {
     </main>
   );
 }
+
