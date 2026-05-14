@@ -1,102 +1,46 @@
-from typing import Optional, Dict, Any, List
-from sqlalchemy.orm import Session
-from core.models import Page, Section, ContentBlock
-from .base import BaseRepository
+"""
+Legacy CMS Repository - Now acts as a thin adapter to the V3 SSOT system.
+All legacy Page/Section/ContentBlock logic has been migrated to CMSPage/CMSComponent/CMSPageComponent.
+"""
 import json
+from typing import Optional, Dict, Any
+from sqlalchemy.orm import Session
+from core.models import CMSPage, CMSComponent, CMSPageComponent
+from repositories.cms_ssot import (
+    get_ssot_page_content, update_ssot_page_content, 
+    upsert_component, link_component_to_page
+)
 
-class CMSRepository(BaseRepository[Page]):
-    def __init__(self):
-        super().__init__(Page)
 
-    def get_page_by_slug(self, db: Session, slug: str) -> Optional[Page]:
-        return db.query(Page).filter(Page.slug == slug).first()
+class CMSRepository:
+    """Adapter that routes all legacy CMS calls to the V3 SSOT system."""
+
+    def get_page_by_slug(self, db: Session, slug: str) -> Optional[CMSPage]:
+        return db.query(CMSPage).filter(CMSPage.slug == slug).first()
 
     def get_flattened_content(self, db: Session, slug: str) -> Dict[str, Any]:
         """
-        Fetches all content blocks for a page and returns them as a 
-        nested dictionary grouped by section_name.
+        Fetches page content using the V3 SSOT system and flattens it
+        to the legacy dict format (component name -> props).
         """
-        page = self.get_page_by_slug(db, slug)
-        if not page:
+        ssot_data = get_ssot_page_content(db, slug)
+        if not ssot_data or not ssot_data.get("components"):
             return {}
 
-        content = {}
-        for section in page.sections:
-            section_data = {}
-            for block in section.blocks:
-                # Handle different content types
-                val = block.value
-                if block.content_type == "json":
-                    try:
-                        val = json.loads(block.value)
-                    except:
-                        pass
-                
-                # Check if the key indicates an array or nested structure
-                # This is a simplified mapper to maintain compatibility with existing CMS data
-                section_data[block.key] = val
-            
-            # If the section name is 'global' or 'metadata', we might want to merge it 
-            # or handle it specially. For now, group by section.
-            content[section.section_name] = section_data
-            
-        # Special case: if the page only has one section and it's named the same as the slug,
-        # we might want to return just that section's data to match old behavior.
-        if slug in content:
-            return content[slug]
-            
-        return content
+        flattened = {}
+        for comp in ssot_data["components"]:
+            name = comp.get("name")
+            if name:
+                flattened[name] = comp.get("props", {})
+        return flattened
 
-    def update_page_content(self, db: Session, slug: str, content: Dict[str, Any]) -> Page:
+    def update_page_content(self, db: Session, slug: str, content: Dict[str, Any]) -> CMSPage:
         """
-        Updates (or creates) the relational structure for a page based on a dictionary.
+        Creates/updates a page using the V3 SSOT system.
+        Accepts legacy flat dict format (section_name -> data).
         """
-        page = self.get_page_by_slug(db, slug)
-        if not page:
-            page = Page(title=slug.capitalize(), slug=slug, status="published")
-            db.add(page)
-            db.flush()
+        update_ssot_page_content(db, slug, content)
+        return db.query(CMSPage).filter(CMSPage.slug == slug).first()
 
-        # For simplicity in this specialized CMS, we'll recreate blocks for the updated sections
-        # or update them. Here we'll handle the 'unflattening'
-        
-        # Determine if 'content' is the whole page or just one segment
-        # If content has keys that match expected sections, treat it as full page
-        # Otherwise, treat it as the segment data for 'slug'
-        
-        segments = {slug: content}
-        # In our existing CMS, 'home', 'about', etc. often just send the segment data
-        
-        for section_name, data in segments.items():
-            section = db.query(Section).filter(Section.page_id == page.id, Section.section_name == section_name).first()
-            if not section:
-                section = Section(page_id=page.id, section_name=section_name)
-                db.add(section)
-                db.flush()
-            
-            # Delete old blocks and recreate (simple sync)
-            db.query(ContentBlock).filter(ContentBlock.section_id == section.id).delete()
-            
-            for key, value in data.items():
-                content_type = "text"
-                val_str = str(value)
-                
-                if isinstance(value, (dict, list)):
-                    content_type = "json"
-                    val_str = json.dumps(value)
-                elif isinstance(value, bool):
-                     content_type = "boolean"
-                
-                block = ContentBlock(
-                    section_id=section.id,
-                    key=key,
-                    value=val_str,
-                    content_type=content_type
-                )
-                db.add(block)
-        
-        db.commit()
-        db.refresh(page)
-        return page
 
 cms_repository = CMSRepository()

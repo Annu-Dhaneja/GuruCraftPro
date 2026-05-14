@@ -159,12 +159,13 @@ export default function LandingPage() {
                             <span>AI Core Integration</span>
                         </div>
                         <h2 className="text-5xl md:text-6xl font-black uppercase italic tracking-tighter leading-[0.9] mb-10">
-                            MAGIC AT <br />
-                            <span className="text-indigo-400">YOUR FINGERTIPS.</span>
+                            {cmsData?.ai_lab_preview?.title_prefix || "MAGIC AT"} <br />
+                            <span className="text-indigo-400">{cmsData?.ai_lab_preview?.title_highlight || "YOUR FINGERTIPS."}</span>
                         </h2>
-                        <p className="text-slate-400 text-xl font-light italic leading-relaxed mb-12">
-                            From background removal to neural upscaling, our AI core processes high-fidelity assets in milliseconds, optimized for industrial-scale commerce.
-                        </p>
+                        <p 
+                            className="text-slate-400 text-xl font-light italic leading-relaxed mb-12"
+                            dangerouslySetInnerHTML={{ __html: cmsData?.ai_lab_preview?.description || "From background removal to neural upscaling, our AI core processes high-fidelity assets in milliseconds, optimized for industrial-scale commerce." }}
+                        />
                         <div className="grid grid-cols-2 gap-8 mb-12">
                             {[
                                 { label: "Processing Speed", value: "8ms", icon: Zap },
@@ -176,11 +177,29 @@ export default function LandingPage() {
                                 </div>
                             ))}
                         </div>
-                        <Link href="/ai-lab">
-                            <Button className="h-16 px-10 rounded-2xl bg-white text-black font-black uppercase tracking-widest text-xs hover:bg-slate-200">
-                                LAUNCH AI LAB
-                            </Button>
-                        </Link>
+                        <div className="flex gap-4">
+                            {cmsData?.ai_lab_preview?.primary_button_text && (
+                                <Link href={cmsData?.ai_lab_preview?.primary_button_link || "/ai-lab"}>
+                                    <Button className="h-16 px-10 rounded-2xl bg-white text-black font-black uppercase tracking-widest text-xs hover:bg-slate-200">
+                                        {cmsData.ai_lab_preview.primary_button_text}
+                                    </Button>
+                                </Link>
+                            )}
+                            {cmsData?.ai_lab_preview?.secondary_button_text && (
+                                <Link href={cmsData?.ai_lab_preview?.secondary_button_link || "/services"}>
+                                    <Button variant="outline" className="h-16 px-10 rounded-2xl border-white/10 text-white font-black uppercase tracking-widest text-xs hover:bg-white/5">
+                                        {cmsData.ai_lab_preview.secondary_button_text}
+                                    </Button>
+                                </Link>
+                            )}
+                            {!cmsData?.ai_lab_preview?.primary_button_text && (
+                                <Link href="/ai-lab">
+                                    <Button className="h-16 px-10 rounded-2xl bg-white text-black font-black uppercase tracking-widest text-xs hover:bg-slate-200">
+                                        LAUNCH AI LAB
+                                    </Button>
+                                </Link>
+                            )}
+                        </div>
                     </div>
                 </div>
             </section>
@@ -190,22 +209,31 @@ export default function LandingPage() {
                 <div className="max-w-screen-xl mx-auto glass-card rounded-[4rem] p-16 md:p-32 text-center border-white/10 relative overflow-hidden group">
                     <div className="absolute inset-0 bg-gradient-to-tr from-primary/10 via-transparent to-indigo-500/10" />
                     <div className="relative z-10">
-                        <h2 className="text-5xl md:text-8xl font-black uppercase italic tracking-tighter leading-[0.8] mb-12">
-                            JOIN THE <br />
-                            <span className="text-shimmer bg-clip-text text-transparent bg-gradient-to-r from-primary to-amber-200">ELITE 1%.</span>
-                        </h2>
-                        <p className="text-slate-400 text-xl font-light italic max-w-2xl mx-auto mb-16">
-                            Be the first to access the full GURUCRaft ecosystem and exclusive early-adopter luxury packages.
-                        </p>
+                        <h2 
+                            className="text-5xl md:text-8xl font-black uppercase italic tracking-tighter leading-[0.8] mb-12"
+                            dangerouslySetInnerHTML={{ __html: cmsData?.final_cta?.title || 'JOIN THE <br /><span className="text-shimmer bg-clip-text text-transparent bg-gradient-to-r from-primary to-amber-200">ELITE 1%.</span>' }}
+                        />
+                        <p 
+                            className="text-slate-400 text-xl font-light italic max-w-2xl mx-auto mb-16"
+                            dangerouslySetInnerHTML={{ __html: cmsData?.final_cta?.description || 'Be the first to access the full GURUCRaft ecosystem and exclusive early-adopter luxury packages.' }}
+                        />
                         <div className="flex flex-col md:flex-row items-center justify-center gap-4">
                             <input 
                                 type="email" 
                                 placeholder="Your elite email address" 
                                 className="h-16 px-10 rounded-full bg-white/5 border border-white/10 w-full md:w-96 text-sm font-bold focus:ring-2 focus:ring-primary/50 outline-none"
                             />
-                            <Button className="h-16 px-12 rounded-full bg-primary text-black font-black text-sm uppercase tracking-widest hover:scale-105 transition-all">
-                                GET EARLY ACCESS
-                            </Button>
+                            {cmsData?.final_cta?.primary_button_text ? (
+                                <Link href={cmsData?.final_cta?.primary_button_link || "#"}>
+                                    <Button className="h-16 px-12 rounded-full bg-primary text-black font-black text-sm uppercase tracking-widest hover:scale-105 transition-all">
+                                        {cmsData.final_cta.primary_button_text}
+                                    </Button>
+                                </Link>
+                            ) : (
+                                <Button className="h-16 px-12 rounded-full bg-primary text-black font-black text-sm uppercase tracking-widest hover:scale-105 transition-all">
+                                    GET EARLY ACCESS
+                                </Button>
+                            )}
                         </div>
                     </div>
                 </div>

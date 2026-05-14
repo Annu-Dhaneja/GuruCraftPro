@@ -20,7 +20,7 @@ def get_dashboard_stats(
     db: Session = Depends(database.get_db),
     current_user: models.User = Depends(auth.require_admin),
 ):
-    from core.models import ContactSubmission, Page
+    from core.models import ContactSubmission, CMSPage
 
     total_submissions = db.query(ContactSubmission).count()
     recent_submissions = (
@@ -29,7 +29,7 @@ def get_dashboard_stats(
         .limit(5)
         .all()
     )
-    cms_sections = db.query(Page).count()
+    cms_sections = db.query(CMSPage).count()
 
     return {
         "total_submissions": total_submissions,
@@ -234,14 +234,14 @@ def get_segment_content(
 ):
     # Try SSOT First
     ssot_data = get_ssot_page_content(db, segment)
-    if ssot_data and ssot_data.get("sections"):
+    if ssot_data and ssot_data.get("components"):
         # Auto-flatten for the frontend if this is a known legacy-style page
         # The frontend components expect keys like 'hero', 'team' at the top level
         flattened = {}
-        for section in ssot_data["sections"]:
-            slug = section.get("slug")
-            if slug:
-                flattened[slug] = section.get("content", {})
+        for comp in ssot_data["components"]:
+            name = comp.get("name")
+            if name:
+                flattened[name] = comp.get("props", {})
         
         # Merge meta/title from SSOT page record
         flattened["_ssot_meta"] = ssot_data.get("meta", {})

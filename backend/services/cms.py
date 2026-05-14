@@ -7,28 +7,22 @@ class CMSService:
     @staticmethod
     def get_content(db: Session, section: str) -> Dict[str, Any]:
         """
-        Hybrid content fetcher: Prefer SSOT (Relational Sections) over Legacy.
+        Unified content fetcher: Uses V3 SSOT system.
         """
-        # 1. Try SSOT
+        # Try V3 SSOT first
         ssot_data = get_ssot_page_content(db, section)
-        if ssot_data and ssot_data.get("sections"):
+        if ssot_data and ssot_data.get("components"):
             return ssot_data
         
-        # 2. Fallback to Legacy
+        # Fallback to flattened legacy adapter
         return cms_repository.get_flattened_content(db, section)
 
     @staticmethod
     def update_content(db: Session, section: str, content: Dict[str, Any]) -> Dict[str, Any]:
         """
-        Hybrid content updater: Save to SSOT if it exists, otherwise use Legacy.
+        Unified content updater: All writes go through V3 SSOT.
         """
-        # If the content contains 'sections' array, it's definitely SSOT
-        if "sections" in content:
-            update_ssot_page_content(db, section, content)
-            return get_ssot_page_content(db, section)
-        
-        # Fallback to legacy
-        updated_page = cms_repository.update_page_content(db, section, content)
-        return cms_repository.get_flattened_content(db, section)
+        update_ssot_page_content(db, section, content)
+        return get_ssot_page_content(db, section)
 
 cms_service = CMSService()

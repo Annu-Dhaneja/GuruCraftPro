@@ -14,52 +14,51 @@ def fix_schema():
     engine = create_engine(SQLALCHEMY_DATABASE_URL)
     
     with engine.connect() as conn:
-        # 1. Fix 'users' table
-        print("Checking 'users' table...")
+        # Tables that need AuditMixin columns added if they already existed
+        tables_to_check = [
+            "users", "contact_submissions", "clothing_pieces", "posts", 
+            "products", "orders", "order_items", "designs", "wedding_plans",
+            "wedding_tasks", "wedding_guests", "wedding_vendors", "wedding_budgets"
+        ]
         
-        # Get existing columns
-        if "sqlite" in SQLALCHEMY_DATABASE_URL:
-            result = conn.execute(text("PRAGMA table_info(users)"))
-            columns = [row[1] for row in result.fetchall()]
-        else:
-            # PostgreSQL
-            result = conn.execute(text("SELECT column_name FROM information_schema.columns WHERE table_name = 'users'"))
-            columns = [row[0] for row in result.fetchall()]
-        
-        print(f"Existing columns: {columns}")
-        
-        # Add missing columns
-        missing_columns = {
-            "name": "VARCHAR",
-            "email": "VARCHAR",
-            "role": "VARCHAR DEFAULT 'user'",
-            "created_at": "DATETIME" if "sqlite" in SQLALCHEMY_DATABASE_URL else "TIMESTAMP"
-        }
-        
-        for col, col_type in missing_columns.items():
-            if col not in columns:
-                print(f"Adding column '{col}' to 'users' table...")
-                try:
-                    conn.execute(text(f"ALTER TABLE users ADD COLUMN {col} {col_type}"))
-                    print(f"Added {col}")
-                except Exception as e:
-                    print(f"Failed to add {col}: {e}")
+        for table in tables_to_check:
+            print(f"Checking '{table}' table...")
+            try:
+                if "sqlite" in SQLALCHEMY_DATABASE_URL:
+                    result = conn.execute(text(f"PRAGMA table_info({table})"))
+                    columns = [row[1] for row in result.fetchall()]
+                else:
+                    # PostgreSQL
+                    result = conn.execute(text(f"SELECT column_name FROM information_schema.columns WHERE table_name = '{table}'"))
+                    columns = [row[0] for row in result.fetchall()]
+                
+                if not columns:
+                    print(f"Table {table} does not exist yet. Skipping alter.")
+                    continue
+                
+                # Add missing audit columns
+                missing_columns = {
+                    "updated_at": "DATETIME" if "sqlite" in SQLALCHEMY_DATABASE_URL else "TIMESTAMP",
+                    "deleted_at": "DATETIME" if "sqlite" in SQLALCHEMY_DATABASE_URL else "TIMESTAMP",
+                    "created_at": "DATETIME" if "sqlite" in SQLALCHEMY_DATABASE_URL else "TIMESTAMP" # just in case
+                }
+                
+                if table == "users":
+                    missing_columns["role_id"] = "INTEGER"
+                
+                for col, col_type in missing_columns.items():
+                    if col not in columns:
+                        print(f"Adding column '{col}' to '{table}' table...")
+                        try:
+                            conn.execute(text(f"ALTER TABLE {table} ADD COLUMN {col} {col_type}"))
+                            print(f"Added {col}")
+                        except Exception as e:
+                            print(f"Failed to add {col}: {e}")
+                
+            except Exception as e:
+                print(f"Error checking {table}: {e}")
         
         conn.commit()
-
-        # 2. Fix 'contact_submissions' table
-        print("Checking 'contact_submissions' table...")
-        if "sqlite" in SQLALCHEMY_DATABASE_URL:
-            result = conn.execute(text("PRAGMA table_info(contact_submissions)"))
-            columns = [row[1] for row in result.fetchall()]
-        else:
-            result = conn.execute(text("SELECT column_name FROM information_schema.columns WHERE table_name = 'contact_submissions'"))
-            columns = [row[0] for row in result.fetchall()]
-        
-        if "attachment_url" not in columns:
-            print("Adding column 'attachment_url' to 'contact_submissions'...")
-            conn.execute(text("ALTER TABLE contact_submissions ADD COLUMN attachment_url VARCHAR"))
-            conn.commit()
 
         print("Schema fix complete.")
 

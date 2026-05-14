@@ -4,8 +4,7 @@ from typing import Any, Dict, List
 from sqlalchemy.orm import Session
 from sqlalchemy import text
 from core import auth, database, models
-from repositories.cms import cms_repository
-from repositories.cms_ssot import upsert_reusable_section, link_section_to_page, update_global_settings
+from repositories.cms_ssot import upsert_component, link_component_to_page, update_global_settings, update_ssot_page_content
 from core.database import engine
 
 class SeedingService:
@@ -15,9 +14,9 @@ class SeedingService:
         print("SeedingService: Starting full sync...")
         SeedingService.migrate_enums(db)
         SeedingService.seed_admins(db)
-        SeedingService.seed_site_config(db)
+        SeedingService.seed_global_settings(db)
+        SeedingService.seed_roles(db)
         SeedingService.seed_cms_pages(db)
-        SeedingService.run_path_migrations(db)
         print("SeedingService: Full sync complete.")
 
     @staticmethod
@@ -25,11 +24,12 @@ class SeedingService:
         try:
             with engine.connect() as conn:
                 if engine.dialect.name == "postgresql":
-                    conn.execute(text("ALTER TABLE users ALTER COLUMN role TYPE VARCHAR USING role::text"))
-                    conn.execute(text("ALTER TABLE pages ALTER COLUMN status TYPE VARCHAR USING status::text"))
-                    conn.execute(text("ALTER TABLE posts ALTER COLUMN status TYPE VARCHAR USING status::text"))
-                    conn.execute(text("DROP TYPE IF EXISTS userrole CASCADE"))
-                    conn.execute(text("DROP TYPE IF EXISTS pagestatus CASCADE"))
+                    try: conn.execute(text("ALTER TABLE users ALTER COLUMN role TYPE VARCHAR USING role::text"))
+                    except: pass
+                    try: conn.execute(text("DROP TYPE IF EXISTS userrole CASCADE"))
+                    except: pass
+                    try: conn.execute(text("DROP TYPE IF EXISTS pagestatus CASCADE"))
+                    except: pass
                     conn.commit()
                     print("SeedingService: Enum→VARCHAR migration complete")
         except Exception as exc:
@@ -57,25 +57,44 @@ class SeedingService:
             print(f"SeedingService: admin sync failed: {exc}")
 
     @staticmethod
-    def seed_site_config(db: Session):
+    def seed_roles(db: Session):
+        """Seed default RBAC roles."""
         try:
-            if not db.query(models.Page).filter(models.Page.slug == "site_config").first():
-                cms_repository.update_page_content(db, "site_config", {
-                    "brand": {
-                        "name": "GurucraftPro",
-                        "logo_text": "G",
-                        "logo_url": "/images/brand/logo-dark-v4.svg",
-                        "tagline": "Crafting digital excellence through the perfect blend of AI technology and human artistic vision."
+            default_roles = [
+                {"name": "admin", "description": "Full system access", "permissions_json": json.dumps({"cms": ["read", "write", "delete"], "users": ["read", "write", "delete"], "forms": ["read", "write", "delete"], "media": ["read", "write", "delete"]})},
+                {"name": "editor", "description": "CMS and content editing", "permissions_json": json.dumps({"cms": ["read", "write"], "media": ["read", "write"]})},
+                {"name": "user", "description": "Default user role", "permissions_json": json.dumps({"cms": ["read"]})},
+            ]
+            for role_data in default_roles:
+                existing = db.query(models.Role).filter(models.Role.name == role_data["name"]).first()
+                if not existing:
+                    db.add(models.Role(**role_data))
+            db.commit()
+            print("SeedingService: Roles seeded.")
+        except Exception as exc:
+            db.rollback()
+            print(f"SeedingService: Role seeding failed: {exc}")
+
+    @staticmethod
+    def seed_global_settings(db: Session):
+        """Seed GlobalSettings using SSOT model."""
+        try:
+            existing = db.query(models.GlobalSettings).first()
+            if not existing:
+                update_global_settings(db, {
+                    "site_name": "GurucraftPro",
+                    "contact_email": "hello@gurucraftpro.com",
+                    "phone": "+91-8527837527",
+                    "address": "Digital Studio, India",
+                    "footer": {
+                        "copyright": "© 2026 GurucraftPro. All rights reserved.",
+                        "explore": [
+                            {"label": "Our Services", "href": "/services"},
+                            {"label": "Design Portfolio", "href": "/portfolio"},
+                            {"label": "AI Creative Lab", "href": "/ai-lab"},
+                            {"label": "The Studio", "href": "/about"}
+                        ]
                     },
-                    "nav": [
-                        {"label": "Home", "href": "/", "style": "default"},
-                        {"label": "Portfolio", "href": "/portfolio", "style": "default"},
-                        {"label": "AI Design Lab", "href": "/ai-lab", "style": "special"},
-                        {"label": "Guru Ji Art Work", "href": "/guruji-darshan", "style": "guru"},
-                        {"label": "Services", "href": "/services", "style": "default"},
-                        {"label": "About", "href": "/about", "style": "default"},
-                        {"label": "Contact", "href": "/contact", "style": "default"}
-                    ],
                     "social": {
                         "facebook": "https://facebook.com/gurucraftpro",
                         "github": "https://github.com/om-prakash16",
@@ -84,22 +103,19 @@ class SeedingService:
                         "twitter": "https://twitter.com/gurucraftpro",
                         "whatsapp": "https://wa.me/918527837527"
                     },
-                    "footer_explore": [
-                        {"label": "Our Services", "href": "/services"},
-                        {"label": "Design Portfolio", "href": "/portfolio"},
-                        {"label": "AI Creative Lab", "href": "/ai-lab"},
-                        {"label": "The Studio", "href": "/about"}
-                    ],
-                    "footer_bottom": {
-                        "copyright": "© 2026 GurucraftPro. All rights reserved.",
-                        "email": "hello@gurucraftpro.com"
+                    "theme": {
+                        "primary_color": "#6366f1",
+                        "accent_color": "#d4af37",
+                        "dark_mode": True
                     }
                 })
+                print("SeedingService: GlobalSettings seeded.")
         except Exception as e:
-            print(f"SeedingService: site_config failed: {e}")
+            print(f"SeedingService: GlobalSettings seed failed: {e}")
 
     @staticmethod
     def seed_cms_pages(db: Session):
+        """Seed all CMS pages using V3 Component system."""
         pages = {
             "home": {
                 "hero": {
@@ -162,7 +178,7 @@ class SeedingService:
                 },
                 "features": {
                     "title": "Built for Scale",
-                    "description": "Enterprise-grade architecture tailored for high-growth brands. Everything you need to dominate your niche.",
+                    "description": "Enterprise-grade architecture tailored for high-growth brands.",
                     "items": [
                         {"icon": "Layout", "title": "Modern Storefront", "desc": "Headless CMS integration with Next.js for sub-second page loads."},
                         {"icon": "ShoppingCart", "title": "Smart Checkout", "desc": "1-click payments and dynamic cart recovery systems."},
@@ -173,9 +189,25 @@ class SeedingService:
                     ]
                 }
             },
+            "services": {
+                "hero": {
+                    "badge": "OUR SERVICES",
+                    "title_prefix": "Crafting",
+                    "title_highlight": "Digital Excellence",
+                    "description": "From concept to deployment, we deliver comprehensive design and development solutions."
+                }
+            },
+            "contact": {
+                "hero": {
+                    "badge": "GET IN TOUCH",
+                    "title_prefix": "Let's Build",
+                    "title_highlight": "Something Great",
+                    "description": "Ready to transform your vision into reality? Let's start a conversation."
+                }
+            },
             "7-day-clothing-consultation": {
                 "hero": {
-                    "title": "7-Day \n Consultation",
+                    "title": "7-Day Consultation",
                     "badge": "NEURAL WARDROBE V4.2",
                     "title_prefix": "AI-Powered",
                     "title_highlight": "Style Architecture",
@@ -210,23 +242,7 @@ class SeedingService:
         }
         for slug, data in pages.items():
             try:
-                # Update home and the new pages
-                existing = db.query(models.Page).filter(models.Page.slug == slug).first()
-                if not existing or slug in ["home", "guru-ji-art", "vantage-ecom", "7-day-clothing-consultation", "game-design", "shop"]:
-                    cms_repository.update_page_content(db, slug, data)
-                    print(f"SeedingService: {slug} SEEDED/UPDATED")
+                update_ssot_page_content(db, slug, data)
+                print(f"SeedingService: {slug} SEEDED/UPDATED (V3)")
             except Exception as e:
                 print(f"SeedingService: {slug} seed failed: {e}")
-
-    @staticmethod
-    def run_path_migrations(db: Session):
-        try:
-            from core.models import Media, ContentBlock, Post
-            for model, field in [(Media, "file_url"), (ContentBlock, "value"), (Post, "content")]:
-                items = db.query(model).filter(getattr(model, field).like('%/img/%')).all()
-                for item in items:
-                    setattr(item, field, getattr(item, field).replace('/img/', '/images/'))
-            db.commit()
-        except Exception as e:
-            db.rollback()
-            print(f"SeedingService: Path migration failed: {e}")

@@ -4,7 +4,11 @@
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { Home, LayoutDashboard, Settings, Globe, ArrowLeft, Sparkles, LogOut, ShieldCheck, BookOpen, PenTool, Lightbulb, Mail, Shirt } from "lucide-react";
+import { 
+  Home, LayoutDashboard, Settings, Globe, ArrowLeft, 
+  Sparkles, LogOut, ShieldCheck, BookOpen, PenTool, 
+  Lightbulb, Mail, Shirt, Layers, FormInput, FileImage, Users 
+} from "lucide-react";
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
@@ -32,21 +36,12 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
     const navItems = [
     { name: "Dashboard", href: "/admin", icon: LayoutDashboard },
-    { name: "Site Configuration", href: "/admin/site-config", icon: Settings },
+    { name: "Page Builder", href: "/admin/page-builder", icon: Layers },
+    { name: "Form Builder", href: "/admin/forms", icon: FormInput },
+    { name: "Media Manager", href: "/admin/media", icon: FileImage },
+    { name: "User Management", href: "/admin/users", icon: Users },
     { name: "Try Dress", href: "/admin/wardrobe", icon: Shirt },
-    { name: "Home Page CMS", href: "/admin/home", icon: Home },
-    { name: "About Page CMS", href: "/admin/about", icon: BookOpen },
-    { name: "Services CMS", href: "/admin/services", icon: LayoutDashboard },
-    { name: "Guruji Darshan CMS", href: "/admin/guruji", icon: Sparkles },
-    { name: "AI Lab CMS", href: "/admin/ai-lab", icon: Sparkles },
-    { name: "Portfolio CMS", href: "/admin/portfolio", icon: PenTool },
-    { name: "Resources CMS", href: "/admin/resources", icon: Lightbulb },
-    { name: "FAQ CMS", href: "/admin/faq", icon: ShieldCheck },
-    { name: "Clothing Library", href: "/admin/clothes-planner", icon: Sparkles },
-    { name: "Contact Page CMS", href: "/admin/contact", icon: Mail },
-    { name: "Content Blog", href: "/admin/blog", icon: BookOpen },
-    { name: "User Management", href: "/admin/users", icon: Globe },
-    { name: "Media Library", href: "/admin/media", icon: Globe },
+    { name: "Site Configuration", href: "/admin/site-config", icon: Settings },
   ];
 
   if (!isAuthorized) {
