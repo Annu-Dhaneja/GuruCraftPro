@@ -48,9 +48,10 @@ async def global_exception_handler(request: Request, exc: Exception):
     )
 
 # ── CORS Middleware ──────────────────────────────────────────────────
+# Allow both localhost and all vercel.app subdomains for preview/prod
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=settings.CORS_ORIGINS,
+    allow_origin_regex=r"https://.*\.vercel\.app|http://localhost:\d+",
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
