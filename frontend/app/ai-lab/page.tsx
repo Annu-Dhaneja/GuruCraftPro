@@ -30,7 +30,7 @@ const TOOLS = [
     {
         title: "Photo Core Editor",
         description: "Industrial-grade AI editing. Neural upscaling, background removal, and studio relighting.",
-        href: "/photo-editor",
+        href: "/services/photo-editor",
         icon: Wand2,
         color: "text-indigo-400",
         bg: "bg-indigo-500/10",

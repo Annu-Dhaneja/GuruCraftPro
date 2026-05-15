@@ -1,34 +1,33 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from core.database import get_db
-from core.models import SiteConfig
 from core.auth import require_admin
-import json
+from repositories.cms_ssot import get_global_settings, update_global_settings
 
 router = APIRouter()
 
 @router.get("/")
 def get_config(key: str, db: Session = Depends(get_db)):
-    config = db.query(SiteConfig).filter(SiteConfig.key == key).first()
-    if not config:
-        # Return default empty values for known keys
-        if key == "social_links":
-            return {
-                "instagram": "#", "facebook": "#", "github": "#", 
-                "linkedin": "#", "x": "#", "threads": "#", 
-                "behance": "#", "youtube": "#"
-            }
-        return {}
-    return json.loads(config.value)
+    settings = get_global_settings(db)
+    
+    # Map legacy keys to new SSOT structure for frontend compatibility
+    if key == "social_links":
+        return settings.get("social", {
+            "instagram": "#", "facebook": "#", "github": "#", 
+            "linkedin": "#", "x": "#", "threads": "#", 
+            "behance": "#", "youtube": "#"
+        })
+    
+    return settings.get(key, {})
 
 @router.post("/")
 def update_config(key: str, data: dict, db: Session = Depends(get_db), admin = Depends(require_admin)):
-    config = db.query(SiteConfig).filter(SiteConfig.key == key).first()
-    if not config:
-        config = SiteConfig(key=key, value=json.dumps(data))
-        db.add(config)
+    # Convert legacy key update to SSOT update
+    update_payload = {}
+    if key == "social_links":
+        update_payload["social"] = data
     else:
-        config.value = json.dumps(data)
-    
-    db.commit()
+        update_payload[key] = data
+        
+    update_global_settings(db, update_payload)
     return {"status": "success"}

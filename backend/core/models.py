@@ -26,7 +26,7 @@ class User(Base, AuditMixin):
     hashed_password = Column(String)
     
     role_id = Column(Integer, ForeignKey("roles.id"), nullable=True) # FK to roles
-    role = Column(String, default="user") # Legacy support
+    role = Column(String, default="user") # Deprecated: Use role_rel instead
     
     role_rel = relationship("Role")
     posts = relationship("Post", back_populates="author")
@@ -177,11 +177,7 @@ class ClothingPiece(Base, AuditMixin):
     occasion = Column(String, default="Daily wear", index=True)
     color = Column(String, nullable=True, index=True)
 
-class SiteConfig(Base, AuditMixin):
-    __tablename__ = "site_configs"
-    id = Column(Integer, primary_key=True, index=True)
-    key = Column(String, unique=True, index=True)
-    value = Column(Text)
+
 
 class Design(Base, AuditMixin):
     __tablename__ = "designs"

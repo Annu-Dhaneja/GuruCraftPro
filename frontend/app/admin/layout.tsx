@@ -4,11 +4,13 @@
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { 
-  Home, LayoutDashboard, Settings, Globe, ArrowLeft, 
+import { Home, LayoutDashboard, Settings, Globe, ArrowLeft, 
   Sparkles, LogOut, ShieldCheck, BookOpen, PenTool, 
-  Lightbulb, Mail, Shirt, Layers, FormInput, FileImage, Users, Heart 
+  Lightbulb, Mail, Shirt, Layers, FormInput, FileImage, Users, Heart, Menu 
 } from "lucide-react";
+import { AdminSidebar } from "@/components/admin/AdminSidebar";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { Button } from "@/components/ui/button";
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
@@ -34,17 +36,6 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     router.push("/login");
   };
 
-    const navItems = [
-    { name: "Dashboard", href: "/admin", icon: LayoutDashboard },
-    { name: "Page Builder", href: "/admin/page-builder", icon: Layers },
-    { name: "Form Builder", href: "/admin/forms", icon: FormInput },
-    { name: "Media Manager", href: "/admin/media", icon: FileImage },
-    { name: "User Management", href: "/admin/users", icon: Users },
-    { name: "Wedding Plans", href: "/admin/wedding", icon: Heart },
-    { name: "Try Dress", href: "/admin/wardrobe", icon: Shirt },
-    { name: "Site Configuration", href: "/admin/site-config", icon: Settings },
-  ];
-
   if (!isAuthorized) {
     return (
       <div className="h-screen bg-slate-950 flex items-center justify-center text-white">
@@ -58,57 +49,34 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
   return (
     <div className="flex h-screen overflow-hidden bg-slate-950 text-white">
-      {/* Sidebar */}
-      <aside className="w-64 border-r border-white/5 bg-slate-900/50 backdrop-blur-xl flex flex-col hidden md:flex">
-        <div className="p-6 border-b border-border">
-          <Link href="/" className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors mb-6">
-            <ArrowLeft className="h-4 w-4" />
-            <span className="text-sm font-medium">Back to Site</span>
-          </Link>
-          <h2 className="text-xl font-bold tracking-tight">Admin Console</h2>
-          <p className="text-xs text-muted-foreground mt-1">Manage website content</p>
-        </div>
-        
-        <nav className="flex-1 p-4 space-y-1 overflow-y-auto">
-          {navItems.map((item) => {
-            const isActive = pathname === item.href || (pathname && pathname.startsWith(item.href + '/'));
-            return (
-              <Link
-                key={item.href}
-                href={item.href}
-                className={`flex items-center gap-3 px-3 py-2.5 rounded-md text-sm font-medium transition-colors ${
-                  isActive 
-                    ? "bg-indigo-500/10 text-indigo-400" 
-                    : "text-muted-foreground hover:bg-muted/50 hover:text-foreground"
-                }`}
-              >
-                <item.icon className="h-4 w-4" />
-                {item.name}
-              </Link>
-            );
-          })}
-        </nav>
-        
-        <div className="p-4 border-t border-border space-y-2">
-          <div className="flex items-center gap-3 px-3 py-2 text-sm text-muted-foreground">
-            <div className="h-8 w-8 rounded-full bg-indigo-500/20 flex items-center justify-center text-indigo-400 font-bold">
-              A
-            </div>
-            Admin User
-          </div>
-          <button 
-            onClick={handleLogout}
-            className="w-full flex items-center gap-3 px-3 py-2 text-sm font-medium text-red-400 hover:bg-red-500/10 rounded-md transition-colors"
-          >
-            <LogOut className="h-4 w-4" />
-            Logout
-          </button>
-        </div>
+      {/* Desktop Sidebar */}
+      <aside className="w-64 border-r border-white/5 hidden md:flex flex-col">
+        <AdminSidebar onLogout={handleLogout} />
       </aside>
 
       {/* Main Content */}
       <main className="flex-1 overflow-y-auto relative z-10">
-        {children}
+        {/* Mobile Header */}
+        <div className="md:hidden flex items-center justify-between p-4 border-b border-white/5 bg-slate-900/50 backdrop-blur-xl">
+          <div className="flex items-center gap-2">
+            <ShieldCheck className="h-6 w-6 text-indigo-400" />
+            <span className="font-bold tracking-tight">Admin Console</span>
+          </div>
+          <Sheet>
+            <SheetTrigger asChild>
+              <Button variant="ghost" size="icon">
+                <Menu className="h-6 w-6" />
+              </Button>
+            </SheetTrigger>
+            <SheetContent side="left" className="p-0 w-64 border-r border-white/5">
+              <AdminSidebar onLogout={handleLogout} />
+            </SheetContent>
+          </Sheet>
+        </div>
+
+        <div className="p-4 md:p-8 lg:p-12">
+          {children}
+        </div>
       </main>
     </div>
   );

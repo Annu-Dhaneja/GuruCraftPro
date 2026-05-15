@@ -83,7 +83,7 @@ const ecosystem = [
         title: "Smart Editor",
         description: "Drag-and-drop canvas with AI-powered design shortcuts.",
         icon: Layout,
-        href: "/photo-editor",
+        href: "/services/photo-editor",
         className: "bg-emerald-500/5",
         accent: "text-emerald-400",
         bg: "bg-emerald-400/10",
