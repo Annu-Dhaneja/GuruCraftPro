@@ -280,7 +280,7 @@ export function WeddingPlanContent({ data }: { data?: any }) {
             <p className="max-w-2xl mx-auto text-xl text-zinc-400 font-light mb-12 italic">
               {cta.description}
             </p>
-            <Link href="/wedding/budget">
+            <Link href="/dashboard/wedding/budget">
               <Button size="lg" className="bg-indigo-600 hover:bg-indigo-500 text-white rounded-full px-16 h-20 text-2xl font-serif italic shadow-2xl">
                 {cta.button_text}
               </Button>

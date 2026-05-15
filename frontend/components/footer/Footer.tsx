@@ -10,17 +10,6 @@ import { cn } from "@/lib/utils";
 export function Footer() {
     const pathname = usePathname();
 
-    // Hide footer on dashboard, admin, and auth pages
-    if (pathname && (
-        pathname.startsWith('/dashboard') || 
-        pathname.startsWith('/admin') ||
-        pathname.startsWith('/login') ||
-        pathname.startsWith('/signup') ||
-        pathname.startsWith('/forgot-password')
-    )) {
-        return null;
-    }
-
     return (
         <footer className="relative bg-[#020617] text-slate-200 pt-24 pb-12 border-t border-white/5 overflow-hidden">
             {/* Premium Glow Effect */}

@@ -113,7 +113,7 @@ class SeedingService:
                             "items": [
                                 { "label": "Logo Design", "href": "/portfolio?category=Logo Design", "description": "Memorable logos that define your brand identity." },
                                 { "label": "Wedding Planning", "href": "/services/wedding-plan", "description": "Bespoke luxury wedding coordination and design." },
-                                { "label": "Photo Editing", "href": "/photo-editor", "description": "High-end retouching and professional image editing." },
+                                { "label": "Photo Editing", "href": "/services/photo-editor", "description": "High-end retouching and professional image editing." },
                                 { "label": "Guru Ji Art Work", "href": "/services/guru-ji-art", "description": "Celestial hand-painted and digital masterpieces." },
                                 { "label": "Game Design", "href": "/services/game-design", "description": "Immersive character and environment concepts." },
                                 { "label": "Vantage Ecom", "href": "/services/vantage-ecom", "description": "Growth-focused e-commerce design solutions." },
