@@ -21,8 +21,8 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     
     if (!token) {
       router.push("/login");
-    } else if (role !== "admin") {
-      // If logged in but not an admin, redirect to user dashboard
+    } else if (role !== "admin" && role !== "super-admin") {
+      // If logged in but not an admin/super-admin, redirect to user dashboard
       router.push("/dashboard");
     } else {
       setIsAuthorized(true);

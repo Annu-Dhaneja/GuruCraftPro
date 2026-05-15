@@ -60,6 +60,7 @@ export const viewport = {
 
 import { SiteConfigProvider } from "@/components/layout/SiteConfigProvider";
 import { Toaster } from "sonner";
+import { CartSidebar } from "@/components/layout/CartSidebar";
 
 export default function RootLayout({
   children,
