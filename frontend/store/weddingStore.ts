@@ -51,10 +51,10 @@ interface WeddingPlan {
 // ── Showcase (public) types ──
 interface ShowcaseData {
     hero: Record<string, any>;
-    packages: Array<Record<string, any>>;
-    services: Array<Record<string, any>>;
-    testimonials: Array<Record<string, any>>;
-    gallery: string[];
+    packages: any;
+    services: any;
+    testimonials: any;
+    gallery: any;
 }
 
 // ── Admin types ──
