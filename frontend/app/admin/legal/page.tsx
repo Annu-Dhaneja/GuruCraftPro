@@ -72,8 +72,8 @@ export default function AdminLegalPage() {
               </div>
             </section>
 
-            <div className="p-8 bg-amber-500/5 rounded-3xl border border-amber-500/10 text-amber-200/60 text-xs flex items-start gap-4 italic">
-              <span className="font-black text-amber-500 uppercase not-italic">Caution:</span>
+            <div className="p-8 bg-indigo-500/5 rounded-3xl border border-indigo-500/10 text-indigo-200/60 text-xs flex items-start gap-4 italic">
+              <span className="font-black text-indigo-500 uppercase not-italic">Caution:</span>
               Changes to legal documents may have compliance implications. Ensure all content is reviewed by your legal advisor before publishing live.
             </div>
           </div>

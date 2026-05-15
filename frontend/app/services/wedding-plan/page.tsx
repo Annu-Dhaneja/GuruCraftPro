@@ -38,7 +38,7 @@ export default async function WeddingPlanPage() {
     }
 
     return (
-        <main className="min-h-screen bg-[#FCFBF7]">
+        <main className="min-h-screen bg-[#020617]">
             <WeddingPlanContent data={weddingData} />
                     </main>
     );

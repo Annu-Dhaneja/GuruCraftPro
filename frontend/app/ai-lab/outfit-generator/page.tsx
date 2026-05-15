@@ -68,8 +68,8 @@ export default function OutfitGeneratorPage() {
 
                     {/* Header */}
                     <div className="text-center space-y-2">
-                        <div className="inline-flex items-center justify-center p-3 rounded-full bg-amber-500/10 mb-4">
-                            <Sparkles className="h-8 w-8 text-amber-500" />
+                        <div className="inline-flex items-center justify-center p-3 rounded-full bg-indigo-500/10 mb-4">
+                            <Sparkles className="h-8 w-8 text-indigo-500" />
                         </div>
                         <h1 className="text-3xl font-bold tracking-tight">AI Outfit Generator</h1>
                         <p className="text-muted-foreground">Describe your dream outfit and let AI design it for you.</p>
@@ -110,7 +110,7 @@ export default function OutfitGeneratorPage() {
                         )}
 
                         <Button
-                            className="w-full h-12 text-lg bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600"
+                            className="w-full h-12 text-lg bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500"
                             onClick={handleGenerate}
                             disabled={isProcessing || !prompt}
                         >

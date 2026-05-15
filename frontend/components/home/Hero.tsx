@@ -145,7 +145,7 @@ export function Hero({ data }: HeroProps) {
                                     <span className="font-black text-xs tracking-widest uppercase">Spiritual Art</span>
                                 </div>
                                 <div className="aspect-video w-full rounded-xl bg-slate-800/50 relative overflow-hidden">
-                                    <div className="absolute inset-0 bg-gradient-to-br from-amber-500/20 to-transparent" />
+                                    <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/20 to-transparent" />
                                 </div>
                                 <p className="text-[10px] mt-4 text-slate-400 font-bold uppercase tracking-tighter">Rendered Sanctum 4K</p>
                             </motion.div>

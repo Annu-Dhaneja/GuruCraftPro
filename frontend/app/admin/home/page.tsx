@@ -256,7 +256,7 @@ export default function AdminHomePage() {
           </div>
           <div className="flex items-center gap-6">
             <div className="hidden md:block text-right">
-               <div className={`text-xs font-bold uppercase tracking-widest ${status.includes("success") ? "text-emerald-400" : "text-amber-400"}`}>
+               <div className={`text-xs font-bold uppercase tracking-widest ${status.includes("success") ? "text-emerald-400" : "text-indigo-400"}`}>
                  System Status
                </div>
                <div className="text-sm font-medium text-white/60">{status || "Standby"}</div>

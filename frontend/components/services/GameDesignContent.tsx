@@ -35,14 +35,14 @@ export function GameDesignContent({ data }: { data?: any }) {
   };
 
   return (
-    <div className="flex flex-col bg-[#050505] text-white selection:bg-cyan-500/30">
+    <div className="flex flex-col bg-[#050505] text-white selection:bg-indigo-500/30">
       {/* ── Hero Section ─────────────────────────────────── */}
       <section className="relative h-screen flex items-center justify-center overflow-hidden">
         {/* Neon Grid Effect */}
         <div className="absolute inset-0 z-0 bg-[linear-gradient(to_right,#1a1a1a_1px,transparent_1px),linear-gradient(to_bottom,#1a1a1a_1px,transparent_1px)] bg-[size:40px_40px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_50%,#000_70%,transparent_100%)] opacity-30" />
         
         {/* Glow Effects */}
-        <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-cyan-500/20 blur-[150px] rounded-full pointer-events-none" />
+        <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-indigo-500/20 blur-[150px] rounded-full pointer-events-none" />
         <div className="absolute bottom-0 right-1/4 w-[500px] h-[500px] bg-purple-500/20 blur-[150px] rounded-full pointer-events-none" />
 
         <div className="container relative z-10 px-4 text-center">
@@ -50,10 +50,10 @@ export function GameDesignContent({ data }: { data?: any }) {
                 initial={{ opacity: 0, y: -20, rotateX: 45 }}
                 animate={{ opacity: 1, y: 0, rotateX: 0 }}
                 transition={{ duration: 0.8 }}
-                className="mb-8 inline-flex items-center gap-3 px-6 py-2 rounded-xl bg-cyan-500/10 border border-cyan-500/20 backdrop-blur-xl group cursor-pointer"
+                className="mb-8 inline-flex items-center gap-3 px-6 py-2 rounded-xl bg-indigo-500/10 border border-indigo-500/20 backdrop-blur-xl group cursor-pointer"
             >
-                <div className="w-2 h-2 rounded-full bg-cyan-500 animate-ping" />
-                <span className="text-xs font-bold tracking-[0.4em] uppercase text-cyan-300">{safeHero.badge || "Next Gen Assets"}</span>
+                <div className="w-2 h-2 rounded-full bg-indigo-500 animate-ping" />
+                <span className="text-xs font-bold tracking-[0.4em] uppercase text-indigo-300">{safeHero.badge || "Next Gen Assets"}</span>
             </motion.div>
 
             <motion.h1 
@@ -63,7 +63,7 @@ export function GameDesignContent({ data }: { data?: any }) {
                 className="text-7xl md:text-[10rem] font-black tracking-tighter mb-8 italic"
             >
                 {safeHero.title_prefix || "LEVEL"} <br />
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-purple-500 to-pink-500 drop-shadow-[0_0_30px_rgba(34,211,238,0.4)] uppercase">
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 via-purple-500 to-pink-500 drop-shadow-[0_0_30px_rgba(34,211,238,0.4)] uppercase">
                     {safeHero.title_highlight || "BEYOND"}
                 </span>
             </motion.h1>
@@ -83,7 +83,7 @@ export function GameDesignContent({ data }: { data?: any }) {
                 transition={{ duration: 0.8, delay: 0.6 }}
                 className="flex flex-wrap justify-center gap-8"
             >
-                <Button size="lg" className="bg-cyan-600 hover:bg-cyan-500 text-white rounded-2xl px-12 h-20 text-xl font-black italic shadow-2xl shadow-cyan-600/30 group">
+                <Button size="lg" className="bg-indigo-600 hover:bg-indigo-500 text-white rounded-2xl px-12 h-20 text-xl font-black italic shadow-2xl shadow-indigo-600/30 group">
                     ENTER STUDIO <MousePointer2 className="ml-3 w-6 h-6 group-hover:translate-x-2 transition-transform" />
                 </Button>
                 <Button variant="outline" size="lg" className="border-white/10 hover:bg-white/5 rounded-2xl px-12 h-20 text-xl font-bold backdrop-blur-md">
@@ -113,10 +113,10 @@ export function GameDesignContent({ data }: { data?: any }) {
                 <motion.div
                     key={i}
                     variants={itemVariants}
-                    className="p-10 rounded-[40px] border border-white/5 bg-white/[0.03] backdrop-blur-3xl hover:border-cyan-500/50 hover:bg-cyan-500/[0.05] transition-all group"
+                    className="p-10 rounded-[40px] border border-white/5 bg-white/[0.03] backdrop-blur-3xl hover:border-indigo-500/50 hover:bg-indigo-500/[0.05] transition-all group"
                 >
-                    <div className="w-16 h-16 rounded-2xl bg-cyan-500/10 flex items-center justify-center mb-8 border border-cyan-500/20 group-hover:scale-110 transition-transform">
-                        <div className="w-8 h-8 text-cyan-400 flex items-center justify-center">
+                    <div className="w-16 h-16 rounded-2xl bg-indigo-500/10 flex items-center justify-center mb-8 border border-indigo-500/20 group-hover:scale-110 transition-transform">
+                        <div className="w-8 h-8 text-indigo-400 flex items-center justify-center">
                             {skill.icon === "Layers" ? <Layers /> : skill.icon === "Box" ? <Box /> : skill.icon === "Cpu" ? <Cpu /> : <Zap />}
                         </div>
                     </div>
@@ -151,7 +151,7 @@ export function GameDesignContent({ data }: { data?: any }) {
                 <div className="flex flex-col gap-6">
                     {["Dynamic Weather Systems", "Global Illumination", "Native Asset Integration", "Zero-Lag Performance"].map((f, i) => (
                         <div key={i} className="flex items-center gap-4 text-xl font-bold">
-                            <ShieldCheck className="w-6 h-6 text-cyan-500" /> {f}
+                            <ShieldCheck className="w-6 h-6 text-indigo-500" /> {f}
                         </div>
                     ))}
                 </div>
@@ -186,7 +186,7 @@ export function GameDesignContent({ data }: { data?: any }) {
                 { step: "03", title: "Delivery", desc: "Tested, optimized, and ready for launch." }
             ].map((item, i) => (
                 <div key={i} className="relative group p-12 hover:bg-white/[0.02] rounded-3xl transition-colors">
-                    <span className="absolute -top-12 -left-4 text-9xl font-black text-white/5 group-hover:text-cyan-500/10 transition-colors">{item.step}</span>
+                    <span className="absolute -top-12 -left-4 text-9xl font-black text-white/5 group-hover:text-indigo-500/10 transition-colors">{item.step}</span>
                     <h4 className="text-4xl font-black mb-6 italic">{item.title}</h4>
                     <p className="text-xl text-zinc-500 font-medium leading-relaxed">{item.desc}</p>
                 </div>
@@ -196,12 +196,12 @@ export function GameDesignContent({ data }: { data?: any }) {
 
       {/* ── Call to Action ───────────────────────────── */}
       <section className="py-60 text-center relative overflow-hidden">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-cyan-600/10 blur-[150px] rounded-full" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-indigo-600/10 blur-[150px] rounded-full" />
         <div className="container px-4 relative z-10">
-            <Gamepad2 className="w-24 h-24 text-cyan-400 mx-auto mb-12 animate-pulse" />
+            <Gamepad2 className="w-24 h-24 text-indigo-400 mx-auto mb-12 animate-pulse" />
             <h2 className="text-6xl md:text-[10rem] font-black mb-12 tracking-tighter italic grayscale hover:grayscale-0 transition-all duration-700">START MATCH</h2>
             <p className="max-w-2xl mx-auto text-2xl text-zinc-500 mb-16 italic font-medium">READY TO BUILD THE FUTURE OF GAMING?</p>
-            <Button size="lg" className="bg-white text-black hover:bg-cyan-500 hover:text-white rounded-[32px] px-24 h-24 text-4xl font-black italic shadow-2xl transition-all duration-300">
+            <Button size="lg" className="bg-white text-black hover:bg-indigo-500 hover:text-white rounded-[32px] px-24 h-24 text-4xl font-black italic shadow-2xl transition-all duration-300">
                 BOOT UP NOW <ArrowRight className="ml-4 w-10 h-10" />
             </Button>
         </div>

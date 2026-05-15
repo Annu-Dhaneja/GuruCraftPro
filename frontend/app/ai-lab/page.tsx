@@ -41,8 +41,8 @@ const TOOLS = [
         description: "Generate complete collections from simple text prompts using our neural design engine.",
         href: "/ai-lab/outfit-generator",
         icon: Sparkles,
-        color: "text-amber-400",
-        bg: "bg-amber-500/10",
+        color: "text-indigo-400",
+        bg: "bg-indigo-500/10",
         image: "https://images.unsplash.com/photo-1490481651871-ab68de25d43d?q=80&w=1200"
     },
     {

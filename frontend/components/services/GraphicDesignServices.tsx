@@ -36,7 +36,7 @@ const defaultDesignServices = [
         description: "Divine hand-painted and digital Guru Ji masterpieces",
         price: "₹1499+",
         image: "/images/user_provided/generated-image-2026-02-24_08-35-13.jpg",
-        color: "from-amber-500/80 to-orange-500/80",
+        color: "from-indigo-500/80 to-violet-500/80",
         link: "/services/guru-ji-art"
     },
     {

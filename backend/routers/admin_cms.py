@@ -266,11 +266,22 @@ def update_segment_content(
         from repositories.cms_ssot import get_ssot_page_content, update_ssot_page_content
         from core.models import CMSPage
 
+        # Special Case: Global Site Config
+        if segment == "site_config":
+            print(f"CMS PUT: Updating Global Site Config")
+            from repositories.cms_ssot import update_global_settings
+            updated = update_global_settings(db, content)
+            return {
+                "status": "success",
+                "message": "Global Site Config updated successfully",
+                "content": updated
+            }
+
         # Case 1: Handle SSOT-managed pages (The new priority system)
         is_ssot = db.query(CMSPage).filter(CMSPage.slug == segment).first() is not None
         
         # If it's a known service, it might be in SSOT even if not yet fully initialized
-        known_service_pages = ["photo-editor", "wedding-plan", "guru-ji-art", "game-design", "vantage-ecom"]
+        known_service_pages = ["photo-editor", "wedding-plan", "guru-ji-art", "game-design", "vantage-ecom", "home"]
         if is_ssot or segment in known_service_pages:
             print(f"CMS PUT: Updating SSOT segment '{segment}'")
             update_ssot_page_content(db, segment, content)

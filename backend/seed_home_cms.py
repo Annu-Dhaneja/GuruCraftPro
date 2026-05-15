@@ -7,7 +7,7 @@ from sqlalchemy.orm import Session
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
 from core.database import SessionLocal
-from repositories.cms_ssot import upsert_reusable_section, link_section_to_page
+from repositories.cms_ssot import upsert_component, link_component_to_page
 
 def seed_home_cms():
     db = SessionLocal()
@@ -22,8 +22,8 @@ def seed_home_cms():
             "headline_suffix": "PRO",
             "subheadline": "The world's first AI-powered luxury ecosystem merging Elite Graphics, Divine Artistry, and Strategic Commerce into one cinematic experience."
         }
-        upsert_reusable_section(db, "home-hero", "hero", hero_content, name="Home Hero")
-        link_section_to_page(db, "home", "home-hero", order=0)
+        upsert_component(db, "home-hero", "hero", hero_content)
+        link_component_to_page(db, "home", "home-hero", hero_content, order=0)
         
         # 2. Service Category Rail (Aligned with FeaturesGrid expectations)
         rail_content = {
@@ -47,9 +47,9 @@ def seed_home_cms():
                     "description": "Sacred graphics & spiritual assets.",
                     "icon": "Sparkles",
                     "href": "/services/guru-ji-art",
-                    "className": "bg-amber-500/5",
-                    "accent": "text-amber-400",
-                    "bg": "bg-amber-400/10",
+                    "className": "bg-indigo-500/5",
+                    "accent": "text-indigo-400",
+                    "bg": "bg-indigo-400/10",
                     "tags": ["Spiritual"]
                 },
                 {
@@ -76,8 +76,8 @@ def seed_home_cms():
                 }
             ]
         }
-        upsert_reusable_section(db, "service_category_rail", "features", rail_content, name="Service Category Rail")
-        link_section_to_page(db, "home", "service_category_rail", order=1)
+        upsert_component(db, "service_category_rail", "features", rail_content)
+        link_component_to_page(db, "home", "service_category_rail", rail_content, order=1)
         
         db.commit()
         print("Home page seeded successfully!")

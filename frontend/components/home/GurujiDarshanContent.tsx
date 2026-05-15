@@ -11,7 +11,9 @@ import {
   Volume2,
   Heart,
   ShoppingBag,
-  IndianRupee
+  IndianRupee,
+  CheckCircle2,
+  Award
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
@@ -51,7 +53,7 @@ export function GurujiDarshanContent({ data }: { data?: any }) {
             transition={{ duration: 0.8 }}
             className="mb-8 inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 backdrop-blur-md"
           >
-            <Sparkles className="w-4 h-4 text-amber-400" />
+            <Sparkles className="w-4 h-4 text-indigo-400" />
             <span className="text-xs font-bold tracking-widest text-zinc-300 uppercase">Divine Experience</span>
           </motion.div>
           
@@ -62,7 +64,7 @@ export function GurujiDarshanContent({ data }: { data?: any }) {
             className="text-5xl md:text-8xl font-bold tracking-tighter text-white mb-8 leading-[0.9]"
           >
             {heroTitlePrefix} <br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 via-orange-400 to-amber-600">
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 via-violet-400 to-indigo-600">
               {heroTitleHighlight}
             </span>
           </motion.h1>
@@ -85,7 +87,7 @@ export function GurujiDarshanContent({ data }: { data?: any }) {
             <Button 
                 onClick={() => setIsCameraOpen(true)}
                 size="lg" 
-                className="bg-amber-600 hover:bg-amber-500 text-white rounded-full px-10 h-16 text-lg font-bold shadow-2xl shadow-amber-600/20"
+                className="bg-indigo-600 hover:bg-indigo-500 text-white rounded-full px-10 h-16 text-lg font-bold shadow-2xl shadow-indigo-600/20"
             >
               Experience AR View <Eye className="ml-2 w-5 h-5" />
             </Button>
@@ -275,10 +277,10 @@ export function GurujiDarshanContent({ data }: { data?: any }) {
               <motion.div
                 initial={{ opacity: 0, y: 10 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-orange-500/10 border border-orange-500/20 mb-6"
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-indigo-500/10 border border-indigo-500/20 mb-6"
               >
-                <ShoppingBag className="w-4 h-4 text-orange-400" />
-                <span className="text-xs font-bold tracking-widest text-orange-400 uppercase">Spiritual Shop</span>
+                <ShoppingBag className="w-4 h-4 text-indigo-400" />
+                <span className="text-xs font-bold tracking-widest text-indigo-400 uppercase">Spiritual Shop</span>
               </motion.div>
               <h2 className="text-4xl md:text-6xl font-bold tracking-tight text-white mb-6">Explore Our Curated Artifacts</h2>
               <p className="text-zinc-400 text-lg font-light">Each piece is hand-selected and infused with divine energy to support your spiritual journey.</p>
@@ -291,7 +293,7 @@ export function GurujiDarshanContent({ data }: { data?: any }) {
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   transition={{ delay: idx * 0.1 }}
-                  className="group relative bg-zinc-950 rounded-[2.5rem] border border-white/10 overflow-hidden hover:border-orange-500/30 transition-all duration-500"
+                  className="group relative bg-zinc-950 rounded-[2.5rem] border border-white/10 overflow-hidden hover:border-indigo-500/30 transition-all duration-500"
                 >
                   <div className="aspect-[4/5] relative overflow-hidden">
                     <Image 
@@ -302,7 +304,7 @@ export function GurujiDarshanContent({ data }: { data?: any }) {
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-950/20 to-transparent opacity-60" />
                     <div className="absolute top-6 right-6">
-                       <div className="bg-orange-500 text-white font-bold px-4 py-2 rounded-full text-sm shadow-xl flex items-center gap-1">
+                       <div className="bg-indigo-500 text-white font-bold px-4 py-2 rounded-full text-sm shadow-xl flex items-center gap-1">
                           <IndianRupee className="w-3.5 h-3.5" />
                           {product.price_inr}
                        </div>
@@ -311,7 +313,7 @@ export function GurujiDarshanContent({ data }: { data?: any }) {
                   
                   <div className="p-10 relative">
                     <div className="absolute -top-12 left-10 w-24 h-24 bg-zinc-900 rounded-3xl border border-white/10 flex items-center justify-center p-3 shadow-2xl group-hover:-translate-y-2 transition-transform duration-500">
-                       <div className="w-full h-full rounded-2xl bg-orange-500/10 flex items-center justify-center border border-orange-500/20">
+                       <div className="w-full h-full rounded-2xl bg-indigo-500/10 flex items-center justify-center border border-indigo-500/20">
                           <Image 
                             src={product.image_url || "/images/brand/logo-dark-v4.svg"} 
                             alt="thumb" 
@@ -328,7 +330,7 @@ export function GurujiDarshanContent({ data }: { data?: any }) {
                     </p>
                     
                     <Link href={product.buy_link || "/contact"}>
-                      <Button className="w-full bg-white/5 hover:bg-white/10 border border-white/10 text-white rounded-2xl h-14 font-bold transition-all group-hover:bg-orange-600 group-hover:border-orange-500 group-hover:text-white">
+                      <Button className="w-full bg-white/5 hover:bg-white/10 border border-white/10 text-white rounded-2xl h-14 font-bold transition-all group-hover:bg-indigo-600 group-hover:border-indigo-500 group-hover:text-white">
                         Inquire Details <ArrowRight className="ml-2 w-4 h-4" />
                       </Button>
                     </Link>
@@ -339,6 +341,88 @@ export function GurujiDarshanContent({ data }: { data?: any }) {
           </div>
         </section>
       )}
+
+      {/* ── Daily Wisdom Section ──────────────────────────── */}
+      <section className="py-24 relative bg-[#020617] border-t border-white/5">
+          <div className="absolute inset-0 bg-gradient-to-r from-indigo-500/5 to-transparent rounded-[3rem]" />
+          <div className="container mx-auto px-4 md:px-6 relative flex flex-col lg:flex-row items-center justify-between gap-12">
+              <div className="max-w-xl">
+                  <p className="text-[10px] font-black uppercase tracking-[0.4em] text-indigo-500 mb-6">{data?.vachan?.badge || "Daily Vachan"}</p>
+                  <h2 className="text-4xl md:text-5xl font-black uppercase tracking-tighter italic leading-[0.9] mb-8 text-white">
+                      {data?.vachan?.quote || "\"Infinite peace begins within the soul.\""}
+                  </h2>
+                  <p className="text-zinc-400 font-medium italic mb-12">
+                      {data?.vachan?.description || "Receive a personalized AI-generated spiritual quote every morning based on your journey and meditation goals."}
+                  </p>
+                  <Button className="rounded-full bg-white hover:bg-zinc-200 text-black font-black px-8">
+                      SUBSCRIBE TO WISDOM
+                  </Button>
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                  {[1,2,3,4].map(i => (
+                      <div key={i} className="w-40 h-56 rounded-3xl bg-white/5 border border-white/5 p-4 flex flex-col justify-end hover:border-indigo-500/30 transition-all">
+                          <div className="w-full h-1 bg-indigo-500/20 rounded-full mb-4" />
+                          <p className="text-[10px] font-bold text-slate-500 mb-1 italic">June {i+10}</p>
+                          <p className="text-[10px] font-black uppercase tracking-tighter line-clamp-2 text-white">Sacred Morning Vachan</p>
+                      </div>
+                  ))}
+              </div>
+          </div>
+      </section>
+
+      {/* ── 7-Day Divine Consultation Section ──────────── */}
+      <section className="py-32 md:py-48 relative overflow-hidden bg-white/5 border-y border-white/5">
+        <div className="container mx-auto px-4 md:px-6 grid grid-cols-1 lg:grid-cols-2 gap-16 md:gap-24 items-center">
+            <motion.div
+                initial={{ opacity: 0, x: -30 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                className="relative aspect-[16/10] rounded-[3rem] md:rounded-[4rem] overflow-hidden border border-white/10 group"
+            >
+                <Image 
+                    src="https://images.unsplash.com/photo-1541944743827-e04aa6427c33?q=80&w=2574"
+                    alt="Consultation"
+                    fill
+                    className="object-cover group-hover:scale-105 transition-transform duration-[3000ms]"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80" />
+                <div className="absolute bottom-8 left-8 md:bottom-12 md:left-12">
+                    <span className="text-5xl md:text-6xl font-black text-white italic tracking-tighter">7-Day</span>
+                    <p className="text-indigo-500 font-black uppercase tracking-widest text-xs md:text-sm">Divine Sprint</p>
+                </div>
+            </motion.div>
+
+            <div className="text-left space-y-10">
+                <h2 className="text-5xl md:text-7xl lg:text-8xl font-black tracking-tighter italic leading-none text-white">The 7-Day Artist Link</h2>
+                <p className="text-lg md:text-xl text-zinc-400 font-light leading-relaxed max-w-xl">
+                    Every premium acquisition includes a personalized 1-on-1 session with our lead artisan within 7 days. We refine the energy alignment and placement of your artifact.
+                </p>
+                <ul className="space-y-6">
+                    {["Initial Energy Mapping", "Vedic Placement Consultation", "7-Day Signature Verification"].map((point, idx) => (
+                      <li key={idx} className="flex items-center gap-4 text-zinc-300">
+                          <CheckCircle2 className="h-6 w-6 text-indigo-500" />
+                          <span className="font-bold">{point}</span>
+                      </li>
+                    ))}
+                </ul>
+            </div>
+        </div>
+      </section>
+
+      {/* ── Final Sacred CTA ───────────────────────────── */}
+      <section className="py-32 md:py-64 text-center relative overflow-hidden bg-zinc-950">
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] md:w-[900px] md:h-[900px] bg-indigo-600/5 blur-[200px] rounded-full pointer-events-none" />
+        <Award className="w-16 h-16 md:w-20 md:h-20 text-indigo-500/50 mx-auto mb-12 md:mb-16 animate-pulse" />
+        <h2 className="text-5xl md:text-7xl lg:text-[10rem] font-black mb-8 md:mb-12 tracking-tighter leading-[0.8] italic uppercase text-white">
+            Own the Divine
+        </h2>
+        <p className="max-w-3xl mx-auto text-xl md:text-2xl text-zinc-500 font-light mb-16 md:mb-24 italic border-y border-white/5 py-8 md:py-12 px-6 md:px-10 backdrop-blur-sm">
+            Limitless protection and blessings await. Experience the intersection of art and divinity.
+        </p>
+        <Button size="lg" className="bg-indigo-600 hover:bg-white hover:text-black text-white rounded-2xl px-12 md:px-24 h-20 md:h-28 text-2xl md:text-3xl font-black shadow-[0_0_100px_rgba(99,102,241,0.3)] transition-all active:scale-95" asChild>
+          <Link href="/contact">ENTER THE SANCTUM</Link>
+        </Button>
+      </section>
 
     </div>
   );

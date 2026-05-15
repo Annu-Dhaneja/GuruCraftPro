@@ -90,6 +90,14 @@ class WeddingPlanBase(BaseModel):
 class WeddingPlanCreate(WeddingPlanBase):
     pass
 
+class WeddingPlanUpdate(BaseModel):
+    partner_names: Optional[str] = None
+    wedding_date: Optional[str] = None
+    location: Optional[str] = None
+    total_budget: Optional[int] = None
+    guest_count: Optional[int] = None
+    priority: Optional[str] = None
+
 class WeddingDashboardData(BaseModel):
     plan: WeddingPlanBase
     stats: dict

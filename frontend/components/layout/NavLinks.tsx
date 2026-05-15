@@ -13,141 +13,66 @@ import {
     navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
 
-const portfolioItems = [
-    {
-        title: "Logo Design",
-        href: "/portfolio?category=Logo Design",
-        description: "Memorable logos that define your brand identity.",
-    },
-    {
-        title: "Wedding Planning",
-        href: "/services/wedding-plan",
-        description: "Bespoke luxury wedding coordination and design.",
-    },
-    {
-        title: "Photo Editing",
-        href: "/photo-editor",
-        description: "High-end retouching and professional image editing.",
-    },
-    {
-        title: "Guru Ji Art Work",
-        href: "/services/guru-ji-art",
-        description: "Divine hand-painted and digital masterpieces.",
-    },
-    {
-        title: "Game Design",
-        description: "Immersive character and environment concepts.",
-        href: "/services/game-design",
-    },
-    {
-        title: "Vantage Ecom",
-        description: "Growth-focused e-commerce design solutions.",
-        href: "/services/vantage-ecom",
-    },
-    {
-        title: "All Works",
-        href: "/portfolio",
-        description: "View our complete portfolio catalog.",
-    },
-];
-
-const creativeLabItems = [
-    {
-        title: "AI Design Lab",
-        href: "/ai-lab",
-        description: "Explore the future of creativity with our AI-powered design tools.",
-    },
-    {
-        title: "Virtual Try-On",
-        href: "/ai-lab/virtual-try-on",
-        description: "Instantly see how garments look on you with AI technology.",
-    },
-    {
-        title: "Guru Ji Art Work",
-        href: "/guruji-darshan",
-        description: "Divine hand-painted and digital masterpieces for your space.",
-    },
-];
+import { useSiteConfig } from "./SiteConfigProvider";
 
 export function NavLinks() {
+    const { config } = useSiteConfig();
+
     return (
         <NavigationMenu className="hidden lg:flex" delayDuration={0}>
             <NavigationMenuList>
-                <NavigationMenuItem>
-                    <NavigationMenuLink asChild>
-                        <Link href="/" className={navigationMenuTriggerStyle()}>
-                            Home
-                        </Link>
-                    </NavigationMenuLink>
-                </NavigationMenuItem>
+                {config.nav.map((item) => {
+                    const hasItems = item.items && item.items.length > 0;
+                    const isSpecial = item.style === "special";
+                    const isGuru = item.style === "guru";
 
-                <NavigationMenuItem>
-                    <NavigationMenuTrigger>Expertise</NavigationMenuTrigger>
-                    <NavigationMenuContent>
-                        <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] bg-popover/95 backdrop-blur-xl">
-                            {portfolioItems.map((item) => (
-                                <ListItem
-                                    key={item.title}
-                                    title={item.title}
-                                    href={item.href}
+                    if (hasItems) {
+                        return (
+                            <NavigationMenuItem key={item.label}>
+                                <NavigationMenuTrigger className={cn(
+                                    isSpecial && "text-indigo-400 font-semibold",
+                                    isGuru && "text-purple-400 font-bold"
+                                )}>
+                                    {item.label}
+                                </NavigationMenuTrigger>
+                                <NavigationMenuContent>
+                                    <ul className={cn(
+                                        "grid w-[400px] gap-3 p-4 md:w-[500px] bg-popover/95 backdrop-blur-xl",
+                                        item.items!.length > 4 ? "md:grid-cols-2 lg:w-[600px]" : "lg:w-[400px]"
+                                    )}>
+                                        {item.items?.map((subItem) => (
+                                            <ListItem
+                                                key={subItem.label}
+                                                title={subItem.label}
+                                                href={subItem.href}
+                                                className={cn(isSpecial && "hover:bg-indigo-500/5")}
+                                            >
+                                                {subItem.description}
+                                            </ListItem>
+                                        ))}
+                                    </ul>
+                                </NavigationMenuContent>
+                            </NavigationMenuItem>
+                        );
+                    }
+
+                    return (
+                        <NavigationMenuItem key={item.label}>
+                            <NavigationMenuLink asChild>
+                                <Link 
+                                    href={item.href} 
+                                    className={cn(
+                                        navigationMenuTriggerStyle(),
+                                        isSpecial && "text-indigo-400 font-semibold",
+                                        isGuru && "text-purple-400 font-bold"
+                                    )}
                                 >
-                                    {item.description}
-                                </ListItem>
-                            ))}
-                        </ul>
-                    </NavigationMenuContent>
-                </NavigationMenuItem>
-
-                <NavigationMenuItem>
-                    <NavigationMenuTrigger className="text-indigo-500 font-semibold">Creative Lab</NavigationMenuTrigger>
-                    <NavigationMenuContent>
-                        <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] lg:w-[400px] bg-popover/95 backdrop-blur-xl">
-                            {creativeLabItems.map((item) => (
-                                <ListItem
-                                    key={item.title}
-                                    title={item.title}
-                                    href={item.href}
-                                    className="hover:bg-indigo-500/5"
-                                >
-                                    {item.description}
-                                </ListItem>
-                            ))}
-                        </ul>
-                    </NavigationMenuContent>
-                </NavigationMenuItem>
-
-                <NavigationMenuItem>
-                    <NavigationMenuLink asChild>
-                        <Link href="/services" className={navigationMenuTriggerStyle()}>
-                            Pricing
-                        </Link>
-                    </NavigationMenuLink>
-                </NavigationMenuItem>
-
-                <NavigationMenuItem>
-                    <NavigationMenuLink asChild>
-                        <Link href="/resources" className={navigationMenuTriggerStyle()}>
-                            Learn
-                        </Link>
-                    </NavigationMenuLink>
-                </NavigationMenuItem>
-
-                <NavigationMenuItem>
-                    <NavigationMenuLink asChild>
-                        <Link href="/about" className={navigationMenuTriggerStyle()}>
-                            About
-                        </Link>
-                    </NavigationMenuLink>
-                </NavigationMenuItem>
-
-                <NavigationMenuItem>
-                    <NavigationMenuLink asChild>
-                        <Link href="/contact" className={navigationMenuTriggerStyle()}>
-                            Contact
-                        </Link>
-                    </NavigationMenuLink>
-                </NavigationMenuItem>
-
+                                    {item.label}
+                                </Link>
+                            </NavigationMenuLink>
+                        </NavigationMenuItem>
+                    );
+                })}
             </NavigationMenuList>
         </NavigationMenu>
     );

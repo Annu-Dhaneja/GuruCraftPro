@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 import { 
   Home, LayoutDashboard, Settings, Globe, ArrowLeft, 
   Sparkles, LogOut, ShieldCheck, BookOpen, PenTool, 
-  Lightbulb, Mail, Shirt, Layers, FormInput, FileImage, Users 
+  Lightbulb, Mail, Shirt, Layers, FormInput, FileImage, Users, Heart 
 } from "lucide-react";
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
@@ -40,6 +40,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     { name: "Form Builder", href: "/admin/forms", icon: FormInput },
     { name: "Media Manager", href: "/admin/media", icon: FileImage },
     { name: "User Management", href: "/admin/users", icon: Users },
+    { name: "Wedding Plans", href: "/admin/wedding", icon: Heart },
     { name: "Try Dress", href: "/admin/wardrobe", icon: Shirt },
     { name: "Site Configuration", href: "/admin/site-config", icon: Settings },
   ];

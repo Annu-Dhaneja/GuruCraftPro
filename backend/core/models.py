@@ -48,6 +48,7 @@ class GlobalSettings(Base, AuditMixin):
     address = Column(String, nullable=True)
     footer_json = Column(Text, default="{}") # For links and copyright
     social_json = Column(Text, default="{}") # For social links
+    nav_json = Column(Text, default="[]") # For navigation structure
     theme_json = Column(Text, default="{}") # Colors, fonts
 
 class CMSPage(Base, AuditMixin):

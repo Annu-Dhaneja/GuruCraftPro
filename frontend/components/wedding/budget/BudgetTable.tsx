@@ -24,11 +24,11 @@ export function BudgetTable({ items, addItem, updateItem, removeItem }: BudgetTa
   return (
     <div className="space-y-8">
       {/* Category Filter */}
-      <div className="flex flex-wrap items-center gap-4 py-4 border-y border-[#D4AF37]/10">
-        <Filter className="w-4 h-4 text-[#D4AF37]" />
+      <div className="flex flex-wrap items-center gap-4 py-4 border-y border-indigo-500/10">
+        <Filter className="w-4 h-4 text-indigo-500" />
         <button 
           onClick={() => setFilterCategory("All")}
-          className={`text-xs font-bold uppercase tracking-widest px-4 py-2 rounded-full transition-all ${filterCategory === "All" ? 'bg-[#D4AF37] text-white' : 'text-zinc-400 hover:text-[#D4AF37]'}`}
+          className={`text-xs font-bold uppercase tracking-widest px-4 py-2 rounded-full transition-all ${filterCategory === "All" ? 'bg-indigo-500 text-white' : 'text-zinc-400 hover:text-indigo-500'}`}
         >
           All Categories
         </button>
@@ -36,7 +36,7 @@ export function BudgetTable({ items, addItem, updateItem, removeItem }: BudgetTa
           <button 
             key={cat}
             onClick={() => setFilterCategory(cat)}
-            className={`text-xs font-bold uppercase tracking-widest px-4 py-2 rounded-full transition-all ${filterCategory === cat ? 'bg-[#D4AF37] text-white' : 'text-zinc-400 hover:text-[#D4AF37]'}`}
+            className={`text-xs font-bold uppercase tracking-widest px-4 py-2 rounded-full transition-all ${filterCategory === cat ? 'bg-indigo-500 text-white' : 'text-zinc-400 hover:text-indigo-500'}`}
           >
             {cat}
           </button>
@@ -44,7 +44,7 @@ export function BudgetTable({ items, addItem, updateItem, removeItem }: BudgetTa
       </div>
 
       {/* Table Header */}
-      <div className="hidden md:grid grid-cols-12 gap-6 px-10 py-6 bg-[#2C2C2C] text-white rounded-t-[30px] font-serif italic text-lg shadow-xl shadow-black/5">
+      <div className="hidden md:grid grid-cols-12 gap-6 px-10 py-6 bg-slate-900/80 text-white rounded-t-[30px] font-serif italic text-lg shadow-xl shadow-black/5">
         <div className="col-span-4">Particulars</div>
         <div className="col-span-2">Estimated (₹)</div>
         <div className="col-span-2">Actual (₹)</div>
@@ -63,7 +63,7 @@ export function BudgetTable({ items, addItem, updateItem, removeItem }: BudgetTa
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95 }}
               transition={{ delay: idx * 0.05 }}
-              className="grid grid-cols-1 md:grid-cols-12 gap-4 md:gap-6 items-center px-6 md:px-10 py-6 bg-white border border-[#D4AF37]/10 rounded-[30px] shadow-sm hover:shadow-md hover:border-[#D4AF37]/30 transition-all group"
+              className="grid grid-cols-1 md:grid-cols-12 gap-4 md:gap-6 items-center px-6 md:px-10 py-6 bg-white border border-indigo-500/10 rounded-[30px] shadow-sm hover:shadow-md hover:border-indigo-500/30 transition-all group"
             >
               {/* Item & Category */}
               <div className="col-span-1 md:col-span-4 space-y-2">
@@ -76,15 +76,15 @@ export function BudgetTable({ items, addItem, updateItem, removeItem }: BudgetTa
                 <select
                   value={item.category}
                   onChange={(e) => updateItem(item.id, "category", e.target.value)}
-                  className="bg-transparent border-0 text-[10px] uppercase tracking-widest font-bold text-[#D4AF37] p-0 focus:ring-0 cursor-pointer"
+                  className="bg-transparent border-0 text-[10px] uppercase tracking-widest font-bold text-indigo-500 p-0 focus:ring-0 cursor-pointer"
                 >
                   {CATEGORIES.map(cat => <option key={cat} value={cat}>{cat}</option>)}
                 </select>
               </div>
 
               {/* Estimated */}
-              <div className="col-span-1 md:col-span-2 flex items-center gap-2 px-4 py-3 bg-[#FCFBF7] rounded-xl border border-[#D4AF37]/5">
-                <IndianRupee className="w-3 h-3 text-[#D4AF37]" />
+              <div className="col-span-1 md:col-span-2 flex items-center gap-2 px-4 py-3 bg-slate-900/30 rounded-xl border border-indigo-500/5">
+                <IndianRupee className="w-3 h-3 text-indigo-500" />
                 <input
                   type="number"
                   value={item.estimated || ""}
@@ -94,8 +94,8 @@ export function BudgetTable({ items, addItem, updateItem, removeItem }: BudgetTa
               </div>
 
               {/* Actual */}
-              <div className="col-span-1 md:col-span-2 flex items-center gap-2 px-4 py-3 bg-[#FCFBF7] rounded-xl border border-[#D4AF37]/5">
-                <IndianRupee className="w-3 h-3 text-[#D4AF37]" />
+              <div className="col-span-1 md:col-span-2 flex items-center gap-2 px-4 py-3 bg-slate-900/30 rounded-xl border border-indigo-500/5">
+                <IndianRupee className="w-3 h-3 text-indigo-500" />
                 <input
                   type="number"
                   value={item.actual || ""}
@@ -105,8 +105,8 @@ export function BudgetTable({ items, addItem, updateItem, removeItem }: BudgetTa
               </div>
 
               {/* Paid */}
-              <div className="col-span-1 md:col-span-2 flex items-center gap-2 px-4 py-3 bg-[#FCFBF7] rounded-xl border border-[#D4AF37]/5">
-                <IndianRupee className="w-3 h-3 text-[#D4AF37]" />
+              <div className="col-span-1 md:col-span-2 flex items-center gap-2 px-4 py-3 bg-slate-900/30 rounded-xl border border-indigo-500/5">
+                <IndianRupee className="w-3 h-3 text-indigo-500" />
                 <input
                   type="number"
                   value={item.paid || ""}
@@ -135,7 +135,7 @@ export function BudgetTable({ items, addItem, updateItem, removeItem }: BudgetTa
           whileHover={{ scale: 1.01 }}
           whileTap={{ scale: 0.99 }}
           onClick={() => addItem()}
-          className="w-full py-8 border-2 border-dashed border-[#D4AF37]/20 rounded-[30px] flex items-center justify-center gap-3 text-[#D4AF37] font-serif italic text-xl hover:bg-[#D4AF37]/5 transition-all"
+          className="w-full py-8 border-2 border-dashed border-indigo-500/20 rounded-[30px] flex items-center justify-center gap-3 text-indigo-500 font-serif italic text-xl hover:bg-indigo-500/5 transition-all"
         >
           <Plus className="w-6 h-6" /> Add Another Masterpiece Element
         </motion.button>

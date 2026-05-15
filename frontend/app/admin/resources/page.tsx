@@ -8,7 +8,7 @@ export default function AdminResourcesPage() {
   return (
     <div className="min-h-screen bg-slate-950/20 pb-20">
       <div className="relative mb-12 py-10 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-r from-amber-500/10 via-orange-500/5 to-transparent border-b border-white/5" />
+        <div className="absolute inset-0 bg-gradient-to-r from-indigo-500/10 via-orange-500/5 to-transparent border-b border-white/5" />
         <div className="max-w-6xl mx-auto px-6 relative z-10 text-left">
           <h1 className="text-4xl md:text-5xl font-extrabold tracking-tighter text-white">Resources & Learn</h1>
           <p className="text-muted-foreground text-lg max-w-xl mt-4">Manage tutorials, AI prompts, and free assets for your community.</p>
@@ -26,7 +26,7 @@ export default function AdminResourcesPage() {
             {/* HERO SECTION */}
             <section className="bg-slate-900/40 backdrop-blur-md p-10 rounded-[2.5rem] border border-white/10 shadow-2xl relative group">
               <h2 className="text-3xl font-bold mb-10 flex items-center gap-4 text-white">
-                <Sparkles className="w-8 h-8 text-amber-500" /> Hero Section
+                <Sparkles className="w-8 h-8 text-indigo-500" /> Hero Section
               </h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
                 <div className="space-y-6">

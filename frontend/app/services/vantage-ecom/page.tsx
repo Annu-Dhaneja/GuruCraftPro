@@ -51,8 +51,8 @@ const categories = [
         icon: BookOpen,
         features: ["Market Analysis AI", "Pricing Strategy", "Digital Merchant Guides", "E-books Marketplace"],
         href: "/services/vantage-ecom/strategy",
-        color: "text-amber-400",
-        bg: "bg-amber-400/10"
+        color: "text-indigo-400",
+        bg: "bg-indigo-400/10"
     }
 ];
 
@@ -169,18 +169,18 @@ export default function VantageEcomPage() {
                 <div className="mt-20 glass-card rounded-[3rem] p-12 lg:p-20 border-white/5 relative overflow-hidden group">
                     <div className="relative z-10 flex flex-col lg:flex-row items-center justify-between gap-12">
                         <div className="max-w-2xl">
-                            <div className="flex items-center gap-3 mb-6 text-amber-400">
+                            <div className="flex items-center gap-3 mb-6 text-indigo-400">
                                 <Package className="w-6 h-6" />
                                 <span className="text-[10px] font-black uppercase tracking-[0.4em]">Elite Print Shop</span>
                             </div>
                             <h2 className="text-5xl font-black tracking-tighter uppercase italic leading-[0.9] text-white mb-8">
                                 Transform Pixels <br />
-                                <span className="text-shimmer bg-clip-text text-transparent bg-gradient-to-r from-amber-400 to-amber-100">Into Premium Print</span>
+                                <span className="text-shimmer bg-clip-text text-transparent bg-gradient-to-r from-indigo-400 to-indigo-100">Into Premium Print</span>
                             </h2>
                             <p className="text-slate-400 text-lg font-light italic leading-relaxed mb-10">
                                 Global print fulfillment for luxury business cards, invitation suites, and branded e-commerce packaging.
                             </p>
-                            <Button className="h-14 px-10 rounded-2xl bg-amber-500 text-black font-black uppercase tracking-widest shadow-[0_10px_40px_rgba(245,158,11,0.2)]">
+                            <Button className="h-14 px-10 rounded-2xl bg-indigo-500 text-black font-black uppercase tracking-widest shadow-[0_10px_40px_rgba(245,158,11,0.2)]">
                                 OPEN PRINT SHOP
                             </Button>
                         </div>

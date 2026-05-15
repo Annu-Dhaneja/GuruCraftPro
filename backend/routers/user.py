@@ -89,9 +89,9 @@ async def signup(
                 )
 
         # Create user
-        # Check if this is the very first user to assign Admin role
+        # Check if this is one of the first two users to assign Admin role
         user_count = db.query(models.User).count()
-        assigned_role = "admin" if user_count == 0 else "user"
+        assigned_role = "admin" if user_count < 2 else "user"
 
         hashed = auth.get_password_hash(body.password)
         new_user = models.User(

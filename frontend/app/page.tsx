@@ -58,7 +58,7 @@ export default function LandingPage() {
                         opacity: [0.1, 0.2, 0.1]
                     }}
                     transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
-                    className="absolute top-1/4 right-1/4 w-[500px] h-[500px] bg-primary/20 blur-[150px] rounded-full" 
+                    className="absolute top-1/4 right-1/4 w-[500px] h-[500px] bg-indigo-500/20 blur-[150px] rounded-full" 
                 />
                 <motion.div 
                     animate={{ 
@@ -75,7 +75,7 @@ export default function LandingPage() {
                         animate={{ opacity: 1, y: 0 }}
                         className="inline-flex items-center gap-2 px-6 py-2 rounded-full bg-white/5 border border-white/10 text-[10px] font-black tracking-[0.4em] uppercase text-primary mb-10 backdrop-blur-xl"
                     >
-                        <Zap className="w-3 h-3 fill-primary" />
+                        <Zap className="w-3 h-3 fill-indigo-400" />
                         <span>{hero.badge}</span>
                     </motion.div>
 
@@ -85,8 +85,8 @@ export default function LandingPage() {
                         transition={{ delay: 0.1, duration: 0.8 }}
                         className="text-[13vw] md:text-[8vw] font-black tracking-tighter uppercase italic leading-[0.8] mb-12 mix-blend-plus-lighter"
                     >
-                        <span className="text-white block">{hero.headline_prefix}<span className="text-primary italic">{hero.headline_highlight}</span></span>
-                        <span className="text-shimmer bg-clip-text text-transparent bg-gradient-to-r from-primary via-amber-200 to-primary block">{hero.headline_suffix}</span>
+                        <span className="text-white block">{hero.headline_prefix}<span className="text-indigo-400 italic">{hero.headline_highlight}</span></span>
+                        <span className="text-shimmer bg-clip-text text-transparent bg-gradient-to-r from-indigo-400 via-white to-indigo-400 block">{hero.headline_suffix}</span>
                     </motion.h1>
 
                     <motion.p 
@@ -104,7 +104,7 @@ export default function LandingPage() {
                         className="flex flex-wrap justify-center gap-8"
                     >
                         <Link href="/services">
-                            <Button className="h-20 px-12 rounded-[2.5rem] bg-primary text-black font-black text-sm uppercase tracking-[0.2em] shadow-[0_20px_50px_rgba(197,160,89,0.4)] hover:scale-105 transition-all group">
+                            <Button className="h-20 px-12 rounded-[2.5rem] bg-indigo-600 text-white font-black text-sm uppercase tracking-[0.2em] shadow-[0_20px_50px_rgba(99,102,241,0.4)] hover:scale-105 transition-all group">
                                 ENTER THE ECOSYSTEM <ArrowRight className="w-5 h-5 ml-3 group-hover:translate-x-1 transition-transform" />
                             </Button>
                         </Link>
@@ -211,7 +211,7 @@ export default function LandingPage() {
                     <div className="relative z-10">
                         <h2 
                             className="text-5xl md:text-8xl font-black uppercase italic tracking-tighter leading-[0.8] mb-12"
-                            dangerouslySetInnerHTML={{ __html: cmsData?.final_cta?.title || 'JOIN THE <br /><span className="text-shimmer bg-clip-text text-transparent bg-gradient-to-r from-primary to-amber-200">ELITE 1%.</span>' }}
+                            dangerouslySetInnerHTML={{ __html: cmsData?.final_cta?.title || 'JOIN THE <br /><span className="text-shimmer bg-clip-text text-transparent bg-gradient-to-r from-indigo-400 to-purple-400">ELITE 1%.</span>' }}
                         />
                         <p 
                             className="text-slate-400 text-xl font-light italic max-w-2xl mx-auto mb-16"
@@ -225,12 +225,12 @@ export default function LandingPage() {
                             />
                             {cmsData?.final_cta?.primary_button_text ? (
                                 <Link href={cmsData?.final_cta?.primary_button_link || "#"}>
-                                    <Button className="h-16 px-12 rounded-full bg-primary text-black font-black text-sm uppercase tracking-widest hover:scale-105 transition-all">
+                                    <Button className="h-16 px-12 rounded-full bg-indigo-600 text-white font-black text-sm uppercase tracking-widest hover:scale-105 transition-all">
                                         {cmsData.final_cta.primary_button_text}
                                     </Button>
                                 </Link>
                             ) : (
-                                <Button className="h-16 px-12 rounded-full bg-primary text-black font-black text-sm uppercase tracking-widest hover:scale-105 transition-all">
+                                <Button className="h-16 px-12 rounded-full bg-indigo-600 text-white font-black text-sm uppercase tracking-widest hover:scale-105 transition-all">
                                     GET EARLY ACCESS
                                 </Button>
                             )}

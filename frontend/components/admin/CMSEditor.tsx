@@ -269,7 +269,7 @@ export function CMSEditor({
           <p className="text-muted-foreground text-sm mt-1">{description}</p>
         </div>
         <div className="flex items-center gap-4">
-          <span className={status.includes("success") ? "text-green-500 text-sm" : "text-amber-500 text-sm"}>
+          <span className={status.includes("success") ? "text-green-500 text-sm" : "text-indigo-400 text-sm"}>
             {status}
           </span>
           <Button onClick={handleSave} className="bg-indigo-600 hover:bg-indigo-700 text-white gap-2">

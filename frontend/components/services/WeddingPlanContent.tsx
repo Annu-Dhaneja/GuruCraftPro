@@ -96,7 +96,7 @@ export function WeddingPlanContent({ data }: { data?: any }) {
   };
 
   return (
-    <div className="flex flex-col bg-[#FCFBF7] text-[#2C2C2C] selection:bg-[#D4AF37]/30">
+    <div className="flex flex-col bg-[#020617] text-white selection:bg-indigo-500/30">
       {/* ── Hero Section ─────────────────────────────────── */}
       <section className="relative h-screen flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 z-0">
@@ -107,7 +107,7 @@ export function WeddingPlanContent({ data }: { data?: any }) {
             className="object-cover brightness-75 scale-105"
             priority
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-[#FCFBF7]" />
+          <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-[#020617]" />
         </div>
 
         <div className="container relative z-10 text-center px-4">
@@ -117,7 +117,7 @@ export function WeddingPlanContent({ data }: { data?: any }) {
             transition={{ duration: 1 }}
             className="mb-8 inline-flex items-center gap-2 px-6 py-2 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white"
           >
-            <Sparkles className="w-4 h-4 text-[#D4AF37]" />
+            <Sparkles className="w-4 h-4 text-indigo-400" />
             <span className="text-xs font-bold tracking-[0.3em] uppercase italic">{hero.badge}</span>
           </motion.div>
 
@@ -128,7 +128,7 @@ export function WeddingPlanContent({ data }: { data?: any }) {
             className="text-6xl md:text-9xl font-serif text-white mb-8 italic"
           >
             {hero.title} <br />
-            <span className="text-[#D4AF37] not-italic drop-shadow-2xl">{hero.title_highlight}</span>
+            <span className="text-indigo-400 not-italic drop-shadow-2xl">{hero.title_highlight}</span>
           </motion.h1>
 
           <motion.p
@@ -146,7 +146,7 @@ export function WeddingPlanContent({ data }: { data?: any }) {
             transition={{ duration: 0.8, delay: 0.6 }}
             className="flex flex-wrap justify-center gap-6"
           >
-            <Button size="lg" className="bg-[#D4AF37] hover:bg-[#B8962F] text-white rounded-full px-10 h-16 text-lg font-serif italic shadow-xl">
+            <Button size="lg" className="bg-indigo-400 hover:bg-indigo-500 text-white rounded-full px-10 h-16 text-lg font-serif italic shadow-xl">
               Begin Your Journey <ArrowRight className="ml-2 w-5 h-5" />
             </Button>
             <Button variant="outline" size="lg" className="border-white text-white hover:bg-white/10 rounded-full px-10 h-16 text-lg font-serif italic backdrop-blur-sm">
@@ -161,12 +161,12 @@ export function WeddingPlanContent({ data }: { data?: any }) {
         <div className="container px-4">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
             <motion.div {...fadeUp}>
-              <span className="text-[#D4AF37] font-serif italic text-2xl mb-4 block">The Art of Planning</span>
+              <span className="text-indigo-400 font-serif italic text-2xl mb-4 block">The Art of Planning</span>
               <h2 className="text-4xl md:text-6xl font-serif mb-8 leading-tight">
                 {heritage.title_prefix} <br />
                 <span className="italic">{heritage.title_highlight}</span>
               </h2>
-              <p className="text-xl text-zinc-600 font-light leading-relaxed mb-10">
+              <p className="text-xl text-zinc-400 font-light leading-relaxed mb-10">
                 {heritage.description}
               </p>
               
@@ -175,7 +175,7 @@ export function WeddingPlanContent({ data }: { data?: any }) {
                   const IconComp = getIcon(item.icon);
                   return (
                     <div key={i} className="space-y-2">
-                      <IconComp className="w-8 h-8 text-[#D4AF37]" />
+                      <IconComp className="w-8 h-8 text-indigo-400" />
                       <h4 className="font-bold text-lg">{item.label}</h4>
                       <p className="text-zinc-500 text-sm">{item.desc}</p>
                     </div>
@@ -220,18 +220,18 @@ export function WeddingPlanContent({ data }: { data?: any }) {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: i * 0.1 }}
-              className={`p-12 rounded-[40px] border flex flex-col ${pkg.highlight ? 'bg-white/5 border-[#D4AF37]' : 'bg-transparent border-zinc-800'} transition-all hover:scale-[1.02]`}
+              className={`p-12 rounded-[40px] border flex flex-col ${pkg.highlight ? 'bg-white/5 border-indigo-400' : 'bg-transparent border-zinc-800'} transition-all hover:scale-[1.02]`}
             >
               <h3 className="text-3xl font-serif mb-2 italic">{pkg.name}</h3>
-              <p className={`text-xl font-bold mb-8 ${pkg.highlight ? 'text-[#D4AF37]' : 'text-zinc-500'}`}>{pkg.price}</p>
+              <p className={`text-xl font-bold mb-8 ${pkg.highlight ? 'text-indigo-400' : 'text-zinc-500'}`}>{pkg.price}</p>
               <ul className="space-y-4 mb-12 flex-grow">
                 {pkg.features.map((f: string, j: number) => (
                   <li key={j} className="flex items-center gap-3 text-zinc-400 font-light text-left">
-                    <Sparkles className="w-4 h-4 text-[#D4AF37]/50" /> {f}
+                    <Sparkles className="w-4 h-4 text-indigo-400/50" /> {f}
                   </li>
                 ))}
               </ul>
-              <Button className={pkg.highlight ? 'bg-[#D4AF37] hover:bg-[#B8962F]' : 'bg-white/10 hover:bg-white/20'}>
+              <Button className={pkg.highlight ? 'bg-indigo-400 hover:bg-indigo-500' : 'bg-white/10 hover:bg-white/20'}>
                 Contact for {pkg.name}
               </Button>
             </motion.div>
@@ -246,7 +246,7 @@ export function WeddingPlanContent({ data }: { data?: any }) {
             <h2 className="text-4xl md:text-6xl font-serif italic mb-4">Glimpses of Forever</h2>
             <p className="text-zinc-500 text-lg">Moments captured in the pursuit of perfection.</p>
           </div>
-          <Button variant="ghost" className="text-[#D4AF37] font-serif italic text-xl">View Full Portfolio <ArrowRight className="ml-2 w-5 h-5" /></Button>
+          <Button variant="ghost" className="text-indigo-400 font-serif italic text-xl">View Full Portfolio <ArrowRight className="ml-2 w-5 h-5" /></Button>
         </div>
 
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 px-4 h-[600px]">
@@ -271,17 +271,17 @@ export function WeddingPlanContent({ data }: { data?: any }) {
       </section>
 
       {/* ── Call to Action ──────────────────────────────── */}
-      <section className="py-40 relative bg-[#D4AF37]/5 text-center">
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[800px] bg-[#D4AF37]/10 blur-[120px] rounded-full pointer-events-none" />
+      <section className="py-40 relative bg-indigo-500/5 text-center">
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[800px] bg-indigo-500/10 blur-[120px] rounded-full pointer-events-none" />
         <div className="container relative z-10 px-4">
           <motion.div {...fadeUp}>
-            <Heart className="w-16 h-16 text-[#D4AF37] mx-auto mb-8 animate-pulse" />
+            <Heart className="w-16 h-16 text-indigo-400 mx-auto mb-8 animate-pulse" />
             <h2 className="text-5xl md:text-8xl font-serif mb-8 italic">{cta.title}</h2>
-            <p className="max-w-2xl mx-auto text-xl text-zinc-600 font-light mb-12 italic">
+            <p className="max-w-2xl mx-auto text-xl text-zinc-400 font-light mb-12 italic">
               {cta.description}
             </p>
             <Link href="/wedding/budget">
-              <Button size="lg" className="bg-[#2C2C2C] hover:bg-black text-white rounded-full px-16 h-20 text-2xl font-serif italic shadow-2xl">
+              <Button size="lg" className="bg-indigo-600 hover:bg-indigo-500 text-white rounded-full px-16 h-20 text-2xl font-serif italic shadow-2xl">
                 {cta.button_text}
               </Button>
             </Link>

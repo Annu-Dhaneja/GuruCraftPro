@@ -162,7 +162,7 @@ export default function PageBuilder() {
                           />
                         ) : typeof val === 'object' ? (
                           <Textarea 
-                            className="bg-black/50 font-mono text-sm text-amber-400 h-32" 
+                            className="bg-black/50 font-mono text-sm text-indigo-400 h-32" 
                             value={JSON.stringify(val, null, 2)} 
                             onChange={(e) => {
                               try { updateComponentProps(idx, key, JSON.parse(e.target.value)) } catch(err) {}

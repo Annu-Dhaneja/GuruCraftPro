@@ -110,6 +110,38 @@ export default function SiteConfigAdmin() {
     }));
   };
 
+  const addNavSubItem = (parentIndex: number) => {
+    setData((prev: any) => {
+      const newNav = [...prev.nav];
+      const parent = { ...newNav[parentIndex] };
+      parent.items = [...(parent.items || []), { label: "New Sub-link", href: "/", description: "", style: "default" }];
+      newNav[parentIndex] = parent;
+      return { ...prev, nav: newNav };
+    });
+  };
+
+  const updateNavSubItem = (parentIndex: number, subIndex: number, field: string, value: string) => {
+    setData((prev: any) => {
+      const newNav = [...prev.nav];
+      const parent = { ...newNav[parentIndex] };
+      const newItems = [...(parent.items || [])];
+      newItems[subIndex] = { ...newItems[subIndex], [field]: value };
+      parent.items = newItems;
+      newNav[parentIndex] = parent;
+      return { ...prev, nav: newNav };
+    });
+  };
+
+  const removeNavSubItem = (parentIndex: number, subIndex: number) => {
+    setData((prev: any) => {
+      const newNav = [...prev.nav];
+      const parent = { ...newNav[parentIndex] };
+      parent.items = parent.items.filter((_: any, i: number) => i !== subIndex);
+      newNav[parentIndex] = parent;
+      return { ...prev, nav: newNav };
+    });
+  };
+
   // Footer Link Handlers
   const addFooterExplore = () => {
     setData((prev: any) => ({ ...prev, footer_explore: [...(prev.footer_explore || []), { label: "New Link", href: "/" }] }));
@@ -211,34 +243,79 @@ export default function SiteConfigAdmin() {
                 <Plus className="w-4 h-4 mr-2" /> Add Link
               </Button>
             </div>
-            <div className="space-y-4">
+            <div className="space-y-6">
               {data.nav.map((item: any, i: number) => (
-                <div key={i} className="flex gap-4 items-start p-4 bg-black/30 rounded-xl border border-white/5">
-                  <div className="grid gap-4 flex-1 md:grid-cols-3">
-                    <div>
-                      <InputLabel>Label</InputLabel>
-                      <Input value={item.label} onChange={v => updateNavItem(i, "label", v)} />
+                <div key={i} className="p-6 bg-black/30 rounded-2xl border border-white/5 space-y-6">
+                  <div className="flex gap-4 items-start">
+                    <div className="grid gap-4 flex-1 md:grid-cols-3">
+                      <div>
+                        <InputLabel>Label</InputLabel>
+                        <Input value={item.label} onChange={v => updateNavItem(i, "label", v)} />
+                      </div>
+                      <div>
+                        <InputLabel>URL Context (href)</InputLabel>
+                        <Input value={item.href} onChange={v => updateNavItem(i, "href", v)} />
+                      </div>
+                      <div>
+                        <InputLabel>Style Theme</InputLabel>
+                        <select 
+                          value={item.style || "default"} 
+                          onChange={e => updateNavItem(i, "style", e.target.value)}
+                          className="w-full rounded-lg border border-white/10 bg-black/40 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/50 text-white"
+                        >
+                          <option value="default">Default</option>
+                          <option value="special">Special (Indigo/Violet)</option>
+                          <option value="guru">Guru (Purple/Bold)</option>
+                        </select>
+                      </div>
                     </div>
-                    <div>
-                      <InputLabel>URL Context (href)</InputLabel>
-                      <Input value={item.href} onChange={v => updateNavItem(i, "href", v)} />
+                    <Button variant="ghost" size="icon" onClick={() => removeNavItem(i)} className="mt-8 text-red-400 hover:text-red-300 hover:bg-red-900/20">
+                      <Trash2 className="w-4 h-4" />
+                    </Button>
+                  </div>
+
+                  {/* Sub-items section */}
+                  <div className="pl-8 border-l border-white/10 space-y-4">
+                    <div className="flex items-center justify-between">
+                      <h3 className="text-sm font-bold text-indigo-400 uppercase tracking-widest">Sub-sections (Dropdown Items)</h3>
+                      <Button onClick={() => addNavSubItem(i)} variant="ghost" size="sm" className="text-indigo-400 hover:bg-indigo-400/10 h-8">
+                        <Plus className="w-3 h-3 mr-1" /> Add Sub-item
+                      </Button>
                     </div>
-                    <div>
-                      <InputLabel>Style Theme</InputLabel>
-                      <select 
-                        value={item.style || "default"} 
-                        onChange={e => updateNavItem(i, "style", e.target.value)}
-                        className="w-full rounded-lg border border-white/10 bg-black/40 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/50 text-white"
-                      >
-                        <option value="default">Default</option>
-                        <option value="special">Special (Gradient/Indigo)</option>
-                        <option value="guru">Guru (Amber/Bold)</option>
-                      </select>
+                    
+                    <div className="grid gap-3">
+                      {(item.items || []).map((subItem: any, subI: number) => (
+                        <div key={subI} className="flex gap-3 items-center bg-white/5 p-3 rounded-lg border border-white/5">
+                          <div className="grid grid-cols-2 gap-3 flex-1">
+                            <input 
+                              placeholder="Sub-item Label"
+                              value={subItem.label} 
+                              onChange={e => updateNavSubItem(i, subI, "label", e.target.value)}
+                              className="bg-transparent border-none focus:ring-0 text-sm text-white placeholder:text-white/20"
+                            />
+                            <input 
+                              placeholder="Sub-item description"
+                              value={subItem.description || ""} 
+                              onChange={e => updateNavSubItem(i, subI, "description", e.target.value)}
+                              className="bg-transparent border-none focus:ring-0 text-xs text-white/40 placeholder:text-white/20 italic"
+                            />
+                            <input 
+                              placeholder="Sub-item href"
+                              value={subItem.href} 
+                              onChange={e => updateNavSubItem(i, subI, "href", e.target.value)}
+                              className="bg-transparent border-none focus:ring-0 text-sm text-white/60 placeholder:text-white/20"
+                            />
+                          </div>
+                          <Button variant="ghost" size="icon" onClick={() => removeNavSubItem(i, subI)} className="text-red-400/50 hover:text-red-400 h-8 w-8">
+                            <Trash2 className="w-3 h-3" />
+                          </Button>
+                        </div>
+                      ))}
+                      {(!item.items || item.items.length === 0) && (
+                        <p className="text-xs text-muted-foreground italic">No sub-items added. This will be a single link.</p>
+                      )}
                     </div>
                   </div>
-                  <Button variant="ghost" size="icon" onClick={() => removeNavItem(i)} className="mt-8 text-red-400 hover:text-red-300 hover:bg-red-900/20">
-                    <Trash2 className="w-4 h-4" />
-                  </Button>
                 </div>
               ))}
             </div>

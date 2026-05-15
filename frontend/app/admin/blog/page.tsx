@@ -139,7 +139,7 @@ export default function AdminBlogPage() {
                 </div>
                 <div className="w-px h-8 bg-white/10" />
                 <div className="text-center">
-                    <p className="text-[10px] font-black text-amber-500 uppercase tracking-widest">Drafts</p>
+                    <p className="text-[10px] font-black text-indigo-500 uppercase tracking-widest">Drafts</p>
                     <p className="text-xl font-bold text-white">{posts.filter(p=>p.status === 'draft').length}</p>
                 </div>
             </div>
@@ -150,7 +150,7 @@ export default function AdminBlogPage() {
             <div key={post.id} className="p-8 hover:bg-white/5 transition-all group flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
                <div className="space-y-3 flex-1">
                   <div className="flex items-center gap-3">
-                    <span className={`text-[10px] font-black uppercase px-3 py-1 rounded-full border ${post.status === 'published' ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20' : 'bg-amber-500/10 text-amber-400 border-amber-500/20'}`}>
+                    <span className={`text-[10px] font-black uppercase px-3 py-1 rounded-full border ${post.status === 'published' ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20' : 'bg-indigo-500/10 text-indigo-400 border-indigo-500/20'}`}>
                       {post.status}
                     </span>
                     <span className="text-xs text-muted-foreground flex items-center gap-1.5 font-medium">
@@ -256,7 +256,7 @@ export default function AdminBlogPage() {
                             <div className="grid grid-cols-1 gap-3">
                                 {[
                                     { id: 'published', label: 'Published', icon: Check, color: 'text-emerald-400' },
-                                    { id: 'draft', label: 'Draft Mode', icon: Clock, color: 'text-amber-500' }
+                                    { id: 'draft', label: 'Draft Mode', icon: Clock, color: 'text-indigo-500' }
                                 ].map(opt => (
                                     <button 
                                         key={opt.id}

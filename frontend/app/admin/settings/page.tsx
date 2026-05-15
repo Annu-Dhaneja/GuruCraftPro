@@ -137,7 +137,7 @@ export default function AdminSettingsPage() {
             {/* FOOTER ARCHITECTURE */}
             <section className="bg-slate-900/40 backdrop-blur-md p-10 rounded-[2.5rem] border border-white/10 shadow-2xl">
               <h2 className="text-3xl font-bold mb-10 text-white flex items-center gap-4">
-                <Layout className="w-8 h-8 text-amber-500" /> Footer Architecture
+                <Layout className="w-8 h-8 text-indigo-500" /> Footer Architecture
               </h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
                 <div className="space-y-6">

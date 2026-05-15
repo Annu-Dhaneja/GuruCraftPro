@@ -24,8 +24,8 @@ def sync_production_data():
                 "slug": "guru-ji-art",
                 "hero": {
                     "title": "Guru Ji Art Work",
-                    "subtitle": "THE DIVINE COLLECTION",
-                    "description": "Experience the intersection of sacred symbolism and contemporary artistry. Our studio crafts premium bracelets, daily wisdom, and spiritual digital assets designed to bring peace and positivity to your life.",
+                    "subtitle": "THE CELESTIAL COLLECTION",
+                    "description": "Experience the intersection of sacred symbolism and contemporary artistry. Our studio crafts premium bracelets, daily wisdom, and celestial digital assets designed to bring peace and positivity to your life.",
                     "image": "https://images.unsplash.com/photo-1573408302315-924f7a250517?q=80&w=2400&auto=format&fit=crop"
                 },
                 "artworks": [
@@ -41,8 +41,8 @@ def sync_production_data():
                     }
                 ],
                 "story": {
-                    "title": "The Legacy of Divine Art",
-                    "description": "Our journey began with a simple mission: to make the divine visible. Annu Design Studio bridges the gap between ancient spiritual symbolism and modern artistic expression.",
+                    "title": "The Legacy of Celestial Art",
+                    "description": "Our journey began with a simple mission: to make the divine visible. Annu Design Studio bridges the gap between ancient spiritual symbolism and modern celestial expression.",
                     "points": [
                         "Hand-painted traditional techniques",
                         "Premium archival quality materials",

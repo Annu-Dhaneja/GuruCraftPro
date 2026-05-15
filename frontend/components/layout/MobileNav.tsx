@@ -14,7 +14,15 @@ import {
     SheetClose
 } from "@/components/ui/sheet";
 import { Separator } from "@/components/ui/separator";
+import { cn } from "@/lib/utils";
 import { useSiteConfig } from "./SiteConfigProvider";
+
+import {
+    Accordion,
+    AccordionContent,
+    AccordionItem,
+    AccordionTrigger,
+} from "@/components/ui/accordion";
 
 export function MobileNav() {
     const [open, setOpen] = React.useState(false);
@@ -46,31 +54,64 @@ export function MobileNav() {
                         {config.nav.map((item) => {
                             const isSpecial = item.style === "special";
                             const isGuru = item.style === "guru";
+                            const hasItems = item.items && item.items.length > 0;
                             
                             // Map icon dynamically based on style or name 
                             let Icon = isGuru ? Paintbrush : isSpecial ? Sparkles : Layers;
                             if (item.label.toLowerCase() === 'home') Icon = Home;
-                            else if (item.label.toLowerCase() === 'portfolio') Icon = Briefcase;
+                            else if (item.label.toLowerCase() === 'portfolio' || item.label.toLowerCase() === 'expertise') Icon = Briefcase;
                             else if (item.label.toLowerCase() === 'about') Icon = User;
                             else if (item.label.toLowerCase() === 'contact') Icon = Mail;
                             else if (item.label.toLowerCase() === 'learn' || item.label.toLowerCase() === 'resources') Icon = BookOpen;
+                            else if (item.label.toLowerCase() === 'creative lab') Icon = Sparkles;
+
+                            if (hasItems) {
+                                return (
+                                    <Accordion type="single" collapsible key={item.label} className="w-full">
+                                        <AccordionItem value={item.label} className="border-none">
+                                            <AccordionTrigger 
+                                                className={cn(
+                                                    "flex items-center gap-4 px-4 py-3 rounded-lg text-lg font-medium transition-all duration-200 hover:bg-accent hover:no-underline",
+                                                    isSpecial ? "text-indigo-400" : isGuru ? "text-purple-400" : "text-foreground/80"
+                                                )}
+                                            >
+                                                <div className="flex items-center gap-4">
+                                                    <Icon className={cn("h-5 w-5", isSpecial ? "text-indigo-400" : isGuru ? "text-purple-400" : "text-muted-foreground")} />
+                                                    {item.label}
+                                                </div>
+                                            </AccordionTrigger>
+                                            <AccordionContent className="pt-1 pb-2 px-4 flex flex-col gap-1">
+                                                {item.items?.map((subItem) => (
+                                                    <SheetClose key={subItem.label} asChild>
+                                                        <Link
+                                                            href={subItem.href}
+                                                            className="flex items-center gap-3 px-8 py-2.5 rounded-md text-base text-muted-foreground hover:text-foreground hover:bg-accent/50 transition-colors"
+                                                        >
+                                                            <div className="h-1 w-1 rounded-full bg-border" />
+                                                            {subItem.label}
+                                                        </Link>
+                                                    </SheetClose>
+                                                ))}
+                                            </AccordionContent>
+                                        </AccordionItem>
+                                    </Accordion>
+                                );
+                            }
 
                             return (
                                 <SheetClose key={item.label} asChild>
                                     <Link
                                         href={item.href}
-                                        className={`
-                                            flex items-center gap-4 px-4 py-3 rounded-lg text-lg font-medium transition-all duration-200
-                                            hover:bg-accent hover:text-accent-foreground
-                                            ${isSpecial
-                                                ? "bg-indigo-50/50 text-indigo-600 dark:bg-indigo-950/20 dark:text-indigo-400 hover:bg-indigo-100 dark:hover:bg-indigo-900/30"
+                                        className={cn(
+                                            "flex items-center gap-4 px-4 py-3 rounded-lg text-lg font-medium transition-all duration-200 hover:bg-accent hover:text-accent-foreground",
+                                            isSpecial
+                                                ? "bg-indigo-500/10 text-indigo-400 hover:bg-indigo-500/20"
                                                 : isGuru 
-                                                    ? "bg-amber-50/50 text-amber-600 dark:bg-amber-950/20 dark:text-amber-400 hover:bg-amber-100 dark:hover:bg-amber-900/30 font-bold"
+                                                    ? "bg-purple-500/10 text-purple-400 hover:bg-purple-500/20 font-bold"
                                                     : "text-foreground/80"
-                                            }
-                                        `}
+                                        )}
                                     >
-                                        <Icon className={`h-5 w-5 ${isSpecial ? "text-indigo-500" : isGuru ? "text-amber-500" : "text-muted-foreground"}`} />
+                                        <Icon className={cn("h-5 w-5", isSpecial ? "text-indigo-400" : isGuru ? "text-purple-400" : "text-muted-foreground")} />
                                         {item.label}
                                     </Link>
                                 </SheetClose>

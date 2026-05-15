@@ -18,7 +18,8 @@ def fix_schema():
         tables_to_check = [
             "users", "contact_submissions", "clothing_pieces", "posts", 
             "products", "orders", "order_items", "designs", "wedding_plans",
-            "wedding_tasks", "wedding_guests", "wedding_vendors", "wedding_budgets"
+            "wedding_tasks", "wedding_guests", "wedding_vendors", "wedding_budgets",
+            "cms_pages"
         ]
         
         for table in tables_to_check:
@@ -46,6 +47,9 @@ def fix_schema():
                 if table == "users":
                     missing_columns["role_id"] = "INTEGER"
                 
+                if table == "cms_pages":
+                    missing_columns["status"] = "VARCHAR"
+                
                 for col, col_type in missing_columns.items():
                     if col not in columns:
                         print(f"Adding column '{col}' to '{table}' table...")
@@ -58,6 +62,24 @@ def fix_schema():
             except Exception as e:
                 print(f"Error checking {table}: {e}")
         
+        # Specific check for global_settings columns
+        try:
+            print("Checking 'global_settings' table...")
+            if "sqlite" in SQLALCHEMY_DATABASE_URL:
+                result = conn.execute(text("PRAGMA table_info(global_settings)"))
+                gs_columns = [row[1] for row in result.fetchall()]
+            else:
+                result = conn.execute(text("SELECT column_name FROM information_schema.columns WHERE table_name = 'global_settings'"))
+                gs_columns = [row[0] for row in result.fetchall()]
+            
+            if "nav_json" not in gs_columns:
+                print("Adding 'nav_json' to 'global_settings'...")
+                col_type = "TEXT" if "sqlite" in SQLALCHEMY_DATABASE_URL else "TEXT"
+                conn.execute(text(f"ALTER TABLE global_settings ADD COLUMN nav_json {col_type} DEFAULT '[]'"))
+                print("Added nav_json")
+        except Exception as e:
+            print(f"Error updating global_settings schema: {e}")
+
         conn.commit()
 
         print("Schema fix complete.")

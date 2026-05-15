@@ -175,9 +175,9 @@ export default function AIPhotoEditorPage() {
                                     </Button>
                                     <Button 
                                         onClick={() => runAITool('relight')}
-                                        className="w-full h-20 bg-white/5 border border-white/10 hover:border-amber-500/50 rounded-2xl flex flex-col items-center justify-center gap-1 group transition-all"
+                                        className="w-full h-20 bg-white/5 border border-white/10 hover:border-indigo-500/50 rounded-2xl flex flex-col items-center justify-center gap-1 group transition-all"
                                     >
-                                        <Sun className="w-5 h-5 text-amber-400 group-hover:scale-110 transition-transform" />
+                                        <Sun className="w-5 h-5 text-indigo-400 group-hover:scale-110 transition-transform" />
                                         <span className="text-[10px] font-black uppercase tracking-widest">AI Studio Lighting</span>
                                     </Button>
                                 </div>

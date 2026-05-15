@@ -9,14 +9,21 @@ def get_global_settings(db: Session) -> Dict[str, Any]:
     if not settings:
         return {}
     
+    footer_data = json.loads(settings.footer_json) if settings.footer_json else {}
+    
     return {
         "site_name": settings.site_name,
         "logo_url": settings.logo_url,
         "contact_email": settings.contact_email,
         "phone": settings.phone,
         "address": settings.address,
-        "footer": json.loads(settings.footer_json) if settings.footer_json else {},
+        "footer_explore": footer_data.get("explore", []),
+        "footer_support": footer_data.get("support", []),
+        "footer_bottom": {
+            "copyright": footer_data.get("copyright", "© 2026 GurucraftPro. All rights reserved.")
+        },
         "social": json.loads(settings.social_json) if settings.social_json else {},
+        "nav": json.loads(settings.nav_json) if hasattr(settings, 'nav_json') and settings.nav_json else [],
         "theme": json.loads(settings.theme_json) if hasattr(settings, 'theme_json') and settings.theme_json else {}
     }
 
@@ -33,8 +40,18 @@ def update_global_settings(db: Session, data: Dict[str, Any]) -> Dict[str, Any]:
     if "contact_email" in data: settings.contact_email = data["contact_email"]
     if "phone" in data: settings.phone = data["phone"]
     if "address" in data: settings.address = data["address"]
-    if "footer" in data: settings.footer_json = json.dumps(data["footer"])
+    if "footer" in data: 
+        settings.footer_json = json.dumps(data["footer"])
+    elif any(k in data for k in ["footer_explore", "footer_support", "footer_bottom"]):
+        # Supportexploded format from frontend
+        current_footer = json.loads(settings.footer_json) if settings.footer_json else {}
+        if "footer_explore" in data: current_footer["explore"] = data["footer_explore"]
+        if "footer_support" in data: current_footer["support"] = data["footer_support"]
+        if "footer_bottom" in data: current_footer["copyright"] = data["footer_bottom"].get("copyright", "")
+        settings.footer_json = json.dumps(current_footer)
+
     if "social" in data: settings.social_json = json.dumps(data["social"])
+    if "nav" in data: settings.nav_json = json.dumps(data["nav"])
     if "theme" in data: settings.theme_json = json.dumps(data["theme"])
     
     db.commit()

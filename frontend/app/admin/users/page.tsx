@@ -147,7 +147,7 @@ export default function AdminUsersPage() {
                         <p className="text-2xl font-black text-white">{users.length}</p>
                     </div>
                     <div className="p-4 bg-black/20 rounded-2xl border border-white/5">
-                        <p className="text-[10px] font-black text-amber-500 uppercase tracking-widest mb-1">Open Slots</p>
+                        <p className="text-[10px] font-black text-indigo-500 uppercase tracking-widest mb-1">Open Slots</p>
                         <p className="text-2xl font-black text-white">8</p>
                     </div>
                 </div>

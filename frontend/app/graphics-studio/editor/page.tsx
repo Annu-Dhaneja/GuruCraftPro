@@ -53,7 +53,7 @@ interface DesignLayer {
 
 export default function DesignEditorPage() {
     const [layers, setLayers] = useState<DesignLayer[]>([
-        { id: '1', type: 'text', content: 'LUXURY DESIGN', x: 100, y: 150, width: 600, height: 100, rotation: 0, opacity: 1, zIndex: 1, color: '#c5a059', fontSize: 80, fontFamily: 'serif' },
+        { id: '1', type: 'text', content: 'LUXURY DESIGN', x: 100, y: 150, width: 600, height: 100, rotation: 0, opacity: 1, zIndex: 1, color: '#6366f1', fontSize: 80, fontFamily: 'serif' },
         { id: '2', type: 'shape', content: 'rect', x: 50, y: 50, width: 700, height: 400, rotation: 0, opacity: 0.1, zIndex: 0, color: '#ffffff' }
     ]);
     const [selectedId, setSelectedId] = useState<string | null>(null);
@@ -310,7 +310,7 @@ export default function DesignEditorPage() {
                                         <div className="space-y-2">
                                             <span className="text-[9px] text-slate-600">Color</span>
                                             <div className="flex gap-2">
-                                                {['#ffffff', '#c5a059', '#0f172a', '#ef4444'].map(c => (
+                                                {['#ffffff', '#6366f1', '#0f172a', '#ef4444'].map(c => (
                                                     <button 
                                                         key={c}
                                                         onClick={() => updateLayer(selectedLayer.id, { color: c })}

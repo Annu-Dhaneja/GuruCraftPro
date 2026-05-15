@@ -20,7 +20,7 @@ export function CameraDarshan({ onClose }: { onClose: () => void }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [isReady, setIsReady] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [activeFilter, setActiveFilter] = useState("golden");
+  const [activeFilter, setActiveFilter] = useState("celestial");
 
   useEffect(() => {
     async function startCamera() {
@@ -61,8 +61,8 @@ export function CameraDarshan({ onClose }: { onClose: () => void }) {
         context.drawImage(videoRef.current, 0, 0);
         
         // Apply Filter (Mock)
-        if (activeFilter === "golden") {
-            context.fillStyle = "rgba(251, 191, 36, 0.1)";
+        if (activeFilter === "celestial") {
+            context.fillStyle = "rgba(99, 102, 241, 0.1)";
             context.fillRect(0, 0, canvasRef.current.width, canvasRef.current.height);
         }
 
@@ -96,20 +96,20 @@ export function CameraDarshan({ onClose }: { onClose: () => void }) {
         </Button>
       </div>
 
-      <div className="relative w-full max-w-5xl aspect-video rounded-[40px] overflow-hidden border-4 border-amber-600/50 shadow-[0_0_100px_rgba(217,119,6,0.3)] bg-zinc-900 group">
+      <div className="relative w-full max-w-5xl aspect-video rounded-[40px] overflow-hidden border-4 border-indigo-600/50 shadow-[0_0_100px_rgba(99,102,241,0.3)] bg-zinc-900 group">
         <video 
           ref={videoRef} 
           autoPlay 
           playsInline 
           muted 
           className={`w-full h-full object-cover transition-all duration-1000 ${
-              activeFilter === "golden" ? "sepia-[0.3] contrast-[1.1] brightness-[1.1] hue-rotate-[10deg]" : ""
+              activeFilter === "celestial" ? "contrast-[1.1] brightness-[1.1] hue-rotate-[240deg] saturate-[1.2]" : ""
           }`}
         />
         
         {/* AR Overlays */}
         <div className="absolute inset-0 pointer-events-none z-10 overflow-hidden">
-            <div className="absolute inset-0 bg-gradient-to-t from-amber-600/20 via-transparent to-transparent opacity-60" />
+            <div className="absolute inset-0 bg-gradient-to-t from-indigo-600/20 via-transparent to-transparent opacity-60" />
             
             {/* Floating Particles/Petals (Animated) */}
             <AnimatePresence>
@@ -128,7 +128,7 @@ export function CameraDarshan({ onClose }: { onClose: () => void }) {
                             repeat: Infinity,
                             delay: i * 0.5 
                         }}
-                        className="absolute bottom-0 text-amber-300 opacity-40"
+                        className="absolute bottom-0 text-indigo-300 opacity-40"
                     >
                         <Flower className="w-8 h-8" />
                     </motion.div>
@@ -136,10 +136,10 @@ export function CameraDarshan({ onClose }: { onClose: () => void }) {
             </AnimatePresence>
             
             {/* Center Aura */}
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80%] h-[80%] bg-[radial-gradient(circle_at_center,rgba(251,191,36,0.15)_0%,transparent_70%)] opacity-60" />
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80%] h-[80%] bg-[radial-gradient(circle_at_center,rgba(99,102,241,0.15)_0%,transparent_70%)] opacity-60" />
             
             {/* Saffron Border Detail */}
-            <div className="absolute inset-0 border-[20px] border-amber-600/5 pointer-events-none" />
+            <div className="absolute inset-0 border-[20px] border-indigo-600/5 pointer-events-none" />
         </div>
 
         {/* Status Indicators */}
@@ -150,17 +150,17 @@ export function CameraDarshan({ onClose }: { onClose: () => void }) {
 
         {/* Controls Overlay */}
         <div className="absolute bottom-0 left-0 w-full p-10 flex items-center justify-center gap-8 bg-gradient-to-t from-black via-transparent to-transparent z-20">
-            <Button 
-                onClick={() => setActiveFilter(activeFilter === "golden" ? "none" : "golden")}
-                className="w-16 h-16 rounded-full bg-white/10 hover:bg-white/20 border border-white/20 backdrop-blur-xl"
+            <button 
+                onClick={() => setActiveFilter(activeFilter === "celestial" ? "none" : "celestial")}
+                className="w-16 h-16 rounded-full bg-white/10 hover:bg-white/20 border border-white/20 backdrop-blur-xl flex items-center justify-center transition-all"
             >
-                <Sparkles className={`w-7 h-7 ${activeFilter === "golden" ? "text-amber-400" : "text-white"}`} />
-            </Button>
+                <Sparkles className={`w-7 h-7 ${activeFilter === "celestial" ? "text-indigo-400" : "text-white"}`} />
+            </button>
 
             <Button 
                 onClick={capturePhoto}
                 disabled={!isReady}
-                className="w-24 h-24 rounded-full bg-amber-600 hover:bg-amber-500 text-white shadow-2xl shadow-amber-600/50 scale-110 active:scale-95 transition-transform"
+                className="w-24 h-24 rounded-full bg-indigo-600 hover:bg-indigo-500 text-white shadow-2xl shadow-indigo-600/50 scale-110 active:scale-95 transition-transform"
             >
                 <Camera className="w-10 h-10" />
             </Button>

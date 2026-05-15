@@ -164,8 +164,8 @@ export default function ServicesPage() {
           <section className="py-32 relative z-10">
             <div className="container px-4">
               <div className="flex items-center gap-4 mb-20">
-                <div className="h-[1px] w-20 bg-amber-500" />
-                <span className="text-amber-500 font-black text-xs tracking-[0.6em] uppercase">MARKETPLACE PRODUCTS</span>
+                <div className="h-[1px] w-20 bg-indigo-500" />
+                <span className="text-indigo-500 font-black text-xs tracking-[0.6em] uppercase">MARKETPLACE PRODUCTS</span>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
                   {products.map((prod: any, i: number) => (

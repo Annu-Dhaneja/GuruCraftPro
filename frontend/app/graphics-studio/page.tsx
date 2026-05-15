@@ -39,7 +39,7 @@ const categories = [
 const tools = [
     { id: 'logo', label: 'AI Logo', icon: Box, color: 'text-indigo-400' },
     { id: 'social', label: 'AI Post', icon: Share2, color: 'text-rose-400' },
-    { id: 'thumbnail', label: 'AI Thumb', icon: Monitor, color: 'text-amber-400' },
+    { id: 'thumbnail', label: 'AI Thumb', icon: Monitor, color: 'text-indigo-400' },
     { id: 'resume', label: 'AI Resume', icon: FileText, color: 'text-cyan-400' },
     { id: 'business', label: 'AI Card', icon: CreditCard, color: 'text-emerald-400' },
     { id: 'tshirt', label: 'AI Apparel', icon: Shirt, color: 'text-purple-400' },
@@ -146,7 +146,7 @@ export default function GraphicsStudioPage() {
                             </motion.div>
                             <h2 className="text-4xl md:text-5xl font-black tracking-tighter uppercase italic leading-[0.9] text-white mb-6">
                                 Craft Your Brand <br />
-                                <span className="text-shimmer bg-clip-text text-transparent bg-gradient-to-r from-primary to-amber-200">With AI Intelligence</span>
+                                <span className="text-shimmer bg-clip-text text-transparent bg-gradient-to-r from-primary to-indigo-200">With AI Intelligence</span>
                             </h2>
                             <p className="text-slate-400 text-lg font-light italic leading-relaxed mb-8">
                                 Access thousands of luxury templates or use our AI core to generate unique, print-ready designs in seconds.

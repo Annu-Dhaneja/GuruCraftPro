@@ -102,7 +102,7 @@ export default function WeddingBudgetPlanner() {
                         <Button 
                             onClick={optimizeBudget}
                             disabled={isOptimizing}
-                            className="w-full h-14 rounded-2xl bg-primary hover:bg-primary/90 text-black font-black uppercase tracking-widest shadow-[0_10px_30px_rgba(197,160,89,0.3)] transition-all"
+                            className="w-full h-14 rounded-2xl bg-primary hover:bg-primary/90 text-black font-black uppercase tracking-widest shadow-[0_10px_30px_rgba(99,102,241,0.3)] transition-all"
                         >
                             {isOptimizing ? "Processing..." : "Generate AI Strategy"}
                         </Button>
@@ -110,7 +110,7 @@ export default function WeddingBudgetPlanner() {
                 </div>
 
                 <div className="p-8 border border-white/5 rounded-[2.5rem] bg-slate-900/30">
-                    <div className="flex items-center gap-3 mb-4 text-amber-200">
+                    <div className="flex items-center gap-3 mb-4 text-indigo-400">
                         <Gem className="w-5 h-5" />
                         <span className="text-[10px] font-black uppercase tracking-[0.2em]">Luxury Tip</span>
                     </div>

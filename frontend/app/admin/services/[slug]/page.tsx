@@ -145,9 +145,9 @@ export default function AdminIndividualServicePage() {
 
             {/* GURU JI ART SPECIFIC: ARTWORKS GALLERY */}
             {slug === 'guru-ji-art' && (
-              <section className="bg-slate-900/40 backdrop-blur-md p-10 rounded-[2.5rem] border border-amber-500/20 shadow-2xl relative group overflow-hidden text-left">
-                <div className="absolute top-0 left-0 w-2 h-full bg-amber-500 rounded-full my-10 -ml-1" />
-                <div className="absolute -top-20 -right-20 w-64 h-64 bg-amber-600/10 blur-[80px] rounded-full group-hover:bg-amber-600/20 transition-all duration-500" />
+              <section className="bg-slate-900/40 backdrop-blur-md p-10 rounded-[2.5rem] border border-indigo-500/20 shadow-2xl relative group overflow-hidden text-left">
+                <div className="absolute top-0 left-0 w-2 h-full bg-indigo-500 rounded-full my-10 -ml-1" />
+                <div className="absolute -top-20 -right-20 w-64 h-64 bg-indigo-600/10 blur-[80px] rounded-full group-hover:bg-indigo-600/20 transition-all duration-500" />
                 
                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-12">
                   <h2 className="text-3xl font-bold flex items-center gap-4 text-white">
@@ -155,7 +155,7 @@ export default function AdminIndividualServicePage() {
                   </h2>
                   <Button 
                     onClick={() => addArrayItem("", "artworks", { title: "New Artwork", desc: "", src: "" })} 
-                    className="bg-amber-600 hover:bg-amber-700 text-white shadow-lg shadow-amber-600/20 px-8 py-6 rounded-2xl font-bold h-auto"
+                    className="bg-indigo-600 hover:bg-indigo-700 text-white shadow-lg shadow-indigo-600/20 px-8 py-6 rounded-2xl font-bold h-auto"
                   >
                     <Plus className="w-5 h-5 mr-3" /> Add Artwork
                   </Button>
@@ -163,7 +163,7 @@ export default function AdminIndividualServicePage() {
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                   {(data.artworks || []).map((art: any, i: number) => (
-                    <div key={i} className="p-8 rounded-3xl bg-black/40 border border-white/5 hover:border-amber-500/30 transition-all duration-300 relative group/feature shadow-xl">
+                    <div key={i} className="p-8 rounded-3xl bg-black/40 border border-white/5 hover:border-indigo-500/30 transition-all duration-300 relative group/feature shadow-xl">
                       <Button 
                         variant="destructive" 
                         size="icon" 

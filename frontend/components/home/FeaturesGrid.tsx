@@ -54,9 +54,9 @@ const ecosystem = [
         description: "A sacred sanctuary for spiritual commerce and divine digital art.",
         icon: Sparkles,
         href: "/services/guru-ji-art",
-        className: "bg-amber-500/5",
-        accent: "text-amber-400",
-        bg: "bg-amber-400/10",
+        className: "bg-purple-500/5",
+        accent: "text-purple-400",
+        bg: "bg-purple-400/10",
         tags: ["Spiritual"]
     },
     {

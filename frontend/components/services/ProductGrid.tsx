@@ -69,7 +69,7 @@
                       <div className={`px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-widest backdrop-blur-md border shadow-lg ${
                         product.priceType === 'Free' ? 'bg-emerald-500/90 text-white border-emerald-400/50' :
                         product.priceType === 'Subscription' ? 'bg-purple-500/90 text-white border-purple-400/50' :
-                        product.priceType === 'Custom' ? 'bg-amber-500/90 text-white border-amber-400/50' :
+                        product.priceType === 'Custom' ? 'bg-indigo-600/90 text-white border-indigo-400/50' :
                         'bg-white/90 text-indigo-700 border-indigo-100'
                       }`}>
                         {product.priceType}

@@ -73,7 +73,7 @@ const defaultItems: ThingItem[] = [
 
 const iconMap = [Paintbrush, Sparkles, Shirt, Palette, Camera, Layers];
 const colorMap = [
-  "from-amber-500 to-orange-600",
+  "from-indigo-500 to-orange-600",
   "from-indigo-500 to-purple-600",
   "from-pink-500 to-rose-600",
   "from-emerald-500 to-teal-600",

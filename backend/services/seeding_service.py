@@ -103,9 +103,40 @@ class SeedingService:
                         "twitter": "https://twitter.com/gurucraftpro",
                         "whatsapp": "https://wa.me/918527837527"
                     },
+                    "nav": [
+                        { "label": "Home", "href": "/", "style": "default" },
+                        { 
+                            "label": "Expertise", 
+                            "href": "/portfolio", 
+                            "style": "default",
+                            "items": [
+                                { "label": "Logo Design", "href": "/portfolio?category=Logo Design", "description": "Memorable logos that define your brand identity." },
+                                { "label": "Wedding Planning", "href": "/services/wedding-plan", "description": "Bespoke luxury wedding coordination and design." },
+                                { "label": "Photo Editing", "href": "/photo-editor", "description": "High-end retouching and professional image editing." },
+                                { "label": "Guru Ji Art Work", "href": "/services/guru-ji-art", "description": "Celestial hand-painted and digital masterpieces." },
+                                { "label": "Game Design", "href": "/services/game-design", "description": "Immersive character and environment concepts." },
+                                { "label": "Vantage Ecom", "href": "/services/vantage-ecom", "description": "Growth-focused e-commerce design solutions." },
+                                { "label": "Pricing & Services", "href": "/services", "description": "Transparent pricing for all our premium services." },
+                                { "label": "View All Works", "href": "/portfolio", "description": "View our complete portfolio catalog." }
+                            ]
+                        },
+                        { 
+                            "label": "Creative Lab", 
+                            "href": "/ai-lab", 
+                            "style": "special",
+                            "items": [
+                                { "label": "AI Design Lab", "href": "/ai-lab", "description": "Explore the future of creativity with our AI-powered design tools." },
+                                { "label": "Virtual Try-On", "href": "/ai-lab/virtual-try-on", "description": "Instantly see how garments look on you with AI technology." },
+                                { "label": "Guru Ji Art Work", "href": "/guruji-darshan", "description": "Celestial hand-painted and digital masterpieces for your space." }
+                            ]
+                        },
+                        { "label": "Learn", "href": "/resources", "style": "default" },
+                        { "label": "About", "href": "/about", "style": "default" },
+                        { "label": "Contact", "href": "/contact", "style": "default" }
+                    ],
                     "theme": {
                         "primary_color": "#6366f1",
-                        "accent_color": "#d4af37",
+                        "accent_color": "#8b5cf6",
                         "dark_mode": True
                     }
                 })
@@ -151,7 +182,7 @@ class SeedingService:
                     "badge": "Sacred Digital Presence",
                     "title_prefix": "Immerse in",
                     "title_highlight": "Divine Wisdom",
-                    "description": "Experience the intersection of ancient spirituality and modern artistry through AI-curated vachans and high-fidelity 3D spiritual assets."
+                    "description": "Experience the intersection of ancient spirituality and modern artistry through AI-curated vachans and celestial 3D spiritual assets."
                 },
                 "vachan": {
                     "badge": "Daily Vachan",

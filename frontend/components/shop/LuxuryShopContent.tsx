@@ -84,7 +84,7 @@ export function LuxuryShopContent({ cmsData }: { cmsData?: any }) {
                             <span>{safeHero.badge || "Elite Marketplace"}</span>
                         </motion.div>
                         <h1 className="text-6xl md:text-8xl font-black tracking-tighter uppercase italic leading-[0.85] text-white">
-                            {safeHero.title_prefix || "THE"} <span className="text-shimmer bg-clip-text text-transparent bg-gradient-to-r from-primary via-amber-200 to-primary">{safeHero.title_highlight || "COLLECTION"}</span>
+                            {safeHero.title_prefix || "THE"} <span className="text-shimmer bg-clip-text text-transparent bg-gradient-to-r from-primary via-violet-200 to-primary">{safeHero.title_highlight || "COLLECTION"}</span>
                         </h1>
                     </div>
                     

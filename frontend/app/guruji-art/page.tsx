@@ -1,16 +1,5 @@
-import type { Metadata } from "next";
-import { GurujiArtContent } from "@/components/guruji-art/GurujiArtContent";
-
-export const metadata: Metadata = {
-    title: "Guruji Art & Creation | Annu Design Studio",
-    description: "Discover the divine artistry of Guruji. Sacred masterpieces, traditional oil paintings, and digital spiritual art collections.",
-};
+import { redirect } from 'next/navigation';
 
 export default function GurujiArtPage() {
-    return (
-        <main className="min-h-screen bg-zinc-950">
-            <GurujiArtContent />
-                    </main>
-    );
+    redirect('/guruji-darshan');
 }
-

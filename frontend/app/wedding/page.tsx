@@ -1,420 +1,400 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { 
-    Calendar, 
-    Users, 
-    Wallet, 
-    Sparkles, 
-    MapPin, 
-    ChevronRight, 
-    ArrowRight,
+import React, { useEffect, useState } from "react";
+import { motion } from "framer-motion";
+import {
     Heart,
+    Sparkles,
+    ArrowRight,
     Star,
+    Crown,
+    Plane,
+    MapPin,
+    Camera,
+    Music,
+    Palette,
+    Users,
+    ChevronRight,
+    Quote,
     CheckCircle2,
-    Plus,
-    Clock,
-    TrendingUp,
-    ShieldCheck,
-    AlertCircle,
-    Loader2
+    Calendar,
+    Gem,
+    Loader2,
 } from "lucide-react";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { useWeddingStore } from "@/store/weddingStore";
 
-// Luxury Stat Card Component
-const StatCard = ({ label, value, icon: Icon, color, delay }: any) => (
-    <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay }}
-        className="relative group overflow-hidden"
-    >
-        <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-[2rem]" />
-        <div className="glass-card rounded-[2rem] p-6 flex flex-col items-center text-center relative z-10 border border-white/5 group-hover:border-primary/20 transition-all duration-500">
-            <div className={cn("w-12 h-12 rounded-2xl bg-white/5 flex items-center justify-center mb-4 transition-transform group-hover:scale-110", color)}>
-                <Icon className="w-6 h-6" />
-            </div>
-            <motion.p 
-                initial={{ scale: 0.5 }}
-                animate={{ scale: 1 }}
-                className="text-3xl font-black tracking-tighter mb-1"
-            >
-                {value}
-            </motion.p>
-            <p className="text-[10px] font-black uppercase tracking-widest text-slate-500 group-hover:text-slate-300 transition-colors">{label}</p>
-        </div>
-    </motion.div>
-);
+const iconMap: Record<string, any> = {
+    heart: Heart,
+    crown: Crown,
+    plane: Plane,
+    palette: Palette,
+    music: Music,
+    camera: Camera,
+    sparkles: Sparkles,
+    users: Users,
+};
 
-export default function WeddingDashboardPage() {
-    const { plan, stats, tasks, guests, vendors, budget, loading, error, fetchDashboard } = useWeddingStore();
-    const [activePhase, setActivePhase] = useState('planning');
-    const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
+export default function WeddingShowcasePage() {
+    const { showcase, showcaseLoading, fetchShowcase } = useWeddingStore();
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
 
     useEffect(() => {
-        fetchDashboard();
-    }, [fetchDashboard]);
+        fetchShowcase();
+        const token = typeof window !== "undefined" ? localStorage.getItem("token") : null;
+        setIsLoggedIn(!!token);
+    }, [fetchShowcase]);
 
-    useEffect(() => {
-        if (!plan?.wedding_date) return;
-
-        const timer = setInterval(() => {
-            const now = new Date().getTime();
-            const weddingDate = new Date(plan.wedding_date).getTime();
-            const distance = weddingDate - now;
-
-            setTimeLeft({
-                days: Math.floor(distance / (1000 * 60 * 60 * 24)),
-                hours: Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
-                minutes: Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60)),
-                seconds: Math.floor((distance % (1000 * 60)) / 1000)
-            });
-        }, 1000);
-
-        return () => clearInterval(timer);
-    }, [plan?.wedding_date]);
-
-    if (loading) {
+    if (showcaseLoading || !showcase) {
         return (
             <div className="min-h-screen bg-[#020617] flex items-center justify-center">
                 <div className="text-center space-y-4">
                     <Loader2 className="w-12 h-12 text-primary animate-spin mx-auto" />
-                    <p className="text-slate-400 font-bold uppercase tracking-widest animate-pulse">Initializing Luxury Suite...</p>
+                    <p className="text-slate-400 font-bold uppercase tracking-widest animate-pulse text-sm">Loading Wedding Collection...</p>
                 </div>
             </div>
         );
     }
 
-    if (error) {
-        return (
-            <div className="min-h-screen bg-[#020617] flex items-center justify-center">
-                <div className="glass-card p-8 rounded-[2rem] text-center max-w-md">
-                    <AlertCircle className="w-12 h-12 text-rose-500 mx-auto mb-4" />
-                    <h2 className="text-xl font-black uppercase tracking-tight mb-2">Sync Interrupted</h2>
-                    <p className="text-slate-400 text-sm mb-6">{error}</p>
-                    <Button onClick={() => fetchDashboard()} className="bg-primary text-black font-bold px-8 rounded-full">
-                        RETRY SYNC
-                    </Button>
-                </div>
-            </div>
-        );
-    }
-
-    const phases = [
-        { 
-            id: 'planning', 
-            label: 'Planning', 
-            icon: Calendar, 
-            description: 'Manage milestones and timeline.',
-            items: tasks.map(t => ({ name: t.title, status: t.status, desc: t.category })),
-            stats: `${tasks.filter(t => t.status === 'completed').length}/${tasks.length} Done`
-        },
-        { 
-            id: 'guests', 
-            label: 'Guests', 
-            icon: Users, 
-            description: 'Guest list and RSVP tracking.',
-            items: [
-                { name: 'RSVP Overview', status: 'active', desc: `${stats?.rsvp_confirmed || 0} Confirmed` },
-                { name: 'Table Planning', status: 'pending', desc: 'Coming soon' },
-                { name: 'Dietary Stats', status: 'active', desc: 'Managed by AI' }
-            ],
-            stats: `${guests.length} Total`
-        },
-        { 
-            id: 'vendors', 
-            label: 'Vendors', 
-            icon: Heart, 
-            description: 'Contracts and payments.',
-            items: vendors.map(v => ({ name: v.name, status: v.status, desc: v.category })),
-            stats: `${vendors.length} Hired`
-        },
-        { 
-            id: 'budget', 
-            label: 'Budget', 
-            icon: Wallet, 
-            description: 'Financial tracking and spend.',
-            items: budget.map(b => ({ name: b.category, status: 'active', desc: `₹${b.spent_amount / 1000}k spent` })),
-            stats: stats?.budget_spent || '₹0'
-        },
-    ];
+    const { hero, packages, services, testimonials, gallery } = showcase;
+    
+    // Normalize dynamic data from CMS if needed
+    const packageItems = packages?.items || packages || [];
+    const serviceItems = services?.items || services || [];
+    const testimonialItems = testimonials?.items || testimonials || [];
+    const galleryImages = gallery?.images || gallery || [];
 
     return (
-        <div className="min-h-screen bg-[#020617] text-white overflow-hidden flex flex-col pt-16 selection:bg-primary selection:text-black">
-            {/* Ambient Background Elements */}
-            <div className="fixed inset-0 z-0 overflow-hidden pointer-events-none">
-                <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-primary/10 blur-[120px] rounded-full animate-pulse" />
-                <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-blue-500/10 blur-[120px] rounded-full" />
-                <div className="fixed inset-0 mesh-gradient opacity-10" />
+        <div className="min-h-screen bg-[#020617] text-white selection:bg-primary/30 overflow-x-hidden">
+            {/* Ambient Background */}
+            <div className="fixed inset-0 z-0 pointer-events-none">
+                <div className="absolute top-0 left-1/4 w-[600px] h-[600px] bg-rose-500/8 blur-[200px] rounded-full" />
+                <div className="absolute bottom-0 right-1/4 w-[500px] h-[500px] bg-indigo-500/8 blur-[180px] rounded-full" />
             </div>
 
-            {/* Premium Header */}
-            <header className="relative z-20 border-b border-white/5 bg-[#020617]/80 backdrop-blur-2xl px-6 md:px-12 py-5 flex items-center justify-between">
-                <div className="flex items-center gap-4 md:gap-8">
-                    <Link href="/" className="flex items-center gap-2 group">
-                        <div className="w-8 h-8 rounded-xl bg-primary/10 flex items-center justify-center group-hover:scale-110 transition-transform">
-                            <Heart className="w-4 h-4 text-primary fill-primary/20" />
-                        </div>
-                        <span className="hidden md:block text-[10px] font-black uppercase tracking-[0.3em] text-slate-400 group-hover:text-white transition-colors">Digital Atelier</span>
-                    </Link>
-                    <div className="h-6 w-px bg-white/10 hidden md:block" />
-                    <h1 className="text-lg md:text-2xl font-black uppercase tracking-tighter italic">
-                        Elite <span className="text-primary">Wedding</span> Suite
-                    </h1>
+            {/* ─── HERO SECTION ─── */}
+            <section className="relative min-h-screen flex items-center justify-center px-6 pt-24 pb-20">
+                <div className="absolute inset-0 z-0 bg-[radial-gradient(circle_at_50%_30%,#1e1b4b_0%,#020617_70%)] opacity-80" />
+                
+                {/* Floating decorative elements */}
+                <motion.div
+                    animate={{ y: [0, -30, 0], rotate: [0, 5, 0] }}
+                    transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
+                    className="absolute top-1/3 right-[15%] w-20 h-20 rounded-full border border-rose-500/20 hidden lg:block"
+                />
+                <motion.div
+                    animate={{ y: [0, 20, 0], rotate: [0, -5, 0] }}
+                    transition={{ duration: 15, repeat: Infinity, ease: "easeInOut" }}
+                    className="absolute bottom-1/3 left-[10%] w-32 h-32 rounded-full border border-indigo-500/10 hidden lg:block"
+                />
+
+                <div className="relative z-10 max-w-6xl mx-auto text-center">
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        className="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-rose-500/10 border border-rose-500/20 text-[10px] font-black tracking-[0.4em] uppercase text-rose-400 mb-10 backdrop-blur-xl"
+                    >
+                        <Heart className="w-3 h-3 fill-rose-400" />
+                        <span>{hero.badge}</span>
+                    </motion.div>
+
+                    <motion.h1
+                        initial={{ opacity: 0, y: 30 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.1, duration: 0.8 }}
+                        className="text-5xl md:text-7xl lg:text-8xl font-black tracking-tighter uppercase italic leading-[0.85] mb-8"
+                    >
+                        <span className="text-white block">{hero.title.split(",")[0]}</span>
+                        <span className="text-shimmer bg-clip-text text-transparent bg-gradient-to-r from-rose-400 via-indigo-300 to-rose-400 block mt-2">
+                            {hero.title.split(",")[1] || "Perfected"}
+                        </span>
+                    </motion.h1>
+
+                    <motion.p
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.2 }}
+                        className="text-slate-400 text-lg md:text-xl font-light italic leading-relaxed max-w-3xl mx-auto mb-14"
+                    >
+                        {hero.subtitle}
+                    </motion.p>
+
+                    {/* Hero Stats */}
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.3 }}
+                        className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-3xl mx-auto mb-16"
+                    >
+                        {hero.stats?.map((stat: any, i: number) => (
+                            <div key={i} className="glass-card rounded-2xl p-5 border border-white/5">
+                                <p className="text-2xl md:text-3xl font-black tracking-tighter text-white mb-1">{stat.value}</p>
+                                <p className="text-[9px] font-black uppercase tracking-[0.2em] text-slate-500">{stat.label}</p>
+                            </div>
+                        ))}
+                    </motion.div>
+
+                    {/* CTA Buttons */}
+                    <motion.div
+                        initial={{ opacity: 0, scale: 0.95 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ delay: 0.4 }}
+                        className="flex flex-wrap justify-center gap-6"
+                    >
+                        <Link href={isLoggedIn ? "/wedding/planner" : "/signup"}>
+                            <Button className="h-16 px-10 rounded-full bg-gradient-to-r from-rose-500 to-indigo-600 text-white font-black text-sm uppercase tracking-[0.15em] shadow-[0_20px_50px_rgba(244,63,94,0.3)] hover:scale-105 transition-all group">
+                                {isLoggedIn ? "MY WEDDING PLANNER" : "START PLANNING FREE"}
+                                <ArrowRight className="w-5 h-5 ml-3 group-hover:translate-x-1 transition-transform" />
+                            </Button>
+                        </Link>
+                        <Link href="/contact">
+                            <Button variant="outline" className="h-16 px-10 rounded-full border-white/10 text-white font-black text-sm uppercase tracking-[0.15em] hover:bg-white/5 gap-3">
+                                <Calendar className="w-4 h-4" /> BOOK CONSULTATION
+                            </Button>
+                        </Link>
+                    </motion.div>
                 </div>
+            </section>
 
-                <div className="flex items-center gap-2 md:gap-4">
-                    <div className="hidden lg:flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10">
-                        <ShieldCheck className="w-3 h-3 text-emerald-400" />
-                        <span className="text-[10px] font-black uppercase tracking-widest text-slate-400">Vault Protected</span>
-                    </div>
-                    <Button variant="ghost" className="text-slate-400 hover:text-white font-black text-[10px] uppercase tracking-widest">
-                        MY STUDIO
-                    </Button>
-                    <Button className="rounded-full bg-primary hover:bg-primary/90 text-black px-6 font-black text-xs uppercase tracking-widest shadow-lg shadow-primary/20">
-                        EXPORT PLAN
-                    </Button>
-                </div>
-            </header>
-
-            <main className="flex-1 overflow-y-auto p-6 md:p-12 relative z-10 scrollbar-hide">
-                <div className="max-w-7xl mx-auto">
-                    {/* Hero Section */}
-                    <div className="flex flex-col lg:row md:items-end justify-between mb-16 gap-10">
-                        <div>
-                            <motion.div
-                                initial={{ opacity: 0, x: -20 }}
-                                animate={{ opacity: 1, x: 0 }}
-                                className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 text-[10px] font-black tracking-[0.4em] uppercase text-primary mb-8"
-                            >
-                                <Sparkles className="w-3 h-3" />
-                                <span>AI Dynamic Engine V4.2</span>
-                            </motion.div>
-                            <h2 className="text-6xl md:text-8xl font-black tracking-tighter uppercase italic leading-[0.85] text-white">
-                                {plan?.partner_names?.split(' & ')[0]} <br />
-                                <span className="text-shimmer bg-clip-text text-transparent bg-gradient-to-r from-primary via-amber-200 to-primary/50">
-                                    & {plan?.partner_names?.split(' & ')[1]}
-                                </span>
-                            </h2>
-                            <div className="flex items-center gap-3 mt-8 text-slate-400">
-                                <MapPin className="w-4 h-4 text-primary" />
-                                <p className="text-lg font-medium tracking-tight italic">{plan?.location} • {new Date(plan?.wedding_date || '').toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</p>
-                            </div>
-                        </div>
-
-                        {/* Luxury Countdown */}
-                        <div className="flex flex-col gap-6 items-end">
-                            <div className="flex gap-3">
-                                {[
-                                    { label: 'Days', value: timeLeft.days },
-                                    { label: 'Hrs', value: timeLeft.hours },
-                                    { label: 'Min', value: timeLeft.minutes },
-                                    { label: 'Sec', value: timeLeft.seconds }
-                                ].map((unit, i) => (
-                                    <div key={unit.label} className="relative group">
-                                        <div className="absolute inset-0 bg-primary/20 blur-xl opacity-0 group-hover:opacity-100 transition-opacity" />
-                                        <div className="h-20 w-20 md:h-24 md:w-24 rounded-3xl bg-white/5 border border-white/10 flex flex-col items-center justify-center relative z-10 backdrop-blur-xl group-hover:border-primary/30 transition-all">
-                                            <span className="text-2xl md:text-3xl font-black leading-none mb-1">{String(unit.value).padStart(2, '0')}</span>
-                                            <span className="text-[9px] font-black uppercase tracking-[0.2em] text-slate-500">{unit.label}</span>
-                                        </div>
-                                    </div>
-                                ))}
-                            </div>
-                            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-2xl bg-white/5 border border-white/10">
-                                <TrendingUp className="w-3 h-3 text-emerald-400" />
-                                <span className="text-[10px] font-bold uppercase tracking-widest text-slate-400">Wedding Momentum: <span className="text-white">+12% this week</span></span>
-                            </div>
-                        </div>
+            {/* ─── SERVICES SECTION ─── */}
+            <section className="py-32 relative z-10">
+                <div className="max-w-7xl mx-auto px-6">
+                    <div className="text-center mb-20">
+                        <p className="text-[10px] font-black uppercase tracking-[0.5em] text-rose-400 mb-6">Complete Wedding Services</p>
+                        <h2 className="text-4xl md:text-6xl font-black uppercase italic tracking-tighter leading-none">
+                            EVERY DETAIL, <br />
+                            <span className="text-shimmer bg-clip-text text-transparent bg-gradient-to-r from-slate-200 to-slate-500">PERFECTED.</span>
+                        </h2>
                     </div>
 
-                    {/* Dynamic Stats Grid */}
-                    <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
-                        <StatCard 
-                            label="Total Guests" 
-                            value={stats?.guest_count || "0"} 
-                            icon={Users} 
-                            color="text-blue-400" 
-                            delay={0.1} 
-                        />
-                        <StatCard 
-                            label="Budget Spent" 
-                            value={stats?.budget_spent || "₹0"} 
-                            icon={Wallet} 
-                            color="text-emerald-400" 
-                            delay={0.2} 
-                        />
-                        <StatCard 
-                            label="Tasks Status" 
-                            value={stats?.tasks_completed || "0%"} 
-                            icon={CheckCircle2} 
-                            color="text-amber-400" 
-                            delay={0.3} 
-                        />
-                        <StatCard 
-                            label="RSVP Rate" 
-                            value={`${Math.round((stats?.rsvp_confirmed / (plan?.guest_count || 1)) * 100)}%`} 
-                            icon={Heart} 
-                            color="text-rose-400" 
-                            delay={0.4} 
-                        />
-                    </div>
-
-                    <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
-                        {/* Sidebar Navigation */}
-                        <div className="lg:col-span-3 space-y-6">
-                            <div className="px-4">
-                                <p className="text-[10px] font-black tracking-[0.4em] uppercase text-slate-500 mb-2">The Journey</p>
-                                <div className="h-px w-8 bg-primary" />
-                            </div>
-                            
-                            <div className="space-y-3">
-                                {phases.map((phase) => (
-                                    <button
-                                        key={phase.id}
-                                        onClick={() => setActivePhase(phase.id)}
-                                        className={cn(
-                                            "w-full flex items-center justify-between p-5 rounded-[2rem] transition-all duration-500 text-left group relative overflow-hidden",
-                                            activePhase === phase.id 
-                                                ? "bg-primary/10 border border-primary/20 text-white" 
-                                                : "bg-white/5 border border-transparent text-slate-500 hover:bg-white/10 hover:text-white"
-                                        )}
-                                    >
-                                        <div className="flex items-center gap-4 relative z-10">
-                                            <div className={cn(
-                                                "w-12 h-12 rounded-2xl flex items-center justify-center transition-all duration-500",
-                                                activePhase === phase.id ? "bg-primary/20 text-primary scale-110" : "bg-white/5 text-slate-600 group-hover:text-slate-400"
-                                            )}>
-                                                <phase.icon className="w-5 h-5" />
-                                            </div>
-                                            <div>
-                                                <p className="text-[11px] font-black uppercase tracking-widest">{phase.label}</p>
-                                                <p className="text-[9px] opacity-50 font-bold uppercase tracking-tighter mt-0.5">{phase.stats}</p>
-                                            </div>
-                                        </div>
-                                        <ChevronRight className={cn("w-4 h-4 transition-transform relative z-10", activePhase === phase.id ? "text-primary translate-x-0" : "text-slate-800 -translate-x-2 group-hover:translate-x-0")} />
-                                        
-                                        {activePhase === phase.id && (
-                                            <motion.div layoutId="active-pill" className="absolute inset-0 bg-gradient-to-r from-primary/5 to-transparent" />
-                                        )}
-                                    </button>
-                                ))}
-                            </div>
-
-                            {/* AI Suggestion Card */}
-                            <div className="p-6 rounded-[2.5rem] bg-gradient-to-br from-indigo-500/10 to-purple-500/10 border border-white/5 mt-8">
-                                <div className="flex items-center gap-2 mb-4">
-                                    <div className="w-8 h-8 rounded-lg bg-indigo-500/20 flex items-center justify-center">
-                                        <Sparkles className="w-4 h-4 text-indigo-400" />
-                                    </div>
-                                    <span className="text-[10px] font-black uppercase tracking-widest text-indigo-400">AI Recommendation</span>
-                                </div>
-                                <p className="text-xs text-slate-300 font-medium leading-relaxed mb-4">
-                                    "Based on your Udaipur location, consider Royal Blue accents for the Sangeet night to contrast the palace marble."
-                                </p>
-                                <Button variant="ghost" className="w-full text-[10px] font-black uppercase tracking-widest text-indigo-400 hover:text-indigo-300 p-0 h-auto justify-start gap-2 group">
-                                    View Palette <ArrowRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
-                                </Button>
-                            </div>
-                        </div>
-
-                        {/* Content Area */}
-                        <div className="lg:col-span-9">
-                            <AnimatePresence mode="wait">
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                        {serviceItems.map((service: any, i: number) => {
+                            const Icon = iconMap[service.icon] || Sparkles;
+                            return (
                                 <motion.div
-                                    key={activePhase}
-                                    initial={{ opacity: 0, x: 20 }}
-                                    animate={{ opacity: 1, x: 0 }}
-                                    exit={{ opacity: 0, x: -20 }}
-                                    transition={{ duration: 0.4, ease: "circOut" }}
-                                    className="space-y-8"
+                                    key={service.name}
+                                    initial={{ opacity: 0, y: 30 }}
+                                    whileInView={{ opacity: 1, y: 0 }}
+                                    viewport={{ once: true }}
+                                    transition={{ delay: i * 0.1 }}
+                                    className="group glass-card rounded-[2rem] p-8 border border-white/5 hover:border-rose-500/20 transition-all duration-700 relative overflow-hidden"
                                 >
-                                    <div className="flex items-center justify-between px-4">
-                                        <div>
-                                            <h3 className="text-3xl font-black uppercase italic tracking-tighter mb-1">
-                                                {phases.find(p => p.id === activePhase)?.label} <span className="text-primary">Modules</span>
-                                            </h3>
-                                            <p className="text-xs text-slate-500 font-bold uppercase tracking-widest">{phases.find(p => p.id === activePhase)?.description}</p>
+                                    <div className="absolute -bottom-10 -right-10 w-40 h-40 bg-rose-500/5 blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-1000" />
+                                    <div className="relative z-10">
+                                        <div className="w-14 h-14 rounded-2xl bg-rose-500/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                                            <Icon className="w-6 h-6 text-rose-400" />
                                         </div>
-                                        <Button className="rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 text-white gap-2 px-6 h-12 font-black text-[10px] uppercase tracking-widest">
-                                            <Plus className="w-4 h-4" /> ADD ITEM
-                                        </Button>
-                                    </div>
-
-                                    <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-                                        {phases.find(p => p.id === activePhase)?.items.map((item, i) => (
-                                            <motion.div
-                                                key={item.name}
-                                                initial={{ opacity: 0, y: 20 }}
-                                                animate={{ opacity: 1, y: 0 }}
-                                                transition={{ delay: i * 0.1 }}
-                                                className="group relative glass-card rounded-[2.5rem] p-8 min-h-[220px] flex flex-col justify-between overflow-hidden border border-white/5 hover:border-primary/30 transition-all duration-700"
-                                            >
-                                                <div className="relative z-10">
-                                                    <div className="flex justify-between items-start mb-6">
-                                                        <div className={cn(
-                                                            "w-12 h-12 rounded-2xl flex items-center justify-center transition-all duration-500",
-                                                            item.status === 'completed' || item.status === 'active' ? "bg-emerald-500/10 text-emerald-400" : "bg-primary/10 text-primary"
-                                                        )}>
-                                                            {item.status === 'completed' ? <CheckCircle2 className="w-5 h-5" /> : <Clock className="w-5 h-5" />}
-                                                        </div>
-                                                        <span className={cn(
-                                                            "text-[9px] font-black uppercase tracking-widest px-3 py-1 rounded-full",
-                                                            item.status === 'completed' || item.status === 'active' ? "bg-emerald-500/10 text-emerald-500" : "bg-white/5 text-slate-500"
-                                                        )}>
-                                                            {item.status}
-                                                        </span>
-                                                    </div>
-                                                    <h4 className="text-2xl font-black uppercase italic tracking-tighter mb-2 group-hover:text-primary transition-colors">{item.name}</h4>
-                                                    <p className="text-[10px] text-slate-400 font-bold uppercase tracking-[0.2em]">{item.desc}</p>
-                                                </div>
-                                                
-                                                <div className="relative z-10 mt-6 flex items-center justify-between">
-                                                    <Button variant="ghost" className="text-[10px] font-black uppercase tracking-widest text-slate-500 p-0 hover:text-white h-auto">Manage</Button>
-                                                    <div className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center opacity-0 group-hover:opacity-100 group-hover:translate-x-0 -translate-x-4 transition-all">
-                                                        <ArrowRight className="w-4 h-4 text-primary" />
-                                                    </div>
-                                                </div>
-
-                                                {/* Decorative Blobs */}
-                                                <div className="absolute -bottom-10 -right-10 w-40 h-40 bg-primary/5 blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-1000" />
-                                            </motion.div>
-                                        ))}
-
-                                        {/* Luxury Blank Card */}
-                                        <button className="glass-card rounded-[2.5rem] p-8 min-h-[220px] flex flex-col items-center justify-center gap-4 border-dashed border-white/10 hover:border-primary/50 group transition-all duration-500">
-                                            <div className="w-16 h-16 rounded-full bg-white/5 flex items-center justify-center text-slate-500 group-hover:bg-primary/10 group-hover:text-primary transition-all duration-500">
-                                                <Plus className="w-6 h-6" />
-                                            </div>
-                                            <div className="text-center">
-                                                <span className="block text-[11px] font-black uppercase tracking-[0.3em] text-slate-500 group-hover:text-white transition-colors">Expand Logic</span>
-                                                <span className="block text-[9px] text-slate-600 font-bold uppercase mt-1">Custom Module</span>
-                                            </div>
-                                        </button>
+                                        <h3 className="text-xl font-black uppercase tracking-tight mb-3 group-hover:text-rose-400 transition-colors">{service.name}</h3>
+                                        <p className="text-sm text-slate-400 leading-relaxed">{service.description}</p>
                                     </div>
                                 </motion.div>
-                            </AnimatePresence>
+                            );
+                        })}
+                    </div>
+                </div>
+            </section>
+
+            {/* ─── PACKAGES SECTION ─── */}
+            <section className="py-32 relative z-10 bg-[#020617]/50 backdrop-blur-3xl border-y border-white/5">
+                <div className="max-w-7xl mx-auto px-6">
+                    <div className="text-center mb-20">
+                        <p className="text-[10px] font-black uppercase tracking-[0.5em] text-indigo-400 mb-6">Curated Packages</p>
+                        <h2 className="text-4xl md:text-6xl font-black uppercase italic tracking-tighter leading-none mb-6">
+                            CHOOSE YOUR <br />
+                            <span className="text-indigo-400">EXPERIENCE.</span>
+                        </h2>
+                        <p className="text-slate-400 text-lg font-light italic max-w-2xl mx-auto">Every package is fully customizable. Start with a foundation and build your dream wedding.</p>
+                    </div>
+
+                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                        {packageItems.map((pkg: any, i: number) => {
+                            const Icon = iconMap[pkg.icon] || Sparkles;
+                            return (
+                                <motion.div
+                                    key={pkg.id}
+                                    initial={{ opacity: 0, y: 30 }}
+                                    whileInView={{ opacity: 1, y: 0 }}
+                                    viewport={{ once: true }}
+                                    transition={{ delay: i * 0.15 }}
+                                    className={cn(
+                                        "group relative glass-card rounded-[2.5rem] p-10 border transition-all duration-700 overflow-hidden",
+                                        pkg.popular
+                                            ? "border-indigo-500/30 bg-indigo-500/5 scale-105 shadow-[0_20px_80px_rgba(99,102,241,0.15)]"
+                                            : "border-white/5 hover:border-indigo-500/20"
+                                    )}
+                                >
+                                    {pkg.popular && (
+                                        <div className="absolute top-6 right-6">
+                                            <span className="text-[9px] font-black uppercase tracking-[0.2em] text-indigo-400 bg-indigo-500/10 px-4 py-1.5 rounded-full border border-indigo-500/20">
+                                                Most Popular
+                                            </span>
+                                        </div>
+                                    )}
+                                    <div className="absolute -bottom-20 -right-20 w-60 h-60 bg-indigo-500/5 blur-[80px] opacity-0 group-hover:opacity-100 transition-opacity duration-1000" />
+
+                                    <div className="relative z-10">
+                                        <div className={cn(
+                                            "w-16 h-16 rounded-2xl flex items-center justify-center mb-8 transition-transform group-hover:scale-110",
+                                            pkg.popular ? "bg-indigo-500/20" : "bg-white/5"
+                                        )}>
+                                            <Icon className={cn("w-7 h-7", pkg.popular ? "text-indigo-400" : "text-slate-400")} />
+                                        </div>
+
+                                        <h3 className="text-2xl font-black uppercase italic tracking-tight mb-3">{pkg.name}</h3>
+                                        <p className="text-sm text-slate-400 leading-relaxed mb-6">{pkg.description}</p>
+
+                                        <p className="text-3xl font-black tracking-tighter text-white mb-8">
+                                            {pkg.price}
+                                            <span className="text-xs text-slate-500 font-bold ml-2">starting</span>
+                                        </p>
+
+                                        <ul className="space-y-3 mb-10">
+                                            {pkg.features.map((f: string) => (
+                                                <li key={f} className="flex items-center gap-3 text-sm text-slate-300">
+                                                    <CheckCircle2 className={cn("w-4 h-4 flex-shrink-0", pkg.popular ? "text-indigo-400" : "text-slate-600")} />
+                                                    {f}
+                                                </li>
+                                            ))}
+                                        </ul>
+
+                                        <Link href={isLoggedIn ? "/wedding/planner" : "/signup"}>
+                                            <Button className={cn(
+                                                "w-full h-14 rounded-2xl font-black text-xs uppercase tracking-widest transition-all",
+                                                pkg.popular
+                                                    ? "bg-indigo-600 hover:bg-indigo-700 text-white shadow-[0_10px_30px_rgba(99,102,241,0.3)]"
+                                                    : "bg-white/5 hover:bg-white/10 text-white border border-white/10"
+                                            )}>
+                                                GET STARTED <ChevronRight className="w-4 h-4 ml-2" />
+                                            </Button>
+                                        </Link>
+                                    </div>
+                                </motion.div>
+                            );
+                        })}
+                    </div>
+                </div>
+            </section>
+
+            {/* ─── GALLERY SECTION ─── */}
+            <section className="py-32 relative z-10">
+                <div className="max-w-7xl mx-auto px-6">
+                    <div className="text-center mb-20">
+                        <p className="text-[10px] font-black uppercase tracking-[0.5em] text-rose-400 mb-6">Our Portfolio</p>
+                        <h2 className="text-4xl md:text-6xl font-black uppercase italic tracking-tighter leading-none">
+                            MOMENTS WE <br />
+                            <span className="text-rose-400">CRAFTED.</span>
+                        </h2>
+                    </div>
+
+                    <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                        {galleryImages.map((img: string, i: number) => (
+                            <motion.div
+                                key={i}
+                                initial={{ opacity: 0, scale: 0.95 }}
+                                whileInView={{ opacity: 1, scale: 1 }}
+                                viewport={{ once: true }}
+                                transition={{ delay: i * 0.1 }}
+                                className={cn(
+                                    "relative group overflow-hidden rounded-2xl border border-white/5",
+                                    i === 0 || i === 5 ? "row-span-2" : ""
+                                )}
+                            >
+                                <img
+                                    src={img}
+                                    alt={`Wedding gallery ${i + 1}`}
+                                    className="w-full h-full object-cover aspect-square group-hover:scale-110 transition-transform duration-[2s]"
+                                />
+                                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                            </motion.div>
+                        ))}
+                    </div>
+                </div>
+            </section>
+
+            {/* ─── TESTIMONIALS SECTION ─── */}
+            <section className="py-32 relative z-10 bg-[#020617]/50 backdrop-blur-3xl border-y border-white/5">
+                <div className="max-w-6xl mx-auto px-6">
+                    <div className="text-center mb-20">
+                        <p className="text-[10px] font-black uppercase tracking-[0.5em] text-indigo-400 mb-6">Happy Couples</p>
+                        <h2 className="text-4xl md:text-6xl font-black uppercase italic tracking-tighter leading-none">
+                            LOVE <span className="text-indigo-400">STORIES.</span>
+                        </h2>
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                        {testimonialItems.map((t: any, i: number) => (
+                            <motion.div
+                                key={i}
+                                initial={{ opacity: 0, y: 30 }}
+                                whileInView={{ opacity: 1, y: 0 }}
+                                viewport={{ once: true }}
+                                transition={{ delay: i * 0.15 }}
+                                className="glass-card rounded-[2rem] p-8 border border-white/5 hover:border-indigo-500/20 transition-all duration-500 relative"
+                            >
+                                <Quote className="w-8 h-8 text-indigo-500/20 mb-6" />
+                                <p className="text-slate-300 text-sm leading-relaxed italic mb-8">&ldquo;{t.quote}&rdquo;</p>
+                                <div className="flex items-center justify-between">
+                                    <div>
+                                        <p className="text-sm font-black tracking-tight text-white">{t.name}</p>
+                                        <div className="flex items-center gap-1 mt-1">
+                                            <MapPin className="w-3 h-3 text-indigo-400" />
+                                            <span className="text-[10px] text-slate-500 font-bold uppercase tracking-widest">{t.location}</span>
+                                        </div>
+                                    </div>
+                                    <div className="flex gap-0.5">
+                                        {Array.from({ length: t.rating }).map((_, j) => (
+                                            <Star key={j} className="w-3 h-3 text-amber-400 fill-amber-400" />
+                                        ))}
+                                    </div>
+                                </div>
+                            </motion.div>
+                        ))}
+                    </div>
+                </div>
+            </section>
+
+            {/* ─── FINAL CTA ─── */}
+            <section className="py-40 relative z-10 px-6">
+                <div className="max-w-5xl mx-auto glass-card rounded-[4rem] p-16 md:p-24 text-center border-white/10 relative overflow-hidden group">
+                    <div className="absolute inset-0 bg-gradient-to-tr from-rose-500/10 via-transparent to-indigo-500/10" />
+                    <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/stardust.png')] opacity-5 pointer-events-none" />
+
+                    <div className="relative z-10">
+                        <div className="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-rose-500/10 border border-rose-500/20 text-[10px] font-black tracking-[0.3em] uppercase text-rose-400 mb-10">
+                            <Gem className="w-3 h-3" />
+                            <span>Your Journey Begins Here</span>
+                        </div>
+
+                        <h2 className="text-5xl md:text-7xl font-black uppercase italic tracking-tighter leading-[0.85] mb-8">
+                            READY TO PLAN <br />
+                            <span className="text-shimmer bg-clip-text text-transparent bg-gradient-to-r from-rose-400 via-indigo-400 to-rose-400">
+                                YOUR DREAM WEDDING?
+                            </span>
+                        </h2>
+
+                        <p className="text-slate-400 text-lg font-light italic max-w-2xl mx-auto mb-14">
+                            Create your free account and unlock our full wedding planning suite — 
+                            countdown timer, guest management, budget optimizer, vendor tracking, and AI-powered recommendations.
+                        </p>
+
+                        <div className="flex flex-wrap justify-center gap-6">
+                            <Link href={isLoggedIn ? "/wedding/planner" : "/signup"}>
+                                <Button className="h-16 px-12 rounded-full bg-gradient-to-r from-rose-500 to-indigo-600 text-white font-black text-sm uppercase tracking-[0.15em] shadow-[0_20px_50px_rgba(244,63,94,0.3)] hover:scale-105 transition-all group">
+                                    {isLoggedIn ? "OPEN MY PLANNER" : "CREATE FREE ACCOUNT"}
+                                    <ArrowRight className="w-5 h-5 ml-3 group-hover:translate-x-1 transition-transform" />
+                                </Button>
+                            </Link>
+                            <Link href="/contact">
+                                <Button variant="outline" className="h-16 px-12 rounded-full border-white/10 text-white font-black text-sm uppercase tracking-[0.15em] hover:bg-white/5">
+                                    TALK TO AN EXPERT
+                                </Button>
+                            </Link>
                         </div>
                     </div>
                 </div>
-            </main>
-
-            {/* Mobile Navigation */}
-            <div className="lg:hidden fixed bottom-0 left-0 right-0 z-50 bg-[#020617]/90 backdrop-blur-3xl border-t border-white/5 p-4 flex justify-around">
-                {phases.map((p) => (
-                    <button 
-                        key={p.id}
-                        onClick={() => setActivePhase(p.id)}
-                        className={cn("flex flex-col items-center gap-1", activePhase === p.id ? "text-primary" : "text-slate-500")}
-                    >
-                        <p.icon className="w-5 h-5" />
-                        <span className="text-[8px] font-black uppercase tracking-widest">{p.label}</span>
-                    </button>
-                ))}
-            </div>
+            </section>
         </div>
     );
 }

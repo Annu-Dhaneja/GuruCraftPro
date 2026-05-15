@@ -9,8 +9,8 @@ const defaultCategories = [
     {
         title: "Presentation",
         image: "https://images.unsplash.com/photo-1542435503-956c469947f6?auto=format&fit=crop&q=80&w=200", // Placeholder
-        color: "bg-[#ffe4d6]", // Pastel Orange
-        textColor: "text-orange-900",
+        color: "bg-[#e0d6ff]", // Pastel Violet
+        textColor: "text-violet-900",
         href: "/portfolio/presentation"
     },
     {
@@ -51,8 +51,8 @@ const defaultCategories = [
     {
         title: "Brochure",
         image: "https://images.unsplash.com/photo-1606857521015-7f9fcf423740?auto=format&fit=crop&q=80&w=200",
-        color: "bg-[#ffeab6]", // Pastel Gold
-        textColor: "text-amber-900",
+        color: "bg-[#d6e4ff]", // Pastel Indigo
+        textColor: "text-indigo-900",
         href: "/portfolio/brochure"
     },
     {
