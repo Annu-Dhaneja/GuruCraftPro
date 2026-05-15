@@ -48,9 +48,9 @@ class SeedingService:
                 hashed = auth.get_password_hash(pwd)
                 if row:
                     row.hashed_password = hashed
-                    row.role = "admin"
+                    row.role = "super-admin"
                 else:
-                    db.add(models.User(username=uname, hashed_password=hashed, role="admin"))
+                    db.add(models.User(username=uname, hashed_password=hashed, role="super-admin"))
             db.commit()
         except Exception as exc:
             db.rollback()
@@ -61,9 +61,10 @@ class SeedingService:
         """Seed default RBAC roles."""
         try:
             default_roles = [
-                {"name": "admin", "description": "Full system access", "permissions_json": json.dumps({"cms": ["read", "write", "delete"], "users": ["read", "write", "delete"], "forms": ["read", "write", "delete"], "media": ["read", "write", "delete"]})},
-                {"name": "editor", "description": "CMS and content editing", "permissions_json": json.dumps({"cms": ["read", "write"], "media": ["read", "write"]})},
-                {"name": "user", "description": "Default user role", "permissions_json": json.dumps({"cms": ["read"]})},
+                {"name": "super-admin", "description": "Full system owner access", "permissions_json": json.dumps({"cms": ["*"], "users": ["*"], "forms": ["*"], "media": ["*"], "settings": ["*"]})},
+                {"name": "admin", "description": "General administrative access", "permissions_json": json.dumps({"cms": ["read", "write", "delete"], "users": ["read", "write"], "forms": ["read", "write", "delete"], "media": ["read", "write", "delete"]})},
+                {"name": "editor", "description": "Content editing access", "permissions_json": json.dumps({"cms": ["read", "write"], "media": ["read", "write"]})},
+                {"name": "user", "description": "Standard user access", "permissions_json": json.dumps({"cms": ["read"]})},
             ]
             for role_data in default_roles:
                 existing = db.query(models.Role).filter(models.Role.name == role_data["name"]).first()

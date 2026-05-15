@@ -26,19 +26,6 @@ export function Navbar() {
         return () => window.removeEventListener("scroll", handleScroll);
     }, []);
 
-    // Function to check if we should show the navbar
-    if (pathname && (
-        pathname.startsWith('/dashboard') || 
-        pathname.startsWith('/admin') ||
-        pathname.startsWith('/login') ||
-        pathname.startsWith('/signup') ||
-        pathname.startsWith('/ai-lab') ||
-        pathname.startsWith('/portfolio/') ||
-        pathname.startsWith('/wedding')
-    )) {
-        return null;
-    }
-
     return (
         <header
             className={cn(

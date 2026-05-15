@@ -3,10 +3,7 @@ import { Sora, Inter } from "next/font/google";
 
 // export const runtime = 'edge';
 import "./globals.css";
-import { Navbar } from "@/components/layout/Navbar";
-
 import { ThemeProvider } from "@/components/layout/ThemeProvider";
-import { MobileBottomNav } from "@/components/layout/MobileBottomNav";
 
 const sora = Sora({
   subsets: ["latin"],
@@ -62,10 +59,7 @@ export const viewport = {
 };
 
 import { SiteConfigProvider } from "@/components/layout/SiteConfigProvider";
-import WhatsAppButton from "@/components/ui/WhatsAppButton";
-import { CartSidebar } from "@/components/layout/CartSidebar";
 import { Toaster } from "sonner";
-import { Footer } from "@/components/footer/Footer";
 
 export default function RootLayout({
   children,
@@ -84,15 +78,11 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <SiteConfigProvider>
-            <Navbar />
             <main className="min-h-[70vh]">
               {children}
             </main>
-            <Footer />
             <Toaster position="top-right" richColors closeButton />
             <CartSidebar />
-            <MobileBottomNav />
-            <WhatsAppButton />
           </SiteConfigProvider>
         </ThemeProvider>
       </body>

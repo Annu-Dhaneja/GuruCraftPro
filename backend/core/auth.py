@@ -99,9 +99,20 @@ async def get_current_user(
 async def require_admin(
     current_user: models.User = Depends(get_current_user),
 ):
-    if current_user.role != "admin":
+    if current_user.role not in ["admin", "super-admin"]:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="Access denied. Administrative privileges required.",
+        )
+    return current_user
+
+
+async def require_super_admin(
+    current_user: models.User = Depends(get_current_user),
+):
+    if current_user.role != "super-admin":
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Access denied. Super-Admin privileges required.",
         )
     return current_user

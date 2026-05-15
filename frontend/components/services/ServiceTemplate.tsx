@@ -7,6 +7,8 @@ import Link from "next/link";
 import Image from "next/image";
 import { GurujiArtContent } from "@/components/guruji-art/GurujiArtContent";
 import { VantageEcomContent } from "@/components/services/VantageEcomContent";
+import { WeddingPlanContent } from "@/components/services/WeddingPlanContent";
+import { PhotoEditorContent } from "@/components/services/PhotoEditorContent";
 
 interface Section {
   id?: number;
@@ -48,6 +50,14 @@ export function ServiceTemplate({ data, slug: passedSlug }: { data: ServiceData,
 
   if (slug === "vantage-ecom") {
     return <VantageEcomContent data={data} />;
+  }
+
+  if (slug === "wedding-plan") {
+    return <WeddingPlanContent data={data} />;
+  }
+
+  if (slug === "photo-editor") {
+    return <PhotoEditorContent />;
   }
 
   if (slug === "7-day-cloths") {
