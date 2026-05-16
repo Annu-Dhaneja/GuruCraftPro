@@ -3,6 +3,7 @@ import { create } from 'zustand';
 interface User {
   id: number;
   username: string;
+  email?: string;
   name?: string;
   role: string;
 }
@@ -48,7 +49,7 @@ export const useAuthStore = create<AuthState>((set) => ({
 
       if (token && username && role) {
         set({
-          user: { id: 0, username, role, name: username },
+          user: { id: 0, username, role, name: username, email: "" },
           isAuthenticated: true
         });
       } else {
