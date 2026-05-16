@@ -1,6 +1,7 @@
 from pydantic import BaseModel
 from typing import List, Optional
 from datetime import datetime
+from .base import AuditBase
 
 class WeddingTaskBase(BaseModel):
     title: str
@@ -13,13 +14,9 @@ class WeddingTaskBase(BaseModel):
 class WeddingTaskCreate(WeddingTaskBase):
     pass
 
-class WeddingTask(WeddingTaskBase):
+class WeddingTask(WeddingTaskBase, AuditBase):
     id: int
     wedding_id: int
-    created_at: datetime
-
-    class Config:
-        from_attributes = True
 
 class WeddingGuestBase(BaseModel):
     name: str
@@ -33,13 +30,9 @@ class WeddingGuestBase(BaseModel):
 class WeddingGuestCreate(WeddingGuestBase):
     pass
 
-class WeddingGuest(WeddingGuestBase):
+class WeddingGuest(WeddingGuestBase, AuditBase):
     id: int
     wedding_id: int
-    created_at: datetime
-
-    class Config:
-        from_attributes = True
 
 class WeddingVendorBase(BaseModel):
     name: str
@@ -54,13 +47,9 @@ class WeddingVendorBase(BaseModel):
 class WeddingVendorCreate(WeddingVendorBase):
     pass
 
-class WeddingVendor(WeddingVendorBase):
+class WeddingVendor(WeddingVendorBase, AuditBase):
     id: int
     wedding_id: int
-    created_at: datetime
-
-    class Config:
-        from_attributes = True
 
 class WeddingBudgetBase(BaseModel):
     category: str
@@ -70,13 +59,9 @@ class WeddingBudgetBase(BaseModel):
 class WeddingBudgetCreate(WeddingBudgetBase):
     pass
 
-class WeddingBudget(WeddingBudgetBase):
+class WeddingBudget(WeddingBudgetBase, AuditBase):
     id: int
     wedding_id: int
-    created_at: datetime
-
-    class Config:
-        from_attributes = True
 
 class WeddingPlanBase(BaseModel):
     partner_names: Optional[str] = None
@@ -92,7 +77,7 @@ class WeddingPlanCreate(WeddingPlanBase):
 
 class WeddingPlanUpdate(BaseModel):
     partner_names: Optional[str] = None
-    wedding_date: Optional[str] = None
+    wedding_date: Optional[datetime] = None
     location: Optional[str] = None
     total_budget: Optional[int] = None
     guest_count: Optional[int] = None

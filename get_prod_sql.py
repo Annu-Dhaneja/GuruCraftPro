@@ -29,7 +29,7 @@ CREATE TABLE IF NOT EXISTS users (
 -- 2. INSERT THE ADMINS
 INSERT INTO users (name, email, username, hashed_password, role) 
 VALUES 
-('Annu Admin', 'annuad_05@annudesign.com', 'annuad@#05', '{h1}', 'admin'),
+('GurucraftPro Admin', 'annuad_05@annudesign.com', 'annuad@#05', '{h1}', 'admin'),
 ('Om Admin', 'om_op@annudesign.com', 'Om@Op', '{h2}', 'admin')
 ON CONFLICT (username) DO NOTHING;
 """

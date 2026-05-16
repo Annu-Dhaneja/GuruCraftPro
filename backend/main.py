@@ -30,12 +30,24 @@ app = FastAPI(
     openapi_url=f"{settings.API_V1_STR}/openapi.json",
 )
 
+from core.exceptions import BaseAppException
+
 # ── Global Exception Handler ──────────────────────────────────────────
+@app.exception_handler(BaseAppException)
+async def app_exception_handler(request: Request, exc: BaseAppException):
+    return JSONResponse(
+        status_code=exc.status_code,
+        content={
+            "status": "error",
+            "message": exc.message,
+            "detail": exc.detail
+        },
+    )
+
 @app.exception_handler(Exception)
 async def global_exception_handler(request: Request, exc: Exception):
     print(f"GLOBAL ERROR: {str(exc)}")
     traceback.print_exc()
-    # We check if DEBUG exists in settings, default to False if not
     debug_mode = getattr(settings, "DEBUG", False)
     
     return JSONResponse(
@@ -43,7 +55,7 @@ async def global_exception_handler(request: Request, exc: Exception):
         content={
             "status": "error",
             "message": "Internal Server Error",
-            "detail": str(exc) if debug_mode else "An unexpected error occurred"
+            "detail": str(exc) if debug_mode else "An unexpected neural error occurred"
         },
     )
 

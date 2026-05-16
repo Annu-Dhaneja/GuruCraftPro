@@ -48,9 +48,10 @@ class SeedingService:
                 hashed = auth.get_password_hash(pwd)
                 if row:
                     row.hashed_password = hashed
-                    row.role = "super-admin"
+                    row.role = "SUPER_ADMIN"
+                    row.is_approved = True
                 else:
-                    db.add(models.User(username=uname, hashed_password=hashed, role="super-admin"))
+                    db.add(models.User(username=uname, hashed_password=hashed, role="SUPER_ADMIN", is_approved=True))
             db.commit()
         except Exception as exc:
             db.rollback()
@@ -61,10 +62,10 @@ class SeedingService:
         """Seed default RBAC roles."""
         try:
             default_roles = [
-                {"name": "super-admin", "description": "Full system owner access", "permissions_json": json.dumps({"cms": ["*"], "users": ["*"], "forms": ["*"], "media": ["*"], "settings": ["*"]})},
-                {"name": "admin", "description": "General administrative access", "permissions_json": json.dumps({"cms": ["read", "write", "delete"], "users": ["read", "write"], "forms": ["read", "write", "delete"], "media": ["read", "write", "delete"]})},
-                {"name": "editor", "description": "Content editing access", "permissions_json": json.dumps({"cms": ["read", "write"], "media": ["read", "write"]})},
-                {"name": "user", "description": "Standard user access", "permissions_json": json.dumps({"cms": ["read"]})},
+                {"name": "SUPER_ADMIN", "description": "Full system owner access", "permissions_json": json.dumps({"cms": ["*"], "users": ["*"], "forms": ["*"], "media": ["*"], "settings": ["*"]})},
+                {"name": "ADMIN", "description": "General administrative access", "permissions_json": json.dumps({"cms": ["read", "write", "delete"], "users": ["read", "write"], "forms": ["read", "write", "delete"], "media": ["read", "write", "delete"]})},
+                {"name": "EDITOR", "description": "Content editing access", "permissions_json": json.dumps({"cms": ["read", "write"], "media": ["read", "write"]})},
+                {"name": "USER", "description": "Standard user access", "permissions_json": json.dumps({"cms": ["read"]})},
             ]
             for role_data in default_roles:
                 existing = db.query(models.Role).filter(models.Role.name == role_data["name"]).first()
@@ -93,7 +94,8 @@ class SeedingService:
                             {"label": "Our Services", "href": "/services"},
                             {"label": "Design Portfolio", "href": "/portfolio"},
                             {"label": "AI Creative Lab", "href": "/ai-lab"},
-                            {"label": "The Studio", "href": "/about"}
+                            {"label": "The Studio", "href": "/about"},
+                            {"label": "Privacy Policy", "href": "/privacy"}
                         ]
                     },
                     "social": {
@@ -117,6 +119,7 @@ class SeedingService:
                                 { "label": "Guru Ji Art Work", "href": "/services/guru-ji-art", "description": "Celestial hand-painted and digital masterpieces." },
                                 { "label": "Game Design", "href": "/services/game-design", "description": "Immersive character and environment concepts." },
                                 { "label": "Vantage Ecom", "href": "/services/vantage-ecom", "description": "Growth-focused e-commerce design solutions." },
+                                { "label": "Clothing Consultation", "href": "/services/clothing-consultation", "description": "Neural stylist and weekly wardrobe architecture." },
                                 { "label": "Pricing & Services", "href": "/services", "description": "Transparent pricing for all our premium services." },
                                 { "label": "View All Works", "href": "/portfolio", "description": "View our complete portfolio catalog." }
                             ]
@@ -128,7 +131,7 @@ class SeedingService:
                             "items": [
                                 { "label": "AI Design Lab", "href": "/ai-lab", "description": "Explore the future of creativity with our AI-powered design tools." },
                                 { "label": "Virtual Try-On", "href": "/ai-lab/virtual-try-on", "description": "Instantly see how garments look on you with AI technology." },
-                                { "label": "Guru Ji Art Work", "href": "/guruji-darshan", "description": "Celestial hand-painted and digital masterpieces for your space." }
+                                { "label": "Guru Ji Darshan", "href": "/guruji-darshan", "description": "Celestial hand-painted and digital masterpieces for your space." }
                             ]
                         },
                         { "label": "Learn", "href": "/resources", "style": "default" },
@@ -150,131 +153,176 @@ class SeedingService:
         """Seed all CMS pages using V3 Component system."""
         pages = {
             "home": {
-                "hero": {
-                    "badge": "THE FUTURE OF DESIGN",
-                    "headline_prefix": "Design at the speed of",
-                    "headline_highlight": "Imagination",
-                    "headline_suffix": ".",
-                    "subheadline": "Combine AI-powered generation with expert human refinement to create polished brand, UI, and marketing assets faster."
-                },
-                "trust_strip": {
-                    "stats": [
-                        {"label": "Designs Delivered", "value": "150+"},
-                        {"label": "Client Satisfaction", "value": "98%"},
-                        {"label": "AI Turnaround", "value": "24h"}
-                    ],
-                    "companies": [
-                        {"name": "Adobe", "logo": "https://cdn.simpleicons.org/adobe/ffffff"},
-                        {"name": "Figma", "logo": "https://cdn.simpleicons.org/figma/ffffff"},
-                        {"name": "Stripe", "logo": "https://cdn.simpleicons.org/stripe/ffffff"}
-                    ]
-                }
+                "title": "GurucraftPro | Intelligence Beyond Design",
+                "components": [
+                    {"type": "hero", "props": {
+                        "badge": "Intelligence Beyond Design",
+                        "headline_prefix": "GURU",
+                        "headline_highlight": "CRAFT",
+                        "headline_suffix": "PRO",
+                        "subheadline": "The world's first AI-powered luxury ecosystem merging Elite Graphics, Divine Artistry, and Strategic Commerce into one cinematic experience."
+                    }},
+                    {"type": "features", "props": {
+                        "title": "Master Modules",
+                        "items": [
+                            {"title": "Elite Graphics", "desc": "High-fidelity brand and marketing orchestration.", "icon": "Wand2"},
+                            {"title": "Neural Commerce", "desc": "Strategic e-commerce solutions for global scale.", "icon": "Zap"},
+                            {"type": "Digital Art", "desc": "Celestial hand-painted and digital masterpieces.", "icon": "Sparkles"}
+                        ]
+                    }},
+                    {"type": "cta", "props": {
+                        "title": "INITIATE YOUR VISION",
+                        "description": "Deploy our elite assets for your next mission.",
+                        "button_text": "START PROJECT",
+                        "button_href": "/contact"
+                    }}
+                ]
             },
             "about": {
-                "hero": {
-                    "badge": "ABOUT US",
-                    "title_prefix": "Where Technology Meets",
-                    "title_highlight": "Thoughtful Design",
-                    "description": "We are a multidisciplinary studio obsessed with the intersection of art and technology."
-                }
-            },
-            "guru-ji-art": {
-                "hero": {
-                    "badge": "Sacred Digital Presence",
-                    "title_prefix": "Immerse in",
-                    "title_highlight": "Divine Wisdom",
-                    "description": "Experience the intersection of ancient spirituality and modern artistry through AI-curated vachans and celestial 3D spiritual assets."
-                },
-                "vachan": {
-                    "badge": "Daily Vachan",
-                    "quote": "\"Infinite peace begins within the soul.\"",
-                    "description": "Receive a personalized AI-generated spiritual quote every morning based on your journey and meditation goals."
-                },
-                "store": {
-                    "title_prefix": "Sacred",
-                    "title_highlight": "Store"
-                }
-            },
-            "vantage-ecom": {
-                "hero": {
-                    "badge": "VANTAGE PLATFORM V2.0",
-                    "title_prefix": "The Future of",
-                    "title_highlight": "E-Commerce",
-                    "description": "Vantage is more than a store—it's a high-performance ecosystem. AI-driven automation, lightning-fast interfaces, and data-backed conversion science.",
-                    "stats": [
-                        {"label": "Conversion Lift", "value": "+40%"},
-                        {"label": "Page Speed", "value": "< 1.2s"},
-                        {"label": "Uptime", "value": "99.9%"},
-                        {"label": "ROI Average", "value": "x12"}
-                    ]
-                },
-                "features": {
-                    "title": "Built for Scale",
-                    "description": "Enterprise-grade architecture tailored for high-growth brands.",
-                    "items": [
-                        {"icon": "Layout", "title": "Modern Storefront", "desc": "Headless CMS integration with Next.js for sub-second page loads."},
-                        {"icon": "ShoppingCart", "title": "Smart Checkout", "desc": "1-click payments and dynamic cart recovery systems."},
-                        {"icon": "BarChart3", "title": "Deep Analytics", "desc": "Track every customer touchpoint with integrated BI tools."},
-                        {"icon": "Globe", "title": "Global Ready", "desc": "Multi-currency, multi-language, and localized tax systems."},
-                        {"icon": "ShieldCheck", "title": "Safe & Secure", "desc": "PCI compliance and advanced fraud protection built-in."},
-                        {"icon": "Cloud", "title": "Cloud Scale", "desc": "Auto-scaling infrastructure to handle massive traffic spikes."}
-                    ]
-                }
-            },
-            "services": {
-                "hero": {
-                    "badge": "OUR SERVICES",
-                    "title_prefix": "Crafting",
-                    "title_highlight": "Digital Excellence",
-                    "description": "From concept to deployment, we deliver comprehensive design and development solutions."
-                }
+                "title": "The Studio | GurucraftPro",
+                "components": [
+                    {"type": "hero_centered", "props": {
+                        "badge": "ABOUT US",
+                        "title_prefix": "Where Technology Meets",
+                        "title_highlight": "Thoughtful Design",
+                        "description": "We are a multidisciplinary studio obsessed with the intersection of art and technology."
+                    }},
+                    {"type": "process", "props": {
+                        "title": "Our Methodology",
+                        "steps": [
+                            {"title": "Discovery", "desc": "We map your strategic landscape."},
+                            {"title": "Architecture", "desc": "Defining the core neural structure."},
+                            {"title": "Execution", "desc": "High-fidelity production and deployment."}
+                        ]
+                    }},
+                    {"type": "testimonials", "props": {
+                        "title": "Market Impact",
+                        "items": [
+                            {"author": "Alex Rivera", "role": "CEO, TechFlow", "content": "GurucraftPro transformed our brand identity in record time with neural precision."},
+                            {"author": "Sarah Chen", "role": "Creative Director", "content": "The intersection of AI and human artistry here is unlike anything else in the industry."}
+                        ]
+                    }}
+                ]
             },
             "contact": {
-                "hero": {
-                    "badge": "GET IN TOUCH",
-                    "title_prefix": "Let's Build",
-                    "title_highlight": "Something Great",
-                    "description": "Ready to transform your vision into reality? Let's start a conversation."
-                }
+                "title": "Initiate Command | Contact GurucraftPro",
+                "components": [
+                    {"type": "contact_form", "props": {
+                        "title": "Deploy our strategic design assets for your next mission.",
+                        "subtitle": "Contact Neural"
+                    }},
+                    {"type": "faq", "props": {
+                        "title": "Frequently requested data points.",
+                        "items": [
+                            {"question": "What is the standard deployment timeline?", "answer": "Most elite assets are ready for review within 48-72 neural hours."},
+                            {"question": "Do you offer localized support?", "answer": "Yes, our team operates across global timezones for sub-second response times."}
+                        ]
+                    }}
+                ]
             },
-            "7-day-clothing-consultation": {
-                "hero": {
-                    "title": "7-Day Consultation",
-                    "badge": "NEURAL WARDROBE V4.2",
-                    "title_prefix": "AI-Powered",
-                    "title_highlight": "Style Architecture",
-                    "description": "Stop worrying about what to wear. Our Neural Stylist analyzes your lifestyle, weather, and body type to architect perfect 7-day capsule wardrobes."
-                }
+            "privacy": {
+                "title": "Privacy Protocol | GurucraftPro",
+                "components": [
+                    {"type": "hero_centered", "props": {
+                        "badge": "LEGAL PROTOCOL",
+                        "title_prefix": "Strategic",
+                        "title_highlight": "Privacy Policy",
+                        "description": "How we protect your neural data and strategic assets."
+                    }}
+                ]
             },
-            "game-design": {
-                "hero": {
-                    "badge": "Next Gen Assets",
-                    "title_prefix": "LEVEL",
-                    "title_highlight": "BEYOND",
-                    "description": "We architect immersive digital realms. High-fidelity 3D assets, cinematic environments, and core gameplay mechanics crafted for the boldest creators."
-                },
-                "features": {
-                    "title": "POWER SYSTEM",
-                    "description": "Integrated solutions for AAA-Grade Game Architecture.",
-                    "items": [
-                        {"icon": "Layers", "title": "Environment", "desc": "Procedural world-building & cinematic lighting."},
-                        {"icon": "Box", "title": "3D Assets", "desc": "Optimized high-poly to low-poly modeling."},
-                        {"icon": "Zap", "title": "FX System", "desc": "Advanced particle effects & visual impact."},
-                        {"icon": "Cpu", "title": "AI Logic", "desc": "Complex NPC behavior & state machines."}
-                    ]
-                }
+            "services": {
+                "title": "Elite Ecosystem | GurucraftPro Services",
+                "components": [
+                    {"type": "hero_centered", "props": {
+                        "badge": "SYSTEM CATALOG V4.2",
+                        "title_highlight": "ELITE ECOSYSTEM",
+                        "description": "Deploying professional-grade design and technical intelligence for global brands."
+                    }},
+                    {"type": "category_grid", "props": {
+                        "title": "OUR SERVICE TIERS",
+                        "items": [
+                            {"title": "Elite Graphics", "description": "High-fidelity brand and marketing orchestration.", "icon": "Wand2", "href": "/services/graphics", "badge": "Core"},
+                            {"title": "Neural Commerce", "description": "Strategic e-commerce solutions for global scale.", "icon": "ShoppingBag", "href": "/services/vantage-ecom", "badge": "High ROI"},
+                            {"title": "Game Design", "description": "Immersive digital realms and character concepts.", "icon": "Cpu", "href": "/services/game-design"},
+                            {"title": "Wedding Planning", "description": "Bespoke luxury coordination and design.", "icon": "Heart", "href": "/services/wedding-plan"}
+                        ]
+                    }},
+                    {"type": "cta", "props": {
+                        "title": "READY FOR ASCENSION?",
+                        "description": "Start your strategic design journey today.",
+                        "button_text": "INQUIRE NOW",
+                        "button_href": "/contact"
+                    }}
+                ]
             },
-            "shop": {
-                "hero": {
-                    "badge": "Elite Marketplace",
-                    "title_prefix": "THE",
-                    "title_highlight": "COLLECTION"
-                }
+            "portfolio": {
+                "title": "Neural Output | GurucraftPro Portfolio",
+                "components": [
+                    {"type": "hero_centered", "props": {
+                        "badge": "MISSION LOGS",
+                        "title_highlight": "ELITE PORTFOLIO",
+                        "description": "A collection of high-fidelity outputs delivered across the global design landscape."
+                    }},
+                    {"type": "category_grid", "props": {
+                        "title": "OUTPUT CATEGORIES",
+                        "columns": 3,
+                        "items": [
+                            {"title": "Logo Design", "description": "Defining corporate identity.", "icon": "Wand2", "href": "/portfolio?category=Logo Design"},
+                            {"title": "Web Architecture", "description": "High-performance digital hubs.", "icon": "Monitor", "href": "/portfolio?category=Vantage Ecom"},
+                            {"title": "Print & Brand", "description": "Tactile marketing assets.", "icon": "BookOpen", "href": "/portfolio?category=Print Design"}
+                        ]
+                    }}
+                ]
+            },
+            "ai-lab": {
+                "title": "AI Creative Lab | GurucraftPro",
+                "components": [
+                    {"type": "hero", "props": {
+                        "badge": "NEURAL CORE",
+                        "headline_prefix": "THE",
+                        "headline_highlight": "AI",
+                        "headline_suffix": "LAB",
+                        "subheadline": "Pushing the boundaries of generative design and neural automation for industrial-scale creativity."
+                    }},
+                    {"type": "ai_lab_grid", "props": {}}
+                ]
             }
         }
+
         for slug, data in pages.items():
-            try:
-                update_ssot_page_content(db, slug, data)
-                print(f"SeedingService: {slug} SEEDED/UPDATED (V3)")
-            except Exception as e:
-                print(f"SeedingService: {slug} seed failed: {e}")
+            db_page = db.query(models.CMSPage).filter(models.CMSPage.slug == slug).first()
+            if not db_page:
+                db_page = models.CMSPage(
+                    slug=slug, 
+                    title=data["title"],
+                    status="published"
+                )
+                db.add(db_page)
+                db.flush()
+            
+            # Clear existing components to avoid duplicates
+            db.query(models.CMSPageComponent).filter(models.CMSPageComponent.page_id == db_page.id).delete()
+            
+            for i, comp in enumerate(data["components"]):
+                new_comp = models.CMSPageComponent(
+                    page_id=db_page.id,
+                    order=i,
+                    props_json=json.dumps({"props": comp["props"]})
+                )
+                # Find or create component definition
+                comp_def = db.query(models.CMSComponent).filter(
+                    (models.CMSComponent.name == comp["type"]) | 
+                    (models.CMSComponent.type == comp["type"])
+                ).first()
+                
+                if not comp_def:
+                    comp_def = models.CMSComponent(name=comp["type"], type=comp["type"])
+                    db.add(comp_def)
+                    db.flush()
+                
+                new_comp.component_id = comp_def.id
+                db.add(new_comp)
+
+        db.commit()
+        print("SeedingService: All dynamic pages seeded (V3).")

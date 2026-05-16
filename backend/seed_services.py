@@ -138,7 +138,7 @@ def seed_guruji_art():
             ],
             "story": {
                 "title": "The Legacy of Divine Art",
-                "description": "Our journey began with a simple mission: to make the divine visible. Annu Design Studio bridges the gap between ancient spiritual symbolism and modern artistic expression.",
+                "description": "Our journey began with a simple mission: to make the divine visible. GurucraftPro bridges the gap between ancient spiritual symbolism and modern artistic expression.",
                 "points": [
                     "Hand-painted traditional techniques",
                     "Premium archival quality materials",

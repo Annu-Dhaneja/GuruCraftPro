@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
-import { GurujiDarshanContent } from "@/components/home/GurujiDarshanContent";
+import { GurujiDarshanContent } from "@/components/guruji-darshan/GurujiDarshanContent";
 
 
 export const metadata: Metadata = {
-    title: "Guruji Ke Sakshat Darshan | Annu Design Studio",
+    title: "Guruji Ke Sakshat Darshan | GurucraftPro",
     description: "Experience the divine presence with Guruji Ke Sakshat Darshan (AR 3D View) and Premium Guruji Satsang Box.",
 };
 

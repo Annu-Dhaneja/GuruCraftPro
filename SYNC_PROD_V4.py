@@ -42,7 +42,7 @@ def sync_production_data():
                 ],
                 "story": {
                     "title": "The Legacy of Celestial Art",
-                    "description": "Our journey began with a simple mission: to make the divine visible. Annu Design Studio bridges the gap between ancient spiritual symbolism and modern celestial expression.",
+                    "description": "Our journey began with a simple mission: to make the divine visible. GurucraftPro bridges the gap between ancient spiritual symbolism and modern celestial expression.",
                     "points": [
                         "Hand-painted traditional techniques",
                         "Premium archival quality materials",

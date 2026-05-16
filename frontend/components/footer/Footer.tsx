@@ -1,6 +1,5 @@
 "use client";
 
-import { usePathname } from "next/navigation";
 import { FooterBrand } from "./FooterBrand";
 import { FooterLinks } from "./FooterLinks";
 import { FooterNewsletter } from "./FooterNewsletter";
@@ -8,38 +7,37 @@ import { FooterBottom } from "./FooterBottom";
 import { cn } from "@/lib/utils";
 
 export function Footer() {
-    const pathname = usePathname();
-
     return (
-        <footer className="relative bg-[#020617] text-slate-200 pt-24 pb-12 border-t border-white/5 overflow-hidden">
+        <footer className="relative bg-slate-950 text-slate-200 pt-32 pb-16 border-t border-slate-900 overflow-hidden">
             {/* Premium Glow Effect */}
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_bottom,rgba(99,102,241,0.05)_0%,transparent_60%)] pointer-events-none" />
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_bottom,rgba(79,70,229,0.08)_0%,transparent_70%)] pointer-events-none" />
             
             {/* Top Shine Line */}
-            <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-indigo-500/30 to-transparent" />
+            <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-indigo-600/30 to-transparent" />
 
-            <div className="container mx-auto px-4 md:px-8 relative z-10">
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12 lg:gap-8">
+            <div className="container relative z-10">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-16 lg:gap-12 mb-24">
 
-                    {/* Column 1: Brand */}
-                    <div className="lg:pr-8">
+                    {/* Column 1: Brand (Spans 2 columns on large) */}
+                    <div className="lg:col-span-2">
                         <FooterBrand />
                     </div>
 
-                    {/* Column 2 & 3: Links (Split in component) */}
+                    {/* Column 2 & 3: Links */}
                     <FooterLinks />
 
                     {/* Column 4: Newsletter */}
-                    <div className="lg:pl-8">
+                    <div>
                         <FooterNewsletter />
                     </div>
 
                 </div>
 
                 {/* Bottom Strip */}
-                <FooterBottom />
+                <div className="pt-12 border-t border-slate-900">
+                    <FooterBottom />
+                </div>
             </div>
         </footer>
     );
 }
-

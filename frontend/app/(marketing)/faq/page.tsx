@@ -5,7 +5,7 @@ import { FAQAccordion } from "@/components/faq/FAQAccordion";
 import { getApiUrl, safeFetch } from "@/lib/utils";
 
 export const metadata: Metadata = {
-    title: "FAQ | Annu Design Studio",
+    title: "FAQ | GurucraftPro",
     description: "Find answers to frequently asked questions about our AI design services, billing, and process.",
 };
 

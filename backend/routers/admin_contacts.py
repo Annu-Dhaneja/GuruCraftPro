@@ -1,37 +1,33 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
-from typing import List
+from typing import List, Optional
 from core.database import get_db
-from core.models import ContactSubmission, User
-from core.auth import require_admin
+from core import models, auth
+from schemas.base import AuditBase
 from pydantic import BaseModel
 from datetime import datetime
 
-from repositories.contact import contact_repository
-
 router = APIRouter()
 
-class ContactSubmissionSchema(BaseModel):
+class ContactSubmissionRead(AuditBase):
     id: int
     name: str
     email: str
-    company: str | None
+    company: Optional[str] = None
     inquiry_type: str
     message: str
-    budget: str | None
-    deadline: str | None
-    attachment_url: str | None
-    created_at: datetime
+    budget: Optional[str] = None
+    deadline: Optional[str] = None
+    attachment_url: Optional[str] = None
 
     class Config:
         from_attributes = True
 
-@router.get("/submissions", response_model=List[ContactSubmissionSchema])
+from typing import Optional
+
+@router.get("/submissions", response_model=List[ContactSubmissionRead])
 async def get_contact_submissions(
     db: Session = Depends(get_db),
-    admin: User = Depends(require_admin)
+    admin: models.User = Depends(auth.require_admin)
 ):
-    """
-    Get all contact form submissions. Protected by admin login.
-    """
-    return contact_repository.get_all(db)
+    return db.query(models.ContactSubmission).order_by(models.ContactSubmission.created_at.desc()).all()

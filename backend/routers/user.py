@@ -1,146 +1,212 @@
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, status, Response, Request
 from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy.orm import Session
-from datetime import timedelta
-from pydantic import BaseModel
-from typing import Optional
+from datetime import timedelta, datetime
+from typing import Optional, List
+from jose import JWTError, jwt
+
 from core import auth, database, models
-from schemas.user import UserOut, UserCreate, UserUpdate
+from schemas import user as user_schemas
 from services.user import user_service
+from core.config import settings
 
 router = APIRouter()
 
-
-# ── Schemas ──────────────────────────────────────────────────────────
-
-class SignupRequest(BaseModel):
-    username: str
-    password: str
-    name: Optional[str] = None
-    email: Optional[str] = None
-
-
-# ── Auth Routes ──────────────────────────────────────────────────────
-
-@router.get("/login")
-def login_get_guide():
-    return {"message": "Login endpoint is active. Use POST with username & password."}
-
-
 @router.post("/login")
 async def login_for_access_token(
+    response: Response,
     db: Session = Depends(database.get_db),
     form_data: OAuth2PasswordRequestForm = Depends(),
 ):
-    try:
-        user = user_service.authenticate_user(
-            db, form_data.username, form_data.password
+    # Throttling
+    auth.throttle_login(form_data.username)
+    
+    user = user_service.authenticate_user(db, form_data.username, form_data.password)
+    if not user:
+        auth.record_login_failure(form_data.username)
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Incorrect username or password",
+            headers={"WWW-Authenticate": "Bearer"},
         )
-        if not user:
-            raise HTTPException(
-                status_code=status.HTTP_401_UNAUTHORIZED,
-                detail="Incorrect username or password",
-                headers={"WWW-Authenticate": "Bearer"},
-            )
 
-        token = auth.create_access_token(
-            data={"sub": user.username, "role": user.role},
-            expires_delta=timedelta(minutes=auth.ACCESS_TOKEN_EXPIRE_MINUTES),
-        )
-        return {
-            "access_token": token, 
-            "token_type": "bearer",
+    # Clear throttling on success
+    auth.clear_login_attempts(form_data.username)
+
+    access_token = auth.create_access_token(
+        data={"sub": user.username, "role": user.role}
+    )
+    refresh_token = auth.create_refresh_token(
+        data={"sub": user.username}
+    )
+
+    # Set Secure HttpOnly Cookies
+    response.set_cookie(
+        key="access_token",
+        value=f"Bearer {access_token}",
+        httponly=True,
+        max_age=settings.ACCESS_TOKEN_EXPIRE_MINUTES * 60,
+        samesite="lax",
+        secure=True # Set to False for local dev if not using https
+    )
+    response.set_cookie(
+        key="refresh_token",
+        value=refresh_token,
+        httponly=True,
+        max_age=7 * 24 * 60 * 60, # 7 days
+        samesite="lax",
+        secure=True
+    )
+
+    return {
+        "access_token": access_token, 
+        "refresh_token": refresh_token,
+        "token_type": "bearer",
+        "role": user.role,
+        "user": {
+            "username": user.username,
+            "name": user.name,
             "role": user.role
         }
+    }
 
-    except HTTPException:
-        raise
-    except Exception as exc:
-        import traceback
-        traceback.print_exc()
-        raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Login failed: {exc}",
-        )
+@router.post("/refresh")
+async def refresh_token(
+    request: Request,
+    response: Response,
+    db: Session = Depends(database.get_db)
+):
+    refresh_token = request.cookies.get("refresh_token")
+    if not refresh_token:
+        raise HTTPException(status_code=401, detail="Refresh token missing")
 
+    try:
+        payload = jwt.decode(refresh_token, settings.SECRET_KEY, algorithms=[settings.ALGORITHM])
+        if payload.get("type") != "refresh":
+            raise HTTPException(status_code=401, detail="Invalid token type")
+        username = payload.get("sub")
+    except JWTError:
+        raise HTTPException(status_code=401, detail="Invalid refresh token")
 
-@router.post("/signup")
+    user = db.query(models.User).filter(models.User.username == username).first()
+    if not user:
+        raise HTTPException(status_code=401, detail="User not found")
+
+    new_access_token = auth.create_access_token(data={"sub": user.username, "role": user.role})
+    
+    response.set_cookie(
+        key="access_token",
+        value=f"Bearer {new_access_token}",
+        httponly=True,
+        max_age=settings.ACCESS_TOKEN_EXPIRE_MINUTES * 60,
+        samesite="lax",
+        secure=True
+    )
+
+    return {"access_token": new_access_token, "token_type": "bearer"}
+
+@router.post("/logout")
+async def logout(response: Response):
+    response.delete_cookie("access_token")
+    response.delete_cookie("refresh_token")
+    return {"message": "Logged out successfully"}
+
+@router.post("/signup", status_code=status.HTTP_201_CREATED)
 async def signup(
-    body: SignupRequest,
+    body: user_schemas.UserCreate,
     db: Session = Depends(database.get_db),
 ):
-    """Create a new user account."""
-    try:
-        # Check if username already exists
-        existing = db.query(models.User).filter(models.User.username == body.username).first()
-        if existing:
-            raise HTTPException(
-                status_code=status.HTTP_400_BAD_REQUEST,
-                detail="Username already taken",
-            )
+    existing = db.query(models.User).filter(models.User.username == body.username).first()
+    if existing:
+        raise HTTPException(status_code=400, detail="Username already taken")
 
-        # Check if email already exists (if provided and not empty)
-        if body.email:
-            existing_email = db.query(models.User).filter(models.User.email == body.email).first()
-            if existing_email:
-                raise HTTPException(
-                    status_code=status.HTTP_400_BAD_REQUEST,
-                    detail="Email already registered",
-                )
+    if body.email:
+        existing_email = db.query(models.User).filter(models.User.email == body.email).first()
+        if existing_email:
+            raise HTTPException(status_code=400, detail="Email already registered")
 
-        # Create user - default role is ALWAYS "user"
-        # Admin roles must now be assigned manually via Admin Panel or Seeding
-        assigned_role = "user"
+    user_count = db.query(models.User).count()
+    
+    # SECURITY RULE 1: Default Role = USER
+    assigned_role_name = "USER"
+    is_approved = False
 
-        hashed = auth.get_password_hash(body.password)
-        new_user = models.User(
-            username=body.username,
-            hashed_password=hashed,
-            name=body.name or body.username,
-            email=body.email if body.email else None,
-            role=assigned_role,
-        )
-        db.add(new_user)
-        db.commit()
-        db.refresh(new_user)
+    # First user = SUPER_ADMIN (Bootstrap logic)
+    if user_count == 0:
+        assigned_role_name = "SUPER_ADMIN"
+        is_approved = True # Bootstrap admin is auto-approved
+    
+    role_obj = db.query(models.Role).filter(models.Role.name == assigned_role_name).first()
+    role_id = role_obj.id if role_obj else None
 
-        # Auto-login: return token
-        token = auth.create_access_token(
-            data={"sub": new_user.username, "role": new_user.role},
-            expires_delta=timedelta(minutes=auth.ACCESS_TOKEN_EXPIRE_MINUTES),
-        )
-        return {
-            "access_token": token,
-            "token_type": "bearer",
-            "role": new_user.role,
-            "message": f"Account '{body.username}' created successfully",
-        }
+    hashed = auth.get_password_hash(body.password)
+    new_user = models.User(
+        username=body.username,
+        hashed_password=hashed,
+        name=body.name or body.username,
+        email=body.email,
+        role=assigned_role_name,
+        role_id=role_id,
+        is_approved=is_approved,
+        created_at=datetime.utcnow()
+    )
+    db.add(new_user)
+    db.commit()
+    db.refresh(new_user)
 
-    except HTTPException:
-        raise
-    except Exception as exc:
-        db.rollback()
-        import traceback
-        traceback.print_exc()
-        
-        # Diagnostic logging (server-side only, will be in Render logs)
-        try:
-            p_len = len(body.password) if body.password else 0
-            p_bytes = len(body.password.encode('utf-8')) if body.password else 0
-            print(f"SIGNUP ERROR DIAGNOSTIC: uname={body.username}, p_len={p_len}, p_bytes={p_bytes}, error={exc}")
-        except:
-            pass
-            
-        raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Signup failed: {exc}",
-        )
+    return {
+        "status": "success",
+        "message": f"Account created successfully as '{new_user.role}'. Approval pending." if not is_approved else "Super-Admin created.",
+    }
 
-
-@router.get("/users", response_model=list[UserOut])
+@router.get("/users", response_model=List[user_schemas.UserOut])
 async def list_users(
     db: Session = Depends(database.get_db),
     admin: models.User = Depends(auth.require_admin)
 ):
-    """List all registered users (Admin only)."""
     return db.query(models.User).all()
+
+@router.get("/me", response_model=user_schemas.UserOut)
+async def get_me(current_user: models.User = Depends(auth.get_current_user)):
+    return current_user
+
+# ── Admin Role & Approval APIs ──────────────────────────────────────
+
+@router.post("/{user_id}/approve")
+async def approve_user(
+    user_id: int,
+    db: Session = Depends(database.get_db),
+    admin: models.User = Depends(auth.require_super_admin)
+):
+    user = db.query(models.User).filter(models.User.id == user_id).first()
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+    
+    user.is_approved = True
+    db.commit()
+    return {"message": f"User {user.username} has been approved."}
+
+@router.put("/{user_id}/role")
+async def update_user_role(
+    user_id: int,
+    role_data: dict, # {"role": "ADMIN"}
+    db: Session = Depends(database.get_db),
+    admin: models.User = Depends(auth.require_super_admin)
+):
+    user = db.query(models.User).filter(models.User.id == user_id).first()
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+    
+    new_role = role_data.get("role")
+    if new_role not in ["SUPER_ADMIN", "ADMIN", "EDITOR", "USER"]:
+        raise HTTPException(status_code=400, detail="Invalid role specified")
+    
+    user.role = new_role
+    
+    # Sync role_id if possible
+    role_obj = db.query(models.Role).filter(models.Role.name == new_role.lower()).first()
+    if role_obj:
+        user.role_id = role_obj.id
+
+    db.commit()
+    return {"message": f"User {user.username} role updated to {new_role}."}

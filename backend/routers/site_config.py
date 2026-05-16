@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from core.database import get_db
-from core.auth import require_admin
+from core import auth
 from repositories.cms_ssot import get_global_settings, update_global_settings
 
 router = APIRouter()
@@ -21,7 +21,7 @@ def get_config(key: str, db: Session = Depends(get_db)):
     return settings.get(key, {})
 
 @router.post("/")
-def update_config(key: str, data: dict, db: Session = Depends(get_db), admin = Depends(require_admin)):
+def update_config(key: str, data: dict, db: Session = Depends(get_db), current_user = Depends(auth.require_permission("settings", "write"))):
     # Convert legacy key update to SSOT update
     update_payload = {}
     if key == "social_links":
@@ -30,4 +30,4 @@ def update_config(key: str, data: dict, db: Session = Depends(get_db), admin = D
         update_payload[key] = data
         
     update_global_settings(db, update_payload)
-    return {"status": "success"}
+    return {"status": "success", "message": f"Settings for '{key}' updated"}

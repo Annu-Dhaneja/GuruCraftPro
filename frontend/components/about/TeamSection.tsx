@@ -34,9 +34,9 @@ import { MemberCard } from "@/components/team/MemberCard";
 
 const team = [
     {
-        name: "Annu Dhanjeja",
+        name: "GurucraftPro Dhanjeja",
         role: "Founder & Creative Lead",
-        description: "Visionary designer with 8+ years experience in brand identity and visual storytelling. Annu leads global creative direction.",
+        description: "Visionary designer with 8+ years experience in brand identity and visual storytelling. GurucraftPro leads global creative direction.",
         skills: ["Art Direction", "Video Editor", "Art Director"],
         image: "https://api.dicebear.com/7.x/avataaars/svg?seed=Annu",
         portfolio: "/portfolio/all",

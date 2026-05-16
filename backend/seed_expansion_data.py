@@ -63,7 +63,7 @@ def seed_expansion():
                 {
                     "category": "General Questions",
                     "items": [
-                        { "question": "What is Annu Design Studio?", "answer": "A luxury design studio blending human artistry with AI technology." },
+                        { "question": "What is GurucraftPro?", "answer": "A luxury design studio blending human artistry with AI technology." },
                         { "question": "How long does a design project take?", "answer": "Typical timelines range from 24 hours for small assets to 7 days for complex projects." }
                     ]
                 },

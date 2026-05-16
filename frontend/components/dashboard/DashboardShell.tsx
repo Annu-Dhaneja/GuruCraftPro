@@ -16,6 +16,8 @@ import {
     Image as ImageIcon
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useAuthStore } from "@/lib/store/useAuthStore";
+import { Shield } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface DashboardShellProps {
@@ -32,6 +34,7 @@ const navItems = [
 ];
 
 export function DashboardShell({ children }: DashboardShellProps) {
+    const { user, logout } = useAuthStore();
     const pathname = usePathname();
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
@@ -41,10 +44,10 @@ export function DashboardShell({ children }: DashboardShellProps) {
             <aside className="hidden lg:flex flex-col w-64 bg-background border-r border-border h-screen sticky top-0">
                 <div className="p-6 border-b border-border">
                     <Link href="/" className="flex items-center gap-2 font-bold text-xl">
-                        <div className="h-8 w-8 bg-indigo-600 rounded-lg flex items-center justify-center text-white">
-                            AD
+                        <div className="h-8 w-8 bg-indigo-600 rounded-lg flex items-center justify-center text-white italic">
+                            GP
                         </div>
-                        <span>Studio</span>
+                        <span>GurucraftPro</span>
                     </Link>
                 </div>
 
@@ -64,19 +67,33 @@ export function DashboardShell({ children }: DashboardShellProps) {
                             {item.label}
                         </Link>
                     ))}
+
+                    {user && ["ADMIN", "SUPER_ADMIN", "EDITOR"].includes(user.role) && (
+                        <Link
+                            href="/admin"
+                            className="flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-bold text-indigo-600 bg-indigo-500/5 hover:bg-indigo-500/10 transition-colors mt-6"
+                        >
+                            <Shield className="h-5 w-5" />
+                            Admin Portal
+                        </Link>
+                    )}
                 </nav>
 
                 <div className="p-4 border-t border-border">
-                    <div className="flex items-center gap-3 px-4 py-3 rounded-lg bg-muted/50 mb-4">
-                        <div className="h-8 w-8 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-700 font-bold text-xs">
-                            AN
+                    <div className="flex items-center gap-3 px-4 py-3 rounded-lg bg-muted/50 mb-4 overflow-hidden">
+                        <div className="h-8 w-8 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-700 font-bold text-xs shrink-0">
+                            {user?.username?.slice(0,2).toUpperCase() || "U"}
                         </div>
                         <div className="flex-1 min-w-0">
-                            <p className="text-sm font-medium truncate">Gurucraftpro</p>
-                            <p className="text-xs text-muted-foreground truncate">hello@gurucraftpro.com</p>
+                            <p className="text-sm font-medium truncate">{user?.name || user?.username || "User"}</p>
+                            <p className="text-xs text-muted-foreground truncate">{user?.email || "No email"}</p>
                         </div>
                     </div>
-                    <Button variant="ghost" className="w-full justify-start text-muted-foreground hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-950/20">
+                    <Button 
+                        variant="ghost" 
+                        onClick={() => logout()}
+                        className="w-full justify-start text-muted-foreground hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-950/20"
+                    >
                         <LogOut className="mr-2 h-4 w-4" />
                         Log out
                     </Button>

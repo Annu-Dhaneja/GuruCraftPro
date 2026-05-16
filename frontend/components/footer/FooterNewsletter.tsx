@@ -1,9 +1,10 @@
 "use client";
 
-import { ArrowRight, ShieldCheck, CreditCard, Globe, Loader2 } from "lucide-react";
+import { ArrowRight, ShieldCheck, CreditCard, Globe } from "lucide-react";
 import { useState } from "react";
 import { getApiUrl } from "@/lib/utils";
 import { toast } from "sonner";
+import { PremiumButton, PremiumInput } from "../shared/PremiumUI";
 
 export function FooterNewsletter() {
     const [email, setEmail] = useState("");
@@ -40,47 +41,48 @@ export function FooterNewsletter() {
     };
 
     return (
-        <div className="space-y-6">
-            <h3 className="font-semibold text-white mb-2">Stay Inspired</h3>
-            <p className="text-sm text-muted-foreground">
-                Join the creative circle. Get design tips & AI updates. No spam, only value.
-            </p>
+        <div className="space-y-8">
+            <div>
+                <h3 className="text-xl font-black italic uppercase tracking-tighter text-white mb-4 leading-none">Stay Inspired</h3>
+                <p className="text-sm text-slate-400 font-light italic leading-relaxed">
+                    Join the creative circle. Get design tips & AI updates. No spam, only value.
+                </p>
+            </div>
 
             {/* Input Form */}
-            <form className="flex flex-col gap-3" onSubmit={handleSubscribe}>
-                <div className="relative">
-                    <input
-                        type="email"
-                        placeholder="Enter your email"
-                        required
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-sm text-white placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-indigo-500/50 transition-all"
-                    />
-                </div>
-                <button 
+            <form className="space-y-4" onSubmit={handleSubscribe}>
+                <PremiumInput
+                    type="email"
+                    placeholder="ENTER YOUR EMAIL"
+                    required
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    className="bg-white/5 border-slate-800 text-white placeholder:text-slate-600 italic font-medium"
+                />
+                <PremiumButton 
                     type="submit" 
-                    disabled={loading}
-                    className="w-full bg-white text-black font-medium py-3 rounded-lg text-sm hover:bg-white/90 transition-colors flex items-center justify-center gap-2 group disabled:opacity-50"
+                    isLoading={loading}
+                    className="w-full bg-white text-slate-900 hover:bg-indigo-600 hover:text-white"
+                    icon={<ArrowRight className="h-4 w-4" />}
+                    iconPosition="right"
                 >
-                    {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : "Subscribe"}
-                    {!loading && <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />}
-                </button>
+                    SUBSCRIBE
+                </PremiumButton>
             </form>
 
             {/* Trust Signals */}
-            <div className="pt-4 border-t border-white/5 space-y-3">
-                <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                    <ShieldCheck className="h-4 w-4 text-green-500" />
-                    <span>Secure Payments</span>
+            <div className="pt-8 border-t border-slate-900 space-y-4">
+                <div className="flex items-center gap-3 text-[10px] font-black uppercase tracking-widest text-slate-500 italic">
+                    <ShieldCheck className="h-4 w-4 text-emerald-500" />
+                    <span>Secure Protocols</span>
                 </div>
-                <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                <div className="flex items-center gap-3 text-[10px] font-black uppercase tracking-widest text-slate-500 italic">
                     <CreditCard className="h-4 w-4 text-indigo-500" />
-                    <span>Invoices & NDAs Available</span>
+                    <span>Industrial NDAs</span>
                 </div>
-                <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                <div className="flex items-center gap-3 text-[10px] font-black uppercase tracking-widest text-slate-500 italic">
                     <Globe className="h-4 w-4 text-blue-500" />
-                    <span>Global Clients Supported</span>
+                    <span>Global Coverage</span>
                 </div>
             </div>
         </div>

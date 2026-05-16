@@ -6,7 +6,7 @@ import { Plus } from "lucide-react";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-    title: "Dashboard | Annu Design Studio",
+    title: "Dashboard | GurucraftPro",
     description: "Manage your projects and AI generations.",
 };
 
@@ -16,7 +16,7 @@ export default function DashboardPage() {
             <div className="flex items-center justify-between mb-8">
                 <div>
                     <h1 className="text-3xl font-bold tracking-tight">Dashboard Overview</h1>
-                    <p className="text-muted-foreground">Welcome back, Annu. Here's what's happening in your studio.</p>
+                    <p className="text-muted-foreground">Welcome back. Here's what's happening in your studio.</p>
                 </div>
                 <div className="flex gap-2">
                     <Link href="/request">

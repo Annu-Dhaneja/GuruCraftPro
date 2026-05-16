@@ -20,7 +20,7 @@ def fix_local_auth():
     DELETE FROM users;
     INSERT INTO users (name, email, username, hashed_password, role) 
     VALUES 
-    ('Annu Admin', 'annu@annudesign.com', 'annuad@#05', :h1, 'ADMIN'),
+    ('GurucraftPro Admin', 'annu@annudesign.com', 'annuad@#05', :h1, 'ADMIN'),
     ('Om Admin', 'om@annudesign.com', 'Om@Op', :h2, 'ADMIN');
     COMMIT;
     """

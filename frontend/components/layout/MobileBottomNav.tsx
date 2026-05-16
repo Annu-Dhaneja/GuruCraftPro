@@ -24,17 +24,17 @@ const navItems = [
         icon: Sparkles,
     },
     {
-        label: "Shop",
-        href: "/services/guru-ji-art",
+        label: "Expertise",
+        href: "/portfolio",
         icon: ShoppingBag,
     },
     {
-        label: "Planner",
-        href: "/wedding",
+        label: "Strategy",
+        href: "/services",
         icon: Calendar,
     },
     {
-        label: "Profile",
+        label: "Account",
         href: "/dashboard",
         icon: User,
     },
@@ -43,7 +43,6 @@ const navItems = [
 export function MobileBottomNav() {
     const pathname = usePathname();
 
-    // Hide bottom nav on dashboard or admin pages if they have their own navigation
     if (pathname && (
         pathname.startsWith('/admin') ||
         pathname.startsWith('/login') ||
@@ -53,8 +52,8 @@ export function MobileBottomNav() {
     }
 
     return (
-        <nav className="lg:hidden fixed bottom-6 left-1/2 -translate-x-1/2 z-[60] w-[90%] max-w-md">
-            <div className="bg-[#020617]/80 backdrop-blur-2xl border border-white/10 rounded-[2.5rem] p-2 flex items-center justify-between shadow-[0_20px_50px_rgba(0,0,0,0.3)]">
+        <nav className="lg:hidden fixed bottom-8 left-1/2 -translate-x-1/2 z-[60] w-[90%] max-w-md">
+            <div className="bg-white/80 backdrop-blur-3xl border border-slate-100 rounded-[2.5rem] p-2 flex items-center justify-between shadow-2xl">
                 {navItems.map((item) => {
                     const isActive = pathname === item.href || (item.href !== '/' && pathname?.startsWith(item.href));
                     
@@ -63,14 +62,14 @@ export function MobileBottomNav() {
                             key={item.label}
                             href={item.href}
                             className={cn(
-                                "flex flex-col items-center justify-center gap-1 flex-1 h-14 rounded-[2rem] transition-all duration-500",
+                                "flex flex-col items-center justify-center gap-1 flex-1 h-14 rounded-[1.8rem] transition-all duration-500",
                                 isActive 
-                                    ? "bg-primary text-white scale-105 shadow-[0_0_20px_rgba(124,58,237,0.4)]" 
-                                    : "text-slate-400 hover:text-white"
+                                    ? "bg-indigo-600 text-white scale-105 shadow-xl shadow-indigo-600/30" 
+                                    : "text-slate-400 hover:text-indigo-600"
                             )}
                         >
-                            <item.icon className={cn("w-5 h-5", isActive ? "animate-pulse" : "")} />
-                            <span className="text-[9px] font-bold uppercase tracking-tighter">
+                            <item.icon className={cn("w-5 h-5", isActive ? "" : "")} />
+                            <span className="text-[8px] font-black uppercase tracking-widest italic">
                                 {item.label}
                             </span>
                         </Link>

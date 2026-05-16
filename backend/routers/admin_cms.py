@@ -1,306 +1,269 @@
-from fastapi import APIRouter, HTTPException, UploadFile, File, Depends
+from fastapi import APIRouter, HTTPException, UploadFile, File, Depends, status
+from pydantic import BaseModel
 from sqlalchemy.orm import Session
-from typing import Dict, Any, Optional
+from typing import Dict, Any, List, Optional
 from core import database, models, auth
+from schemas import cms as cms_schemas
+from schemas.base import ResponseBase
 import os
 import shutil
 import uuid
+import requests
 from pathlib import Path
+from datetime import datetime
 
 from services.cms import cms_service
-from repositories.cms_ssot import get_ssot_page_content, update_global_settings, get_global_settings
+from repositories.cms_ssot import get_ssot_page_content, update_global_settings, get_global_settings, update_ssot_page_content
 
 router = APIRouter()
 
-# ── IMPORTANT: Fixed routes MUST come BEFORE the /{segment} catch-all ──
+class BulkImportRequest(BaseModel):
+    urls: List[str]
 
 
-@router.get("/stats", summary="Get Admin Dashboard Stats")
-def get_dashboard_stats(
+
+# ── PAGE MANAGEMENT ──────────────────────────────────────────────────
+
+@router.get("/pages", response_model=List[cms_schemas.CMSPageRead], summary="List All CMS Pages")
+def list_pages(
     db: Session = Depends(database.get_db),
-    current_user: models.User = Depends(auth.require_admin),
+    current_user: models.User = Depends(auth.require_admin)
 ):
-    from core.models import ContactSubmission, CMSPage
+    return db.query(models.CMSPage).order_by(models.CMSPage.slug).all()
 
-    total_submissions = db.query(ContactSubmission).count()
-    recent_submissions = (
-        db.query(ContactSubmission)
-        .order_by(ContactSubmission.created_at.desc())
-        .limit(5)
-        .all()
-    )
-    cms_sections = db.query(CMSPage).count()
-
-    return {
-        "total_submissions": total_submissions,
-        "cms_sections_count": cms_sections,
-        "recent_submissions": [
-            {
-                "id": s.id,
-                "name": s.name,
-                "email": s.email,
-                "type": s.inquiry_type,
-                "date": s.created_at,
-            }
-            for s in recent_submissions
-        ],
-    }
-
-
-@router.get("/posts", summary="List All Blog Posts")
-def list_posts(db: Session = Depends(database.get_db)):
-    from core.models import Post
-    return db.query(Post).order_by(Post.created_at.desc()).all()
-
-
-@router.post("/posts", summary="Create New Blog Post")
-def create_post(
-    post: dict, # Using dict for flexibility or import schemas.blog.PostCreate
+@router.get("/pages/{slug}", response_model=cms_schemas.CMSPageRead)
+def get_page(
+    slug: str,
     db: Session = Depends(database.get_db),
-    current_user: models.User = Depends(auth.require_admin),
+    current_user: models.User = Depends(auth.require_admin)
 ):
-    from core.models import Post
-    db_post = Post(
-        title=post.get("title"),
-        slug=post.get("slug"),
-        content=post.get("content"),
-        status=post.get("status", "published"),
-        author_id=current_user.id
-    )
-    db.add(db_post)
-    db.commit()
-    db.refresh(db_post)
-    return db_post
+    page = db.query(models.CMSPage).filter(models.CMSPage.slug == slug).first()
+    if not page:
+        raise HTTPException(status_code=404, detail="Page not found")
+    return page
 
-
-@router.put("/posts/{post_id}", summary="Update Existing Blog Post")
-def update_post(
-    post_id: int,
-    post: dict,
+@router.post("/pages", response_model=cms_schemas.CMSPageRead, status_code=status.HTTP_201_CREATED)
+def create_page(
+    page_data: cms_schemas.CMSPageCreate,
     db: Session = Depends(database.get_db),
-    current_user: models.User = Depends(auth.require_admin),
+    current_user: models.User = Depends(auth.require_permission("cms", "write"))
 ):
-    from core.models import Post
-    db_post = db.query(Post).filter(Post.id == post_id).first()
-    if not db_post:
-        raise HTTPException(status_code=404, detail="Post not found")
+    existing = db.query(models.CMSPage).filter(models.CMSPage.slug == page_data.slug).first()
+    if existing:
+        raise HTTPException(status_code=400, detail="Slug already exists")
     
-    for key, value in post.items():
-        if hasattr(db_post, key):
-            setattr(db_post, key, value)
-            
+    db_page = models.CMSPage(
+        **page_data.model_dump(),
+        created_by_id=current_user.id,
+        updated_by_id=current_user.id
+    )
+    db.add(db_page)
     db.commit()
-    db.refresh(db_post)
-    return db_post
+    db.refresh(db_page)
+    return db_page
 
-
-@router.delete("/posts/{post_id}", summary="Delete Blog Post")
-def delete_post(
-    post_id: int,
+@router.put("/pages/{slug}", response_model=cms_schemas.CMSPageRead)
+def update_page(
+    slug: str,
+    page_data: cms_schemas.CMSPageUpdate,
     db: Session = Depends(database.get_db),
-    current_user: models.User = Depends(auth.require_admin),
+    current_user: models.User = Depends(auth.require_permission("cms", "write"))
 ):
-    from core.models import Post
-    db_post = db.query(Post).filter(Post.id == post_id).first()
-    if not db_post:
-        raise HTTPException(status_code=404, detail="Post not found")
-    db.delete(db_post)
+    db_page = db.query(models.CMSPage).filter(models.CMSPage.slug == slug).first()
+    if not db_page:
+        raise HTTPException(status_code=404, detail="Page not found")
+    
+    update_data = page_data.model_dump(exclude_unset=True)
+    for key, value in update_data.items():
+        setattr(db_page, key, value)
+    
+    db_page.updated_by_id = current_user.id
+    db_page.updated_at = datetime.utcnow()
+    
+    if db_page.status == "published" and not db_page.published_at:
+        db_page.published_at = datetime.utcnow()
+        
     db.commit()
-    return {"message": "Post deleted"}
+    db.refresh(db_page)
+    return db_page
 
+@router.delete("/pages/{slug}")
+def delete_page(
+    slug: str,
+    db: Session = Depends(database.get_db),
+    current_user: models.User = Depends(auth.require_permission("cms", "delete"))
+):
+    db_page = db.query(models.CMSPage).filter(models.CMSPage.slug == slug).first()
+    if not db_page:
+        raise HTTPException(status_code=404, detail="Page not found")
+    
+    db.delete(db_page)
+    db.commit()
+    return {"status": "success", "message": "Page deleted successfully"}
 
-@router.get("/posts/slug/{slug}", summary="Get Post by Slug")
-def get_post_by_slug(slug: str, db: Session = Depends(database.get_db)):
-    from core.models import Post
-    post = db.query(Post).filter(Post.slug == slug).first()
-    if not post:
-        raise HTTPException(status_code=404, detail="Post not found")
-    return post
+# ── GLOBAL SETTINGS ──────────────────────────────────────────────────
 
+@router.get("/settings", response_model=cms_schemas.GlobalSettingsRead)
+def get_settings(db: Session = Depends(database.get_db)):
+    settings = get_global_settings(db)
+    if not settings:
+        raise HTTPException(status_code=404, detail="Global settings not found")
+    return settings
+
+@router.get("/site_config")
+def get_site_config(db: Session = Depends(database.get_db)):
+    """Public endpoint for frontend SiteConfigProvider."""
+    return get_global_settings(db)
+
+@router.put("/settings", response_model=cms_schemas.GlobalSettingsRead)
+def update_settings(
+    settings_data: cms_schemas.GlobalSettingsBase,
+    db: Session = Depends(database.get_db),
+    current_user: models.User = Depends(auth.require_permission("settings", "write"))
+):
+    updated = update_global_settings(db, settings_data.model_dump())
+    # We should manually update audit fields on the model if update_global_settings doesn't
+    existing = db.query(models.GlobalSettings).first()
+    if existing:
+        existing.updated_by_id = current_user.id
+        db.commit()
+        db.refresh(existing)
+    return existing
+
+@router.get("/{slug}", summary="Get Public CMS Page Content")
+def get_public_page_content(
+    slug: str, 
+    preview: bool = False,
+    db: Session = Depends(database.get_db),
+    current_user: Optional[models.User] = Depends(auth.get_optional_user)
+):
+    """Public endpoint for fetching assembled page content (SSOT)."""
+    # Only allow preview if user is admin
+    should_preview = preview and current_user and current_user.role in ["admin", "super-admin", "editor"]
+    
+    content = get_ssot_page_content(db, slug, published_only=not should_preview)
+    if not content:
+        raise HTTPException(status_code=404, detail="Page not found")
+    return content
+
+# ── MEDIA MANAGEMENT ─────────────────────────────────────────────────
 
 @router.get("/media", summary="List All Uploaded Assets")
 def list_media(
     db: Session = Depends(database.get_db),
     admin: models.User = Depends(auth.require_admin)
 ):
-    from core.models import Media
-    return db.query(Media).order_by(Media.uploaded_at.desc()).all()
+    return db.query(models.Media).order_by(models.Media.uploaded_at.desc()).all()
 
-
-# Use a local static folder in the backend for deployed environments
 UPLOAD_DIR = Path("static/uploads")
-
 
 @router.post("/upload-image", summary="Upload Image for CMS")
 async def upload_image(
     file: UploadFile = File(...),
     db: Session = Depends(database.get_db),
-    current_user: models.User = Depends(auth.require_admin),
+    current_user: models.User = Depends(auth.require_permission("media", "write")),
 ):
-    try:
-        UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
-    except Exception as e:
-        print(f"Upload Error: Could not create directory {UPLOAD_DIR}: {e}")
-        raise HTTPException(status_code=500, detail=f"Server configuration error: {e}")
-
+    UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
     ext = os.path.splitext(file.filename)[1]
     unique_filename = f"{uuid.uuid4()}{ext}"
     file_path = UPLOAD_DIR / unique_filename
 
-    try:
-        with open(file_path, "wb") as buffer:
-            shutil.copyfileobj(file.file, buffer)
-    except Exception as e:
-        print(f"Upload Error: Failed to write file {file_path}: {e}")
-        raise HTTPException(status_code=500, detail=f"Failed to save image: {e}")
+    with open(file_path, "wb") as buffer:
+        shutil.copyfileobj(file.file, buffer)
 
     relative_url = f"/images/uploads/{unique_filename}"
+    new_media = models.Media(
+        file_url=relative_url, 
+        file_name=file.filename,
+        created_by_id=current_user.id
+    )
+    db.add(new_media)
+    db.commit()
+    db.refresh(new_media)
+    return {"url": relative_url, "id": new_media.id}
 
-    try:
-        from core.models import Media
-        new_media = Media(file_url=relative_url, file_name=file.filename)
-        db.add(new_media)
-        db.commit()
-        db.refresh(new_media)
-        return {"url": relative_url, "id": new_media.id}
-    except Exception as e:
-        db.rollback()
-        print(f"Upload Error: Database sync failed: {e}")
-        raise HTTPException(status_code=500, detail=f"Media record creation failed: {e}")
-
-
-@router.post("/media/bulk-url-import", summary="Bulk Import Images from URLs")
+@router.post("/media/bulk-url-import", summary="Bulk Ingest Images from URLs")
 async def bulk_url_import(
-    request_data: Dict[str, Any],
+    request: BulkImportRequest,
     db: Session = Depends(database.get_db),
-    current_user: models.User = Depends(auth.require_admin),
+    current_user: models.User = Depends(auth.require_permission("media", "write")),
 ):
-    import urllib.request
-    from core.models import Media
-    
-    urls = request_data.get("urls", [])
-    if not urls:
-        raise HTTPException(status_code=400, detail="No URLs provided")
-    
     results = []
-    
-    # Ensure upload directory exists
-    try:
-        UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
-    except Exception as e:
-        print(f"Bulk Import Warning: Could not create directory {UPLOAD_DIR}: {e}")
-        # Note: We continue because if the directory already exists (baked into the build), it might still work.
-    
-    for url in urls:
-        if not url or not url.startswith("http"):
-            results.append({"url": url, "status": "failed", "error": "Invalid URL format"})
-            continue
-            
+    UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
+
+    for url in request.urls:
         try:
-            # Generate unique filename based on extension or fallback to .jpg
-            ext = os.path.splitext(url.split('?')[0])[1]
-            if not ext or len(ext) > 5: ext = ".jpg"
-            unique_filename = f"{uuid.uuid4()}{ext}"
+            # Basic validation
+            if not url.startswith("http"):
+                results.append({"url": url, "status": "failed", "error": "Invalid URL protocol"})
+                continue
+
+            response = requests.get(url, stream=True, timeout=10)
+            if response.status_code != 200:
+                results.append({"url": url, "status": "failed", "error": f"HTTP {response.status_code}"})
+                continue
+
+            # Detect extension or default to jpg
+            content_type = response.headers.get("content-type", "")
+            ext = ".jpg"
+            if "image/png" in content_type: ext = ".png"
+            elif "image/webp" in content_type: ext = ".webp"
+            elif "image/gif" in content_type: ext = ".gif"
+            
+            filename = url.split("/")[-1].split("?")[0] or "imported_asset"
+            if not any(filename.endswith(e) for e in [".jpg", ".jpeg", ".png", ".webp", ".gif"]):
+                filename += ext
+            
+            unique_filename = f"{uuid.uuid4()}_{filename}"
             file_path = UPLOAD_DIR / unique_filename
-            
-            # Download Image
-            headers = {'User-Agent': 'Mozilla/5.0'}
-            req = urllib.request.Request(url, headers=headers)
-            with urllib.request.urlopen(req, timeout=10) as response:
-                with open(file_path, 'wb') as out_file:
-                    out_file.write(response.read())
-            
-            # Create Media Record
+
+            with open(file_path, "wb") as f:
+                for chunk in response.iter_content(chunk_size=8192):
+                    f.write(chunk)
+
             relative_url = f"/images/uploads/{unique_filename}"
-            new_media = Media(file_url=relative_url, file_name=url.split('/')[-1])
+            new_media = models.Media(
+                file_url=relative_url,
+                file_name=filename,
+                mime_type=content_type,
+                size_bytes=os.path.getsize(file_path),
+                created_by_id=current_user.id
+            )
             db.add(new_media)
-            results.append({"url": url, "status": "success", "relative_url": relative_url})
+            results.append({"url": url, "status": "success", "file_url": relative_url})
             
         except Exception as e:
-            print(f"Bulk Import Error for {url}: {e}")
             results.append({"url": url, "status": "failed", "error": str(e)})
-            
+
     db.commit()
     return {"results": results}
 
+# ── STATS & DASHBOARD ────────────────────────────────────────────────
 
-# ── Dynamic catch-all MUST be LAST ──────────────────────────────────
-
-
-@router.get("/{segment}", summary="Get CMS Content Segment")
-def get_segment_content(
-    segment: str,
-    db: Session = Depends(database.get_db),
-):
-    # Try SSOT First
-    ssot_data = get_ssot_page_content(db, segment)
-    if ssot_data and ssot_data.get("components"):
-        # Auto-flatten for the frontend if this is a known legacy-style page
-        # The frontend components expect keys like 'hero', 'team' at the top level
-        flattened = {}
-        for comp in ssot_data["components"]:
-            name = comp.get("name")
-            if name:
-                flattened[name] = comp.get("props", {})
-        
-        # Merge meta/title from SSOT page record
-        flattened["_ssot_meta"] = ssot_data.get("meta", {})
-        flattened["title"] = ssot_data.get("title")
-        return flattened
-        
-    # Special case: global settings
-    if segment == "site_config":
-        return get_global_settings(db) or cms_service.get_content(db, segment)
-
-    return cms_service.get_content(db, segment)
-
-
-@router.put("/{segment}", summary="Update CMS Content Segment")
-def update_segment_content(
-    segment: str,
-    content: Dict[str, Any],
+@router.get("/stats", summary="Get Admin Dashboard Stats")
+def get_dashboard_stats(
     db: Session = Depends(database.get_db),
     current_user: models.User = Depends(auth.require_admin),
 ):
-    try:
-        from repositories.cms_ssot import get_ssot_page_content, update_ssot_page_content
-        from core.models import CMSPage
+    from core.models import ContactSubmission, CMSPage, User, Order
 
-        # Special Case: Global Site Config
-        if segment == "site_config":
-            print(f"CMS PUT: Updating Global Site Config")
-            from repositories.cms_ssot import update_global_settings
-            updated = update_global_settings(db, content)
-            return {
-                "status": "success",
-                "message": "Global Site Config updated successfully",
-                "content": updated
-            }
+    total_submissions = db.query(ContactSubmission).count()
+    total_users = db.query(User).count()
+    total_orders = db.query(Order).count()
+    cms_pages = db.query(CMSPage).count()
 
-        # Case 1: Handle SSOT-managed pages (The new priority system)
-        is_ssot = db.query(CMSPage).filter(CMSPage.slug == segment).first() is not None
-        
-        # If it's a known service, it might be in SSOT even if not yet fully initialized
-        known_service_pages = ["photo-editor", "wedding-plan", "guru-ji-art", "game-design", "vantage-ecom", "home"]
-        if is_ssot or segment in known_service_pages:
-            print(f"CMS PUT: Updating SSOT segment '{segment}'")
-            update_ssot_page_content(db, segment, content)
-            return {
-                "status": "success",
-                "message": f"{segment.capitalize()} (SSOT) content updated successfully",
-                "content": get_ssot_page_content(db, segment) # Re-fetch to return clean state
-            }
+    return {
+        "total_submissions": total_submissions,
+        "total_users": total_users,
+        "total_orders": total_orders,
+        "cms_pages_count": cms_pages,
+        "recent_submissions": db.query(ContactSubmission).order_by(models.ContactSubmission.created_at.desc()).limit(5).all()
+    }
 
-        # Case 2: Handle Legacy pages (Fallback)
-        print(f"CMS PUT: Updating Legacy segment '{segment}'")
-        updated_content = cms_service.update_content(db, segment, content)
-        return {
-            "status": "success",
-            "message": f"{segment.capitalize()} (Legacy) content updated successfully",
-            "content": updated_content,
-        }
-    except Exception as exc:
-        print(f"CMS PUT ERROR (segment '{segment}'): {str(exc)}")
-        # Note: Global exception handler will also catch this, 
-        # but re-raising helps maintain the stack trace for our handler
-        raise HTTPException(status_code=500, detail=f"CMS Save Error for {segment}: {str(exc)}")
+@router.post("/reset-cache", summary="Clear System Throttling Cache")
+def reset_system_cache(
+    admin: models.User = Depends(auth.require_super_admin)
+):
+    """Super-Admin only: Clears all login failure throttling."""
+    auth.reset_all_throttling()
+    return {"message": "System throttling cache cleared successfully."}

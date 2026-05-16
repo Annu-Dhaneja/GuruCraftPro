@@ -54,14 +54,14 @@ def seed_ssot_cms():
                 "type": "founder",
                 "content": {
                     "badge": "THE VISIONARY",
-                    "name": "Annu Dhanjeja",
+                    "name": "GurucraftPro Dhanjeja",
                     "title": "Founder & Creative Lead",
                     "main_title": "Artist. Designer. AI Explorer.",
                     "main_description": "Passionate about bridging the gap between human intuition and machine intelligence to create something truly unique.",
                     "image": "https://api.dicebear.com/7.x/avataaars/svg?seed=Annu",
                     "tags": ["Artist", "Tech Enthusiast", "Visionary"],
                     "bio": [
-                        "With over a decade of design excellence, Annu leads the creative vision at Gurucraftpro.",
+                        "With over a decade of design excellence, GurucraftPro leads the creative vision at Gurucraftpro.",
                         "Specialized in high-end photo editing and spiritual divine artistry."
                     ]
                 }
@@ -74,7 +74,7 @@ def seed_ssot_cms():
                     "subtitle": "The humans behind the machines.",
                     "members": [
                         {
-                            "name": "Annu Dhanjeja",
+                            "name": "GurucraftPro Dhanjeja",
                             "role": "Head / Lead Designer",
                             "image": "https://api.dicebear.com/7.x/avataaars/svg?seed=Annu",
                             "skills": ["Graphic Designer", "Video Editor", "AI Prompt Engineer"],

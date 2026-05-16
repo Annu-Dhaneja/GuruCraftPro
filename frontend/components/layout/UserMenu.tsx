@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import { User, LogOut, Settings, LayoutDashboard, Heart, FileText } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -12,6 +11,7 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { PremiumButton } from "../shared/UI";
 
 export function UserMenu() {
     // TODO: Replace with actual auth state
@@ -19,13 +19,18 @@ export function UserMenu() {
 
     if (!isLoggedIn) {
         return (
-            <div className="flex items-center gap-2 md:gap-4">
-                <Button variant="ghost" asChild className="hidden md:flex">
-                    <Link href="/login">Log in</Link>
-                </Button>
-                <Button asChild className="hidden sm:flex bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white border-0">
-                    <Link href="/signup">Try AI Free</Link>
-                </Button>
+            <div className="flex items-center gap-4">
+                <Link href="/login" className="hidden md:block text-xs font-black italic uppercase tracking-widest text-slate-500 hover:text-indigo-600 transition-colors">
+                    LOG IN
+                </Link>
+                <Link href="/signup" className="hidden sm:block">
+                    <PremiumButton 
+                        size="sm"
+                        className="bg-slate-900 text-white hover:bg-indigo-600 rounded-2xl font-black italic uppercase tracking-widest text-[10px]"
+                    >
+                        START PROJECT
+                    </PremiumButton>
+                </Link>
             </div>
         );
     }
@@ -33,44 +38,42 @@ export function UserMenu() {
     return (
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
-                <Button variant="ghost" className="relative h-10 w-10 rounded-full">
-                    <div className="h-10 w-10 rounded-full bg-muted flex items-center justify-center border border-border">
-                        <User className="h-5 w-5" />
-                    </div>
-                </Button>
+                <button className="relative h-12 w-12 rounded-2xl bg-slate-50 border border-slate-100 flex items-center justify-center group hover:bg-indigo-600 transition-all duration-500 overflow-hidden shadow-xl">
+                    <User className="h-6 w-6 text-slate-400 group-hover:text-white transition-colors" />
+                </button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent className="w-56" align="end" forceMount>
-                <DropdownMenuLabel className="font-normal">
-                    <div className="flex flex-col space-y-1">
-                        <p className="text-sm font-medium leading-none">Gurucraftpro User</p>
-                        <p className="text-xs leading-none text-muted-foreground">
+            <DropdownMenuContent className="w-64 p-4 rounded-[2rem] bg-white/80 backdrop-blur-3xl border-slate-100 shadow-2xl" align="end" forceMount>
+                <DropdownMenuLabel className="font-normal p-4">
+                    <div className="flex flex-col space-y-2">
+                        <p className="text-sm font-black italic uppercase tracking-tighter leading-none">Gurucraftpro User</p>
+                        <p className="text-xs leading-none text-slate-400 font-light italic">
                             user@example.com
                         </p>
                     </div>
                 </DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                <DropdownMenuGroup>
-                    <DropdownMenuItem>
-                        <LayoutDashboard className="mr-2 h-4 w-4" />
-                        <span>Dashboard</span>
+                <DropdownMenuSeparator className="bg-slate-100" />
+                <DropdownMenuGroup className="p-2">
+                    <DropdownMenuItem className="rounded-xl p-3 focus:bg-indigo-50 group">
+                        <LayoutDashboard className="mr-3 h-4 w-4 text-slate-400 group-focus:text-indigo-600" />
+                        <span className="text-sm font-black italic uppercase tracking-tight text-slate-600 group-focus:text-slate-900">Dashboard</span>
                     </DropdownMenuItem>
-                    <DropdownMenuItem>
-                        <FileText className="mr-2 h-4 w-4" />
-                        <span>My Projects</span>
+                    <DropdownMenuItem className="rounded-xl p-3 focus:bg-indigo-50 group">
+                        <FileText className="mr-3 h-4 w-4 text-slate-400 group-focus:text-indigo-600" />
+                        <span className="text-sm font-black italic uppercase tracking-tight text-slate-600 group-focus:text-slate-900">My Projects</span>
                     </DropdownMenuItem>
-                    <DropdownMenuItem>
-                        <Heart className="mr-2 h-4 w-4" />
-                        <span>Favorites</span>
+                    <DropdownMenuItem className="rounded-xl p-3 focus:bg-indigo-50 group">
+                        <Heart className="mr-3 h-4 w-4 text-slate-400 group-focus:text-indigo-600" />
+                        <span className="text-sm font-black italic uppercase tracking-tight text-slate-600 group-focus:text-slate-900">Favorites</span>
                     </DropdownMenuItem>
-                    <DropdownMenuItem>
-                        <Settings className="mr-2 h-4 w-4" />
-                        <span>Settings</span>
+                    <DropdownMenuItem className="rounded-xl p-3 focus:bg-indigo-50 group">
+                        <Settings className="mr-3 h-4 w-4 text-slate-400 group-focus:text-indigo-600" />
+                        <span className="text-sm font-black italic uppercase tracking-tight text-slate-600 group-focus:text-slate-900">Settings</span>
                     </DropdownMenuItem>
                 </DropdownMenuGroup>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem>
-                    <LogOut className="mr-2 h-4 w-4" />
-                    <span>Log out</span>
+                <DropdownMenuSeparator className="bg-slate-100" />
+                <DropdownMenuItem className="rounded-xl p-3 focus:bg-red-50 group m-2">
+                    <LogOut className="mr-3 h-4 w-4 text-red-400" />
+                    <span className="text-sm font-black italic uppercase tracking-tight text-red-600">Log out</span>
                 </DropdownMenuItem>
             </DropdownMenuContent>
         </DropdownMenu>

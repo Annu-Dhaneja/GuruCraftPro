@@ -6,6 +6,7 @@ import os
 import shutil
 import uuid
 from pathlib import Path
+from datetime import datetime
 
 router = APIRouter()
 UPLOAD_DIR = Path("static/uploads")
@@ -15,7 +16,7 @@ def list_media(folder_id: Optional[int] = None, db: Session = Depends(database.g
     query = db.query(models.Media)
     if folder_id is not None:
         query = query.filter(models.Media.folder_id == folder_id)
-    return query.order_by(models.Media.uploaded_at.desc()).all()
+    return query.order_by(models.Media.created_at.desc()).all()
 
 @router.post("/upload", summary="Upload Media File")
 async def upload_media(
@@ -23,24 +24,17 @@ async def upload_media(
     folder_id: Optional[int] = Form(None),
     alt_text: Optional[str] = Form(None),
     db: Session = Depends(database.get_db),
-    current_user: models.User = Depends(auth.require_admin),
+    current_user: models.User = Depends(auth.require_permission("media", "write")),
 ):
-    try:
-        UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Server configuration error: {e}")
+    UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
 
     ext = os.path.splitext(file.filename)[1]
     unique_filename = f"{uuid.uuid4()}{ext}"
     file_path = UPLOAD_DIR / unique_filename
 
-    # In a real app we'd read chunks to calculate size, or use os.path.getsize
-    try:
-        with open(file_path, "wb") as buffer:
-            shutil.copyfileobj(file.file, buffer)
-        size_bytes = os.path.getsize(file_path)
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Failed to save image: {e}")
+    with open(file_path, "wb") as buffer:
+        shutil.copyfileobj(file.file, buffer)
+    size_bytes = os.path.getsize(file_path)
 
     relative_url = f"/images/uploads/{unique_filename}"
 
@@ -50,7 +44,8 @@ async def upload_media(
         mime_type=file.content_type,
         size_bytes=size_bytes,
         alt_text=alt_text,
-        folder_id=folder_id
+        folder_id=folder_id,
+        created_by_id=current_user.id
     )
     db.add(new_media)
     db.commit()
@@ -59,30 +54,24 @@ async def upload_media(
     return new_media
 
 @router.delete("/{media_id}", summary="Delete Media File")
-def delete_media(media_id: int, db: Session = Depends(database.get_db), current_user: models.User = Depends(auth.require_admin)):
+def delete_media(media_id: int, db: Session = Depends(database.get_db), current_user: models.User = Depends(auth.require_permission("media", "delete"))):
     media = db.query(models.Media).filter(models.Media.id == media_id).first()
     if not media:
         raise HTTPException(status_code=404, detail="Media not found")
         
-    # Attempt to delete file from disk
-    try:
-        file_path = UPLOAD_DIR / media.file_url.split("/")[-1]
-        if file_path.exists():
-            file_path.unlink()
-    except Exception as e:
-        print(f"Failed to delete file from disk: {e}")
-        
-    db.delete(media)
+    # Soft delete: update deleted_at
+    media.deleted_at = datetime.utcnow()
+    media.updated_by_id = current_user.id
     db.commit()
-    return {"status": "success"}
+    return {"status": "success", "message": "Media archived"}
 
 @router.get("/folders", summary="List Media Folders")
 def list_folders(db: Session = Depends(database.get_db), current_user: models.User = Depends(auth.require_admin)):
     return db.query(models.MediaFolder).all()
 
 @router.post("/folders", summary="Create Media Folder")
-def create_folder(name: str, parent_id: Optional[int] = None, db: Session = Depends(database.get_db), current_user: models.User = Depends(auth.require_admin)):
-    folder = models.MediaFolder(name=name, parent_id=parent_id)
+def create_folder(name: str, parent_id: Optional[int] = None, db: Session = Depends(database.get_db), current_user: models.User = Depends(auth.require_permission("media", "write"))):
+    folder = models.MediaFolder(name=name, parent_id=parent_id, created_by_id=current_user.id)
     db.add(folder)
     db.commit()
     db.refresh(folder)

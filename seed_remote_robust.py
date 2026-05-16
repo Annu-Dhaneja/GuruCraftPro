@@ -61,7 +61,7 @@ def run_seed():
             block = models.ContentBlock(
                 section_id=hero_section.id,
                 key="title",
-                value="Annu Design Studio | AI-Assisted Design",
+                value="GurucraftPro | AI-Assisted Design",
                 content_type="text"
             )
             db.add(block)

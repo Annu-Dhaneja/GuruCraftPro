@@ -85,7 +85,7 @@ try:
         conn.execute(text(f"INSERT INTO sections (page_id, section_name, position) VALUES ({page_id}, 'hero', 1) ON CONFLICT DO NOTHING;"))
         section_id = conn.execute(text(f"SELECT id FROM sections WHERE page_id = {page_id} AND section_name = 'hero';")).fetchone()[0]
         
-        conn.execute(text(f"INSERT INTO content_blocks (section_id, key, value, content_type) VALUES ({section_id}, 'title', 'Annu Design Studio | AI-Assisted Design', 'text') ON CONFLICT DO NOTHING;"))
+        conn.execute(text(f"INSERT INTO content_blocks (section_id, key, value, content_type) VALUES ({section_id}, 'title', 'GurucraftPro | AI-Assisted Design', 'text') ON CONFLICT DO NOTHING;"))
         
         conn.commit()
         print("Production Data Synced.")

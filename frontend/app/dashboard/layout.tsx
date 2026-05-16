@@ -3,6 +3,8 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
+import { CentralizedSEO } from "@/components/layout/CentralizedSEO";
+
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
     const router = useRouter();
     const [isAuthorized, setIsAuthorized] = useState(false);
@@ -18,7 +20,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
     if (!isAuthorized) {
         return (
-            <div className="h-screen bg-background flex items-center justify-center">
+            <div className="h-screen bg-slate-950 flex items-center justify-center text-white">
                 <div className="flex flex-col items-center gap-4">
                     <div className="w-12 h-12 border-4 border-indigo-500 border-t-transparent rounded-full animate-spin" />
                     <p className="text-muted-foreground animate-pulse font-bold uppercase tracking-widest text-[10px]">Initializing Session...</p>
@@ -27,5 +29,10 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
         );
     }
 
-    return <>{children}</>;
+    return (
+        <>
+            <CentralizedSEO title="User Dashboard" />
+            {children}
+        </>
+    );
 }

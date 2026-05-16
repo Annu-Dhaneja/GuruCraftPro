@@ -3,21 +3,22 @@ from sqlalchemy.orm import Session
 from typing import Dict, Any, List
 from core import database, models, auth
 import json
+from datetime import datetime
 
 router = APIRouter()
 
 @router.get("/", summary="List All Forms")
 def list_forms(db: Session = Depends(database.get_db), current_user: models.User = Depends(auth.require_admin)):
-    forms = db.query(models.Form).all()
-    return forms
+    return db.query(models.Form).all()
 
 @router.post("/", summary="Create Form")
-def create_form(form_data: Dict[str, Any], db: Session = Depends(database.get_db), current_user: models.User = Depends(auth.require_admin)):
+def create_form(form_data: Dict[str, Any], db: Session = Depends(database.get_db), current_user: models.User = Depends(auth.require_permission("forms", "write"))):
     new_form = models.Form(
         name=form_data.get("name"),
         slug=form_data.get("slug"),
         is_active=form_data.get("is_active", True),
-        config_json=json.dumps(form_data.get("config", {}))
+        config_json=json.dumps(form_data.get("config", {})),
+        created_by_id=current_user.id
     )
     db.add(new_form)
     db.flush()
@@ -68,14 +69,15 @@ def submit_form(slug: str, payload: Dict[str, Any], db: Session = Depends(databa
         
     submission = models.FormSubmission(
         form_id=form.id,
-        payload_json=json.dumps(payload)
+        payload_json=json.dumps(payload),
+        created_at=datetime.utcnow()
     )
     db.add(submission)
     db.commit()
     return {"status": "success", "message": "Form submitted successfully"}
 
 @router.get("/{slug}/submissions", summary="List Form Submissions")
-def list_submissions(slug: str, db: Session = Depends(database.get_db), current_user: models.User = Depends(auth.require_admin)):
+def list_submissions(slug: str, db: Session = Depends(database.get_db), current_user: models.User = Depends(auth.require_permission("forms", "read"))):
     form = db.query(models.Form).filter(models.Form.slug == slug).first()
     if not form:
         raise HTTPException(status_code=404, detail="Form not found")

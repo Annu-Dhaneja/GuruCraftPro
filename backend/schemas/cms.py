@@ -1,35 +1,45 @@
-from pydantic import BaseModel, HttpUrl
+from pydantic import BaseModel
 from typing import List, Optional, Dict, Any
+from .base import AuditBase, SEOBase, StatusBase, SlugBase
 
-class HeroContent(BaseModel):
-    badge: str
-    headline_prefix: str
-    headline_highlight: str
-    headline_suffix: str
-    subheadline: str
+class CMSComponentBase(BaseModel):
+    name: str
+    type: str
+    props_json: str = "{}"
 
-class TestimonialItem(BaseModel):
+class CMSPageComponentRead(BaseModel):
     id: int
-    content: str
-    author: str
-    role: str
-    rating: int
+    component_id: int
+    order: int
+    props_json: str
+    
+    class Config:
+        from_attributes = True
 
-class TestimonialsContent(BaseModel):
+class CMSPageBase(SEOBase, StatusBase, SlugBase):
     title: str
-    list: List[TestimonialItem]
 
-class SiteSettings(BaseModel):
+class CMSPageCreate(CMSPageBase):
+    pass
+
+class CMSPageUpdate(SEOBase, StatusBase):
+    title: Optional[str] = None
+    slug: Optional[str] = None
+
+class CMSPageRead(CMSPageBase, AuditBase):
+    id: int
+    components: List[CMSPageComponentRead] = []
+
+class GlobalSettingsBase(BaseModel):
     site_name: str
-    contact_email: str
-    contact_phone: Optional[str]
-    address: Optional[str]
-    social_links: Dict[str, str]
-    meta_description: str
+    logo_url: Optional[str] = None
+    contact_email: Optional[str] = None
+    phone: Optional[str] = None
+    address: Optional[str] = None
+    footer_json: str = "{}"
+    social_json: str = "{}"
+    nav_json: str = "[]"
+    theme_json: str = "{}"
 
-class CMSContentBase(BaseModel):
-    section: str
-    content: Dict[str, Any]
-
-class CMSContentUpdate(BaseModel):
-    content: Dict[str, Any]
+class GlobalSettingsRead(GlobalSettingsBase, AuditBase):
+    id: int

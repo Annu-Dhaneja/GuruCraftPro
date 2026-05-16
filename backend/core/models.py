@@ -8,6 +8,28 @@ class AuditMixin:
     created_at = Column(DateTime, default=datetime.utcnow)
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
     deleted_at = Column(DateTime, nullable=True)
+    
+    # Audit fields: track user IDs (FK to users.id added later or handled as Integer for decoupled sync)
+    created_by_id = Column(Integer, nullable=True)
+    updated_by_id = Column(Integer, nullable=True)
+
+class SEOMixin:
+    """Standard SEO fields for manageable content."""
+    meta_title = Column(String(200), nullable=True)
+    meta_description = Column(String(500), nullable=True)
+    meta_keywords = Column(String(500), nullable=True)
+    og_image = Column(String(500), nullable=True)
+    canonical_url = Column(String(500), nullable=True)
+
+class StatusMixin:
+    """Workflow status for content management."""
+    # Status: draft, published, archived
+    status = Column(String(20), default="draft", index=True)
+    published_at = Column(DateTime, nullable=True)
+
+class SlugMixin:
+    """Universal slug management."""
+    slug = Column(String(200), unique=True, index=True)
 
 # ── RBAC SYSTEM ────────────────────────────────────────────────────────
 class Role(Base, AuditMixin):
@@ -26,7 +48,8 @@ class User(Base, AuditMixin):
     hashed_password = Column(String)
     
     role_id = Column(Integer, ForeignKey("roles.id"), nullable=True) # FK to roles
-    role = Column(String, default="user") # Deprecated: Use role_rel instead
+    role = Column(String, default="USER") # Standard Roles: SUPER_ADMIN, ADMIN, EDITOR, USER
+    is_approved = Column(Boolean, default=False)
     
     role_rel = relationship("Role")
     posts = relationship("Post", back_populates="author")
@@ -51,16 +74,13 @@ class GlobalSettings(Base, AuditMixin):
     nav_json = Column(Text, default="[]") # For navigation structure
     theme_json = Column(Text, default="{}") # Colors, fonts
 
-class CMSPage(Base, AuditMixin):
+class CMSPage(Base, AuditMixin, SEOMixin, StatusMixin, SlugMixin):
     """Universal Page Renderer Model."""
     __tablename__ = "cms_pages"
 
     id = Column(Integer, primary_key=True, index=True)
-    title = Column(String)
-    slug = Column(String, unique=True, index=True)
-    meta_title = Column(String, nullable=True)
-    meta_description = Column(String, nullable=True)
-    status = Column(String, default="published")
+    title = Column(String(200))
+    # Mixins handle: slug, meta_title, meta_description, status, timestamps, audit
 
     components = relationship("CMSPageComponent", back_populates="page", cascade="all, delete-orphan", order_by="CMSPageComponent.order")
 
@@ -142,14 +162,14 @@ class Media(Base, AuditMixin):
     uploaded_at = Column(DateTime, default=datetime.utcnow) # legacy support
 
 # ── LEGACY & SAAS MODULES ──────────────────────────────────────────────
-class Post(Base, AuditMixin):
+class Post(Base, AuditMixin, SEOMixin, StatusMixin, SlugMixin):
     __tablename__ = "posts"
     id = Column(Integer, primary_key=True, index=True)
-    title = Column(String)
-    slug = Column(String, unique=True, index=True)
+    title = Column(String(200))
     content = Column(Text)
     author_id = Column(Integer, ForeignKey("users.id"))
-    status = Column(String, default="published")
+    # Mixins handle: slug, meta_title, meta_description, status, timestamps, audit
+    
     author = relationship("User", back_populates="posts")
 
 class ContactSubmission(Base, AuditMixin):
@@ -255,18 +275,19 @@ class WeddingBudget(Base, AuditMixin):
     spent_amount = Column(Integer, default=0)
     wedding = relationship("WeddingPlan", back_populates="budgets")
 
-class Product(Base, AuditMixin):
+class Product(Base, AuditMixin, SEOMixin, StatusMixin, SlugMixin):
     __tablename__ = "products"
     id = Column(Integer, primary_key=True, index=True)
-    name = Column(String, index=True)
-    slug = Column(String, unique=True, index=True)
+    name = Column(String(200), index=True)
     description = Column(Text)
     price = Column(Integer)
-    category = Column(String, index=True)
-    image_url = Column(String)
+    category = Column(String(100), index=True)
+    image_url = Column(String(500))
     inventory_count = Column(Integer, default=100)
     is_active = Column(Boolean, default=True)
     metadata_json = Column(Text, default="{}")
+    # Mixins handle: slug, meta_title, meta_description, status, timestamps, audit
+    
     order_items = relationship("OrderItem", back_populates="product")
 
 class Order(Base, AuditMixin):

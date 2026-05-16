@@ -62,10 +62,11 @@ const defaultConfig: SiteConfig = {
             items: [
                 { label: "Logo Design", href: "/portfolio?category=Logo Design", style: "default", description: "Memorable logos that define your brand identity." },
                 { label: "Wedding Planning", href: "/services/wedding-plan", style: "default", description: "Bespoke luxury wedding coordination and design." },
-                { label: "Photo Editing", href: "/photo-editor", style: "default", description: "High-end retouching and professional image editing." },
+                { label: "Photo Editing", href: "/services/photo-editor", style: "default", description: "High-end retouching and professional image editing." },
                 { label: "Guru Ji Art Work", href: "/services/guru-ji-art", style: "default", description: "Divine hand-painted and digital masterpieces." },
                 { label: "Game Design", href: "/services/game-design", style: "default", description: "Immersive character and environment concepts." },
                 { label: "Vantage Ecom", href: "/services/vantage-ecom", style: "default", description: "Growth-focused e-commerce design solutions." },
+                { label: "Clothing Consultation", href: "/services/clothing-consultation", style: "default", description: "Neural stylist and weekly wardrobe architecture." },
                 { label: "Pricing & Services", href: "/services", style: "default", description: "Transparent pricing for all our premium services." },
                 { label: "View All Works", href: "/portfolio", style: "default", description: "View our complete portfolio catalog." }
             ]
@@ -77,7 +78,7 @@ const defaultConfig: SiteConfig = {
             items: [
                 { label: "AI Design Lab", href: "/ai-lab", style: "default", description: "Explore the future of creativity with our AI-powered design tools." },
                 { label: "Virtual Try-On", href: "/ai-lab/virtual-try-on", style: "default", description: "Instantly see how garments look on you with AI technology." },
-                { label: "Guru Ji Art Work", href: "/guruji-darshan", style: "default", description: "Divine hand-painted and digital masterpieces for your space." }
+                { label: "Guru Ji Darshan", href: "/guruji-darshan", style: "default", description: "Divine spiritual experiences and celestial digital art." }
             ]
         },
         { label: "Learn", href: "/resources", style: "default" },
@@ -101,12 +102,13 @@ const defaultConfig: SiteConfig = {
         {label: "Our Services", href: "/services"},
         {label: "Design Portfolio", href: "/portfolio"},
         {label: "AI Creative Lab", href: "/ai-lab"},
-        {label: "The Studio", href: "/about"}
+        {label: "The Studio", href: "/about"},
+        {label: "Privacy & Legal", href: "/privacy"}
     ],
     footer_support: [
         {label: "Custom Request", href: "/request"},
-        {label: "Privacy Policy", href: "/privacy"},
-        {label: "Support Center", href: "/contact"}
+        {label: "Help Center", href: "/resources"},
+        {label: "Contact Studio", href: "/contact"}
     ],
     footer_bottom: { copyright: "© 2026 GurucraftPro. All rights reserved." },
 };

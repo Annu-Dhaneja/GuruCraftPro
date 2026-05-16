@@ -37,7 +37,7 @@ export function WeddingPlanContent({ data }: { data?: any }) {
   const heritage = data?.heritage || {
     title_prefix: "Where Vision Meets",
     title_highlight: "Impeccable Execution",
-    description: "At Annu Design Studio, we believe a wedding is not just an event; it's a masterpiece in the making. Our holistic approach integrates traditional elegance with contemporary sophistication.",
+    description: "At GurucraftPro, we believe a wedding is not just an event; it's a masterpiece in the making. Our holistic approach integrates traditional elegance with contemporary sophistication.",
     features: [
       { icon: "MapPin", label: "Destinations", desc: "Global Scouting" },
       { icon: "Palette", label: "Decor", desc: "Custom Artistry" },

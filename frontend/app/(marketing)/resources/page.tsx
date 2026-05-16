@@ -18,7 +18,7 @@ export async function generateMetadata(): Promise<Metadata> {
     }
 
     return {
-        title: "Resources & Learn | Annu Design Studio",
+        title: "Resources & Learn | GurucraftPro",
         description: "Educational tutorials, AI prompt libraries, and free design assets to help you create better.",
     };
 }

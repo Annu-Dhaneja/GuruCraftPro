@@ -90,7 +90,7 @@ def seed_cms():
             "team": {
                 "members": [
                     {
-                        "name": "Annu Dhanjeja",
+                        "name": "GurucraftPro Dhanjeja",
                         "role": "Head / Lead Designer",
                         "skills": ["Graphic Designer", "Video Editor"],
                         "image": "https://api.dicebear.com/7.x/avataaars/svg?seed=Annu"

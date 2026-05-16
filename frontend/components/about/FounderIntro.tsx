@@ -8,7 +8,7 @@ export function FounderIntro({ data }: { data?: any }) {
     const badgeText = data?.badge || "About Gurucraftpro";
     const mainTitle = data?.main_title || "Creative Leadership";
     const mainDescription = data?.main_description || "Leading the intersection of art and technology to create meaningful digital experiences.";
-    const name = data?.name || "Annu Dhanjeja";
+    const name = data?.name || "GurucraftPro Dhanjeja";
     const title = data?.title || "Creative Lead";
     const image = data?.image || "/images/about/founder-placeholder.jpg";
     const tags = data?.tags || ["Designer", "Artist", "Visionary"];

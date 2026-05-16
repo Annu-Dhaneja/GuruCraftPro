@@ -11,6 +11,7 @@ import { Home, LayoutDashboard, Settings, Globe, ArrowLeft,
 import { AdminSidebar } from "@/components/admin/AdminSidebar";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
+import { CentralizedSEO } from "@/components/layout/CentralizedSEO";
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
@@ -49,6 +50,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
   return (
     <div className="flex h-screen overflow-hidden bg-slate-950 text-white">
+      <CentralizedSEO title="Admin Console" />
       {/* Desktop Sidebar */}
       <aside className="w-64 border-r border-white/5 hidden md:flex flex-col">
         <AdminSidebar onLogout={handleLogout} />

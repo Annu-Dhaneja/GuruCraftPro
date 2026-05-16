@@ -4,7 +4,7 @@ import { ProjectIntakeForm } from "@/components/request/ProjectIntakeForm";
 
 
 export const metadata: Metadata = {
-    title: "Request Custom Design | Annu Design Studio",
+    title: "Request Custom Design | GurucraftPro",
     description: "Start your next design project. Submit a detailed request for branding, UI/UX, or custom visual assets.",
 };
 

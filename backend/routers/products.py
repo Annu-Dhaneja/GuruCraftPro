@@ -1,127 +1,85 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 from typing import List, Optional
 from core.database import get_db
-from core.models import Product
-from core.auth import require_admin
-from pydantic import BaseModel
+from core import models, auth
+from schemas import product as product_schemas
 from datetime import datetime
 
 router = APIRouter()
 
-
-# ── Schemas ──────────────────────────────────────────────────────────
-
-class ProductOut(BaseModel):
-    id: int
-    name: str
-    slug: str
-    description: str
-    price: int
-    category: str
-    image_url: str
-    inventory_count: int
-    is_active: bool
-    created_at: datetime
-
-    class Config:
-        from_attributes = True
-
-
-class ProductCreate(BaseModel):
-    name: str
-    slug: str
-    description: str = ""
-    price: int
-    category: str
-    image_url: str
-    inventory_count: int = 100
-    is_active: bool = True
-
-
-class ProductUpdate(BaseModel):
-    name: Optional[str] = None
-    description: Optional[str] = None
-    price: Optional[int] = None
-    category: Optional[str] = None
-    image_url: Optional[str] = None
-    inventory_count: Optional[int] = None
-    is_active: Optional[bool] = None
-
-
-# ── Public Routes ────────────────────────────────────────────────────
-
-@router.get("/", response_model=List[ProductOut])
+@router.get("/", response_model=List[product_schemas.ProductRead])
 def list_products(
     category: Optional[str] = None,
     db: Session = Depends(get_db)
 ):
-    """List all active products. Optionally filter by category."""
-    query = db.query(Product).filter(Product.is_active == True)
+    query = db.query(models.Product).filter(models.Product.is_active == True)
     if category and category != "All Creations":
-        query = query.filter(Product.category == category)
-    return query.order_by(Product.created_at.desc()).all()
+        query = query.filter(models.Product.category == category)
+    return query.order_by(models.Product.created_at.desc()).all()
 
-
-@router.get("/{product_id}", response_model=ProductOut)
+@router.get("/{product_id}", response_model=product_schemas.ProductRead)
 def get_product(product_id: int, db: Session = Depends(get_db)):
-    """Get a single product by ID."""
-    product = db.query(Product).filter(Product.id == product_id).first()
+    product = db.query(models.Product).filter(models.Product.id == product_id).first()
     if not product:
         raise HTTPException(status_code=404, detail="Product not found")
     return product
 
-
-# ── Admin Routes (CRUD) ─────────────────────────────────────────────
-
-@router.post("/", response_model=ProductOut)
+@router.post("/", response_model=product_schemas.ProductRead, status_code=status.HTTP_201_CREATED)
 def create_product(
-    product: ProductCreate,
+    product_data: product_schemas.ProductCreate,
     db: Session = Depends(get_db),
-    admin=Depends(require_admin),
+    current_user: models.User = Depends(auth.require_permission("products", "write")),
 ):
-    """Create a new product (admin only)."""
-    existing = db.query(Product).filter(Product.slug == product.slug).first()
+    existing = db.query(models.Product).filter(models.Product.slug == product_data.slug).first()
     if existing:
         raise HTTPException(status_code=400, detail="Product slug already exists")
     
-    db_product = Product(**product.dict())
+    db_product = models.Product(
+        **product_data.model_dump(),
+        created_by_id=current_user.id,
+        updated_by_id=current_user.id
+    )
     db.add(db_product)
     db.commit()
     db.refresh(db_product)
     return db_product
 
-
-@router.put("/{product_id}", response_model=ProductOut)
+@router.put("/{product_id}", response_model=product_schemas.ProductRead)
 def update_product(
     product_id: int,
-    updates: ProductUpdate,
+    updates: product_schemas.ProductUpdate,
     db: Session = Depends(get_db),
-    admin=Depends(require_admin),
+    current_user: models.User = Depends(auth.require_permission("products", "write")),
 ):
-    """Update a product (admin only)."""
-    db_product = db.query(Product).filter(Product.id == product_id).first()
+    db_product = db.query(models.Product).filter(models.Product.id == product_id).first()
     if not db_product:
         raise HTTPException(status_code=404, detail="Product not found")
     
-    for key, value in updates.dict(exclude_unset=True).items():
+    update_data = updates.model_dump(exclude_unset=True)
+    for key, value in update_data.items():
         setattr(db_product, key, value)
+    
+    db_product.updated_by_id = current_user.id
+    db_product.updated_at = datetime.utcnow()
     
     db.commit()
     db.refresh(db_product)
     return db_product
 
-
 @router.delete("/{product_id}")
 def delete_product(
     product_id: int,
     db: Session = Depends(get_db),
-    admin=Depends(require_admin),
+    current_user: models.User = Depends(auth.require_permission("products", "delete")),
 ):
-    """Delete a product (admin only)."""
-    db_product = db.query(Product).filter(Product.id == product_id).first()
+    db_product = db.query(models.Product).filter(models.Product.id == product_id).first()
     if not db_product:
         raise HTTPException(status_code=404, detail="Product not found")
-    db.delete(db_product)
+    
+    # Soft delete or hard delete? User requested soft delete fields in AuditMixin
+    # I'll use soft delete if deleted_at is set
+    db_product.deleted_at = datetime.utcnow()
+    db_product.is_active = False
     db.commit()
-    return {"message": f"Product '{db_product.name}' deleted"}
+    return {"status": "success", "message": f"Product '{db_product.name}' archived"}

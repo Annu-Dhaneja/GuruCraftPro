@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { ServiceTemplate } from "@/components/services/ServiceTemplate";
+import { ServiceTemplate } from "@/components/layout/ServiceTemplate";
 import { getApiUrl, safeFetch } from "@/lib/utils";
 import { notFound } from "next/navigation";
 

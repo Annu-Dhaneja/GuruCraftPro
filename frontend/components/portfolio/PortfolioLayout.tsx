@@ -1,11 +1,10 @@
 import { Suspense } from "react";
-import { PortfolioHero } from "./PortfolioHero";
+import { PremiumHero } from "@/components/shared/PremiumHero";
+import { UniversalCTA } from "@/components/shared/UniversalCTA";
 import { ServiceCategoryRail } from "./ServiceCategoryRail";
 import { PortfolioFilters } from "./PortfolioFilters";
 import { PortfolioGrid } from "./PortfolioGrid";
 import { ExploreTemplates } from "./ExploreTemplates";
-import { PortfolioCTA } from "./PortfolioCTA";
-import { Footer } from "@/components/footer/Footer";
 
 interface PortfolioLayoutProps {
     data: any;
@@ -24,15 +23,14 @@ export function PortfolioLayout({ data, fetchError, initialCategory }: Portfolio
                 </div>
             )}
             
-            <PortfolioHero data={safeData.hero || {}} />
+            <PremiumHero data={safeData.hero || {}} variant="split" />
             <ServiceCategoryRail data={safeData.categories || []} />
             <Suspense fallback={<div className="h-20 bg-muted/20 animate-pulse" />}>
                 <PortfolioFilters categories={safeData.categories || ["All"]} initialCategory={initialCategory} />
             </Suspense>
             <PortfolioGrid initialProjects={safeData.projects || []} />
             <ExploreTemplates templates={safeData.explore_templates} />
-            <PortfolioCTA data={safeData.cta || {}} />
-            <Footer />
+            <UniversalCTA data={safeData.cta || {}} />
         </main>
     );
 }

@@ -12,11 +12,17 @@ def get_global_settings(db: Session) -> Dict[str, Any]:
     footer_data = json.loads(settings.footer_json) if settings.footer_json else {}
     
     return {
-        "site_name": settings.site_name,
-        "logo_url": settings.logo_url,
-        "contact_email": settings.contact_email,
-        "phone": settings.phone,
-        "address": settings.address,
+        "brand": {
+            "name": settings.site_name,
+            "logo_text": settings.site_name[0] if settings.site_name else "G",
+            "logo_url": settings.logo_url,
+            "tagline": settings.address or "Crafting digital excellence."
+        },
+        "contact": {
+            "email": settings.contact_email,
+            "phone": settings.phone,
+            "address": settings.address
+        },
         "footer_explore": footer_data.get("explore", []),
         "footer_support": footer_data.get("support", []),
         "footer_bottom": {
@@ -59,12 +65,16 @@ def update_global_settings(db: Session, data: Dict[str, Any]) -> Dict[str, Any]:
     return get_global_settings(db)
 
 
-def get_ssot_page_content(db: Session, slug: str) -> Dict[str, Any]:
+def get_ssot_page_content(db: Session, slug: str, published_only: bool = True) -> Dict[str, Any]:
     """
     Assembles a page by fetching its components in order.
     Returns a unified object for the frontend.
     """
-    page = db.query(CMSPage).filter(CMSPage.slug == slug).first()
+    query = db.query(CMSPage).filter(CMSPage.slug == slug)
+    if published_only:
+        query = query.filter(CMSPage.status == "published")
+    
+    page = query.first()
     if not page:
         return {}
 

@@ -60,8 +60,8 @@ export function FAQAccordion({ data }: { data?: any[] }) {
             category: "General",
             items: [
                 {
-                    question: "What is Annu Design Studio?",
-                    answer: "Annu Design Studio is a next-generation creative agency that blends human expertise with advanced AI tools."
+                    question: "What is GurucraftPro?",
+                    answer: "GurucraftPro is a next-generation creative agency that blends human expertise with advanced AI tools."
                 }
             ]
         }
