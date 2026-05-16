@@ -7,8 +7,10 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Loader2, ArrowRight, Eye, EyeOff, CheckCircle } from "lucide-react";
 import { getApiUrl } from "@/lib/utils";
+import { useAuthStore } from "@/lib/store/useAuthStore";
 
 export function SignupForm() {
+    const { login } = useAuthStore();
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const [success, setSuccess] = useState<string | null>(null);
@@ -36,11 +38,21 @@ export function SignupForm() {
             const data = await res.json();
 
             if (res.ok) {
-                // Store token and redirect
-                localStorage.setItem("token", data.access_token);
+                // Use the centralized login method
+                login(
+                    { 
+                        id: data.user?.id || 0, 
+                        username: data.user?.username || username, 
+                        role: data.role || "USER", 
+                        name: data.user?.name || name,
+                        email: email
+                    }, 
+                    data.access_token
+                );
+                
                 setSuccess(`Account created! Redirecting...`);
                 setTimeout(() => {
-                    window.location.href = "/admin";
+                    window.location.href = "/dashboard";
                 }, 1500);
             } else {
                 const detail = data.detail;

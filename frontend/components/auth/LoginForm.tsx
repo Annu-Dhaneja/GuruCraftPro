@@ -8,8 +8,10 @@ import { Label } from "@/components/ui/label";
 import { Loader2, ArrowRight, Eye, EyeOff, Lock, User, ShieldCheck } from "lucide-react";
 import { getApiUrl } from "@/lib/utils";
 import { cn } from "@/lib/utils";
+import { useAuthStore } from "@/lib/store/useAuthStore";
 
 export function LoginForm() {
+    const { login } = useAuthStore();
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const [showPassword, setShowPassword] = useState(false);
@@ -36,14 +38,23 @@ export function LoginForm() {
 
             if (res.ok) {
                 const data = await res.json();
-                localStorage.setItem("token", data.access_token);
-                localStorage.setItem("username", username);
-                localStorage.setItem("role", data.role || "user");
                 
-                if (data.role === "admin") {
+                // Use the centralized login method
+                login(
+                    { 
+                        id: data.user?.id || 0, 
+                        username: data.user?.username || username, 
+                        role: data.role || "USER", 
+                        name: data.user?.name || username,
+                        email: data.user?.email || "" 
+                    }, 
+                    data.access_token
+                );
+                
+                if (["ADMIN", "SUPER_ADMIN", "EDITOR"].includes(data.role)) {
                     window.location.href = "/admin";
                 } else {
-                    window.location.href = "/ai-lab";
+                    window.location.href = "/dashboard";
                 }
             } else {
                 const errData = await res.json();
