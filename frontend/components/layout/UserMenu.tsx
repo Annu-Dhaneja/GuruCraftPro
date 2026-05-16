@@ -11,11 +11,12 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { useAuthStore } from "@/lib/store/useAuthStore";
 import { PremiumButton } from "../shared/UI";
 
 export function UserMenu() {
-    // TODO: Replace with actual auth state
-    const isLoggedIn = false;
+    const { user, isAuthenticated, logout } = useAuthStore();
+    const isLoggedIn = isAuthenticated;
 
     if (!isLoggedIn) {
         return (
@@ -45,22 +46,26 @@ export function UserMenu() {
             <DropdownMenuContent className="w-64 p-4 rounded-[2rem] bg-white/80 backdrop-blur-3xl border-slate-100 shadow-2xl" align="end" forceMount>
                 <DropdownMenuLabel className="font-normal p-4">
                     <div className="flex flex-col space-y-2">
-                        <p className="text-sm font-black italic uppercase tracking-tighter leading-none">Gurucraftpro User</p>
+                        <p className="text-sm font-black italic uppercase tracking-tighter leading-none">{user?.name || user?.username || "Gurucraftpro User"}</p>
                         <p className="text-xs leading-none text-slate-400 font-light italic">
-                            user@example.com
+                            {user?.email || "No email"}
                         </p>
                     </div>
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator className="bg-slate-100" />
                 <DropdownMenuGroup className="p-2">
-                    <DropdownMenuItem className="rounded-xl p-3 focus:bg-indigo-50 group">
-                        <LayoutDashboard className="mr-3 h-4 w-4 text-slate-400 group-focus:text-indigo-600" />
-                        <span className="text-sm font-black italic uppercase tracking-tight text-slate-600 group-focus:text-slate-900">Dashboard</span>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem className="rounded-xl p-3 focus:bg-indigo-50 group">
-                        <FileText className="mr-3 h-4 w-4 text-slate-400 group-focus:text-indigo-600" />
-                        <span className="text-sm font-black italic uppercase tracking-tight text-slate-600 group-focus:text-slate-900">My Projects</span>
-                    </DropdownMenuItem>
+                    <Link href="/dashboard">
+                        <DropdownMenuItem className="rounded-xl p-3 focus:bg-indigo-50 group">
+                            <LayoutDashboard className="mr-3 h-4 w-4 text-slate-400 group-focus:text-indigo-600" />
+                            <span className="text-sm font-black italic uppercase tracking-tight text-slate-600 group-focus:text-slate-900">Dashboard</span>
+                        </DropdownMenuItem>
+                    </Link>
+                    <Link href="/dashboard/projects">
+                        <DropdownMenuItem className="rounded-xl p-3 focus:bg-indigo-50 group">
+                            <FileText className="mr-3 h-4 w-4 text-slate-400 group-focus:text-indigo-600" />
+                            <span className="text-sm font-black italic uppercase tracking-tight text-slate-600 group-focus:text-slate-900">My Projects</span>
+                        </DropdownMenuItem>
+                    </Link>
                     <DropdownMenuItem className="rounded-xl p-3 focus:bg-indigo-50 group">
                         <Heart className="mr-3 h-4 w-4 text-slate-400 group-focus:text-indigo-600" />
                         <span className="text-sm font-black italic uppercase tracking-tight text-slate-600 group-focus:text-slate-900">Favorites</span>
@@ -71,7 +76,10 @@ export function UserMenu() {
                     </DropdownMenuItem>
                 </DropdownMenuGroup>
                 <DropdownMenuSeparator className="bg-slate-100" />
-                <DropdownMenuItem className="rounded-xl p-3 focus:bg-red-50 group m-2">
+                <DropdownMenuItem 
+                    className="rounded-xl p-3 focus:bg-red-50 group m-2 cursor-pointer"
+                    onClick={() => logout()}
+                >
                     <LogOut className="mr-3 h-4 w-4 text-red-400" />
                     <span className="text-sm font-black italic uppercase tracking-tight text-red-600">Log out</span>
                 </DropdownMenuItem>
