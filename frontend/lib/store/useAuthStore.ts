@@ -62,7 +62,3 @@ export const useAuthStore = create<AuthState>((set) => ({
   }
 }));
 
-// Initialize store on import if in browser
-if (typeof window !== 'undefined') {
-  useAuthStore.getState().checkAuth();
-}

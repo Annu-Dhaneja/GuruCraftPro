@@ -1,5 +1,6 @@
 "use client";
 
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { User, LogOut, Settings, LayoutDashboard, Heart, FileText } from "lucide-react";
 import {
@@ -15,10 +16,17 @@ import { useAuthStore } from "@/lib/store/useAuthStore";
 import { PremiumButton } from "@/components/shared/UI";
 
 export function UserMenu() {
-    const { user, isAuthenticated, logout } = useAuthStore();
+    const [mounted, setMounted] = useState(false);
+    const { user, isAuthenticated, logout, checkAuth } = useAuthStore();
+
+    useEffect(() => {
+        setMounted(true);
+        checkAuth();
+    }, [checkAuth]);
+
     const isLoggedIn = isAuthenticated;
 
-    if (!isLoggedIn) {
+    if (!mounted || !isLoggedIn) {
         return (
             <div className="flex items-center gap-4">
                 <Link href="/login" className="hidden md:block text-xs font-black italic uppercase tracking-widest text-slate-500 hover:text-indigo-600 transition-colors">
