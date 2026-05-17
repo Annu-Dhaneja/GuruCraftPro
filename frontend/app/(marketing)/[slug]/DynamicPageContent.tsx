@@ -76,21 +76,27 @@ export function DynamicPageContent({ slug }: { slug: string }) {
       {Array.isArray(components) ? (
         components.map((comp: any, idx: number) => {
           const Renderer = resolveComponent(comp.name, comp.type) || GenericRenderer;
-          const rawProps = comp.props || {};
-          const normalizedProps = (rawProps && typeof rawProps === "object" && "props" in rawProps) 
-            ? rawProps 
-            : { props: rawProps };
-          return <Renderer key={comp.id || idx} props={normalizedProps} />;
+          
+          // Cleanly unwrap nested "props"
+          let actualProps = comp.props || {};
+          while (actualProps && typeof actualProps === "object" && "props" in actualProps) {
+            actualProps = actualProps.props;
+          }
+          
+          return <Renderer key={comp.id || idx} props={actualProps} />;
         })
       ) : (
         Object.entries(components).map(([name, props]: [string, any]) => {
           if (name.startsWith("_")) return null;
           const Renderer = resolveComponent(name) || GenericRenderer;
-          const rawProps = props || {};
-          const normalizedProps = (rawProps && typeof rawProps === "object" && "props" in rawProps) 
-            ? rawProps 
-            : { props: rawProps };
-          return <Renderer key={name} props={normalizedProps} />;
+          
+          // Cleanly unwrap nested "props"
+          let actualProps = props || {};
+          while (actualProps && typeof actualProps === "object" && "props" in actualProps) {
+            actualProps = actualProps.props;
+          }
+          
+          return <Renderer key={name} props={actualProps} />;
         })
       )}
     </main>

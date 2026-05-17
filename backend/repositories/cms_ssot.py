@@ -129,7 +129,12 @@ def get_ssot_page_content(db: Session, slug: str, published_only: bool = True) -
         return {}
 
     components = []
+    seen_assoc_ids = set()
     for assoc in page.components:
+        if assoc.id in seen_assoc_ids:
+            continue
+        seen_assoc_ids.add(assoc.id)
+        
         comp = assoc.component
         try:
             props = json.loads(assoc.props_json)
