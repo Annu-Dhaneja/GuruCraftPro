@@ -9,16 +9,16 @@ from core import database, models, auth
 import json
 
 def universal_fix():
-    print("--- 🚀 STARTING UNIVERSAL REPAIR ---")
+    print("--- STARTING UNIVERSAL REPAIR ---")
     
     # 1. Database Connection & Schema
     try:
         db = next(database.get_db())
         # Ensure tables exist
         models.Base.metadata.create_all(bind=database.engine)
-        print("✅ Schema Verified/Created.")
+        print("Schema Verified/Created.")
     except Exception as e:
-        print(f"❌ Error during schema verification: {e}")
+        print(f"Error during schema verification: {e}")
         return
 
     # 2. Hard-Fix Admin User
@@ -33,30 +33,32 @@ def universal_fix():
         hashed = auth.get_password_hash(admin_pass)
         
         if user:
-            print(f"🔄 Updating existing user: {admin_username}")
+            print(f"Updating existing user: {admin_username}")
             user.hashed_password = hashed
-            user.role = models.UserRole.ADMIN
+            user.role = "SUPER_ADMIN"
+            user.is_approved = True
         else:
-            print(f"✨ Creating new admin user: {admin_username}")
+            print(f"Creating new admin user: {admin_username}")
             user = models.User(
                 username=admin_username,
                 hashed_password=hashed,
-                role=models.UserRole.ADMIN
+                role="SUPER_ADMIN",
+                is_approved=True
             )
             db.add(user)
         
         db.commit()
-        print(f"✅ User '{admin_username}' is ready with password '{admin_pass}' (Truncated to 72 bytes internally).")
+        print(f"User '{admin_username}' is ready with password '{admin_pass}' (SUPER_ADMIN status, APPROVED).")
     except Exception as e:
-        print(f"❌ Error during user repair: {e}")
+        print(f"Error during user repair: {e}")
         db.rollback()
 
-    # 3. Ensure "home" page exists in CMS
+    # 3. Ensure 'home' page exists in CMS
     try:
         from repositories.cms import cms_repository
-        page = db.query(models.Page).filter(models.Page.slug == "home").first()
+        page = db.query(models.CMSPage).filter(models.CMSPage.slug == "home").first()
         if not page:
-            print("📄 Creating default 'home' page entries...")
+            print("Creating default 'home' page entries...")
             default_home = {
                 "hero": {
                     "badge": "AI DESIGN STUDIO",
@@ -64,17 +66,17 @@ def universal_fix():
                     "headline_highlight": "Virtual Identity",
                     "headline_suffix": "Seamlessly",
                     "subheadline": "Experience the future of fashion with our AI-powered try-on technology."
-                }
+				}
             }
             cms_repository.update_page_content(db, "home", default_home)
             db.commit()
-            print("✅ Default CMS content initialized.")
+            print("Default CMS content initialized.")
         else:
-            print("✅ CMS Content exists.")
+            print("CMS Content exists.")
     except Exception as e:
-        print(f"❌ Error during CMS setup: {e}")
+        print(f"Error during CMS setup: {e}")
 
-    print("--- 🏁 REPAIR COMPLETE ---")
+    print("--- REPAIR COMPLETE ---")
 
 if __name__ == "__main__":
     universal_fix()

@@ -300,6 +300,8 @@ class SeedingService:
                 )
                 db.add(db_page)
                 db.flush()
+            else:
+                db_page.status = "published"
             
             # Clear existing components to avoid duplicates
             db.query(models.CMSPageComponent).filter(models.CMSPageComponent.page_id == db_page.id).delete()

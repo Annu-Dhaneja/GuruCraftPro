@@ -11,18 +11,34 @@ sys.path.append(backend_dir)
 # Load env for database connection
 load_dotenv(dotenv_path=os.path.join(backend_dir, ".env"))
 
-# Ensure we use the remote DB
-DB_URL = "postgresql://annu_project_user:TWdBAMY4k7bHurZnY9sOEUHraNJdPk7E@dpg-d6rou5k50q8c73f6c8s0-a.oregon-postgres.render.com/annu_project?sslmode=require"
-
-from core.database import SessionLocal, engine
-from core import models, auth
-
 def manual_seed():
-    print("--- MANUAL PRODUCTION ADMIN CREATION ---")
-    print(f"Target Database: {engine.url.host}")
+    print("=== MANUAL ADMIN CREATION & PASSWORD UTILITY ===")
+    print("Select target database:")
+    print("1) Local Database (SQLite)")
+    print("2) Production Database (PostgreSQL - Render)")
+    choice = input("Enter choice (1 or 2): ").strip()
     
-    username = input("Enter Admin Username: ")
-    email = input("Enter Admin Email: ")
+    prod_url = "postgresql://annu_project_user:TWdBAMY4k7bHurZnY9sOEUHraNJdPk7E@dpg-d6rou5k50q8c73f6c8s0-a.oregon-postgres.render.com/annu_project?sslmode=require"
+    
+    if choice == "2":
+        print("\nConfiguring connection to production database...")
+        os.environ["DATABASE_URL"] = prod_url
+    else:
+        print("\nConfiguring connection to local database...")
+        # Local database will default to SQLite if not set in .env
+        
+    # Import core modules AFTER setting the environment variable so it initializes the engine correctly
+    try:
+        from core.database import SessionLocal, engine
+        from core import models, auth
+    except ImportError as e:
+        print(f"Error importing backend modules: {e}")
+        return
+        
+    print(f"Target Database Host: {engine.url.host or 'Local SQLite File'}")
+    
+    username = input("Enter Admin Username: ").strip()
+    email = input("Enter Admin Email: ").strip()
     password = getpass.getpass("Enter Admin Password: ")
     confirm_password = getpass.getpass("Confirm Admin Password: ")
     
@@ -35,13 +51,14 @@ def manual_seed():
         # Check if user exists
         existing = db.query(models.User).filter(models.User.username == username).first()
         if existing:
-            print(f"Error: User '{username}' already exists.")
-            # Ask if they want to update password
+            print(f"User '{username}' already exists (Current Role: {existing.role}, Approved: {existing.is_approved}).")
             choice = input("Do you want to update the password for this user? (y/n): ")
             if choice.lower() == 'y':
                 existing.hashed_password = auth.get_password_hash(password)
+                existing.role = "SUPER_ADMIN"
+                existing.is_approved = True
                 db.commit()
-                print("Password updated successfully.")
+                print("SUCCESS: Password updated, role set to SUPER_ADMIN, and user marked as APPROVED.")
             return
 
         print("Creating admin account...")
@@ -50,11 +67,12 @@ def manual_seed():
             email=email,
             name=username.split('@')[0].capitalize(),
             hashed_password=auth.get_password_hash(password),
-            role=models.UserRole.ADMIN
+            role="SUPER_ADMIN",
+            is_approved=True
         )
         db.add(new_user)
         db.commit()
-        print(f"SUCCESS: Admin '{username}' is now live on the production database.")
+        print(f"SUCCESS: Admin '{username}' has been successfully created and marked as APPROVED.")
         
     except Exception as e:
         print(f"Database Error: {e}")

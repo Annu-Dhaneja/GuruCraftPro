@@ -19,8 +19,8 @@ def generate_sql():
     
     sql = f"""
 -- COPY AND RUN THIS SQL IN YOUR TERMINAL:
-INSERT INTO users (name, email, username, hashed_password, role) 
-VALUES ('{name}', '{email}', '{username}', '{hashed}', 'admin');
+INSERT INTO users (name, email, username, hashed_password, role, is_approved) 
+VALUES ('{name}', '{email}', '{username}', '{hashed}', 'SUPER_ADMIN', true);
     """
     
     print("\n" + "="*30)

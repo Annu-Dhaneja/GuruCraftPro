@@ -157,9 +157,11 @@ def update_ssot_page_content(db: Session, page_slug: str, content: Dict[str, Any
     """
     page = db.query(CMSPage).filter(CMSPage.slug == page_slug).first()
     if not page:
-        page = CMSPage(title=page_slug.replace("-", " ").title(), slug=page_slug)
+        page = CMSPage(title=page_slug.replace("-", " ").title(), slug=page_slug, status="published")
         db.add(page)
         db.flush()
+    else:
+        page.status = "published"
 
     if "meta" in content and isinstance(content["meta"], dict):
         meta = content["meta"]

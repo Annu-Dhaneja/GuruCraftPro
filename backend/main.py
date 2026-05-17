@@ -60,10 +60,14 @@ async def global_exception_handler(request: Request, exc: Exception):
     )
 
 # ── CORS Middleware ──────────────────────────────────────────────────
-# Allow both localhost and all vercel.app subdomains for preview/prod
+# Allow localhost, specific frontend, and all vercel.app subdomains
 app.add_middleware(
     CORSMiddleware,
-    allow_origin_regex=r"https://.*\.vercel\.app|http://localhost:\d+",
+    allow_origins=[
+        "https://guru-craft-pro-6rnj-six.vercel.app",
+        "https://guru-craft-pro.vercel.app",
+    ],
+    allow_origin_regex=r"https://.*-six\.vercel\.app|https://.*\.vercel\.app|http://localhost:\d+",
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
