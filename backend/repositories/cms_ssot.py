@@ -1,6 +1,6 @@
 import json
 from typing import Dict, Any, List, Optional
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, joinedload
 from core.models import CMSPage, CMSComponent, CMSPageComponent, GlobalSettings
 
 def get_global_settings(db: Session) -> Dict[str, Any]:
@@ -118,7 +118,9 @@ def get_ssot_page_content(db: Session, slug: str, published_only: bool = True) -
     elif slug == "clothing-consultation":
         slug = "7-day-clothing-consultation"
 
-    query = db.query(CMSPage).filter(CMSPage.slug == slug)
+    query = db.query(CMSPage).options(
+        joinedload(CMSPage.components).joinedload(CMSPageComponent.component)
+    ).filter(CMSPage.slug == slug)
     if published_only:
         query = query.filter(CMSPage.status == "published")
     
