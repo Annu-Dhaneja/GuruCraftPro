@@ -8,6 +8,18 @@ export function cn(...inputs: ClassValue[]) {
 export function getApiUrl(path: string = "") {
   let baseUrl = process.env.NEXT_PUBLIC_API_URL || "";
 
+  // Dynamic Browser Fail-safe Override:
+  // If the browser is running on a live public domain (e.g. Vercel) but NEXT_PUBLIC_API_URL
+  // was baked in as localhost or left empty, dynamically route all requests to the live backend.
+  if (typeof window !== 'undefined') {
+    const host = window.location.hostname;
+    if (host !== 'localhost' && host !== '127.0.0.1') {
+      if (!baseUrl || baseUrl.includes('localhost') || baseUrl.includes('127.0.0.1')) {
+        baseUrl = "https://guru-craft-pro.vercel.app";
+      }
+    }
+  }
+
   // Ensure absolute URL on server-side if baseUrl is relative
   if (typeof window === 'undefined' && !baseUrl.startsWith('http')) {
     // In Vercel environment, we can use VERCEL_URL but it doesn't include protocol
