@@ -146,6 +146,20 @@ def get_public_page_content(
         raise HTTPException(status_code=404, detail="Page not found")
     return content
 
+@router.put("/{slug}", summary="Update CMS Page Content (SSOT)")
+def update_cms_page_content(
+    slug: str,
+    content: Dict[str, Any],
+    db: Session = Depends(database.get_db),
+    current_user: models.User = Depends(auth.require_permission("cms", "write"))
+):
+    """Updates the component blocks and settings of a page using the SSOT system."""
+    success = update_ssot_page_content(db, slug, content)
+    if not success:
+        raise HTTPException(status_code=400, detail="Failed to update page content")
+    return get_ssot_page_content(db, slug, published_only=False)
+
+
 # ── MEDIA MANAGEMENT ─────────────────────────────────────────────────
 
 @router.get("/media", summary="List All Uploaded Assets")
