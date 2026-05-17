@@ -10,8 +10,14 @@ sys.path.append(backend_dir)
 # Load env IMMEDIATELY
 load_dotenv(dotenv_path=os.path.join(backend_dir, ".env"))
 
-# FORCE ENV VARS for database module
-os.environ["DATABASE_URL"] = "postgresql://annu_project_user:TWdBAMY4k7bHurZnY9sOEUHraNJdPk7E@dpg-d6rou5k50q8c73f6c8s0-a.oregon-postgres.render.com/annu_project?sslmode=require"
+# Retrieve production Supabase URL dynamically from environment
+env_prod_url = os.getenv("PROD_DATABASE_URL") or os.getenv("DATABASE_URL")
+if not env_prod_url or "sqlite" in env_prod_url:
+    entered_url = input("Please enter your production PostgreSQL connection string (Supabase): ").strip()
+    if entered_url:
+        os.environ["DATABASE_URL"] = entered_url
+else:
+    os.environ["DATABASE_URL"] = env_prod_url
 
 from core.database import SessionLocal, engine
 from core import models, auth

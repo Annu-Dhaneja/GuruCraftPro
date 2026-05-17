@@ -30,8 +30,8 @@ def get_safe_url(url):
 
 print(f"Connecting to Database: {get_safe_url(SQLALCHEMY_DATABASE_URL)}")
 
-# Automatic SSL enforcement for Remote Postgres (Render/Supabase)
-if ("supabase.co" in SQLALCHEMY_DATABASE_URL or "pooler.supabase.com" in SQLALCHEMY_DATABASE_URL) and "sslmode" not in SQLALCHEMY_DATABASE_URL:
+# Automatic SSL enforcement for Remote Postgres (Render/Supabase/Vercel)
+if not SQLALCHEMY_DATABASE_URL.startswith("sqlite") and "sslmode" not in SQLALCHEMY_DATABASE_URL:
     delimiter = "&" if "?" in SQLALCHEMY_DATABASE_URL else "?"
     SQLALCHEMY_DATABASE_URL += f"{delimiter}sslmode=require"
 

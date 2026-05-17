@@ -3,8 +3,8 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { 
-  LayoutDashboard, Settings, ArrowLeft, 
-  LogOut, Layers, FormInput, FileImage, Users, Heart, Shirt 
+  LayoutDashboard, FileText, Sparkles, Layers, Layout, Menu, Search, 
+  FileImage, Users, ShieldCheck, Settings, Terminal, History, ArrowLeft, LogOut
 } from "lucide-react";
 
 interface NavItem {
@@ -15,14 +15,20 @@ interface NavItem {
 
 const navItems: NavItem[] = [
   { name: "Dashboard", href: "/admin", icon: LayoutDashboard },
-  { name: "Page Builder", href: "/admin/page-builder", icon: Layers },
-  { name: "Form Builder", href: "/admin/forms", icon: FormInput },
+  { name: "CMS Manager", href: "/admin/cms", icon: FileText },
+  { name: "Services", href: "/admin/services", icon: Sparkles },
+  { name: "Portfolio", href: "/admin/portfolio", icon: Layers },
+  { name: "Pages", href: "/admin/page-builder", icon: Layout },
+  { name: "Navbar/Footer", href: "/admin/site-config", icon: Menu },
+  { name: "SEO Manager", href: "/admin/seo", icon: Search },
   { name: "Media Manager", href: "/admin/media", icon: FileImage },
-  { name: "User Management", href: "/admin/users", icon: Users },
-  { name: "Wedding Plans", href: "/admin/wedding", icon: Heart },
-  { name: "Try Dress", href: "/admin/wardrobe", icon: Shirt },
-  { name: "Site Configuration", href: "/admin/site-config", icon: Settings },
+  { name: "User Manager", href: "/admin/users", icon: Users },
+  { name: "Roles & Permissions", href: "/admin/roles", icon: ShieldCheck },
+  { name: "Settings", href: "/admin/settings", icon: Settings },
+  { name: "API Logs", href: "/admin/api-logs", icon: Terminal },
+  { name: "Activity Logs", href: "/admin/activity-logs", icon: History },
 ];
+
 
 export function AdminSidebar({ onLogout }: { onLogout: () => void }) {
   const pathname = usePathname();

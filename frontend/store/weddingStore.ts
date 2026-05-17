@@ -153,7 +153,7 @@ export const useWeddingStore = create<WeddingStore>((set, get) => ({
     fetchShowcase: async () => {
         set({ showcaseLoading: true });
         try {
-            const response = await fetch(getApiUrl("/api/v1/wedding/showcase"));
+            const response = await fetch(getApiUrl("/api/v1/wedding/showcase"), { cache: "no-store" });
             if (response.ok) {
                 const data = await response.json();
                 set({ showcase: data, showcaseLoading: false });

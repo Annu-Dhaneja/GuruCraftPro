@@ -7,11 +7,9 @@ def force_fix_remote_db():
     db_url = os.getenv('DATABASE_URL')
     
     # Force SSL for Render
-    if db_url and "render.com" in db_url and "sslmode" not in db_url:
-        if "?" in db_url:
-            db_url += "&sslmode=require"
-        else:
-            db_url += "?sslmode=require"
+    if db_url and not db_url.startswith("sqlite") and "sslmode" not in db_url:
+        delimiter = "&" if "?" in db_url else "?"
+        db_url += f"{delimiter}sslmode=require"
             
     print(f"Connecting to: {db_url[:30]}...")
     

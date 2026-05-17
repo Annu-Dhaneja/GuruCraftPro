@@ -13,7 +13,7 @@ from services.user import user_service
 def debug_prod_auth():
     load_dotenv('backend/.env')
     db_url = os.getenv('DATABASE_URL')
-    if db_url and "render.com" in db_url and "sslmode" not in db_url:
+    if db_url and not db_url.startswith("sqlite") and "sslmode" not in db_url:
         db_url += "?sslmode=require"
     
     engine = create_engine(db_url)

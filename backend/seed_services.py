@@ -328,9 +328,83 @@ def seed_vantage_ecom():
     finally:
         db.close()
 
+def seed_resources():
+    from repositories.cms_ssot import upsert_reusable_section, link_section_to_page
+    db = SessionLocal()
+    try:
+        print("[SEED] Seeding Resources Page...")
+        resources_content = {
+            "resources_hero": {
+                "title": "Learn design. Explore <span class=\"text-indigo-500\">AI</span>.<br />Create better.",
+                "description": "Tutorials, insights, and resources to help you design smarter with AI and creativity."
+            },
+            "resources_categories": {
+                "categories": ["All", "AI Prompts", "Design Kits", "Tutorials", "Guides"]
+            },
+            "resources_featured": {
+                "posts": [
+                    {
+                        "id": "fp1",
+                        "title": "The Art of spiritual divine prompt engineering",
+                        "category": "AI Prompts",
+                        "date": "May 15, 2026",
+                        "author": "Annu Dhanjeja",
+                        "image": "https://api.dicebear.com/7.x/shapes/svg?seed=spiritual",
+                        "slug": "spiritual-prompt-engineering"
+                    }
+                ]
+            },
+            "resources_tutorials": {
+                "tutorials": [
+                    {
+                        "id": "t1",
+                        "title": "Creating premium vectors with Midjourney and Illustrator",
+                        "duration": "12 mins",
+                        "level": "Intermediate",
+                        "views": "1.2k"
+                    }
+                ]
+            },
+            "resources_prompts": {
+                "prompts": [
+                    {
+                        "id": "pr1",
+                        "title": "High-fidelity Gold Foil Mandala Art",
+                        "engine": "Midjourney v6",
+                        "prompt": "/imagine prompt: luxury gold foil mandala art, vector design, dark blue background --v 6.0"
+                    }
+                ]
+            },
+            "resources_free_resources": {
+                "items": [
+                    {
+                        "id": "fr1",
+                        "title": "Spiritual Vector Assets Pack",
+                        "type": "ZIP / SVG",
+                        "downloads": "420"
+                    }
+                ]
+            },
+            "resources_newsletter": {
+                "title": "Join our creative circle",
+                "description": "Get high-value AI design assets and guides delivered to your inbox every week."
+            }
+        }
+        
+        # In V3 SSOT system, we save it as a page
+        upsert_reusable_section(db, "resources-data", "resources", resources_content)
+        link_section_to_page(db, "resources", "resources-data", order=0)
+        
+        print("[SEED] Resources page seeded successfully!")
+    except Exception as e:
+        print(f"[SEED] Error seeding resources: {e}")
+    finally:
+        db.close()
+
 if __name__ == "__main__":
     seed_services()
     seed_guruji_art()
     seed_resources()
     seed_vantage_ecom()
     seed_vantage_ecom()
+

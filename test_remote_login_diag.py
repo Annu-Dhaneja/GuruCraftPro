@@ -1,7 +1,7 @@
 import requests
 
 def test_remote_login():
-    url = "https://virtual-trys.onrender.com/api/v1/auth/login"
+    url = "https://guru-craft-pro.vercel.app/api/v1/auth/login"
     
     print(f"Testing GET {url}...")
     r_get = requests.get(url)

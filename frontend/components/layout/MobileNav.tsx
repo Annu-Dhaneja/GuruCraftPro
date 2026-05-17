@@ -16,6 +16,7 @@ import {
 import { Separator } from "@/components/ui/separator";
 import { cn } from "@/lib/utils";
 import { useSiteConfig } from "./SiteConfigProvider";
+import { useAuthStore } from "@/lib/store/useAuthStore";
 
 import {
     Accordion,
@@ -27,8 +28,8 @@ import {
 export function MobileNav() {
     const [open, setOpen] = React.useState(false);
     const { config } = useSiteConfig();
-    // TODO: Replace with actual auth state check
-    const isLoggedIn = false;
+    const { isAuthenticated, user, logout } = useAuthStore();
+    const isLoggedIn = isAuthenticated;
 
     return (
         <Sheet open={open} onOpenChange={setOpen}>
@@ -138,11 +139,11 @@ export function MobileNav() {
                             <div className="space-y-4">
                                 <div className="flex items-center gap-4 px-2 mb-4">
                                     <div className="h-12 w-12 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-700 text-lg font-bold border border-indigo-200 shadow-sm">
-                                        AU
+                                        {(user?.name || user?.username || "AU").slice(0, 2).toUpperCase()}
                                     </div>
                                     <div className="flex-1 min-w-0">
-                                        <p className="text-base font-semibold truncate">Gurucraftpro User</p>
-                                        <p className="text-sm text-muted-foreground truncate">user@example.com</p>
+                                        <p className="text-base font-semibold truncate">{user?.name || user?.username || "Gurucraftpro User"}</p>
+                                        <p className="text-sm text-muted-foreground truncate">{user?.email || "user@example.com"}</p>
                                     </div>
                                 </div>
                                 <div className="grid grid-cols-2 gap-3">
@@ -172,7 +173,14 @@ export function MobileNav() {
                                             <Settings className="h-5 w-5" /> Settings
                                         </Link>
                                     </SheetClose>
-                                    <Button variant="ghost" className="w-full justify-start text-red-500 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-950/20 px-4 py-6 text-base h-auto">
+                                    <Button 
+                                        variant="ghost" 
+                                        className="w-full justify-start text-red-500 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-950/20 px-4 py-6 text-base h-auto"
+                                        onClick={() => {
+                                            logout();
+                                            setOpen(false);
+                                        }}
+                                    >
                                         <LogOut className="mr-3 h-5 w-5" />
                                         Log out
                                     </Button>

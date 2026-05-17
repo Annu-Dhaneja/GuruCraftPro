@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import { Sora, Inter } from "next/font/google";
 
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 // export const runtime = 'edge';
 import "./globals.css";
 import { ThemeProvider } from "@/components/layout/ThemeProvider";

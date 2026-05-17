@@ -51,7 +51,10 @@ export function LoginForm() {
                     data.access_token
                 );
                 
-                if (["ADMIN", "SUPER_ADMIN", "EDITOR"].includes(data.role)) {
+                const normalizedRole = (data.role || "USER").toUpperCase();
+                if (normalizedRole === "EDITOR") {
+                    window.location.href = "/admin/content";
+                } else if (["ADMIN", "SUPER_ADMIN"].includes(normalizedRole)) {
                     window.location.href = "/admin";
                 } else {
                     window.location.href = "/dashboard";

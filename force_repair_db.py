@@ -5,8 +5,9 @@ from dotenv import load_dotenv
 def force_repair_schema():
     load_dotenv('backend/.env')
     db_url = os.getenv('DATABASE_URL')
-    if db_url and "render.com" in db_url and "sslmode" not in db_url:
-        db_url += "?sslmode=require"
+    if db_url and not db_url.startswith("sqlite") and "sslmode" not in db_url:
+        delimiter = "&" if "?" in db_url else "?"
+        db_url += f"{delimiter}sslmode=require"
     
     engine = create_engine(db_url)
     

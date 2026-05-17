@@ -1,6 +1,6 @@
 import requests
 
-PROD_URL = "https://virtual-trys.onrender.com/api/v1/auth/login"
+PROD_URL = "https://guru-craft-pro.vercel.app/api/v1/auth/login"
 
 def test_prod_login():
     print(f"--- TESTING PRODUCTION LOGIN: {PROD_URL} ---")

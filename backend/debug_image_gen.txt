@@ -1,17 +1,24 @@
 DEBUG: Loaded API Key: your_..._here
-
---- Listing Available Models ---
+Testing model: imagen-3.0-generate-002
 
 CRITICAL ERROR: 400 INVALID_ARGUMENT. {'error': {'code': 400, 'message': 'API key not valid. Please pass a valid API key.', 'status': 'INVALID_ARGUMENT', 'details': [{'@type': 'type.googleapis.com/google.rpc.ErrorInfo', 'reason': 'API_KEY_INVALID', 'domain': 'googleapis.com', 'metadata': {'service': 'generativelanguage.googleapis.com'}}, {'@type': 'type.googleapis.com/google.rpc.LocalizedMessage', 'locale': 'en-US', 'message': 'API key not valid. Please pass a valid API key.'}]}}
 Traceback (most recent call last):
-  File "E:\Project\virtual_try-main\backend\test_gemini_connection.py", line 25, in <module>
-    for m in client.models.list():
-             ~~~~~~~~~~~~~~~~~~^^
-  File "C:\Users\Om prakash\AppData\Local\Programs\Python\Python313\Lib\site-packages\google\genai\models.py", line 6586, in list
-    self._list(config=config),
-    ~~~~~~~~~~^^^^^^^^^^^^^^^
-  File "C:\Users\Om prakash\AppData\Local\Programs\Python\Python313\Lib\site-packages\google\genai\models.py", line 5417, in _list
-    response = self._api_client.request('get', path, request_dict, http_options)
+  File "E:\Project\virtual_try-main\backend\test_image_gen.py", line 28, in <module>
+    response = client.models.generate_images(
+        model=model_name,
+    ...<4 lines>...
+        )
+    )
+  File "C:\Users\Om prakash\AppData\Local\Programs\Python\Python313\Lib\site-packages\google\genai\models.py", line 6291, in generate_images
+    api_response = self._generate_images(
+        model=model,
+        prompt=prompt,
+        config=config,
+    )
+  File "C:\Users\Om prakash\AppData\Local\Programs\Python\Python313\Lib\site-packages\google\genai\models.py", line 4958, in _generate_images
+    response = self._api_client.request(
+        'post', path, request_dict, http_options
+    )
   File "C:\Users\Om prakash\AppData\Local\Programs\Python\Python313\Lib\site-packages\google\genai\_api_client.py", line 1532, in request
     response = self._request(http_request, http_options, stream=False)
   File "C:\Users\Om prakash\AppData\Local\Programs\Python\Python313\Lib\site-packages\google\genai\_api_client.py", line 1327, in _request

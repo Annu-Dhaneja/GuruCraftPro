@@ -9,8 +9,14 @@ backend_dir = os.path.join(os.getcwd(), 'backend')
 sys.path.append(backend_dir)
 
 # 2. PRODUCTION DATABASE URL
-PROD_DB_URL = "postgresql://annu_project_user:TWdBAMY4k7bHurZnY9sOEUHraNJdPk7E@dpg-d6rou5k50q8c73f6c8s0-a.oregon-postgres.render.com/annu_project?sslmode=require"
-os.environ["DATABASE_URL"] = PROD_DB_URL
+# Retrieve production Supabase URL dynamically from environment
+PROD_DB_URL = os.getenv("PROD_DATABASE_URL") or os.getenv("DATABASE_URL")
+if not PROD_DB_URL or "sqlite" in PROD_DB_URL:
+    PROD_DB_URL = input("Please enter your production PostgreSQL connection string (Supabase): ").strip()
+    if PROD_DB_URL:
+        os.environ["DATABASE_URL"] = PROD_DB_URL
+else:
+    os.environ["DATABASE_URL"] = PROD_DB_URL
 
 # Now import backend modules
 try:

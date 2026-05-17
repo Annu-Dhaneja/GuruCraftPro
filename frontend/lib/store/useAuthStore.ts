@@ -21,12 +21,14 @@ export const useAuthStore = create<AuthState>((set) => ({
   isAuthenticated: false,
   
   login: (user, token) => {
+    const uppercaseRole = (user.role || "USER").toUpperCase();
+    const updatedUser = { ...user, role: uppercaseRole };
     if (typeof window !== 'undefined') {
       localStorage.setItem('token', token);
       localStorage.setItem('username', user.username);
-      localStorage.setItem('role', user.role);
+      localStorage.setItem('role', uppercaseRole);
     }
-    set({ user, isAuthenticated: true });
+    set({ user: updatedUser, isAuthenticated: true });
   },
 
   logout: () => {
@@ -48,8 +50,9 @@ export const useAuthStore = create<AuthState>((set) => ({
       const role = localStorage.getItem('role');
 
       if (token && username && role) {
+        const uppercaseRole = role.toUpperCase();
         set({
-          user: { id: 0, username, role, name: username, email: "" },
+          user: { id: 0, username, role: uppercaseRole, name: username, email: "" },
           isAuthenticated: true
         });
       } else {

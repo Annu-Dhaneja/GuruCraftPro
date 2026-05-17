@@ -5,11 +5,16 @@ from sqlalchemy import create_engine, text
 from sqlalchemy.orm import sessionmaker
 
 # ── PRODUCTION CONFIGURATION ──────────────────────────────────────────
-# Using the Render Postgres URL found in FINAL_PRODUCTION_SYNC.py
-DB_URL = "postgresql://annu_project_user:TWdBAMY4k7bHurZnY9sOEUHraNJdPk7E@dpg-d6rou5k50q8c73f6c8s0-a.oregon-postgres.render.com/annu_project?sslmode=require"
+# Retrieve production Supabase URL dynamically from environment
+DB_URL = os.getenv("PROD_DATABASE_URL") or os.getenv("DATABASE_URL")
+if not DB_URL or "sqlite" in DB_URL:
+    DB_URL = input("Please enter your production PostgreSQL connection string (Supabase): ").strip()
+    if DB_URL:
+        os.environ["DATABASE_URL"] = DB_URL
+else:
+    os.environ["DATABASE_URL"] = DB_URL
 
-print(f"--- CONNECTING TO PRODUCTION RENDER DB ---")
-print(f"Target: dpg-d6rou5k50q8c73f6c8s0-a.oregon-postgres.render.com")
+print(f"--- CONNECTING TO PRODUCTION POSTGRES DB ---")
 
 engine = create_engine(DB_URL)
 

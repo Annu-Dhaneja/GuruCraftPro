@@ -135,11 +135,12 @@ async def get_optional_user(
 # ── Authorization & RBAC ─────────────────────────────────────────────
 
 def has_permission(user: models.User, module: str, action: str = "read") -> bool:
-    if user.role == "SUPER_ADMIN":
+    role_upper = (user.role or "USER").upper()
+    if role_upper == "SUPER_ADMIN":
         return True
     
     # Non-approved users have NO permissions beyond basic profile
-    if not user.is_approved and user.role != "USER":
+    if not user.is_approved and role_upper != "USER":
         return False
 
     if user.role_rel and user.role_rel.permissions_json:
@@ -150,13 +151,14 @@ def has_permission(user: models.User, module: str, action: str = "read") -> bool
         except Exception:
             return False
             
-    if user.role in ["ADMIN", "EDITOR"] and module in ["cms", "contact", "media", "dashboard"]:
+    if role_upper in ["ADMIN", "EDITOR"] and module in ["cms", "contact", "media", "dashboard"]:
         return True
 
     return False
 
 async def require_admin(current_user: models.User = Depends(get_current_user)):
-    if current_user.role not in ["ADMIN", "SUPER_ADMIN"]:
+    role_upper = (current_user.role or "USER").upper()
+    if role_upper not in ["ADMIN", "SUPER_ADMIN"]:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="Administrative privileges required.",
@@ -169,7 +171,8 @@ async def require_admin(current_user: models.User = Depends(get_current_user)):
     return current_user
 
 async def require_super_admin(current_user: models.User = Depends(get_current_user)):
-    if current_user.role != "SUPER_ADMIN":
+    role_upper = (current_user.role or "USER").upper()
+    if role_upper != "SUPER_ADMIN":
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="Super-Admin privileges required.",
@@ -182,7 +185,8 @@ async def require_super_admin(current_user: models.User = Depends(get_current_us
     return current_user
 
 async def require_editor(current_user: models.User = Depends(get_current_user)):
-    if current_user.role not in ["EDITOR", "ADMIN", "SUPER_ADMIN"]:
+    role_upper = (current_user.role or "USER").upper()
+    if role_upper not in ["EDITOR", "ADMIN", "SUPER_ADMIN"]:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="Editor privileges required.",

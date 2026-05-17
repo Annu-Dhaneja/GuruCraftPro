@@ -1,7 +1,10 @@
 import psycopg2
 import sys
 
-URL = "postgresql://annu_project_user:TWdBAMY4k7bHurZnY9sOEUHraNJdPk7E@dpg-d6rou5k50q8c73f6c8s0-a.oregon-postgres.render.com/annu_project?sslmode=require"
+import os
+URL = os.getenv("PROD_DATABASE_URL") or os.getenv("DATABASE_URL")
+if not URL or "sqlite" in URL:
+    URL = input("Please enter your production PostgreSQL connection string (Supabase): ").strip()
 
 try:
     print("Attempting direct connection...")

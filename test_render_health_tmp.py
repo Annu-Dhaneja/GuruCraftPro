@@ -1,6 +1,6 @@
 import requests
 
-url = "https://virtual-trys.onrender.com/health"
+url = "https://guru-craft-pro.vercel.app/health"
 
 def check_health():
     try:

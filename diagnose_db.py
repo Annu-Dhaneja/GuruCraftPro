@@ -9,12 +9,10 @@ def diagnose_db():
     print(f"DEBUG: Attempting to connect to: {db_url[:20]}...")
     
     # Render URLs might need some tweaks or SSL handling
-    if db_url and "render.com" in db_url and "sslmode" not in db_url:
-        print("TIP: Render URLs often require ?sslmode=require")
-        if "?" in db_url:
-            db_url += "&sslmode=require"
-        else:
-            db_url += "?sslmode=require"
+    if db_url and not db_url.startswith("sqlite") and "sslmode" not in db_url:
+        print("TIP: Remote PostgreSQL URLs often require sslmode=require")
+        delimiter = "&" if "?" in db_url else "?"
+        db_url += f"{delimiter}sslmode=require"
 
     try:
         engine = create_engine(db_url, connect_args={"connect_timeout": 10})

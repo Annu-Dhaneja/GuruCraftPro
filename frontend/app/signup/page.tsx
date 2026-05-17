@@ -62,7 +62,8 @@ export default function SignupPage() {
                 
                 toast.success("Account created successfully!");
                 
-                if (data.role === "admin") {
+                const normalizedRole = (data.role || "user").toLowerCase();
+                if (normalizedRole === "admin" || normalizedRole === "super_admin" || normalizedRole === "super-admin") {
                     router.push("/admin");
                 } else {
                     router.push("/ai-lab"); 

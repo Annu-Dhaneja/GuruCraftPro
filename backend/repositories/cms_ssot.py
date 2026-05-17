@@ -110,6 +110,14 @@ def get_ssot_page_content(db: Session, slug: str, published_only: bool = True) -
     Assembles a page by fetching its components in order.
     Returns a unified object for the frontend.
     """
+    # Normalize/Alias slugs for compatibility between seed data and frontend requests
+    if slug == "guruji":
+        slug = "guru-ji-art"
+    elif slug == "wedding-plan":
+        slug = "wedding-showcase"
+    elif slug == "clothing-consultation":
+        slug = "7-day-clothing-consultation"
+
     query = db.query(CMSPage).filter(CMSPage.slug == slug)
     if published_only:
         query = query.filter(CMSPage.status == "published")
@@ -195,6 +203,14 @@ def update_ssot_page_content(db: Session, page_slug: str, content: Dict[str, Any
     """
     Updates an SSOT page.
     """
+    # Normalize/Alias slugs for compatibility between seed data and frontend requests
+    if page_slug == "guruji":
+        page_slug = "guru-ji-art"
+    elif page_slug == "wedding-plan":
+        page_slug = "wedding-showcase"
+    elif page_slug == "clothing-consultation":
+        page_slug = "7-day-clothing-consultation"
+
     page = db.query(CMSPage).filter(CMSPage.slug == page_slug).first()
     if not page:
         page = CMSPage(title=page_slug.replace("-", " ").title(), slug=page_slug, status="published")
@@ -240,5 +256,80 @@ def update_ssot_page_content(db: Session, page_slug: str, content: Dict[str, Any
         upsert_component(db, key, comp_type)
         link_component_to_page(db, page_slug, key, props)
         
+    db.commit()
+    return True
+
+
+# ── V2/V3 BRIDGING HELPERS FOR DB SEEDERS ──────────────────────────────
+
+_seeded_contents = {}
+
+def upsert_reusable_section(db: Session, slug: str, comp_type: str, content: Dict[str, Any]):
+    """Creates or updates a reusable component definition and caches its content for page linking."""
+    comp = db.query(CMSComponent).filter(CMSComponent.name == slug).first()
+    if not comp:
+        comp = CMSComponent(name=slug, type=comp_type)
+        db.add(comp)
+        db.flush()
+    else:
+        comp.type = comp_type
+    
+    # Store in database schema_json as a persistent fallback
+    comp.schema_json = json.dumps(content)
+    db.commit()
+    
+    # Store in memory for immediate linking
+    _seeded_contents[slug] = content
+    return comp
+
+def link_section_to_page(db: Session, page_slug: str, section_slug: str, order: int = 0) -> bool:
+    """Connects a section (component definition) to a page using cached or stored content."""
+    # Apply slug normalization to linked pages
+    if page_slug == "guruji":
+        page_slug = "guru-ji-art"
+    elif page_slug == "wedding-plan":
+        page_slug = "wedding-showcase"
+    elif page_slug == "clothing-consultation":
+        page_slug = "7-day-clothing-consultation"
+
+    page = db.query(CMSPage).filter(CMSPage.slug == page_slug).first()
+    if not page:
+        page = CMSPage(title=page_slug.replace("-", " ").title(), slug=page_slug, status="published")
+        db.add(page)
+        db.flush()
+    else:
+        page.status = "published"
+
+    comp = db.query(CMSComponent).filter(CMSComponent.name == section_slug).first()
+    if not comp:
+        return False
+
+    # Retrieve content from in-memory cache or fallback to schema_json
+    props = _seeded_contents.get(section_slug)
+    if props is None and comp.schema_json:
+        try:
+            props = json.loads(comp.schema_json)
+        except:
+            props = {}
+    if props is None:
+        props = {}
+
+    assoc = db.query(CMSPageComponent).filter(
+        CMSPageComponent.page_id == page.id,
+        CMSPageComponent.component_id == comp.id
+    ).first()
+
+    if not assoc:
+        assoc = CMSPageComponent(
+            page_id=page.id,
+            component_id=comp.id,
+            order=order,
+            props_json=json.dumps(props)
+        )
+        db.add(assoc)
+    else:
+        assoc.order = order
+        assoc.props_json = json.dumps(props)
+
     db.commit()
     return True

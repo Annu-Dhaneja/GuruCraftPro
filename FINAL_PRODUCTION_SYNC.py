@@ -5,8 +5,16 @@ from sqlalchemy.orm import sessionmaker
 from datetime import datetime
 
 # CONFIGURATION
-DB_URL = "postgresql://annu_project_user:TWdBAMY4k7bHurZnY9sOEUHraNJdPk7E@dpg-d6rou5k50q8c73f6c8s0-a.oregon-postgres.render.com/annu_project?sslmode=require"
-print(f"CONNECTING TO PRODUCTION: {DB_URL.split('@')[-1]}")
+# CONFIGURATION
+DB_URL = os.getenv("PROD_DATABASE_URL") or os.getenv("DATABASE_URL")
+if not DB_URL or "sqlite" in DB_URL:
+    DB_URL = input("Please enter your production PostgreSQL connection string (Supabase): ").strip()
+    if DB_URL:
+        os.environ["DATABASE_URL"] = DB_URL
+else:
+    os.environ["DATABASE_URL"] = DB_URL
+
+print(f"CONNECTING TO PRODUCTION...")
 
 engine = create_engine(DB_URL)
 

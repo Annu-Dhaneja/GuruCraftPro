@@ -126,8 +126,7 @@ export function SiteConfigProvider({ children }: { children: React.ReactNode }) 
         async function fetchConfig() {
             try {
                 const res = await fetch(getApiUrl("/api/v1/cms/site_config"), {
-                    // Next.js cache revalidation rule
-                    next: { revalidate: 60 } 
+                    cache: "no-store"
                 });
                 if (res.ok) {
                     const data = await res.json();

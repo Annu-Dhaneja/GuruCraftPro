@@ -15,14 +15,20 @@ def manual_seed():
     print("=== MANUAL ADMIN CREATION & PASSWORD UTILITY ===")
     print("Select target database:")
     print("1) Local Database (SQLite)")
-    print("2) Production Database (PostgreSQL - Render)")
+    print("2) Production Database (PostgreSQL - Supabase/Vercel)")
     choice = input("Enter choice (1 or 2): ").strip()
-    
-    prod_url = "postgresql://annu_project_user:TWdBAMY4k7bHurZnY9sOEUHraNJdPk7E@dpg-d6rou5k50q8c73f6c8s0-a.oregon-postgres.render.com/annu_project?sslmode=require"
     
     if choice == "2":
         print("\nConfiguring connection to production database...")
-        os.environ["DATABASE_URL"] = prod_url
+        env_prod_url = os.getenv("PROD_DATABASE_URL") or os.getenv("DATABASE_URL")
+        if not env_prod_url or "sqlite" in env_prod_url:
+            entered_url = input("Please enter your production PostgreSQL connection string (Supabase): ").strip()
+            if entered_url:
+                os.environ["DATABASE_URL"] = entered_url
+            else:
+                print("No connection string provided. Using default SQLite.")
+        else:
+            os.environ["DATABASE_URL"] = env_prod_url
     else:
         print("\nConfiguring connection to local database...")
         # Local database will default to SQLite if not set in .env

@@ -21,7 +21,11 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: "https",
-        hostname: "virtual-trys.onrender.com",
+        hostname: "guru-craft-pro.vercel.app",
+      },
+      {
+        protocol: "https",
+        hostname: "guru-craft-pro-6rnj-six.vercel.app",
       },
     ],
   },

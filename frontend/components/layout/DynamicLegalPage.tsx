@@ -13,7 +13,7 @@ export function DynamicLegalPage({ section, defaultTitle }: DynamicLegalPageProp
     const [pageData, setPageData] = useState<any>(null);
 
     useEffect(() => {
-        fetch(getApiUrl(`/api/v1/cms/${section}`))
+        fetch(getApiUrl(`/api/v1/cms/${section}`), { cache: "no-store" })
             .then(res => res.json())
             .then(data => setPageData(data))
             .catch(err => console.error(`Legal Fetch Error (${section}):`, err));

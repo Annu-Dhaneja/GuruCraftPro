@@ -130,34 +130,7 @@ def update_settings(
         db.refresh(existing)
     return existing
 
-@router.get("/{slug}", summary="Get Public CMS Page Content")
-def get_public_page_content(
-    slug: str, 
-    preview: bool = False,
-    db: Session = Depends(database.get_db),
-    current_user: Optional[models.User] = Depends(auth.get_optional_user)
-):
-    """Public endpoint for fetching assembled page content (SSOT)."""
-    # Only allow preview if user is admin
-    should_preview = preview and current_user and current_user.role in ["admin", "super-admin", "editor"]
-    
-    content = get_ssot_page_content(db, slug, published_only=not should_preview)
-    if not content:
-        raise HTTPException(status_code=404, detail="Page not found")
-    return content
-
-@router.put("/{slug}", summary="Update CMS Page Content (SSOT)")
-def update_cms_page_content(
-    slug: str,
-    content: Dict[str, Any],
-    db: Session = Depends(database.get_db),
-    current_user: models.User = Depends(auth.require_permission("cms", "write"))
-):
-    """Updates the component blocks and settings of a page using the SSOT system."""
-    success = update_ssot_page_content(db, slug, content)
-    if not success:
-        raise HTTPException(status_code=400, detail="Failed to update page content")
-    return get_ssot_page_content(db, slug, published_only=False)
+# Catch-all dynamic pages moved to bottom to prevent routing conflicts
 
 
 # ── MEDIA MANAGEMENT ─────────────────────────────────────────────────
@@ -281,3 +254,35 @@ def reset_system_cache(
     """Super-Admin only: Clears all login failure throttling."""
     auth.reset_all_throttling()
     return {"message": "System throttling cache cleared successfully."}
+
+
+# ── CATCH-ALL DYNAMIC PAGE ROUTER ─────────────────────────────────────
+
+@router.get("/{slug:path}", summary="Get Public CMS Page Content")
+def get_public_page_content(
+    slug: str, 
+    preview: bool = False,
+    db: Session = Depends(database.get_db),
+    current_user: Optional[models.User] = Depends(auth.get_optional_user)
+):
+    """Public endpoint for fetching assembled page content (SSOT)."""
+    # Only allow preview if user is admin
+    should_preview = preview and current_user and current_user.role in ["admin", "super-admin", "editor"]
+    
+    content = get_ssot_page_content(db, slug, published_only=not should_preview)
+    if not content:
+        raise HTTPException(status_code=404, detail="Page not found")
+    return content
+
+@router.put("/{slug:path}", summary="Update CMS Page Content (SSOT)")
+def update_cms_page_content(
+    slug: str,
+    content: Dict[str, Any],
+    db: Session = Depends(database.get_db),
+    current_user: models.User = Depends(auth.require_permission("cms", "write"))
+):
+    """Updates the component blocks and settings of a page using the SSOT system."""
+    success = update_ssot_page_content(db, slug, content)
+    if not success:
+        raise HTTPException(status_code=400, detail="Failed to update page content")
+    return get_ssot_page_content(db, slug, published_only=False)

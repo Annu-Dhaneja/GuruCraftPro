@@ -1,82 +1,193 @@
 "use client";
-// Admin Navigation v1.0.2 - Triggering deployment sync for 'Try Dress' link
 
-import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { Home, LayoutDashboard, Settings, Globe, ArrowLeft, 
-  Sparkles, LogOut, ShieldCheck, BookOpen, PenTool, 
-  Lightbulb, Mail, Shirt, Layers, FormInput, FileImage, Users, Heart, Menu 
+import Link from "next/link";
+import { 
+  LayoutDashboard, FileText, Sparkles, Layers, Layout, Menu, Search, 
+  FileImage, Users, Shield, Settings, Terminal, History, LogOut,
+  Bell, ChevronRight, X, Heart, HelpCircle, BookOpen, ArrowLeft
 } from "lucide-react";
-import { AdminSidebar } from "@/components/admin/AdminSidebar";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { useAuthStore } from "@/lib/store/useAuthStore";
+import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { CentralizedSEO } from "@/components/layout/CentralizedSEO";
 
+const NAV_ITEMS = [
+  { label: "Dashboard", href: "/admin", icon: LayoutDashboard, role: ["ADMIN", "SUPER_ADMIN"] },
+  { label: "Pages", href: "/admin/pages", icon: Layout, role: ["ADMIN", "SUPER_ADMIN", "EDITOR"] },
+  { label: "Services", href: "/admin/services", icon: Sparkles, role: ["ADMIN", "SUPER_ADMIN", "EDITOR"] },
+  { label: "Portfolio", href: "/admin/portfolio", icon: Layers, role: ["ADMIN", "SUPER_ADMIN", "EDITOR"] },
+  { label: "AI Lab", href: "/admin/ai-lab", icon: Terminal, role: ["ADMIN", "SUPER_ADMIN", "EDITOR"] },
+  { label: "Guruji Darshan", href: "/admin/guruji", icon: FileText, role: ["ADMIN", "SUPER_ADMIN", "EDITOR"] },
+  { label: "Navbar Config", href: "/admin/navbar", icon: Menu, role: ["ADMIN", "SUPER_ADMIN"] },
+  { label: "Footer Config", href: "/admin/footer", icon: Layout, role: ["ADMIN", "SUPER_ADMIN"] },
+  { label: "SEO Manager", href: "/admin/seo", icon: Search, role: ["ADMIN", "SUPER_ADMIN", "EDITOR"] },
+  { label: "Media Library", href: "/admin/media", icon: FileImage, role: ["ADMIN", "SUPER_ADMIN", "EDITOR"] },
+  { label: "Forms & Requests", href: "/admin/forms", icon: FileText, role: ["ADMIN", "SUPER_ADMIN", "EDITOR"] },
+  { label: "Testimonials", href: "/admin/testimonials", icon: Heart, role: ["ADMIN", "SUPER_ADMIN", "EDITOR"] },
+  { label: "FAQs", href: "/admin/faq", icon: HelpCircle, role: ["ADMIN", "SUPER_ADMIN", "EDITOR"] },
+  { label: "Resources", href: "/admin/resources", icon: BookOpen, role: ["ADMIN", "SUPER_ADMIN", "EDITOR"] },
+  { label: "Users", href: "/admin/users", icon: Users, role: ["ADMIN", "SUPER_ADMIN"] },
+  { label: "Roles & Permissions", href: "/admin/roles", icon: Shield, role: ["SUPER_ADMIN"] },
+  { label: "Settings", href: "/admin/settings", icon: Settings, role: ["ADMIN", "SUPER_ADMIN"] },
+  { label: "Activity Logs", href: "/admin/activity-logs", icon: History, role: ["ADMIN", "SUPER_ADMIN"] },
+];
+
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
+  const { user, isAuthenticated, logout, checkAuth } = useAuthStore();
   const pathname = usePathname();
   const router = useRouter();
   const [isAuthorized, setIsAuthorized] = useState(false);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+
+  useEffect(() => {
+    // Make sure Zustand auth store checks identity
+    checkAuth();
+  }, []);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
     const role = localStorage.getItem("role");
     const normalizedRole = role ? role.toLowerCase().replace("_", "-") : "";
+    
     if (!token) {
       router.push("/login");
-    } else if (normalizedRole !== "admin" && normalizedRole !== "super-admin") {
-      // If logged in but not an admin/super-admin, redirect to user dashboard
+    } else if (normalizedRole !== "admin" && normalizedRole !== "super-admin" && normalizedRole !== "editor") {
       router.push("/dashboard");
     } else {
       setIsAuthorized(true);
+      // Redirect editors directly away from administrative dashboard metric command centers
+      if (normalizedRole === "editor" && pathname === "/admin") {
+        router.push("/admin/content");
+      }
     }
-  }, [router]);
+  }, [router, pathname]);
 
   const handleLogout = () => {
-    localStorage.removeItem("token");
+    logout();
+    localStorage.clear();
     router.push("/login");
   };
 
-  if (!isAuthorized) {
+  if (!isAuthorized || !user) {
     return (
-      <div className="h-screen bg-slate-950 flex items-center justify-center text-white">
-        <div className="flex flex-col items-center gap-4">
-          <div className="w-12 h-12 border-4 border-indigo-500 border-t-transparent rounded-full animate-spin" />
-          <p className="text-muted-foreground animate-pulse">Checking authorization...</p>
-        </div>
+      <div className="h-screen bg-slate-950 flex flex-col items-center justify-center text-white gap-4">
+        <div className="w-12 h-12 border-4 border-indigo-500 border-t-transparent rounded-full animate-spin" />
+        <p className="text-slate-500 text-sm font-semibold tracking-widest uppercase animate-pulse">Establishing Secure Uplink...</p>
       </div>
     );
   }
 
   return (
-    <div className="flex h-screen overflow-hidden bg-slate-950 text-white">
-      <CentralizedSEO title="Admin Console" />
-      {/* Desktop Sidebar */}
-      <aside className="w-64 border-r border-white/5 hidden md:flex flex-col">
-        <AdminSidebar onLogout={handleLogout} />
-      </aside>
-
-      {/* Main Content */}
-      <main className="flex-1 overflow-y-auto relative z-10">
-        {/* Mobile Header */}
-        <div className="md:hidden flex items-center justify-between p-4 border-b border-white/5 bg-slate-900/50 backdrop-blur-xl">
-          <div className="flex items-center gap-2">
-            <ShieldCheck className="h-6 w-6 text-indigo-400" />
-            <span className="font-bold tracking-tight">Admin Console</span>
-          </div>
-          <Sheet>
-            <SheetTrigger asChild>
-              <Button variant="ghost" size="icon">
-                <Menu className="h-6 w-6" />
-              </Button>
-            </SheetTrigger>
-            <SheetContent side="left" className="p-0 w-64 border-r border-white/5">
-              <AdminSidebar onLogout={handleLogout} />
-            </SheetContent>
-          </Sheet>
+    <div className="flex h-screen overflow-hidden bg-slate-950 text-slate-200">
+      <CentralizedSEO title="Admin Console | GuruCraftPro" />
+      
+      {/* Sidebar */}
+      <aside 
+        className={cn(
+          "fixed inset-y-0 left-0 z-50 bg-slate-900/40 backdrop-blur-3xl border-r border-white/5 transition-all duration-300 flex flex-col h-full",
+          isSidebarOpen ? "w-72" : "w-20"
+        )}
+      >
+        {/* Brand Header */}
+        <div className="p-6 border-b border-white/5 flex items-center justify-between">
+          <Link href="/" className={cn("font-black tracking-tighter uppercase italic transition-opacity flex items-center gap-2", !isSidebarOpen && "opacity-0")}>
+            <span className="text-xl text-white">GURU</span>
+            <span className="text-indigo-500 text-xl">PRO</span>
+          </Link>
+          <Button variant="ghost" size="icon" onClick={() => setIsSidebarOpen(!isSidebarOpen)} className="text-slate-400 hover:text-white rounded-xl">
+            {isSidebarOpen ? <X size={18} /> : <Menu size={18} />}
+          </Button>
         </div>
 
-        <div className="p-4 md:p-8 lg:p-12">
+        {/* Back Link */}
+        {isSidebarOpen && (
+          <div className="px-6 py-4">
+            <Link href="/" className="flex items-center gap-2 text-xs text-slate-500 hover:text-indigo-400 transition-colors font-bold uppercase tracking-wider">
+              <ArrowLeft className="h-3 w-3" /> Back to main site
+            </Link>
+          </div>
+        )}
+
+        {/* Sidebar Nav Links */}
+        <nav className="flex-1 px-4 py-4 space-y-1.5 overflow-y-auto custom-scrollbar">
+          {NAV_ITEMS.filter(item => item.role.includes(user.role)).map((item) => {
+            const isActive = pathname === item.href || (pathname && pathname.startsWith(item.href + '/'));
+            return (
+              <Link 
+                key={item.href} 
+                href={item.href}
+                className={cn(
+                  "flex items-center gap-4 px-4 py-3 rounded-2xl transition-all group relative overflow-hidden",
+                  isActive 
+                    ? "bg-indigo-500/10 text-indigo-400 border border-indigo-500/20" 
+                    : "hover:bg-white/5 text-slate-400 hover:text-white"
+                )}
+              >
+                <item.icon size={18} className={cn("shrink-0", isActive && "animate-pulse")} />
+                <span className={cn("font-bold text-xs tracking-wider uppercase transition-all duration-300", !isSidebarOpen && "opacity-0 translate-x-10")}>
+                  {item.label}
+                </span>
+                {isActive && (
+                  <div className="absolute left-0 top-0 bottom-0 w-1 bg-indigo-500" />
+                )}
+              </Link>
+            );
+          })}
+        </nav>
+
+        {/* Sidebar footer user metadata */}
+        <div className="p-4 border-t border-white/5 mt-auto bg-slate-900/20">
+          <div className={cn("p-4 rounded-2xl bg-slate-800/30 border border-white/5 mb-3 overflow-hidden transition-all duration-300", !isSidebarOpen && "opacity-0 h-0 p-0 mb-0")}>
+            <p className="text-[9px] font-black uppercase tracking-widest text-slate-600 mb-1">Authenticated</p>
+            <p className="font-bold text-sm truncate text-white">{user.name || user.username}</p>
+            <p className="text-[9px] font-black uppercase tracking-wider text-indigo-400 mt-0.5">{user.role}</p>
+          </div>
+          <Button 
+            variant="ghost" 
+            className="w-full justify-start gap-4 px-4 py-3 rounded-xl text-rose-400 hover:bg-rose-500/10 hover:text-rose-300 transition-colors"
+            onClick={handleLogout}
+          >
+            <LogOut size={18} />
+            <span className={cn("font-bold text-xs uppercase tracking-wider", !isSidebarOpen && "hidden")}>Logout Console</span>
+          </Button>
+        </div>
+      </aside>
+
+      {/* Main Panel Content Container */}
+      <main className={cn(
+        "flex-1 flex flex-col transition-all duration-300 overflow-y-auto h-screen",
+        isSidebarOpen ? "ml-72" : "ml-20"
+      )}>
+        {/* Responsive top header banner */}
+        <header className="h-20 border-b border-white/5 flex items-center justify-between px-8 bg-slate-950/50 backdrop-blur-xl sticky top-0 z-40">
+          <div className="flex items-center gap-4">
+            <span className="text-slate-600 font-bold uppercase text-[9px] tracking-widest">Platform Core</span>
+            <ChevronRight className="text-slate-800 w-3.5 h-3.5" />
+            <span className="font-black uppercase tracking-tighter italic text-indigo-400 text-sm">
+              {pathname.split("/").pop()?.replace("-", " ") || "Dashboard"}
+            </span>
+          </div>
+
+          <div className="flex items-center gap-6">
+            <div className="relative">
+              <Button variant="ghost" size="icon" className="text-slate-400 hover:text-white rounded-xl">
+                <Bell size={18} />
+                <span className="absolute top-2.5 right-2.5 w-1.5 h-1.5 bg-indigo-500 rounded-full" />
+              </Button>
+            </div>
+            <div className="h-6 w-[1px] bg-white/5" />
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-600 to-purple-600 flex items-center justify-center font-black text-xs text-white shadow-lg shadow-indigo-500/10 border border-white/10 uppercase">
+                {user.username.slice(0, 2)}
+              </div>
+            </div>
+          </div>
+        </header>
+
+        {/* Real Content body */}
+        <div className="p-8 md:p-12 animate-in fade-in slide-in-from-bottom-4 duration-700">
           {children}
         </div>
       </main>

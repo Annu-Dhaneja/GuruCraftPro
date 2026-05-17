@@ -63,6 +63,7 @@ export async function safeFetch(url: string, options: RequestInit = {}, timeout 
 
   try {
     const response = await fetch(url, {
+      cache: "no-store",
       ...options,
       signal: controller.signal,
     });
@@ -107,5 +108,9 @@ export async function fetchWithAuth(
   if (options.body && !(options.body instanceof FormData)) {
     headers["Content-Type"] = headers["Content-Type"] || "application/json";
   }
-  return fetch(url, { ...options, headers });
+  return fetch(url, { 
+    cache: "no-store",
+    ...options, 
+    headers 
+  });
 }

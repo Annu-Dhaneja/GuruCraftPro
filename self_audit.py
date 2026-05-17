@@ -6,8 +6,9 @@ from dotenv import load_dotenv
 def self_contained_audit():
     load_dotenv('backend/.env')
     db_url = os.getenv('DATABASE_URL')
-    if db_url and "render.com" in db_url:
-        db_url += "?sslmode=require"
+    if db_url and not db_url.startswith("sqlite") and "sslmode" not in db_url:
+        delimiter = "&" if "?" in db_url else "?"
+        db_url += f"{delimiter}sslmode=require"
     
     print(f"Connecting to: {db_url[:20]}...")
     engine = create_engine(db_url)
