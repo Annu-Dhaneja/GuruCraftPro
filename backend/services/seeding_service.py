@@ -310,7 +310,7 @@ class SeedingService:
                 new_comp = models.CMSPageComponent(
                     page_id=db_page.id,
                     order=i,
-                    props_json=json.dumps({"props": comp["props"]})
+                    props_json=json.dumps(comp["props"])
                 )
                 # Find or create component definition
                 comp_def = db.query(models.CMSComponent).filter(

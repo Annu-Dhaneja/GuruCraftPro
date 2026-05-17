@@ -138,6 +138,9 @@ def get_ssot_page_content(db: Session, slug: str, published_only: bool = True) -
         comp = assoc.component
         try:
             props = json.loads(assoc.props_json)
+            # Auto-unpack double-nested props from legacy seeding anomalies
+            if isinstance(props, dict) and "props" in props and len(props) == 1:
+                props = props["props"]
         except:
             props = {}
             
