@@ -92,7 +92,7 @@ export function DynamicPageContent({ slug }: { slug: string }) {
             actualProps = actualProps.props;
           }
           
-          return <Renderer key={comp.id || idx} props={actualProps} />;
+          return <Renderer key={comp.id || idx} {...actualProps} />;
         })
       ) : (
         Object.entries(components).map(([name, props]: [string, any]) => {
@@ -105,7 +105,7 @@ export function DynamicPageContent({ slug }: { slug: string }) {
             actualProps = actualProps.props;
           }
           
-          return <Renderer key={name} props={actualProps} />;
+          return <Renderer key={name} {...actualProps} />;
         })
       )}
     </main>

@@ -13,20 +13,20 @@ import { CategoryGrid } from "@/components/shared/CategoryGrid";
 import { AILabPreview } from "@/components/shared/AILabPreview";
 import { SevenDayTrial } from "@/components/shared/SevenDayTrial";
 
-export const COMPONENT_REGISTRY: Record<string, React.FC<{ props: any }>> = {
-    hero: (props) => <PremiumHero data={props.props} variant="split" />,
-    hero_centered: (props) => <PremiumHero data={props.props} variant="centered" />,
-    cta: (props) => <UniversalCTA data={props.props} />,
-    features: (props) => <FeatureGrid props={props.props} />,
-    process: (props) => <ProcessFlow props={props.props} />,
-    ai_lab_grid: (props) => <AILabGrid props={props.props} />,
-    testimonials: (props) => <Testimonials props={props.props} />,
-    faq: (props) => <FAQ props={props.props} />,
-    pricing: (props) => <Pricing props={props.props} />,
-    contact_form: (props) => <ContactForm props={props.props} />,
-    category_grid: (props) => <CategoryGrid props={props.props} />,
-    ai_lab_preview: (props) => <AILabPreview data={props.props} />,
-    trial_section: (props) => <SevenDayTrial data={props.props} />,
+export const COMPONENT_REGISTRY: Record<string, React.FC<any>> = {
+    hero: (props) => <PremiumHero data={props} variant="split" />,
+    hero_centered: (props) => <PremiumHero data={props} variant="centered" />,
+    cta: (props) => <UniversalCTA data={props} />,
+    features: (props) => <FeatureGrid props={props} />,
+    process: (props) => <ProcessFlow props={props} />,
+    ai_lab_grid: (props) => <AILabGrid props={props} />,
+    testimonials: (props) => <Testimonials props={props} />,
+    faq: (props) => <FAQ props={props} />,
+    pricing: (props) => <Pricing props={props} />,
+    contact_form: (props) => <ContactForm props={props} />,
+    category_grid: (props) => <CategoryGrid props={props} />,
+    ai_lab_preview: (props) => <AILabPreview data={props} />,
+    trial_section: (props) => <SevenDayTrial data={props} />,
 };
 
 export function resolveComponent(name: string, type?: string) {
