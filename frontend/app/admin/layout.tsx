@@ -21,10 +21,10 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   useEffect(() => {
     const token = localStorage.getItem("token");
     const role = localStorage.getItem("role");
-    
+    const normalizedRole = role ? role.toLowerCase().replace("_", "-") : "";
     if (!token) {
       router.push("/login");
-    } else if (role !== "admin" && role !== "super-admin") {
+    } else if (normalizedRole !== "admin" && normalizedRole !== "super-admin") {
       // If logged in but not an admin/super-admin, redirect to user dashboard
       router.push("/dashboard");
     } else {
