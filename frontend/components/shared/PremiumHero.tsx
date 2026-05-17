@@ -9,6 +9,8 @@ import { PremiumButton } from "./UI";
 
 interface HeroProps {
     data: {
+        title?: string;
+        subtitle?: string;
         badge?: string;
         title_prefix?: string;
         title_highlight?: string;
@@ -32,7 +34,10 @@ interface HeroProps {
 export function PremiumHero({ data, variant = "default", className }: HeroProps) {
     if (!data) return null;
 
-    const title = (
+    const rawTitle = data.title || "";
+    const hasTitleParts = !!(data.title_prefix || data.headline_prefix || data.title_highlight || data.headline_highlight || data.title_suffix || data.headline_suffix);
+    
+    const title = hasTitleParts ? (
         <>
             {data.title_prefix || data.headline_prefix}{" "}
             <span className="text-shimmer bg-clip-text text-transparent bg-gradient-to-r from-indigo-400 via-purple-400 to-cyan-400">
@@ -40,9 +45,11 @@ export function PremiumHero({ data, variant = "default", className }: HeroProps)
             </span>{" "}
             {data.title_suffix || data.headline_suffix}
         </>
+    ) : (
+        rawTitle
     );
 
-    const desc = data.subheadline || data.description;
+    const desc = data.subheadline || data.description || data.subtitle;
 
     return (
         <section className={cn(
