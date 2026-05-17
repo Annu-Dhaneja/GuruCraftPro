@@ -149,7 +149,7 @@ def get_ssot_page_content(db: Session, slug: str, published_only: bool = True) -
             "order": assoc.order
         })
 
-    return {
+    res = {
         "title": page.title,
         "slug": page.slug,
         "meta": {
@@ -158,6 +158,14 @@ def get_ssot_page_content(db: Session, slug: str, published_only: bool = True) -
         },
         "components": components
     }
+    
+    # Bridge to V2 by exposing each component's props as a top-level key
+    for comp in components:
+        name = comp.get("name")
+        if name and name not in res:
+            res[name] = comp.get("props", {})
+            
+    return res
 
 
 def upsert_component(db: Session, name: str, comp_type: str, schema: Dict[str, Any] = None) -> CMSComponent:
@@ -245,6 +253,10 @@ def update_ssot_page_content(db: Session, page_slug: str, content: Dict[str, Any
             comp_name = comp_data.get("name")
             comp_type = comp_data.get("type", "hero")
             props = comp_data.get("props", {})
+            
+            # Sync top-level key override if present in the payload (V2 editing bridging)
+            if comp_name and comp_name in content:
+                props = content[comp_name]
             
             if comp_name:
                 upsert_component(db, comp_name, comp_type)
