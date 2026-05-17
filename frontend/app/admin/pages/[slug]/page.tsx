@@ -13,6 +13,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
 import { fetchWithAuth, getApiUrl, safeFetch } from "@/lib/utils";
+import { ServerWakeupPortal } from "@/components/admin/ServerWakeupPortal";
 
 // COMPONENT REGISTRY DEFINITIONS
 const AVAILABLE_COMPONENTS = [
@@ -295,6 +296,15 @@ export default function CMSPageEditor() {
         <div className="w-12 h-12 border-4 border-indigo-500/30 border-t-indigo-500 rounded-full animate-spin mb-4" />
         <div className="text-sm font-black uppercase tracking-widest text-slate-500 animate-pulse">Syncing Editor Workspace...</div>
       </div>
+    );
+  }
+
+  if (!pageData) {
+    return (
+      <ServerWakeupPortal 
+        initialErrorMsg="Network connection to remote server failed" 
+        onSuccess={() => loadPage()} 
+      />
     );
   }
 

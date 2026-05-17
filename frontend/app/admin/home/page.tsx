@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { ArrowLeft, Save, Plus, Trash2, UploadCloud, CheckCircle2, AlertTriangle, Loader2, Terminal } from "lucide-react";
 import { getApiUrl, fetchWithAuth } from "@/lib/utils";
+import { ServerWakeupPortal } from "@/components/admin/ServerWakeupPortal";
 
 const InputLabel = ({ children }: { children: React.ReactNode }) => (
   <label className="block text-sm font-semibold text-indigo-300 mb-2 tracking-wide uppercase">{children}</label>
@@ -296,19 +297,10 @@ export default function AdminHomePage() {
   );
 
   if (error || !data) return (
-    <div className="p-10 text-white flex flex-col items-center justify-center min-h-[400px] text-center">
-      <div className="bg-red-500/10 border border-red-500/20 p-8 rounded-3xl max-w-md">
-        <div className="text-red-400 text-5xl mb-4">⚠️</div>
-        <h2 className="text-2xl font-bold mb-2">Connection Failed</h2>
-        <p className="text-muted-foreground text-sm mb-6">
-          The Design Lab couldn't connect to the backend at <code className="text-indigo-300 font-mono bg-indigo-500/10 px-1 rounded">{getApiUrl()}</code>.
-          Ensure your Vercel backend is live and CORS is configured correctly.
-        </p>
-        <Button onClick={() => window.location.reload()} variant="outline" className="border-white/10 hover:bg-white/5">
-          Retry Sync
-        </Button>
-      </div>
-    </div>
+    <ServerWakeupPortal 
+      initialErrorMsg={error || "Failed to load home page workspace"} 
+      onSuccess={() => window.location.reload()} 
+    />
   );
 
   const tabs = [
