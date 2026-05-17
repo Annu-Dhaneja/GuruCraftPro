@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-import { FAQHero } from "@/components/faq/FAQHero";
-import { FAQAccordion } from "@/components/faq/FAQAccordion";
+import { FAQHero } from "@/components/sections/faq/FAQHero";
+import { FAQAccordion } from "@/components/sections/faq/FAQAccordion";
 
 import { getApiUrl, safeFetch } from "@/lib/utils";
 

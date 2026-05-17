@@ -19,7 +19,7 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import Image from "next/image";
 import { useState } from "react";
-import { CameraDarshan } from "@/components/guruji-darshan/CameraDarshan";
+import { CameraDarshan } from "@/components/sections/guruji-darshan/CameraDarshan";
 import { AnimatePresence } from "framer-motion";
 
 export function GurujiDarshanContent({ data }: { data?: any }) {

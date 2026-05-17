@@ -6,8 +6,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Loader2, ArrowRight, Eye, EyeOff, CheckCircle } from "lucide-react";
-import { getApiUrl } from "@/lib/utils";
 import { useAuthStore } from "@/lib/store/useAuthStore";
+import { authService } from "@/services/api/auth";
 
 export function SignupForm() {
     const { login } = useAuthStore();
@@ -29,41 +29,32 @@ export function SignupForm() {
         const email = formData.get("email") as string;
 
         try {
-            const res = await fetch(getApiUrl("/api/v1/auth/signup"), {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ username, password, name, email: email || undefined }),
-            });
+            const data = await authService.signup({ username, password, name, email: email || undefined });
 
-            const data = await res.json();
-
-            if (res.ok) {
-                // Use the centralized login method
-                login(
-                    { 
-                        id: data.user?.id || 0, 
-                        username: data.user?.username || username, 
-                        role: data.role || "USER", 
-                        name: data.user?.name || name,
-                        email: email
-                    }, 
-                    data.access_token
-                );
-                
-                setSuccess(`Account created! Redirecting...`);
-                setTimeout(() => {
-                    window.location.href = "/dashboard";
-                }, 1500);
+            // Use the centralized login method
+            login(
+                { 
+                    id: data.user?.id || 0, 
+                    username: data.user?.username || username, 
+                    role: data.role || "USER", 
+                    name: data.user?.name || name,
+                    email: email
+                }, 
+                data.access_token
+            );
+            
+            setSuccess(`Account created! Redirecting...`);
+            setTimeout(() => {
+                window.location.href = "/dashboard";
+            }, 1500);
+        } catch (err: any) {
+            console.error("Signup error:", err);
+            const detail = err.data?.detail;
+            if (typeof detail === "object" && detail !== null) {
+                setError(detail.msg || JSON.stringify(detail));
             } else {
-                const detail = data.detail;
-                if (typeof detail === "object" && detail !== null) {
-                    setError(detail.msg || JSON.stringify(detail));
-                } else {
-                    setError(detail || "Signup failed");
-                }
+                setError(detail || "Signup failed");
             }
-        } catch (err) {
-            setError("Could not connect to the server.");
         } finally {
             setLoading(false);
         }

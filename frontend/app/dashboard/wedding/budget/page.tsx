@@ -4,7 +4,7 @@ import React from "react";
 import { ArrowLeft, Sparkles } from "lucide-react";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import WeddingBudgetPlanner from "@/components/wedding/BudgetPlannerAI";
+import WeddingBudgetPlanner from "@/components/sections/wedding/BudgetPlannerAI";
 
 export default function PlannerBudgetPage() {
     return (

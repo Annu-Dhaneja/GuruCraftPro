@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useSiteConfig } from "../layout/SiteConfigProvider";
+import { useSiteConfig } from "@/components/layout/SiteConfigProvider";
 
 export function FooterLinks() {
     const { config } = useSiteConfig();

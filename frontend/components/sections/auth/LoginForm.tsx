@@ -6,9 +6,9 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Loader2, ArrowRight, Eye, EyeOff, Lock, User, ShieldCheck } from "lucide-react";
-import { getApiUrl } from "@/lib/utils";
 import { cn } from "@/lib/utils";
 import { useAuthStore } from "@/lib/store/useAuthStore";
+import { authService } from "@/services/api/auth";
 
 export function LoginForm() {
     const { login } = useAuthStore();
@@ -30,42 +30,32 @@ export function LoginForm() {
             loginData.append("username", username);
             loginData.append("password", password);
 
-            const res = await fetch(getApiUrl("/api/v1/auth/login"), {
-                method: "POST",
-                headers: { "Content-Type": "application/x-www-form-urlencoded" },
-                body: loginData,
-            });
-
-            if (res.ok) {
-                const data = await res.json();
-                
-                // Use the centralized login method
-                login(
-                    { 
-                        id: data.user?.id || 0, 
-                        username: data.user?.username || username, 
-                        role: data.role || "USER", 
-                        name: data.user?.name || username,
-                        email: data.user?.email || "" 
-                    }, 
-                    data.access_token
-                );
-                
-                const normalizedRole = (data.role || "USER").toUpperCase();
-                if (normalizedRole === "EDITOR") {
-                    window.location.href = "/admin/content";
-                } else if (["ADMIN", "SUPER_ADMIN"].includes(normalizedRole)) {
-                    window.location.href = "/admin";
-                } else {
-                    window.location.href = "/dashboard";
-                }
+            const data = await authService.login(loginData);
+            
+            // Use the centralized login method
+            login(
+                { 
+                    id: data.user?.id || 0, 
+                    username: data.user?.username || username, 
+                    role: data.role || "USER", 
+                    name: data.user?.name || username,
+                    email: data.user?.email || "" 
+                }, 
+                data.access_token
+            );
+            
+            const normalizedRole = (data.role || "USER").toUpperCase();
+            if (normalizedRole === "EDITOR") {
+                window.location.href = "/admin/content";
+            } else if (["ADMIN", "SUPER_ADMIN"].includes(normalizedRole)) {
+                window.location.href = "/admin";
             } else {
-                const errData = await res.json();
-                const detail = errData.detail;
-                setError(typeof detail === 'string' ? detail : "Authentication failed. Check your identity.");
+                window.location.href = "/dashboard";
             }
-        } catch (err) {
-            setError("Neural Core connection timeout.");
+        } catch (err: any) {
+            console.error("Login error:", err);
+            const errMsg = err.data?.detail || "Authentication failed. Check your identity.";
+            setError(errMsg);
         } finally {
             setLoading(false);
         }

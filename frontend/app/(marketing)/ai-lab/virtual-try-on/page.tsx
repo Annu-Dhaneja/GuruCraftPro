@@ -3,7 +3,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { Shirt, Sparkles, ShieldCheck, Zap } from "lucide-react";
-import { WardrobeGrid } from "@/components/wardrobe/WardrobeGrid";
+import { WardrobeGrid } from "@/components/sections/wardrobe/WardrobeGrid";
 
 export default function VirtualTryOnPage() {
     return (

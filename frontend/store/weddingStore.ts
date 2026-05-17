@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { getApiUrl, fetchWithAuth } from '@/lib/utils';
+import { servicesService } from '@/services/api/services';
 
 interface WeddingTask {
     id: number;
@@ -153,9 +153,8 @@ export const useWeddingStore = create<WeddingStore>((set, get) => ({
     fetchShowcase: async () => {
         set({ showcaseLoading: true });
         try {
-            const response = await fetch(getApiUrl("/api/v1/wedding/showcase"), { cache: "no-store" });
-            if (response.ok) {
-                const data = await response.json();
+            const data = await servicesService.getWeddingShowcase();
+            if (data) {
                 set({ showcase: data, showcaseLoading: false });
             } else {
                 set({ showcaseLoading: false });
@@ -169,9 +168,7 @@ export const useWeddingStore = create<WeddingStore>((set, get) => ({
     fetchDashboard: async () => {
         set({ loading: true, error: null });
         try {
-            const response = await fetchWithAuth("/api/v1/wedding/dashboard");
-            if (!response.ok) throw new Error('Failed to fetch wedding dashboard');
-            const data = await response.json();
+            const data = await servicesService.getWeddingDashboard();
             if (data) {
                 set({
                     plan: data.plan,
@@ -183,8 +180,8 @@ export const useWeddingStore = create<WeddingStore>((set, get) => ({
                     loading: false
                 });
             }
-        } catch (error: unknown) {
-            const errorMessage = error instanceof Error ? error.message : 'An unknown error occurred';
+        } catch (error: any) {
+            const errorMessage = error.data?.detail || error.message || 'An unknown error occurred';
             set({ error: errorMessage, loading: false });
         }
     },
@@ -192,15 +189,10 @@ export const useWeddingStore = create<WeddingStore>((set, get) => ({
     // ── Plan Update ──
     updatePlan: async (data) => {
         try {
-            const res = await fetchWithAuth("/api/v1/wedding/plan", {
-                method: "PUT",
-                body: JSON.stringify(data),
-            });
-            if (res.ok) {
-                set((state) => ({
-                    plan: state.plan ? { ...state.plan, ...data } : null
-                }));
-            }
+            await servicesService.updateWeddingPlan(data);
+            set((state) => ({
+                plan: state.plan ? { ...state.plan, ...data } : null
+            }));
         } catch (e) {
             console.error("Failed to update plan:", e);
         }
@@ -209,12 +201,8 @@ export const useWeddingStore = create<WeddingStore>((set, get) => ({
     // ── Task CRUD ──
     addTask: async (task) => {
         try {
-            const res = await fetchWithAuth("/api/v1/wedding/tasks", {
-                method: "POST",
-                body: JSON.stringify(task),
-            });
-            if (res.ok) {
-                const newTask = await res.json();
+            const newTask = await servicesService.saveWeddingTask(task);
+            if (newTask) {
                 set((state) => ({ tasks: [...state.tasks, newTask] }));
             }
         } catch (e) {
@@ -224,10 +212,7 @@ export const useWeddingStore = create<WeddingStore>((set, get) => ({
 
     updateTask: async (id, task) => {
         try {
-            await fetchWithAuth(`/api/v1/wedding/tasks/${id}`, {
-                method: "PUT",
-                body: JSON.stringify(task),
-            });
+            await servicesService.updateWeddingTask(id, task);
             set((state) => ({
                 tasks: state.tasks.map((t) => t.id === id ? { ...t, ...task } : t)
             }));
@@ -238,7 +223,7 @@ export const useWeddingStore = create<WeddingStore>((set, get) => ({
 
     deleteTask: async (id) => {
         try {
-            await fetchWithAuth(`/api/v1/wedding/tasks/${id}`, { method: "DELETE" });
+            await servicesService.deleteWeddingTask(id);
             set((state) => ({
                 tasks: state.tasks.filter((t) => t.id !== id)
             }));
@@ -250,12 +235,8 @@ export const useWeddingStore = create<WeddingStore>((set, get) => ({
     // ── Guest CRUD ──
     addGuest: async (guest) => {
         try {
-            const res = await fetchWithAuth("/api/v1/wedding/guests", {
-                method: "POST",
-                body: JSON.stringify(guest),
-            });
-            if (res.ok) {
-                const newGuest = await res.json();
+            const newGuest = await servicesService.saveWeddingGuest(guest);
+            if (newGuest) {
                 set((state) => ({ guests: [...state.guests, newGuest] }));
             }
         } catch (e) {
@@ -265,10 +246,7 @@ export const useWeddingStore = create<WeddingStore>((set, get) => ({
 
     updateGuest: async (id, guest) => {
         try {
-            await fetchWithAuth(`/api/v1/wedding/guests/${id}`, {
-                method: "PUT",
-                body: JSON.stringify(guest),
-            });
+            await servicesService.updateWeddingGuest(id, guest);
             set((state) => ({
                 guests: state.guests.map((g) => g.id === id ? { ...g, ...guest } : g)
             }));
@@ -279,7 +257,7 @@ export const useWeddingStore = create<WeddingStore>((set, get) => ({
 
     deleteGuest: async (id) => {
         try {
-            await fetchWithAuth(`/api/v1/wedding/guests/${id}`, { method: "DELETE" });
+            await servicesService.deleteWeddingGuest(id);
             set((state) => ({
                 guests: state.guests.filter((g) => g.id !== id)
             }));
@@ -291,12 +269,8 @@ export const useWeddingStore = create<WeddingStore>((set, get) => ({
     // ── Vendor CRUD ──
     addVendor: async (vendor) => {
         try {
-            const res = await fetchWithAuth("/api/v1/wedding/vendors", {
-                method: "POST",
-                body: JSON.stringify(vendor),
-            });
-            if (res.ok) {
-                const newVendor = await res.json();
+            const newVendor = await servicesService.saveWeddingVendor(vendor);
+            if (newVendor) {
                 set((state) => ({ vendors: [...state.vendors, newVendor] }));
             }
         } catch (e) {
@@ -306,10 +280,7 @@ export const useWeddingStore = create<WeddingStore>((set, get) => ({
 
     updateVendor: async (id, vendor) => {
         try {
-            await fetchWithAuth(`/api/v1/wedding/vendors/${id}`, {
-                method: "PUT",
-                body: JSON.stringify(vendor),
-            });
+            await servicesService.updateWeddingVendor(id, vendor);
             set((state) => ({
                 vendors: state.vendors.map((v) => v.id === id ? { ...v, ...vendor } : v)
             }));
@@ -320,7 +291,7 @@ export const useWeddingStore = create<WeddingStore>((set, get) => ({
 
     deleteVendor: async (id) => {
         try {
-            await fetchWithAuth(`/api/v1/wedding/vendors/${id}`, { method: "DELETE" });
+            await servicesService.deleteWeddingVendor(id);
             set((state) => ({
                 vendors: state.vendors.filter((v) => v.id !== id)
             }));
@@ -332,12 +303,8 @@ export const useWeddingStore = create<WeddingStore>((set, get) => ({
     // ── Budget CRUD ──
     addBudgetItem: async (item) => {
         try {
-            const res = await fetchWithAuth("/api/v1/wedding/budget", {
-                method: "POST",
-                body: JSON.stringify(item),
-            });
-            if (res.ok) {
-                const newItem = await res.json();
+            const newItem = await servicesService.saveWeddingBudget(item);
+            if (newItem) {
                 set((state) => ({ budget: [...state.budget, newItem] }));
             }
         } catch (e) {
@@ -347,7 +314,7 @@ export const useWeddingStore = create<WeddingStore>((set, get) => ({
 
     deleteBudgetItem: async (id) => {
         try {
-            await fetchWithAuth(`/api/v1/wedding/budget/${id}`, { method: "DELETE" });
+            await servicesService.deleteWeddingBudget(id);
             set((state) => ({
                 budget: state.budget.filter((b) => b.id !== id)
             }));
@@ -360,9 +327,8 @@ export const useWeddingStore = create<WeddingStore>((set, get) => ({
     fetchAllPlans: async () => {
         set({ adminLoading: true });
         try {
-            const res = await fetchWithAuth("/api/v1/wedding/admin/all-plans");
-            if (res.ok) {
-                const data = await res.json();
+            const data = await servicesService.getAdminWeddingPlans();
+            if (data) {
                 set({
                     adminPlans: data.plans,
                     adminTotalPlans: data.total_plans,
@@ -379,9 +345,8 @@ export const useWeddingStore = create<WeddingStore>((set, get) => ({
     fetchPlanDetail: async (planId) => {
         set({ adminLoading: true });
         try {
-            const res = await fetchWithAuth(`/api/v1/wedding/admin/plan/${planId}`);
-            if (res.ok) {
-                const data = await res.json();
+            const data = await servicesService.getAdminWeddingPlanDetails(planId);
+            if (data) {
                 set({ adminPlanDetail: data, adminLoading: false });
             } else {
                 set({ adminLoading: false });

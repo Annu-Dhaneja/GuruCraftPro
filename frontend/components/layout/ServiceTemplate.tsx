@@ -49,9 +49,13 @@ export function ServiceTemplate({ data, slug: passedSlug }: { data: ServiceData,
       >
         {components.map((comp, idx) => {
           const Renderer = resolveComponent(comp.name || comp.type || "") || GenericRenderer;
-          // Standardize props structure for registry components
-          const componentProps = comp.props || comp.content || comp;
-          return <Renderer key={comp.id || idx} props={{ props: componentProps }} />;
+          
+          let actualProps = comp.props || comp.content || comp || {};
+          while (actualProps && typeof actualProps === "object" && "props" in actualProps) {
+            actualProps = actualProps.props;
+          }
+          
+          return <Renderer key={comp.id || idx} {...actualProps} />;
         })}
       </motion.div>
     </AnimatePresence>

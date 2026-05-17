@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-import { RequestHero } from "@/components/request/RequestHero";
-import { ProjectIntakeForm } from "@/components/request/ProjectIntakeForm";
+import { RequestHero } from "@/components/sections/request/RequestHero";
+import { ProjectIntakeForm } from "@/components/sections/request/ProjectIntakeForm";
 
 
 export const metadata: Metadata = {

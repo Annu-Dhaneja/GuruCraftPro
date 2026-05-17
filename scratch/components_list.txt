@@ -1,0 +1,223 @@
+
+[root]
+
+[about]
+  - AboutCTA.tsx (1240 bytes)
+  - AboutHero.tsx (2470 bytes)
+  - AIHumanSection.tsx (3283 bytes)
+  - FounderIntro.tsx (3537 bytes)
+  - Philosophy.tsx (3510 bytes)
+  - ServicesPreview.tsx (2373 bytes)
+  - TeamSection.tsx (4054 bytes)
+  - ToolsWorkflow.tsx (4250 bytes)
+  - TrustSection.tsx (7047 bytes)
+
+[admin]
+  - AdminDashboard.tsx (7747 bytes)
+  - AdminSidebar.tsx (3321 bytes)
+  - CMSEditor.tsx (31759 bytes)
+  - CMSManager.tsx (4843 bytes)
+  - MediaManager.tsx (5322 bytes)
+  - RoleManagement.tsx (3916 bytes)
+  - SEOManager.tsx (3683 bytes)
+  - ServerWakeupPortal.tsx (8406 bytes)
+  - UserManagement.tsx (7665 bytes)
+
+[admin\media]
+  - BulkUrlImportModal.tsx (5909 bytes)
+
+[ai]
+  - AIGallery.tsx (3834 bytes)
+  - AIHero.tsx (3142 bytes)
+  - AIPromptInput.tsx (5068 bytes)
+  - DesignControls.tsx (6997 bytes)
+  - UpgradeCTA.tsx (2294 bytes)
+  - VersionHistory.tsx (3071 bytes)
+  - WorkflowExplainer.tsx (3339 bytes)
+
+[auth]
+  - LoginForm.tsx (7982 bytes)
+  - SignupForm.tsx (6249 bytes)
+
+[booking]
+  - BookingHero.tsx (1945 bytes)
+  - BookingScheduler.tsx (14791 bytes)
+
+[consultation]
+  - ConsultationDashboard.tsx (3699 bytes)
+  - ConsultationForm.tsx (6766 bytes)
+
+[contact]
+  - AlternateContacts.tsx (2465 bytes)
+  - ContactCTA.tsx (1233 bytes)
+  - ContactFAQ.tsx (1968 bytes)
+  - ContactForm.tsx (8894 bytes)
+  - ContactHero.tsx (1490 bytes)
+  - ContactOptions.tsx (2546 bytes)
+  - ContactProcess.tsx (2368 bytes)
+
+[dashboard]
+  - DashboardShell.tsx (7060 bytes)
+  - OverviewWidgets.tsx (3906 bytes)
+
+[faq]
+  - FAQAccordion.tsx (4307 bytes)
+  - FAQHero.tsx (1709 bytes)
+
+[footer]
+  - Footer.tsx (1589 bytes)
+  - FooterBottom.tsx (1345 bytes)
+  - FooterBrand.tsx (4207 bytes)
+  - FooterLinks.tsx (2534 bytes)
+  - FooterNewsletter.tsx (3608 bytes)
+
+[guruji-art]
+  - GurujiArtContent.tsx (14176 bytes)
+  - GurujiArtEcommerce.tsx (17401 bytes)
+  - SpiritualSanctuaryContent.tsx (15317 bytes)
+
+[guruji-darshan]
+  - CameraDarshan.tsx (7914 bytes)
+  - GurujiDarshanContent.tsx (25329 bytes)
+
+[home]
+  - AboutSection.tsx (4973 bytes)
+  - BlogPreview.tsx (5383 bytes)
+  - FAQSection.tsx (3810 bytes)
+  - FeaturesGrid.tsx (7953 bytes)
+  - FinalCTA.tsx (4825 bytes)
+  - Hero.tsx (11276 bytes)
+  - HowItWorks.tsx (5319 bytes)
+  - MainServices.tsx (6250 bytes)
+  - PortfolioPreview.tsx (7789 bytes)
+  - ServicesSnapshot.tsx (7148 bytes)
+  - Testimonials.tsx (3395 bytes)
+  - ThingsSection.tsx (9885 bytes)
+  - TrustStrip.tsx (4701 bytes)
+  - VirtualDressingRoom.tsx (5083 bytes)
+
+[layout]
+  - AdminLayout.tsx (282 bytes)
+  - Breadcrumbs.tsx (1729 bytes)
+  - CartSidebar.tsx (7571 bytes)
+  - CentralizedSEO.tsx (1396 bytes)
+  - DynamicLegalPage.tsx (1225 bytes)
+  - LegalLayout.tsx (2439 bytes)
+  - MobileBottomNav.tsx (2418 bytes)
+  - MobileNav.tsx (12565 bytes)
+  - Navbar.tsx (3924 bytes)
+  - NavLinks.tsx (4585 bytes)
+  - ServiceTemplate.tsx (2515 bytes)
+  - SiteConfigProvider.tsx (6791 bytes)
+  - ThemeProvider.tsx (310 bytes)
+  - ThemeToggle.tsx (1188 bytes)
+  - UserMenu.tsx (4928 bytes)
+
+[portfolio]
+  - CaseStudyHero.tsx (2815 bytes)
+  - ExploreTemplates.tsx (6373 bytes)
+  - PortfolioAll.tsx (6688 bytes)
+  - PortfolioCard.tsx (4978 bytes)
+  - PortfolioCTA.tsx (1660 bytes)
+  - PortfolioFilters.tsx (6389 bytes)
+  - PortfolioGrid.tsx (8200 bytes)
+  - PortfolioHero.tsx (6581 bytes)
+  - PortfolioLayout.tsx (1646 bytes)
+  - PortfolioProjectTemplate.tsx (9641 bytes)
+  - ProjectGallery.tsx (956 bytes)
+  - ProjectModal.tsx (7058 bytes)
+  - ProjectNavigation.tsx (1090 bytes)
+  - ProjectOverview.tsx (2779 bytes)
+  - ServiceCategoryRail.tsx (6233 bytes)
+
+[portfolio-category]
+  - CategoryCTA.tsx (1937 bytes)
+  - CategoryGrid.tsx (1173 bytes)
+  - CategoryHero.tsx (2795 bytes)
+  - CategoryIntro.tsx (527 bytes)
+
+[request]
+  - ProjectIntakeForm.tsx (14213 bytes)
+  - RequestHero.tsx (1316 bytes)
+
+[resources]
+  - CategoryTabs.tsx (1725 bytes)
+  - FeaturedPosts.tsx (3268 bytes)
+  - FreeResources.tsx (1985 bytes)
+  - LearnHero.tsx (1447 bytes)
+  - NewsletterCTA.tsx (1789 bytes)
+  - PromptLibrary.tsx (3400 bytes)
+  - TutorialList.tsx (2147 bytes)
+
+[services]
+  - ClothingConsultationContent.tsx (12094 bytes)
+  - ComparisonTable.tsx (4314 bytes)
+  - GameDesignContent.tsx (12036 bytes)
+  - GraphicDesignServices.tsx (8855 bytes)
+  - PhotoEditorContent.tsx (9745 bytes)
+  - ProcessTimeline.tsx (2857 bytes)
+  - ProductGrid.tsx (7664 bytes)
+  - ServiceCards.tsx (4660 bytes)
+  - ServiceFAQ.tsx (2468 bytes)
+  - ServiceNavigator.tsx (3988 bytes)
+  - ServicesCTA.tsx (2199 bytes)
+  - ServicesHero.tsx (2607 bytes)
+  - ServiceTiers.tsx (3812 bytes)
+  - VantageEcomContent.tsx (12715 bytes)
+  - WeddingPlanContent.tsx (12968 bytes)
+
+[shared]
+  - AILabGrid.tsx (3671 bytes)
+  - AILabPreview.tsx (9983 bytes)
+  - CategoryGrid.tsx (4273 bytes)
+  - ContactForm.tsx (4172 bytes)
+  - FAQ.tsx (2175 bytes)
+  - FeatureGrid.tsx (2942 bytes)
+  - PremiumHero.tsx (10253 bytes)
+  - PremiumUI.tsx (11721 bytes)
+  - Pricing.tsx (4486 bytes)
+  - ProcessFlow.tsx (2068 bytes)
+  - SevenDayTrial.tsx (7923 bytes)
+  - Testimonials.tsx (2530 bytes)
+  - UI.tsx (3523 bytes)
+  - UniversalCTA.tsx (2877 bytes)
+
+[shop]
+  - LuxuryShopContent.tsx (11640 bytes)
+
+[team]
+  - MemberCard.tsx (5745 bytes)
+
+[ui]
+  - accordion.tsx (2119 bytes)
+  - avatar.tsx (1150 bytes)
+  - badge.tsx (1679 bytes)
+  - button.tsx (2280 bytes)
+  - card.tsx (2079 bytes)
+  - checkbox.tsx (1251 bytes)
+  - dialog.tsx (4245 bytes)
+  - dropdown-menu.tsx (8681 bytes)
+  - input.tsx (983 bytes)
+  - label.tsx (635 bytes)
+  - navigation-menu.tsx (6851 bytes)
+  - radio-group.tsx (1511 bytes)
+  - scroll-area.tsx (1703 bytes)
+  - select.tsx (6548 bytes)
+  - separator.tsx (727 bytes)
+  - sheet.tsx (4229 bytes)
+  - slider.tsx (1128 bytes)
+  - switch.tsx (1208 bytes)
+  - table.tsx (2564 bytes)
+  - textarea.tsx (777 bytes)
+  - tooltip.tsx (1953 bytes)
+  - WhatsAppButton.tsx (1093 bytes)
+
+[wardrobe]
+  - WardrobeGrid.tsx (8857 bytes)
+
+[wedding]
+  - BudgetPlannerAI.tsx (11243 bytes)
+  - WeddingOnboarding.tsx (11857 bytes)
+
+[wedding\budget]
+  - BudgetTable.tsx (6616 bytes)

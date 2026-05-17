@@ -13,9 +13,10 @@ import {
     PackageOpen
 } from "lucide-react";
 import Link from "next/link";
-import { cn, fetchWithAuth } from "@/lib/utils";
+import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { useCartStore } from "@/store/cartStore";
+import { portfolioService } from "@/services/api/portfolio";
 
 const categories = ["All Creations", "Spiritual Art", "E-commerce Assets", "Branding Kits", "Invitation Suites"];
 
@@ -43,16 +44,11 @@ export function LuxuryShopContent({ cmsData }: { cmsData?: any }) {
         const fetchProducts = async () => {
             setLoading(true);
             try {
-                const path = activeCategory === "All Creations" 
-                    ? "/api/v1/products"
-                    : `/api/v1/products?category=${encodeURIComponent(activeCategory)}`;
-                const res = await fetchWithAuth(path);
-                if (res.ok) {
-                    const data = await res.json();
-                    setProducts(Array.isArray(data) ? data : []);
-                }
+                const data = await portfolioService.getProducts(activeCategory);
+                setProducts(Array.isArray(data) ? data : []);
             } catch (err) {
                 console.error("Products fetch error:", err);
+                setProducts([]);
             } finally {
                 setLoading(false);
             }

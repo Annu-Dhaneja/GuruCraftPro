@@ -8,8 +8,9 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Upload, Send, Loader2, ArrowRight, CheckCircle2 } from "lucide-react";
-import { fetchWithAuth, getApiUrl, cn } from "@/lib/utils";
+import { cn } from "@/lib/utils";
 import { toast } from "sonner";
+import { servicesService } from "@/services/api/services";
 
 export function ProjectIntakeForm() {
     const [step, setStep] = useState(1);
@@ -35,7 +36,6 @@ export function ProjectIntakeForm() {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setLoading(true);
-        
         try {
             const data = new FormData();
             data.append("name", formData.name);
@@ -50,21 +50,13 @@ export function ProjectIntakeForm() {
                 data.append("attachment", file);
             }
 
-            const res = await fetch(getApiUrl("/api/v1/contact/"), {
-                method: "POST",
-                body: data,
-            });
-
-            if (res.ok) {
-                setCompleted(true);
-                toast.success("Request submitted successfully!");
-            } else {
-                const err = await res.json();
-                toast.error(err.detail || "Failed to submit request.");
-            }
-        } catch (error) {
+            await servicesService.submitProjectIntake(data);
+            setCompleted(true);
+            toast.success("Request submitted successfully!");
+        } catch (error: any) {
             console.error("Submission error:", error);
-            toast.error("Connection failed. Please try again.");
+            const errMsg = error.data?.detail || "Failed to submit request.";
+            toast.error(errMsg);
         } finally {
             setLoading(false);
         }

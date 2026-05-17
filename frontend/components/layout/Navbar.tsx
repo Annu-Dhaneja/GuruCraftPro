@@ -10,7 +10,7 @@ import { UserMenu } from "./UserMenu";
 import { ThemeToggle } from "./ThemeToggle";
 import { useSiteConfig } from "./SiteConfigProvider";
 import Image from "next/image";
-import { PremiumButton } from "../shared/UI";
+import { PremiumButton } from "@/components/shared/UI";
 
 export function Navbar() {
     const [scrolled, setScrolled] = React.useState(false);

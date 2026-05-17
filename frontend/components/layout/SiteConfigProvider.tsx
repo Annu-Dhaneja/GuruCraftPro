@@ -1,7 +1,7 @@
 "use client";
 
 import React, { createContext, useContext, useEffect, useState } from "react";
-import { getApiUrl } from "@/lib/utils";
+import { pagesService } from "@/services/api/pages";
 
 // Define the shape of our site config Based on the backend seeder
 interface NavItem {
@@ -125,12 +125,8 @@ export function SiteConfigProvider({ children }: { children: React.ReactNode }) 
     useEffect(() => {
         async function fetchConfig() {
             try {
-                const res = await fetch(getApiUrl("/api/v1/cms/site_config"), {
-                    cache: "no-store"
-                });
-                if (res.ok) {
-                    const data = await res.json();
-                    
+                const data = await pagesService.getSiteConfig();
+                if (data) {
                     // Merge fetched data with defaults to ensure structure exists
                     setConfig({
                         brand: {

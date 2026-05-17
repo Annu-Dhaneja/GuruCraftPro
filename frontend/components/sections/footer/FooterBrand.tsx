@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { Facebook, Twitter, Instagram, Linkedin, Dribbble, MessageCircle, Github, Youtube, Share2, Send } from "lucide-react";
-import { useSiteConfig } from "../layout/SiteConfigProvider";
+import { useSiteConfig } from "@/components/layout/SiteConfigProvider";
 import Image from "next/image";
 
 export function FooterBrand() {

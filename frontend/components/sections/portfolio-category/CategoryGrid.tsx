@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { PortfolioCard } from "@/components/portfolio/PortfolioCard";
+import { PortfolioCard } from "@/components/sections/portfolio/PortfolioCard";
 
 interface CategoryGridProps {
     items: any[];

@@ -30,7 +30,7 @@ const ICON_MAP: Record<string, any> = {
     "Globe": Globe
 };
 
-import { MemberCard } from "@/components/team/MemberCard";
+import { MemberCard } from "@/components/sections/team/MemberCard";
 
 const team = [
     {

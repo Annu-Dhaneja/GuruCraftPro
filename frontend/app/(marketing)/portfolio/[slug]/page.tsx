@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { PortfolioProjectTemplate } from "@/components/portfolio/PortfolioProjectTemplate";
+import { PortfolioProjectTemplate } from "@/components/sections/portfolio/PortfolioProjectTemplate";
 import { getApiUrl, safeFetch } from "@/lib/utils";
 import { notFound } from "next/navigation";
 

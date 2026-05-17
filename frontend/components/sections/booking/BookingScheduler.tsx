@@ -9,8 +9,8 @@ import { cn } from "@/lib/utils";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { getApiUrl } from "@/lib/utils";
 import { toast } from "sonner";
+import { servicesService } from "@/services/api/services";
 
 // Mock Services
 const services = [
@@ -57,19 +57,13 @@ export function BookingScheduler() {
         data.append("deadline", selectedDate || "");
 
         try {
-            const res = await fetch(getApiUrl("/api/v1/contact/"), {
-                method: "POST",
-                body: data,
-            });
-
-            if (res.ok) {
-                setCompleted(true);
-                toast.success("Booking request sent! We'll confirm shortly.");
-            } else {
-                toast.error("Failed to send booking request.");
-            }
-        } catch (err) {
-            toast.error("Connection error. Please try again.");
+            await servicesService.submitProjectIntake(data);
+            setCompleted(true);
+            toast.success("Booking request sent! We'll confirm shortly.");
+        } catch (err: any) {
+            console.error("Booking submit error:", err);
+            const errMsg = err.data?.detail || "Failed to send booking request.";
+            toast.error(errMsg);
         } finally {
             setLoading(false);
         }

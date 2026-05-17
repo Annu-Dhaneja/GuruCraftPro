@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { LegalLayout } from "@/components/layout/LegalLayout";
-import { getApiUrl } from "@/lib/utils";
+import { pagesService } from "@/services/api/pages";
 
 interface DynamicLegalPageProps {
     section: string;
@@ -13,8 +13,7 @@ export function DynamicLegalPage({ section, defaultTitle }: DynamicLegalPageProp
     const [pageData, setPageData] = useState<any>(null);
 
     useEffect(() => {
-        fetch(getApiUrl(`/api/v1/cms/${section}`), { cache: "no-store" })
-            .then(res => res.json())
+        pagesService.getPage(section)
             .then(data => setPageData(data))
             .catch(err => console.error(`Legal Fetch Error (${section}):`, err));
     }, [section]);

@@ -6,7 +6,8 @@ import {
   Save, UploadCloud, CheckCircle2, AlertTriangle, Loader2, Play, 
   Terminal, ShieldCheck, Eye, LayoutGrid, Cpu, RefreshCw, Layers 
 } from "lucide-react";
-import { getApiUrl, fetchWithAuth } from "@/lib/utils";
+import { pagesService } from "@/services/api/pages";
+import { getApiUrl } from "@/lib/utils";
 
 const InputLabel = ({ children }: { children: React.ReactNode }) => (
   <label className="block text-[10px] font-black tracking-widest text-indigo-300 mb-2 uppercase">{children}</label>
@@ -49,13 +50,8 @@ const ImageUploadField = ({ value, onChange }: { value: string, onChange: (v: st
     formData.append("file", file);
 
     try {
-      const res = await fetchWithAuth("/api/v1/cms/upload-image", {
-        method: "POST",
-        body: formData,
-      });
-
-      if (res.ok) {
-        const data = await res.json();
+      const data = await pagesService.uploadImage(formData);
+      if (data && data.url) {
         onChange(data.url);
       } else {
         alert("Image upload failed");
@@ -144,11 +140,7 @@ export function CMSEditor({
   };
 
   useEffect(() => {
-    fetchWithAuth(`/api/v1/cms/${segment}`)
-      .then(res => {
-        if (!res.ok) throw new Error(`Server returned ${res.status}`);
-        return res.json();
-      })
+    pagesService.getPage(segment, { skipAuth: false })
       .then(d => {
         setData(d);
         setLoading(false);
@@ -174,12 +166,7 @@ export function CMSEditor({
       setSteps(prev => prev.map(s => s.id === "db" ? { ...s, status: "loading" } : s));
       addLog("Step 1: Serializing data streams & committing to database...");
       
-      const dbRes = await fetchWithAuth(`/api/v1/cms/${segment}`, {
-        method: "PUT",
-        body: JSON.stringify(data)
-      });
-
-      if (!dbRes.ok) throw new Error(`Database transaction rejected with code ${dbRes.status}`);
+      await pagesService.updatePage(segment, data);
       addLog("✓ Database transaction committed successfully inside Remote PostgreSQL.");
       setSteps(prev => prev.map(s => s.id === "db" ? { ...s, status: "success" } : s));
 
@@ -188,12 +175,7 @@ export function CMSEditor({
       setSteps(prev => prev.map(s => s.id === "api" ? { ...s, status: "loading" } : s));
       addLog("Step 2: Performing out-of-band REST query to public endpoint...");
       
-      const apiRes = await fetch(getApiUrl(`/api/v1/cms/${segment}`), {
-        headers: { "Cache-Control": "no-cache", "Pragma": "no-cache" }
-      });
-
-      if (!apiRes.ok) throw new Error(`REST validation failed with status ${apiRes.status}`);
-      const apiData = await apiRes.json();
+      const apiData = await pagesService.getPage(segment, { skipAuth: true });
       addLog("✓ Public API returns updated state securely.");
       setSteps(prev => prev.map(s => s.id === "api" ? { ...s, status: "success" } : s));
 

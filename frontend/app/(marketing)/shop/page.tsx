@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { LuxuryShopContent } from "@/components/shop/LuxuryShopContent";
+import { LuxuryShopContent } from "@/components/sections/shop/LuxuryShopContent";
 import { getApiUrl, safeFetch } from "@/lib/utils";
 
 export const metadata: Metadata = {

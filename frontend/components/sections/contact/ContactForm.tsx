@@ -8,8 +8,7 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Upload, Send, Loader2 } from "lucide-react";
-
-import { getApiUrl } from "@/lib/utils";
+import { servicesService } from "@/services/api/services";
 
 export function ContactForm({ data }: { data?: any }) {
     const [loading, setLoading] = useState(false);
@@ -30,19 +29,11 @@ export function ContactForm({ data }: { data?: any }) {
         }
 
         try {
-            const res = await fetch(getApiUrl("/api/v1/contact/"), {
-                method: "POST",
-                // Removing Content-Type forces the browser to set multipart/form-data with boundaries
-                body: formData,
-            });
-
-            if (res.ok) {
-                setStatus("success");
-                formEl.reset();
-            } else {
-                setStatus("error");
-            }
+            await servicesService.submitProjectIntake(formData);
+            setStatus("success");
+            formEl.reset();
         } catch (err) {
+            console.error("Contact Form submit error:", err);
             setStatus("error");
         } finally {
             setLoading(false);

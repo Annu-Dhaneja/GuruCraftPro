@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { LearnHero } from "@/components/resources/LearnHero";
+import { LearnHero } from "@/components/sections/resources/LearnHero";
 
 export async function generateMetadata(): Promise<Metadata> {
     try {
@@ -23,12 +23,12 @@ export async function generateMetadata(): Promise<Metadata> {
     };
 }
 
-import { CategoryTabs } from "@/components/resources/CategoryTabs";
-import { FeaturedPosts } from "@/components/resources/FeaturedPosts";
-import { TutorialList } from "@/components/resources/TutorialList";
-import { PromptLibrary } from "@/components/resources/PromptLibrary";
-import { FreeResources } from "@/components/resources/FreeResources";
-import { NewsletterCTA } from "@/components/resources/NewsletterCTA";
+import { CategoryTabs } from "@/components/sections/resources/CategoryTabs";
+import { FeaturedPosts } from "@/components/sections/resources/FeaturedPosts";
+import { TutorialList } from "@/components/sections/resources/TutorialList";
+import { PromptLibrary } from "@/components/sections/resources/PromptLibrary";
+import { FreeResources } from "@/components/sections/resources/FreeResources";
+import { NewsletterCTA } from "@/components/sections/resources/NewsletterCTA";
 
 import { getApiUrl, safeFetch } from "@/lib/utils";
 

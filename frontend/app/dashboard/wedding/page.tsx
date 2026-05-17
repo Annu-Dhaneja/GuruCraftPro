@@ -9,7 +9,7 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useWeddingStore } from "@/store/weddingStore";
-import { WeddingOnboarding } from "@/components/wedding/WeddingOnboarding";
+import { WeddingOnboarding } from "@/components/sections/wedding/WeddingOnboarding";
 
 const StatCard = ({ label, value, icon: Icon, color, delay }: any) => (
     <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay }} className="relative group overflow-hidden">

@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { LoginForm } from "@/components/auth/LoginForm";
+import { LoginForm } from "@/components/sections/auth/LoginForm";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { ChevronLeft, ShieldCheck, Zap } from "lucide-react";

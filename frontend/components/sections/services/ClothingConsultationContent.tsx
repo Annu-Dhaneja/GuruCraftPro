@@ -8,7 +8,7 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { getApiUrl, fetchWithAuth } from "@/lib/utils";
+import { servicesService } from "@/services/api/services";
 
 const STYLES = ["Formal", "Casual", "Traditional", "Fusion"];
 const GENDERS = [
@@ -40,8 +40,7 @@ export function ClothingConsultationContent() {
   });
 
   useEffect(() => {
-    fetchWithAuth("/api/v1/cms/7-day-clothing-consultation")
-      .then(res => res.json())
+    servicesService.getClothingConsultation()
       .then(data => setCmsData(data))
       .catch(err => console.error("CMS Fetch Error:", err));
   }, []);
@@ -49,20 +48,15 @@ export function ClothingConsultationContent() {
   const fetchSuggestions = async () => {
     setLoading(true);
     try {
-      const query = new URLSearchParams({
+      const data = await servicesService.getOutfitSuggestions({
         style: form.style,
         gender: form.gender,
         age: form.age
-      }).toString();
-
-      const res = await fetchWithAuth(`/api/v1/outfits/suggest?${query}`);
-      if (res.ok) {
-        const data = await res.json();
-        setOutfits(data);
-        setTimeout(() => {
-          document.getElementById('results-grid')?.scrollIntoView({ behavior: 'smooth' });
-        }, 100);
-      }
+      });
+      setOutfits(data);
+      setTimeout(() => {
+        document.getElementById('results-grid')?.scrollIntoView({ behavior: 'smooth' });
+      }, 100);
     } catch (err) {
       console.error("Fetch error:", err);
     } finally {

@@ -1,5 +1,5 @@
 import { Navbar } from "@/components/layout/Navbar";
-import { Footer } from "@/components/footer/Footer";
+import { Footer } from "@/components/sections/footer/Footer";
 import { MobileBottomNav } from "@/components/layout/MobileBottomNav";
 import { CentralizedSEO } from "@/components/layout/CentralizedSEO";
 import { Breadcrumbs } from "@/components/layout/Breadcrumbs";

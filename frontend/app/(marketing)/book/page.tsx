@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-import { BookingHero } from "@/components/booking/BookingHero";
-import { BookingScheduler } from "@/components/booking/BookingScheduler";
+import { BookingHero } from "@/components/sections/booking/BookingHero";
+import { BookingScheduler } from "@/components/sections/booking/BookingScheduler";
 
 export const metadata: Metadata = {
     title: "Book a Consultation | GurucraftPro",

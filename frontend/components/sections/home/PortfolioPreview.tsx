@@ -6,7 +6,7 @@ import { motion } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { ProjectModal } from "@/components/portfolio/ProjectModal";
+import { ProjectModal } from "@/components/sections/portfolio/ProjectModal";
 
 const defaultProjects = [
     {

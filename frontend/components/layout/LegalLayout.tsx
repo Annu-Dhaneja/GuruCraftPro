@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Footer } from "@/components/footer/Footer";
+import { Footer } from "@/components/sections/footer/Footer";
 
 interface LegalLayoutProps {
     title: string;

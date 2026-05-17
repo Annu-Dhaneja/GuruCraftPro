@@ -170,6 +170,25 @@ async def list_users(
 async def get_me(current_user: models.User = Depends(auth.get_current_user)):
     return current_user
 
+@router.put("/me", response_model=user_schemas.UserOut)
+async def update_me(
+    body: user_schemas.UserUpdate,
+    db: Session = Depends(database.get_db),
+    current_user: models.User = Depends(auth.get_current_user)
+):
+    if body.name is not None:
+        current_user.name = body.name
+    if body.email is not None:
+        if body.email != current_user.email:
+            existing = db.query(models.User).filter(models.User.email == body.email).first()
+            if existing:
+                raise HTTPException(status_code=400, detail="Email already taken")
+        current_user.email = body.email
+    
+    db.commit()
+    db.refresh(current_user)
+    return current_user
+
 # ── Admin Role & Approval APIs ──────────────────────────────────────
 
 @router.post("/{user_id}/approve")

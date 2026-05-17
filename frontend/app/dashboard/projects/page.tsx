@@ -1,6 +1,6 @@
 "use client";
 
-import { DashboardShell } from "@/components/dashboard/DashboardShell";
+import { DashboardShell } from "@/components/sections/dashboard/DashboardShell";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";

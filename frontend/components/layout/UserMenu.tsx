@@ -12,7 +12,7 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useAuthStore } from "@/lib/store/useAuthStore";
-import { PremiumButton } from "../shared/UI";
+import { PremiumButton } from "@/components/shared/UI";
 
 export function UserMenu() {
     const { user, isAuthenticated, logout } = useAuthStore();

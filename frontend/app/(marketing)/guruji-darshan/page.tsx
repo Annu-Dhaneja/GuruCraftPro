@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { GurujiDarshanContent } from "@/components/guruji-darshan/GurujiDarshanContent";
+import { GurujiDarshanContent } from "@/components/sections/guruji-darshan/GurujiDarshanContent";
 
 
 export const metadata: Metadata = {

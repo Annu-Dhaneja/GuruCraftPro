@@ -8,26 +8,36 @@ export function cn(...inputs: ClassValue[]) {
 export function getApiUrl(path: string = "") {
   let baseUrl = process.env.NEXT_PUBLIC_API_URL || "";
 
-  // Dynamic Browser Fail-safe Override:
-  // If the browser is running on a live public domain (e.g. Vercel) but NEXT_PUBLIC_API_URL
-  // was baked in as localhost or left empty, dynamically route all requests to the live backend.
-  if (typeof window !== 'undefined') {
+  const isServer = typeof window === 'undefined';
+  
+  // Detect if we are running in a production/live deployment
+  let isProductionEnv = false;
+  
+  if (!isServer) {
     const host = window.location.hostname;
-    if (host !== 'localhost' && host !== '127.0.0.1') {
-      if (!baseUrl || baseUrl.includes('localhost') || baseUrl.includes('127.0.0.1')) {
-        baseUrl = "https://guru-craft-pro.vercel.app";
-      }
+    isProductionEnv = host !== 'localhost' && host !== '127.0.0.1';
+  } else {
+    // On Server-side, Vercel sets VERCEL_URL for all deployments.
+    // If it is present, or NODE_ENV is production, we are in production environment.
+    const isVercel = !!process.env.VERCEL_URL;
+    const isProdNode = process.env.NODE_ENV === 'production';
+    isProductionEnv = isVercel || isProdNode;
+  }
+
+  // Fail-safe override: If running in production but the API URL points to localhost or is empty,
+  // dynamically route all requests to the live backend.
+  if (isProductionEnv) {
+    if (!baseUrl || baseUrl.includes('localhost') || baseUrl.includes('127.0.0.1')) {
+      baseUrl = "https://guru-craft-pro.vercel.app";
     }
   }
 
   // Ensure absolute URL on server-side if baseUrl is relative
-  if (typeof window === 'undefined' && !baseUrl.startsWith('http')) {
-    // In Vercel environment, we can use VERCEL_URL but it doesn't include protocol
+  if (isServer && !baseUrl.startsWith('http')) {
     const vUrl = process.env.VERCEL_URL;
     if (vUrl) {
       baseUrl = `https://${vUrl}${baseUrl.startsWith('/') ? '' : '/'}${baseUrl}`;
     } else {
-      // Fallback for local server-side if no VERCEL_URL
       baseUrl = "";
     }
   }
@@ -122,6 +132,7 @@ export async function fetchWithAuth(
   }
   return fetch(url, { 
     cache: "no-store",
+    credentials: "include",
     ...options, 
     headers 
   });

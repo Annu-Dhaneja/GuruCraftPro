@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-import { DashboardShell } from "@/components/dashboard/DashboardShell";
-import { OverviewWidgets, RecentActivity } from "@/components/dashboard/OverviewWidgets";
+import { DashboardShell } from "@/components/sections/dashboard/DashboardShell";
+import { OverviewWidgets, RecentActivity } from "@/components/sections/dashboard/OverviewWidgets";
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 import Link from "next/link";

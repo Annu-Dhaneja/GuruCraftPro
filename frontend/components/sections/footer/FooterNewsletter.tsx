@@ -2,9 +2,9 @@
 
 import { ArrowRight, ShieldCheck, CreditCard, Globe } from "lucide-react";
 import { useState } from "react";
-import { getApiUrl } from "@/lib/utils";
 import { toast } from "sonner";
-import { PremiumButton, PremiumInput } from "../shared/PremiumUI";
+import { PremiumButton, PremiumInput } from "@/components/shared/PremiumUI";
+import { servicesService } from "@/services/api/services";
 
 export function FooterNewsletter() {
     const [email, setEmail] = useState("");
@@ -22,19 +22,13 @@ export function FooterNewsletter() {
             data.append("inquiry_type", "Newsletter Subscription");
             data.append("message", "User subscribed to newsletter from footer.");
 
-            const res = await fetch(getApiUrl("/api/v1/contact/"), {
-                method: "POST",
-                body: data,
-            });
-
-            if (res.ok) {
-                toast.success("Subscribed successfully!");
-                setEmail("");
-            } else {
-                toast.error("Subscription failed.");
-            }
-        } catch (err) {
-            toast.error("Connection error.");
+            await servicesService.submitProjectIntake(data);
+            toast.success("Subscribed successfully!");
+            setEmail("");
+        } catch (err: any) {
+            console.error("Newsletter error:", err);
+            const errMsg = err.data?.detail || "Subscription failed.";
+            toast.error(errMsg);
         } finally {
             setLoading(false);
         }
