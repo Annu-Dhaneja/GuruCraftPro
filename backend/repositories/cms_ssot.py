@@ -168,7 +168,7 @@ def upsert_component(db: Session, name: str, comp_type: str, schema: Dict[str, A
     if schema is not None:
         comp.schema_json = json.dumps(schema)
         
-    db.commit()
+    db.flush()
     db.refresh(comp)
     return comp
 
@@ -198,7 +198,7 @@ def link_component_to_page(db: Session, page_slug: str, comp_name: str, props: D
         assoc.order = order
         assoc.props_json = json.dumps(props)
 
-    db.commit()
+    db.flush()
     return True
 
 def update_ssot_page_content(db: Session, page_slug: str, content: Dict[str, Any]) -> bool:
