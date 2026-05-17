@@ -153,137 +153,137 @@ class SeedingService:
         """Seed all CMS pages using V3 Component system."""
         pages = {
             "home": {
-                "title": "GurucraftPro | Intelligence Beyond Design",
+                "title": "GuruCraft Studio | Bespoke Design & Luxury Experiences",
                 "components": [
                     {"type": "hero", "props": {
-                        "badge": "Intelligence Beyond Design",
+                        "badge": "Bespoke Creative Studio",
                         "headline_prefix": "GURU",
                         "headline_highlight": "CRAFT",
-                        "headline_suffix": "PRO",
-                        "subheadline": "The world's first AI-powered luxury ecosystem merging Elite Graphics, Divine Artistry, and Strategic Commerce into one cinematic experience."
+                        "headline_suffix": "STUDIO",
+                        "subheadline": "A luxury multi-disciplinary studio merging high-end graphic design, bespoke wedding architecture, and cutting-edge digital experiences into visual masterpieces."
                     }},
                     {"type": "features", "props": {
-                        "title": "Master Modules",
+                        "title": "Creative Masteries",
                         "items": [
-                            {"title": "Elite Graphics", "desc": "High-fidelity brand and marketing orchestration.", "icon": "Wand2"},
-                            {"title": "Neural Commerce", "desc": "Strategic e-commerce solutions for global scale.", "icon": "Zap"},
-                            {"type": "Digital Art", "desc": "Celestial hand-painted and digital masterpieces.", "icon": "Sparkles"}
+                            {"title": "Elite Graphics", "desc": "Bespoke brand identity, high-end print design, and corporate presentation architecture.", "icon": "Wand2"},
+                            {"title": "Luxury Weddings", "desc": "Bespoke wedding design, luxury spatial coordination, and premium planning services.", "icon": "Heart"},
+                            {"title": "Fine Artistry", "desc": "Exquisite custom Guru Ji celestial art and premium digital masterpieces for modern spaces.", "icon": "Sparkles"}
                         ]
                     }},
                     {"type": "cta", "props": {
-                        "title": "INITIATE YOUR VISION",
-                        "description": "Deploy our elite assets for your next mission.",
-                        "button_text": "START PROJECT",
+                        "title": "ELEVATE YOUR VISION",
+                        "description": "Let us collaborate to build your next unforgettable digital or physical experience.",
+                        "button_text": "START A CONVERSATION",
                         "button_href": "/contact"
                     }}
                 ]
             },
             "about": {
-                "title": "The Studio | GurucraftPro",
+                "title": "Our Story | GuruCraft Studio",
                 "components": [
                     {"type": "hero_centered", "props": {
-                        "badge": "ABOUT US",
-                        "title_prefix": "Where Technology Meets",
+                        "badge": "ABOUT THE STUDIO",
+                        "title_prefix": "Where Artistry Meets",
                         "title_highlight": "Thoughtful Design",
-                        "description": "We are a multidisciplinary studio obsessed with the intersection of art and technology."
+                        "description": "We are a team of passionate designers, experience curators, and engineers dedicated to high-fidelity visual storytelling and luxury design execution."
                     }},
                     {"type": "process", "props": {
-                        "title": "Our Methodology",
+                        "title": "Our Bespoke Process",
                         "steps": [
-                            {"title": "Discovery", "desc": "We map your strategic landscape."},
-                            {"title": "Architecture", "desc": "Defining the core neural structure."},
-                            {"title": "Execution", "desc": "High-fidelity production and deployment."}
+                            {"title": "Discovery", "desc": "We deep-dive into your unique personality, brand goals, or dream wedding concepts."},
+                            {"title": "Bespoke Design", "desc": "We craft custom sketches, color systems, and high-fidelity mockups for your review."},
+                            {"title": "Exquisite Hand-Off", "desc": "We execute the final production with extreme precision, whether digital launch or live coordination."}
                         ]
                     }},
                     {"type": "testimonials", "props": {
-                        "title": "Market Impact",
+                        "title": "Client Appreciations",
                         "items": [
-                            {"author": "Alex Rivera", "role": "CEO, TechFlow", "content": "GurucraftPro transformed our brand identity in record time with neural precision."},
-                            {"author": "Sarah Chen", "role": "Creative Director", "content": "The intersection of AI and human artistry here is unlike anything else in the industry."}
+                            {"author": "Devendra Sharma", "role": "Managing Director, DevGroup", "content": "GuruCraft Studio transformed our global corporate identity with absolute refinement and creative genius."},
+                            {"author": "Nisha & Rohan", "role": "Bespoke Wedding Clients", "content": "They coordinated our luxury wedding with flawless precision. It was a fairy-tale event brought to life."}
                         ]
                     }}
                 ]
             },
             "contact": {
-                "title": "Initiate Command | Contact GurucraftPro",
+                "title": "Connect With Us | GuruCraft Studio",
                 "components": [
                     {"type": "contact_form", "props": {
-                        "title": "Deploy our strategic design assets for your next mission.",
-                        "subtitle": "Contact Neural"
+                        "title": "Let us collaborate to bring your bespoke vision to life.",
+                        "subtitle": "Get In Touch"
                     }},
                     {"type": "faq", "props": {
-                        "title": "Frequently requested data points.",
+                        "title": "Frequently Answered Questions",
                         "items": [
-                            {"question": "What is the standard deployment timeline?", "answer": "Most elite assets are ready for review within 48-72 neural hours."},
-                            {"question": "Do you offer localized support?", "answer": "Yes, our team operates across global timezones for sub-second response times."}
+                            {"question": "What is the timeline for a comprehensive branding project?", "answer": "A signature brand identity suite typically takes between 3 to 4 weeks of dedicated design and iteration."},
+                            {"question": "Do you travel for wedding coordination services?", "answer": "Yes! We plan and execute destination weddings across global luxury hotspots, coordinating all details on-site."}
                         ]
                     }}
                 ]
             },
             "privacy": {
-                "title": "Privacy Protocol | GurucraftPro",
+                "title": "Privacy Protocol | GuruCraft Studio",
                 "components": [
                     {"type": "hero_centered", "props": {
-                        "badge": "LEGAL PROTOCOL",
-                        "title_prefix": "Strategic",
+                        "badge": "LEGAL STANDARD",
+                        "title_prefix": "Our Professional",
                         "title_highlight": "Privacy Policy",
-                        "description": "How we protect your neural data and strategic assets."
+                        "description": "How we safely guard your private assets, credentials, and brand assets."
                     }}
                 ]
             },
             "services": {
-                "title": "Elite Ecosystem | GurucraftPro Services",
+                "title": "Our Signature Services | GuruCraft Studio",
                 "components": [
                     {"type": "hero_centered", "props": {
-                        "badge": "SYSTEM CATALOG V4.2",
-                        "title_highlight": "ELITE ECOSYSTEM",
-                        "description": "Deploying professional-grade design and technical intelligence for global brands."
+                        "badge": "SERVICE CATALOGUE",
+                        "title_highlight": "SIGNATURE SERVICES",
+                        "description": "Explore our portfolio of premium design packages, custom online storefronts, and wedding design services."
                     }},
                     {"type": "category_grid", "props": {
-                        "title": "OUR SERVICE TIERS",
+                        "title": "CREATIVE DISCIPLINES",
                         "items": [
-                            {"title": "Elite Graphics", "description": "High-fidelity brand and marketing orchestration.", "icon": "Wand2", "href": "/services/graphics", "badge": "Core"},
-                            {"title": "Neural Commerce", "description": "Strategic e-commerce solutions for global scale.", "icon": "ShoppingBag", "href": "/services/vantage-ecom", "badge": "High ROI"},
-                            {"title": "Game Design", "description": "Immersive digital realms and character concepts.", "icon": "Cpu", "href": "/services/game-design"},
-                            {"title": "Wedding Planning", "description": "Bespoke luxury coordination and design.", "icon": "Heart", "href": "/services/wedding-plan"}
+                            {"title": "Brand Design", "description": "Custom logo suites, dynamic brand guidelines, and high-impact packaging systems.", "icon": "Wand2", "href": "/services/graphics", "badge": "Signature"},
+                            {"title": "Bespoke E-Commerce", "description": "High-conversion Shopify stores, intuitive product user interfaces, and smooth checkout funnels.", "icon": "ShoppingBag", "href": "/services/vantage-ecom", "badge": "High Conversion"},
+                            {"title": "Luxury Weddings", "description": "Curated spatial styling, boutique vendor coordination, and full luxury wedding architecture.", "icon": "Heart", "href": "/services/wedding-plan"},
+                            {"title": "Celestial Artwork", "description": "Custom oil paintings and fine digital artworks of Guru Ji, perfect for spiritual and elite residences.", "icon": "Sparkles", "href": "/services/guru-ji-art"}
                         ]
                     }},
                     {"type": "cta", "props": {
-                        "title": "READY FOR ASCENSION?",
-                        "description": "Start your strategic design journey today.",
-                        "button_text": "INQUIRE NOW",
+                        "title": "READY TO BEGIN YOUR JOURNEY?",
+                        "description": "Book a private creative consultation with our team today.",
+                        "button_text": "SCHEDULE CONSULTATION",
                         "button_href": "/contact"
                     }}
                 ]
             },
             "portfolio": {
-                "title": "Neural Output | GurucraftPro Portfolio",
+                "title": "Selected Works | GuruCraft Studio",
                 "components": [
                     {"type": "hero_centered", "props": {
-                        "badge": "MISSION LOGS",
-                        "title_highlight": "ELITE PORTFOLIO",
-                        "description": "A collection of high-fidelity outputs delivered across the global design landscape."
+                        "badge": "SELECTED ARCHIVES",
+                        "title_highlight": "OUR PORTFOLIO",
+                        "description": "A curated exhibition of corporate brand transformations, luxury wedding coordinates, and bespoke art pieces."
                     }},
                     {"type": "category_grid", "props": {
-                        "title": "OUTPUT CATEGORIES",
+                        "title": "EXHIBIT ARCHIVES",
                         "columns": 3,
                         "items": [
-                            {"title": "Logo Design", "description": "Defining corporate identity.", "icon": "Wand2", "href": "/portfolio?category=Logo Design"},
-                            {"title": "Web Architecture", "description": "High-performance digital hubs.", "icon": "Monitor", "href": "/portfolio?category=Vantage Ecom"},
-                            {"title": "Print & Brand", "description": "Tactile marketing assets.", "icon": "BookOpen", "href": "/portfolio?category=Print Design"}
+                            {"title": "Brand Identity", "description": "Distinctive logos and corporate guidelines.", "icon": "Wand2", "href": "/portfolio?category=Logo Design"},
+                            {"title": "Web Experiences", "description": "Cinematic high-performance digital storefronts.", "icon": "Monitor", "href": "/portfolio?category=Vantage Ecom"},
+                            {"title": "Bespoke Commissions", "description": "Celestial art commissions and luxury design assets.", "icon": "BookOpen", "href": "/portfolio?category=Print Design"}
                         ]
                     }}
                 ]
             },
             "ai-lab": {
-                "title": "AI Creative Lab | GurucraftPro",
+                "title": "AI Creative Lab | GuruCraft Studio",
                 "components": [
                     {"type": "hero", "props": {
-                        "badge": "NEURAL CORE",
+                        "badge": "GENERATIVE ART LAB",
                         "headline_prefix": "THE",
-                        "headline_highlight": "AI",
+                        "headline_highlight": "CREATIVE",
                         "headline_suffix": "LAB",
-                        "subheadline": "Pushing the boundaries of generative design and neural automation for industrial-scale creativity."
+                        "subheadline": "We build the future of graphic arts by combining human design instincts with custom generative AI capabilities."
                     }},
                     {"type": "ai_lab_grid", "props": {}}
                 ]
