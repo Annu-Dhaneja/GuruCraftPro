@@ -6,6 +6,7 @@ import { SectionHeading, GlassCard, PremiumGrid } from "./UI";
 
 export function Testimonials({ props }: { props: any }) {
     const { title, subtitle, items } = props;
+    const testimonialItems = items || props.quotes || props.list;
 
     return (
         <section className="py-24 md:py-40 relative overflow-hidden">
@@ -17,7 +18,7 @@ export function Testimonials({ props }: { props: any }) {
                 />
 
                 <PremiumGrid columns={3}>
-                    {items?.map((item: any, i: number) => (
+                    {testimonialItems?.map((item: any, i: number) => (
                         <GlassCard 
                             key={i}
                             className="flex flex-col group"
@@ -31,7 +32,7 @@ export function Testimonials({ props }: { props: any }) {
                             </div>
 
                             <p className="text-xl font-light italic leading-relaxed text-slate-600 mb-12 flex-1">
-                                "{item.content}"
+                                "{item.content || item.quote}"
                             </p>
 
                             <div className="flex items-center gap-5 pt-8 border-t border-slate-50">

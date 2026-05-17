@@ -33,10 +33,10 @@ export function FAQ({ props }: { props: any }) {
                             className="border-white/5 bg-white/5 rounded-[2rem] px-8 overflow-hidden data-[state=open]:border-indigo-500/30 transition-all"
                         >
                             <AccordionTrigger className="hover:no-underline py-8 text-xl font-black italic uppercase tracking-tight text-left">
-                                {item.question}
+                                {item.question || item.q}
                             </AccordionTrigger>
                             <AccordionContent className="pb-8 text-slate-400 text-lg font-light italic leading-relaxed">
-                                {item.answer}
+                                {item.answer || item.a}
                             </AccordionContent>
                         </AccordionItem>
                     ))}

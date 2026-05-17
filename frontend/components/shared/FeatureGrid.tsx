@@ -8,6 +8,7 @@ import { SectionHeading, GlassCard, PremiumGrid } from "./UI";
 interface FeatureItem {
   title: string;
   description: string;
+  desc?: string;
   icon: string;
   price?: string;
   badge?: string;
@@ -58,7 +59,7 @@ export function FeatureGrid({ props }: { props: FeatureGridProps }) {
                   {item.title}
                 </h3>
                 <p className="text-slate-500 text-lg leading-relaxed font-light mb-10 italic flex-1">
-                  {item.description}
+                  {item.description || item.desc}
                 </p>
 
                 {item.price && (
