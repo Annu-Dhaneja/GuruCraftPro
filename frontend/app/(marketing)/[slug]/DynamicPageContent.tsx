@@ -76,13 +76,21 @@ export function DynamicPageContent({ slug }: { slug: string }) {
       {Array.isArray(components) ? (
         components.map((comp: any, idx: number) => {
           const Renderer = resolveComponent(comp.name, comp.type) || GenericRenderer;
-          return <Renderer key={comp.id || idx} props={comp.props} />;
+          const rawProps = comp.props || {};
+          const normalizedProps = (rawProps && typeof rawProps === "object" && "props" in rawProps) 
+            ? rawProps 
+            : { props: rawProps };
+          return <Renderer key={comp.id || idx} props={normalizedProps} />;
         })
       ) : (
         Object.entries(components).map(([name, props]: [string, any]) => {
           if (name.startsWith("_")) return null;
           const Renderer = resolveComponent(name) || GenericRenderer;
-          return <Renderer key={name} props={props} />;
+          const rawProps = props || {};
+          const normalizedProps = (rawProps && typeof rawProps === "object" && "props" in rawProps) 
+            ? rawProps 
+            : { props: rawProps };
+          return <Renderer key={name} props={normalizedProps} />;
         })
       )}
     </main>
