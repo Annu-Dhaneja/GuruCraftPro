@@ -5,33 +5,73 @@ from core.models import CMSPage, CMSComponent, CMSPageComponent, GlobalSettings
 
 def get_global_settings(db: Session) -> Dict[str, Any]:
     """Fetch site-wide settings (SSOT)."""
-    settings = db.query(GlobalSettings).first()
-    if not settings:
-        return {}
-    
-    footer_data = json.loads(settings.footer_json) if settings.footer_json else {}
-    
-    return {
-        "brand": {
-            "name": settings.site_name,
-            "logo_text": settings.site_name[0] if settings.site_name else "G",
-            "logo_url": settings.logo_url,
-            "tagline": settings.address or "Crafting digital excellence."
-        },
-        "contact": {
-            "email": settings.contact_email,
-            "phone": settings.phone,
-            "address": settings.address
-        },
-        "footer_explore": footer_data.get("explore", []),
-        "footer_support": footer_data.get("support", []),
-        "footer_bottom": {
-            "copyright": footer_data.get("copyright", "© 2026 GurucraftPro. All rights reserved.")
-        },
-        "social": json.loads(settings.social_json) if settings.social_json else {},
-        "nav": json.loads(settings.nav_json) if hasattr(settings, 'nav_json') and settings.nav_json else [],
-        "theme": json.loads(settings.theme_json) if hasattr(settings, 'theme_json') and settings.theme_json else {}
-    }
+    try:
+        settings = db.query(GlobalSettings).first()
+        if not settings:
+            return {
+                "brand": {"name": "GurucraftPro", "logo_text": "G", "logo_url": "", "tagline": "Crafting digital excellence."},
+                "contact": {"email": "hello@gurucraftpro.com", "phone": "", "address": ""},
+                "footer_explore": [], "footer_support": [], "footer_bottom": {"copyright": "© 2026 GurucraftPro. All rights reserved."},
+                "social": {}, "nav": [], "theme": {}
+            }
+        
+        footer_data = {}
+        if settings.footer_json:
+            try:
+                footer_data = json.loads(settings.footer_json)
+            except Exception:
+                pass
+                
+        social_data = {}
+        if settings.social_json:
+            try:
+                social_data = json.loads(settings.social_json)
+            except Exception:
+                pass
+
+        nav_data = []
+        if hasattr(settings, 'nav_json') and settings.nav_json:
+            try:
+                nav_data = json.loads(settings.nav_json)
+            except Exception:
+                pass
+
+        theme_data = {}
+        if hasattr(settings, 'theme_json') and settings.theme_json:
+            try:
+                theme_data = json.loads(settings.theme_json)
+            except Exception:
+                pass
+        
+        return {
+            "brand": {
+                "name": settings.site_name or "GurucraftPro",
+                "logo_text": settings.site_name[0] if settings.site_name else "G",
+                "logo_url": settings.logo_url or "",
+                "tagline": settings.address or "Crafting digital excellence."
+            },
+            "contact": {
+                "email": settings.contact_email or "hello@gurucraftpro.com",
+                "phone": settings.phone or "",
+                "address": settings.address or ""
+            },
+            "footer_explore": footer_data.get("explore", []),
+            "footer_support": footer_data.get("support", []),
+            "footer_bottom": {
+                "copyright": footer_data.get("copyright", "© 2026 GurucraftPro. All rights reserved.")
+            },
+            "social": social_data,
+            "nav": nav_data,
+            "theme": theme_data
+        }
+    except Exception as e:
+        print(f"Error in get_global_settings: {e}")
+        return {
+            "brand": {"name": "GurucraftPro", "logo_text": "G", "logo_url": "", "tagline": "Crafting digital excellence."},
+            "contact": {"email": "hello@gurucraftpro.com", "phone": "", "address": ""},
+            "footer_explore": [], "footer_support": [], "footer_bottom": {"copyright": "© 2026 GurucraftPro. All rights reserved."},
+            "social": {}, "nav": [], "theme": {}
+        }
 
 
 def update_global_settings(db: Session, data: Dict[str, Any]) -> Dict[str, Any]:
