@@ -1,9 +1,16 @@
 "use client";
 
 import { motion } from "framer-motion";
-import * as LucideIcons from "lucide-react";
+import { Wand2, Heart, Sparkles, Zap, type LucideIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { SectionHeading, GlassCard, PremiumGrid } from "./UI";
+
+const IconMap: Record<string, LucideIcon> = {
+  Wand2,
+  Heart,
+  Sparkles,
+  Zap,
+};
 
 interface FeatureItem {
   title: string;
@@ -38,7 +45,7 @@ export function FeatureGrid({ props }: { props: FeatureGridProps }) {
 
         <PremiumGrid columns={columns as any}>
           {items?.map((item, i) => {
-            const Icon = (LucideIcons as any)[item.icon] || LucideIcons.Sparkles;
+            const Icon = IconMap[item.icon] || Sparkles;
             return (
               <GlassCard
                 key={i}

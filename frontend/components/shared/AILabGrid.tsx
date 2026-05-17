@@ -2,9 +2,18 @@
 
 import React from "react";
 import Link from "next/link";
-import * as LucideIcons from "lucide-react";
+import { Brain, Wand2, Layout, Palette, Zap, ArrowRight, type LucideIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { SectionHeading, GlassCard, PremiumGrid } from "./UI";
+
+const IconMap: Record<string, LucideIcon> = {
+  Brain,
+  Wand2,
+  Layout,
+  Palette,
+  Zap,
+  ArrowRight
+};
 
 interface ToolItem {
     title: string;
@@ -36,7 +45,7 @@ export function AILabGrid({ props }: { props: AILabGridProps }) {
 
                 <PremiumGrid columns={2}>
                     {(tools || []).map((tool, idx) => {
-                        const Icon = (LucideIcons as any)[tool.icon] || LucideIcons.Zap;
+                        const Icon = IconMap[tool.icon] || Zap;
                         return (
                             <Link 
                                 key={idx}
@@ -61,7 +70,7 @@ export function AILabGrid({ props }: { props: AILabGridProps }) {
                                         {tool.description}
                                     </p>
                                     <div className="flex items-center gap-4 text-[10px] font-black uppercase tracking-[0.4em] text-white group-hover:text-indigo-400 transition-colors italic">
-                                        LAUNCH MODULE <LucideIcons.ArrowRight className="w-5 h-5 group-hover:translate-x-4 transition-transform" />
+                                        LAUNCH MODULE <ArrowRight className="w-5 h-5 group-hover:translate-x-4 transition-transform" />
                                     </div>
                                 </div>
                             </Link>
