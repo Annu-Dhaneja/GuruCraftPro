@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { DynamicPageContent } from "./DynamicPageContent";
-import { safeFetch, getApiUrl } from "@/lib/utils";
+import { pagesService } from "@/services/api/pages";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
@@ -8,9 +8,8 @@ export const revalidate = 0;
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
   try {
-    const res = await safeFetch(getApiUrl(`/api/v1/cms/${slug}`));
-    if (res.ok) {
-        const data = await res.json();
+    const data = await pagesService.getPage(slug, { skipAuth: true });
+    if (data) {
         const brandName = "GurucraftPro";
         return {
             title: data.title ? `${data.title} | ${brandName}` : brandName,

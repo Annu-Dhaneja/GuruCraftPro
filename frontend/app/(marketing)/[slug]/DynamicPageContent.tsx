@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { safeFetch, getApiUrl } from "@/lib/utils";
+import { pagesService } from "@/services/api/pages";
 import { resolveComponent } from "@/lib/cms-registry";
 
 const GenericRenderer: React.FC<{ props: any }> = ({ props }) => (
@@ -25,9 +25,7 @@ export function DynamicPageContent({ slug }: { slug: string }) {
     async function loadPage() {
       try {
         setLoading(true);
-        const res = await safeFetch(getApiUrl(`/api/v1/cms/${slug}`));
-        if (!res.ok) throw new Error("Failed to load page content");
-        const json = await res.json();
+        const json = await pagesService.getPage(slug, { skipAuth: true });
         setData(json);
       } catch (err: any) {
         setError(err.message);

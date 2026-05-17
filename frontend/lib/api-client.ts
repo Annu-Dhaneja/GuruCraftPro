@@ -32,7 +32,7 @@ export async function apiClient<T = any>(
   path: string,
   options: ApiClientOptions = {}
 ): Promise<T> {
-  const { timeout = 8000, retries = 2, skipAuth = false, ...fetchOptions } = options;
+  const { timeout = 15000, retries = 2, skipAuth = false, ...fetchOptions } = options;
   const url = getApiUrl(path);
 
   const headers: Record<string, string> = {
