@@ -109,6 +109,8 @@ def get_ssot_page_content(db: Session, slug: str, published_only: bool = True) -
     """
     Assembles a page by fetching its components in order.
     Returns a unified object for the frontend.
+    Uses explicit separate queries to avoid cartesian product duplication
+    from chained joinedload/subqueryload through junction tables.
     """
     # Normalize/Alias slugs for compatibility between seed data and frontend requests
     if slug == "guruji":
@@ -118,12 +120,8 @@ def get_ssot_page_content(db: Session, slug: str, published_only: bool = True) -
     elif slug == "clothing-consultation":
         slug = "7-day-clothing-consultation"
 
-    # Use subqueryload instead of joinedload to avoid cartesian product duplication
-    # when chaining through two relationship levels (Page -> PageComponent -> Component)
-    from sqlalchemy.orm import subqueryload
-    query = db.query(CMSPage).options(
-        subqueryload(CMSPage.components).subqueryload(CMSPageComponent.component)
-    ).filter(CMSPage.slug == slug)
+    # Step 1: Get the page (no eager loading)
+    query = db.query(CMSPage).filter(CMSPage.slug == slug)
     if published_only:
         query = query.filter(CMSPage.status == "published")
     
@@ -131,15 +129,24 @@ def get_ssot_page_content(db: Session, slug: str, published_only: bool = True) -
     if not page:
         return {}
 
+    # Step 2: Explicitly query page_components for THIS page, ordered correctly
+    assocs = db.query(CMSPageComponent).filter(
+        CMSPageComponent.page_id == page.id
+    ).order_by(CMSPageComponent.order).all()
+
+    # Step 3: Build clean component list with deduplication safety net
     components = []
     seen_component_ids = set()
-    for assoc in page.components:
-        # Deduplicate by component_id to prevent repeated seeding from bloating the response
+    for assoc in assocs:
         if assoc.component_id in seen_component_ids:
             continue
         seen_component_ids.add(assoc.component_id)
         
-        comp = assoc.component
+        # Fetch the component definition
+        comp = db.query(CMSComponent).filter(CMSComponent.id == assoc.component_id).first()
+        if not comp:
+            continue
+            
         try:
             props = json.loads(assoc.props_json)
             # Auto-unpack double-nested props from legacy seeding anomalies
