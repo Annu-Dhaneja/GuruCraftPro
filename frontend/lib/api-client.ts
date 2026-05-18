@@ -60,7 +60,6 @@ export async function apiClient<T = any>(
     try {
       const response = await fetch(url, {
         cache: "no-store",
-        credentials: "include",
         ...fetchOptions,
         headers,
         signal: controller.signal,

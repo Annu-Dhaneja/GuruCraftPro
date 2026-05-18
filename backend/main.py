@@ -60,21 +60,15 @@ async def global_exception_handler(request: Request, exc: Exception):
     )
 
 # ── CORS Middleware ──────────────────────────────────────────────────
-# Allow localhost, specific frontend, and all vercel.app subdomains
+# Allow ALL origins. We use Bearer token auth (not cookies),
+# so credentials mode is not needed and wildcard is safe.
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        "https://gurucraft-pro-frontend.vercel.app",
-        "https://guru-craft-pro-6rnj-six.vercel.app",
-        "https://guru-craft-pro.vercel.app",
-        "http://localhost:3000",
-        "http://localhost:5173",
-        "http://localhost:8000",
-    ],
-    allow_origin_regex=r"https://.*-six\.vercel\.app|https://.*\.vercel\.app|http://localhost:\d+",
-    allow_credentials=True,
+    allow_origins=["*"],
+    allow_credentials=False,
     allow_methods=["*"],
     allow_headers=["*"],
+    expose_headers=["*"],
 )
 
 # ── Startup Events ───────────────────────────────────────────────────

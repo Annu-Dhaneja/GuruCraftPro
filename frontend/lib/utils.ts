@@ -132,7 +132,6 @@ export async function fetchWithAuth(
   }
   return fetch(url, { 
     cache: "no-store",
-    credentials: "include",
     ...options, 
     headers 
   });
