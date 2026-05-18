@@ -64,8 +64,12 @@ async def global_exception_handler(request: Request, exc: Exception):
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
+        "https://gurucraft-pro-frontend.vercel.app",
         "https://guru-craft-pro-6rnj-six.vercel.app",
         "https://guru-craft-pro.vercel.app",
+        "http://localhost:3000",
+        "http://localhost:5173",
+        "http://localhost:8000",
     ],
     allow_origin_regex=r"https://.*-six\.vercel\.app|https://.*\.vercel\.app|http://localhost:\d+",
     allow_credentials=True,
