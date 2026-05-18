@@ -118,8 +118,11 @@ def get_ssot_page_content(db: Session, slug: str, published_only: bool = True) -
     elif slug == "clothing-consultation":
         slug = "7-day-clothing-consultation"
 
+    # Use subqueryload instead of joinedload to avoid cartesian product duplication
+    # when chaining through two relationship levels (Page -> PageComponent -> Component)
+    from sqlalchemy.orm import subqueryload
     query = db.query(CMSPage).options(
-        joinedload(CMSPage.components).joinedload(CMSPageComponent.component)
+        subqueryload(CMSPage.components).subqueryload(CMSPageComponent.component)
     ).filter(CMSPage.slug == slug)
     if published_only:
         query = query.filter(CMSPage.status == "published")
