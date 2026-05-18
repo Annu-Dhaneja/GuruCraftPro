@@ -129,11 +129,12 @@ def get_ssot_page_content(db: Session, slug: str, published_only: bool = True) -
         return {}
 
     components = []
-    seen_assoc_ids = set()
+    seen_component_ids = set()
     for assoc in page.components:
-        if assoc.id in seen_assoc_ids:
+        # Deduplicate by component_id to prevent repeated seeding from bloating the response
+        if assoc.component_id in seen_component_ids:
             continue
-        seen_assoc_ids.add(assoc.id)
+        seen_component_ids.add(assoc.component_id)
         
         comp = assoc.component
         try:
