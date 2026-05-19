@@ -10,7 +10,7 @@ import {
 import { HelpCircle } from "lucide-react";
 
 export function FAQ({ props }: { props: any }) {
-    const { title, items } = props;
+    const { title, items } = props || {};
 
     return (
         <section className="py-40 bg-slate-950/50 backdrop-blur-3xl">

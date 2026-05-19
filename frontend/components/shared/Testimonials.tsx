@@ -5,8 +5,8 @@ import { Star, Quote } from "lucide-react";
 import { SectionHeading, GlassCard, PremiumGrid } from "./UI";
 
 export function Testimonials({ props }: { props: any }) {
-    const { title, subtitle, items } = props;
-    const testimonialItems = items || props.quotes || props.list;
+    const { title, subtitle, items } = props || {};
+    const testimonialItems = items || props?.quotes || props?.list;
 
     return (
         <section className="py-24 md:py-40 relative overflow-hidden">

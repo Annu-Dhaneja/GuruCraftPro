@@ -5,7 +5,7 @@ import { Send, User, Mail, MessageSquare, Briefcase } from "lucide-react";
 import { PremiumButton, PremiumInput, GlassCard, SectionHeading } from "./UI";
 
 export function ContactForm({ props }: { props: any }) {
-    const { title, subtitle, form_id } = props;
+    const { title, subtitle, form_id } = props || {};
 
     return (
         <section className="py-24 md:py-40 relative">

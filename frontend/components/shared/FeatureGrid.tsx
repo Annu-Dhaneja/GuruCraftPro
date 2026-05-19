@@ -30,7 +30,7 @@ interface FeatureGridProps {
 }
 
 export function FeatureGrid({ props }: { props: FeatureGridProps }) {
-  const { title, badge, description, items, columns = 3 } = props;
+  const { title, badge, description, items, columns = 3 } = props || {};
 
   return (
     <section className="py-24 md:py-40 relative overflow-hidden">

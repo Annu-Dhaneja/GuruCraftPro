@@ -12,7 +12,7 @@ const iconMap: Record<string, any> = {
 };
 
 export function CategoryGrid({ props }: { props: any }) {
-    const { title, subtitle, items, columns = 2 } = props;
+    const { title, subtitle, items, columns = 2 } = props || {};
 
     return (
         <section className="py-24 md:py-40 relative z-10">

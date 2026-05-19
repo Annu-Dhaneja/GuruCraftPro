@@ -67,7 +67,7 @@ export function DynamicPageContent({ slug }: { slug: string }) {
     );
   }
 
-  const rawComponents = data.components || data;
+  const rawComponents = data?.components || data;
   
   // Cleanly deduplicate components by ID
   const components = Array.isArray(rawComponents)
@@ -76,7 +76,7 @@ export function DynamicPageContent({ slug }: { slug: string }) {
           ? self.findIndex((c: any) => c && c.id === comp.id) === idx
           : true
       )
-    : rawComponents;
+    : (rawComponents && typeof rawComponents === "object" ? rawComponents : []);
 
   return (
     <main className="min-h-screen bg-slate-950 text-white">

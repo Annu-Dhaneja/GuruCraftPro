@@ -17,7 +17,7 @@ interface ProcessFlowProps {
 }
 
 export function ProcessFlow({ props }: { props: ProcessFlowProps }) {
-  const { title, badge, description, steps } = props;
+  const { title, badge, description, steps } = props || {};
 
   return (
     <section className="py-24 md:py-40 relative overflow-hidden bg-slate-50/50 border-y border-slate-100">

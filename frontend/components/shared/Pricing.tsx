@@ -6,7 +6,7 @@ import Link from "next/link";
 import { SectionHeading, GlassCard, PremiumGrid, PremiumButton } from "./UI";
 
 export function Pricing({ props }: { props: any }) {
-    const { title, subtitle, tiers } = props;
+    const { title, subtitle, tiers } = props || {};
 
     const getIcon = (icon: string) => {
         switch (icon) {

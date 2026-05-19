@@ -31,7 +31,7 @@ interface AILabGridProps {
 }
 
 export function AILabGrid({ props }: { props: AILabGridProps }) {
-    const { title, badge, description, tools } = props;
+    const { title, badge, description, tools } = props || {};
 
     return (
         <section className="py-24 md:py-40 relative z-10">
