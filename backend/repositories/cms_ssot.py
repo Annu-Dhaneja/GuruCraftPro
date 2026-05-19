@@ -132,6 +132,8 @@ def get_ssot_page_content(db: Session, slug: str, published_only: bool = True) -
         slug = "wedding-showcase"
     elif slug == "clothing-consultation":
         slug = "7-day-clothing-consultation"
+    elif slug == "request":
+        slug = "contact"
 
     # Step 1: Get the page (no eager loading)
     query = db.query(CMSPage).filter(CMSPage.slug == slug)
@@ -252,6 +254,8 @@ def update_ssot_page_content(db: Session, page_slug: str, content: Dict[str, Any
         page_slug = "wedding-showcase"
     elif page_slug == "clothing-consultation":
         page_slug = "7-day-clothing-consultation"
+    elif page_slug == "request":
+        page_slug = "contact"
 
     page = db.query(CMSPage).filter(CMSPage.slug == page_slug).first()
     if not page:
