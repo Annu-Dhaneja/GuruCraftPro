@@ -122,6 +122,34 @@ app.include_router(products.router, prefix="/api/v1/products", tags=["products"]
 app.include_router(forms.router, prefix="/api/v1/forms", tags=["forms"])
 app.include_router(media.router, prefix="/api/v1/media", tags=["media"])
 
+from fastapi import Response, HTTPException, Depends
+from sqlalchemy.orm import Session
+
+@app.get("/images/uploads/{filename}")
+def serve_db_media(filename: str, db: Session = Depends(get_db)):
+    from core.models import Media
+    import base64
+    
+    # Try finding the media file in the database
+    db_media = db.query(Media).filter(Media.file_url.like(f"%/uploads/{filename}")).first()
+    if db_media and db_media.file_data_base64:
+        try:
+            content = base64.b64decode(db_media.file_data_base64)
+            return Response(content=content, media_type=db_media.mime_type or "image/png")
+        except Exception as err:
+            raise HTTPException(status_code=500, detail=f"Image decoding failure: {str(err)}")
+            
+    # Fallback to local file system for local development
+    local_path = os.path.join("static", "uploads", filename)
+    if os.path.exists(local_path):
+        try:
+            with open(local_path, "rb") as f:
+                return Response(content=f.read(), media_type="image/png")
+        except Exception:
+            pass
+            
+    raise HTTPException(status_code=404, detail="Media file not found")
+
 # ── Static Files ─────────────────────────────────────────────────────
 static_path = os.path.join(os.path.dirname(__file__), "static")
 try:

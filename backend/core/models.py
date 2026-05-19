@@ -160,6 +160,7 @@ class Media(Base, AuditMixin):
     folder_id = Column(Integer, ForeignKey("media_folders.id"), nullable=True)
     tags_json = Column(Text, default="[]")
     uploaded_at = Column(DateTime, default=datetime.utcnow) # legacy support
+    file_data_base64 = Column(Text, nullable=True)
 
 # ── LEGACY & SAAS MODULES ──────────────────────────────────────────────
 class Post(Base, AuditMixin, SEOMixin, StatusMixin, SlugMixin):

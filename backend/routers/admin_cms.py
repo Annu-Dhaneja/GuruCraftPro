@@ -159,18 +159,29 @@ async def upload_image(
     db: Session = Depends(database.get_db),
     current_user: models.User = Depends(auth.require_permission("media", "write")),
 ):
-    UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
+    import base64
+    file_content = await file.read()
+    file_base64 = base64.b64encode(file_content).decode("utf-8")
+    
     ext = os.path.splitext(file.filename)[1]
     unique_filename = f"{uuid.uuid4()}{ext}"
-    file_path = UPLOAD_DIR / unique_filename
-
-    with open(file_path, "wb") as buffer:
-        shutil.copyfileobj(file.file, buffer)
-
     relative_url = f"/images/uploads/{unique_filename}"
+
+    # Safe local write for development
+    try:
+        UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
+        file_path = UPLOAD_DIR / unique_filename
+        with open(file_path, "wb") as buffer:
+            buffer.write(file_content)
+    except Exception as e:
+        print(f"Skipped local filesystem save (expected on serverless): {e}")
+
     new_media = models.Media(
         file_url=relative_url, 
         file_name=file.filename,
+        mime_type=file.content_type,
+        size_bytes=len(file_content),
+        file_data_base64=file_base64,
         created_by_id=current_user.id
     )
     db.add(new_media)

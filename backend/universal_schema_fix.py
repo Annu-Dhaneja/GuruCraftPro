@@ -95,6 +95,20 @@ def fix_schema():
                             conn.execute(text("ALTER TABLE users ADD COLUMN IF NOT EXISTS role_id INTEGER"))
                     except Exception: pass
 
+                if table == "media":
+                    try:
+                        if is_sqlite:
+                            res = conn.execute(text("PRAGMA table_info(media)"))
+                            existing = [row[1] for row in res.fetchall()]
+                            if "file_data_base64" not in existing:
+                                conn.execute(text("ALTER TABLE media ADD COLUMN file_data_base64 TEXT"))
+                                print("Added file_data_base64 column to SQLite media table")
+                        else:
+                            conn.execute(text("ALTER TABLE media ADD COLUMN IF NOT EXISTS file_data_base64 TEXT"))
+                            print("Added file_data_base64 column to PostgreSQL media table if missing")
+                    except Exception as e:
+                        print(f"Error checking media table: {e}")
+
             except Exception as e:
                 print(f"Error checking {table}: {e}")
         

@@ -29,6 +29,14 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  async rewrites() {
+    return [
+      {
+        source: "/images/uploads/:path*",
+        destination: `${process.env.NEXT_PUBLIC_API_URL || "https://gurucraft-pro-backend.vercel.app"}/images/uploads/:path*`,
+      },
+    ];
+  },
 };
 
 export default nextConfig;
