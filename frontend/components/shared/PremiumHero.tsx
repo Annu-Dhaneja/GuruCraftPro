@@ -98,18 +98,30 @@ export function PremiumHero({ data, variant = "default", className }: HeroProps)
                             {title}
                         </motion.h1>
                         
-                        <motion.div 
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: 0.2 }}
-                            className={cn(
-                                "text-xl md:text-2xl text-slate-400 font-light leading-relaxed mb-16 italic px-8 border-l-2 border-indigo-500/30",
-                                variant === "centered" && "border-l-0 text-center"
-                            )}
-                            dangerouslySetInnerHTML={desc ? { __html: desc } : undefined}
-                        >
-                            {!desc && "Orchestrating high-fidelity digital experiences through neural-grade design and strategic precision."}
-                        </motion.div>
+                        {desc ? (
+                            <motion.div 
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ delay: 0.2 }}
+                                className={cn(
+                                    "text-xl md:text-2xl text-slate-400 font-light leading-relaxed mb-16 italic px-8 border-l-2 border-indigo-500/30",
+                                    variant === "centered" && "border-l-0 text-center"
+                                )}
+                                dangerouslySetInnerHTML={{ __html: desc }}
+                            />
+                        ) : (
+                            <motion.div 
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ delay: 0.2 }}
+                                className={cn(
+                                    "text-xl md:text-2xl text-slate-400 font-light leading-relaxed mb-16 italic px-8 border-l-2 border-indigo-500/30",
+                                    variant === "centered" && "border-l-0 text-center"
+                                )}
+                            >
+                                Orchestrating high-fidelity digital experiences through neural-grade design and strategic precision.
+                            </motion.div>
+                        )}
 
                         <motion.div
                             initial={{ opacity: 0, y: 20 }}
