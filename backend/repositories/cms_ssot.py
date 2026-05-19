@@ -86,6 +86,19 @@ def update_global_settings(db: Session, data: Dict[str, Any]) -> Dict[str, Any]:
     if "contact_email" in data: settings.contact_email = data["contact_email"]
     if "phone" in data: settings.phone = data["phone"]
     if "address" in data: settings.address = data["address"]
+    
+    # Support nested brand and contact dicts from CMS frontend
+    if "brand" in data and isinstance(data["brand"], dict):
+        brand = data["brand"]
+        if "name" in brand: settings.site_name = brand["name"]
+        if "logo_url" in brand: settings.logo_url = brand["logo_url"]
+        if "tagline" in brand: settings.address = brand["tagline"]
+
+    if "contact" in data and isinstance(data["contact"], dict):
+        contact = data["contact"]
+        if "email" in contact: settings.contact_email = contact["email"]
+        if "phone" in contact: settings.phone = contact["phone"]
+        if "address" in contact: settings.address = contact["address"]
     if "footer" in data: 
         settings.footer_json = json.dumps(data["footer"])
     elif any(k in data for k in ["footer_explore", "footer_support", "footer_bottom"]):

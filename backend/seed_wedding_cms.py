@@ -16,7 +16,8 @@ def seed_wedding_showcase():
                 title="Wedding Showcase",
                 slug=page_slug,
                 meta_title="Luxury Wedding Planning | Premium Services",
-                meta_description="Experience the epitome of elegance with our dynamic wedding planning suite."
+                meta_description="Experience the epitome of elegance with our dynamic wedding planning suite.",
+                status="published"
             )
             db.add(page)
             db.flush()

@@ -31,7 +31,7 @@ class SeedingService:
                     try: conn.execute(text("DROP TYPE IF EXISTS pagestatus CASCADE"))
                     except: pass
                     conn.commit()
-                    print("SeedingService: Enum→VARCHAR migration complete")
+                    print("SeedingService: Enum to VARCHAR migration complete")
         except Exception as exc:
             print(f"SeedingService: Enum migration skipped: {exc}")
 

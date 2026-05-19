@@ -13,7 +13,7 @@ from repositories.cms_ssot import upsert_reusable_section, link_section_to_page
 def seed_planner_cms():
     db = SessionLocal()
     try:
-        print("🚀 Starting 7-Day Planner CMS Seeding...")
+        print("Starting 7-Day Planner CMS Seeding...")
         
         # Define the segment slug
         segment = "7-day-clothing-consultation"
@@ -61,11 +61,11 @@ def seed_planner_cms():
         link_section_to_page(db, segment, f"{segment}-cta", order=2)
 
         db.commit()
-        print(f"✅ CMS data for '{segment}' seeded successfully.")
+        print(f"CMS data for '{segment}' seeded successfully.")
 
     except Exception as e:
         db.rollback()
-        print(f"❌ Error seeding Planner CMS: {e}")
+        print(f"Error seeding Planner CMS: {e}")
     finally:
         db.close()
 

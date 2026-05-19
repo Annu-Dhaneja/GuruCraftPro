@@ -115,6 +115,15 @@ def get_site_config(db: Session = Depends(database.get_db)):
     """Public endpoint for frontend SiteConfigProvider."""
     return get_global_settings(db)
 
+@router.put("/site_config")
+def update_site_config(
+    content: Dict[str, Any],
+    db: Session = Depends(database.get_db),
+    current_user: models.User = Depends(auth.require_permission("cms", "write"))
+):
+    """Updates the global site settings (nav, footer, brand, etc.) from the CMS editor."""
+    return update_global_settings(db, content)
+
 @router.put("/settings", response_model=cms_schemas.GlobalSettingsRead)
 def update_settings(
     settings_data: cms_schemas.GlobalSettingsBase,
