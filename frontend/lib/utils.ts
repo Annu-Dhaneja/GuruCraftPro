@@ -28,7 +28,7 @@ export function getApiUrl(path: string = "") {
   // dynamically route all requests to the live backend.
   if (isProductionEnv) {
     if (!baseUrl || baseUrl.includes('localhost') || baseUrl.includes('127.0.0.1')) {
-      baseUrl = "https://gurucraft-pro-backend.vercel.app";
+      baseUrl = "https://guru-craft-pro.vercel.app";
     }
   }
 

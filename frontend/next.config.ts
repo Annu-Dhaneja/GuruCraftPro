@@ -33,7 +33,7 @@ const nextConfig: NextConfig = {
     return [
       {
         source: "/images/uploads/:path*",
-        destination: `${process.env.NEXT_PUBLIC_API_URL || "https://gurucraft-pro-backend.vercel.app"}/images/uploads/:path*`,
+        destination: `${process.env.NEXT_PUBLIC_API_URL || "https://guru-craft-pro.vercel.app"}/images/uploads/:path*`,
       },
     ];
   },
