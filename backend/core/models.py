@@ -178,12 +178,17 @@ class ContactSubmission(Base, AuditMixin):
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String)
     email = Column(String)
+    phone = Column(String, nullable=True)
     company = Column(String, nullable=True)
     inquiry_type = Column(String)
     message = Column(Text)
     budget = Column(String, nullable=True)
     deadline = Column(String, nullable=True)
     attachment_url = Column(String, nullable=True)
+    page_source = Column(String, nullable=True)
+    status = Column(String, default="new", index=True)
+    ip_address = Column(String, nullable=True)
+    device_metadata = Column(String, nullable=True)
 
 class ClothingPiece(Base, AuditMixin):
     __tablename__ = "clothing_pieces"

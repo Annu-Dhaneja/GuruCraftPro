@@ -21,6 +21,7 @@ export function ProjectIntakeForm() {
     const [formData, setFormData] = useState({
         name: "",
         email: "",
+        phone: "",
         company: "",
         category: "",
         brief: "",
@@ -40,11 +41,13 @@ export function ProjectIntakeForm() {
             const data = new FormData();
             data.append("name", formData.name);
             data.append("email", formData.email);
+            data.append("phone", formData.phone);
             data.append("company", formData.company);
             data.append("inquiry_type", formData.category);
             data.append("message", formData.brief);
             data.append("budget", formData.budget);
             data.append("deadline", formData.timeline);
+            data.append("page_source", typeof window !== "undefined" ? window.location.pathname : "/request");
             
             if (file) {
                 data.append("attachment", file);
@@ -92,7 +95,7 @@ export function ProjectIntakeForm() {
                     <div
                         className="h-full bg-indigo-500 transition-all duration-500"
                         style={{ width: `${(step / 3) * 100}%` }}
-                    />
+                      />
                 </div>
 
                 <form onSubmit={handleSubmit} className="space-y-8 animate-in fade-in slide-in-from-bottom-4">
@@ -123,14 +126,26 @@ export function ProjectIntakeForm() {
                                     />
                                 </div>
                             </div>
-                            <div className="space-y-2">
-                                <Label htmlFor="company">Company / Organization</Label>
-                                <Input 
-                                    id="company" 
-                                    placeholder="Acme Inc." 
-                                    value={formData.company}
-                                    onChange={(e) => updateField("company", e.target.value)}
-                                />
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div className="space-y-2">
+                                    <Label htmlFor="phone">Phone Number</Label>
+                                    <Input 
+                                        id="phone" 
+                                        type="tel"
+                                        placeholder="+1 (555) 000-0000" 
+                                        value={formData.phone}
+                                        onChange={(e) => updateField("phone", e.target.value)}
+                                    />
+                                </div>
+                                <div className="space-y-2">
+                                    <Label htmlFor="company">Company / Organization</Label>
+                                    <Input 
+                                        id="company" 
+                                        placeholder="Acme Inc." 
+                                        value={formData.company}
+                                        onChange={(e) => updateField("company", e.target.value)}
+                                    />
+                                </div>
                             </div>
                             <Button type="button" onClick={() => setStep(2)} className="w-full h-12">
                                 Next Step <ArrowRight className="ml-2 h-4 w-4" />

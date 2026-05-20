@@ -20,10 +20,16 @@ try:
     print("Startup: Creating database tables...")
     Base.metadata.create_all(bind=engine)
     print("Startup: Database tables verified.")
+    # Run contact submissions schema alteration migration
+    try:
+        from migrate_contact_db import migrate as migrate_contacts
+        migrate_contacts()
+    except Exception as migration_error:
+        print(f"Startup Warning: Contact schema migration skipped: {migration_error}")
 except Exception as e:
     print(f"Startup Error: Failed to create/verify tables: {e}")
     # We don't exit here to allow the app to potentially start and show 500s 
-    # instead of crashing the whole process immediately.
+    # instead of crashing the whole process immediately.")
 
 app = FastAPI(
     title=settings.PROJECT_NAME,
