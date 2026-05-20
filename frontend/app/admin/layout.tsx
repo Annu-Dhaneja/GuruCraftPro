@@ -6,7 +6,7 @@ import Link from "next/link";
 import { 
   LayoutDashboard, FileText, Sparkles, Layers, Layout, Menu, Search, 
   FileImage, Users, Shield, Settings, Terminal, History, LogOut,
-  Bell, ChevronRight, X, Heart, HelpCircle, BookOpen, ArrowLeft
+  Bell, ChevronRight, X, Heart, HelpCircle, BookOpen, ArrowLeft, Palette
 } from "lucide-react";
 import { useAuthStore } from "@/lib/store/useAuthStore";
 import { cn } from "@/lib/utils";
@@ -18,20 +18,15 @@ const NAV_ITEMS = [
   { label: "Pages", href: "/admin/pages", icon: Layout, role: ["ADMIN", "SUPER_ADMIN", "EDITOR"] },
   { label: "Services", href: "/admin/services", icon: Sparkles, role: ["ADMIN", "SUPER_ADMIN", "EDITOR"] },
   { label: "Portfolio", href: "/admin/portfolio", icon: Layers, role: ["ADMIN", "SUPER_ADMIN", "EDITOR"] },
-  { label: "AI Lab", href: "/admin/ai-lab", icon: Terminal, role: ["ADMIN", "SUPER_ADMIN", "EDITOR"] },
-  { label: "Guruji Darshan", href: "/admin/guruji", icon: FileText, role: ["ADMIN", "SUPER_ADMIN", "EDITOR"] },
-  { label: "Navbar Config", href: "/admin/navbar", icon: Menu, role: ["ADMIN", "SUPER_ADMIN"] },
-  { label: "Footer Config", href: "/admin/footer", icon: Layout, role: ["ADMIN", "SUPER_ADMIN"] },
-  { label: "SEO Manager", href: "/admin/seo", icon: Search, role: ["ADMIN", "SUPER_ADMIN", "EDITOR"] },
   { label: "Media Library", href: "/admin/media", icon: FileImage, role: ["ADMIN", "SUPER_ADMIN", "EDITOR"] },
-  { label: "Forms & Requests", href: "/admin/forms", icon: FileText, role: ["ADMIN", "SUPER_ADMIN", "EDITOR"] },
-  { label: "Testimonials", href: "/admin/testimonials", icon: Heart, role: ["ADMIN", "SUPER_ADMIN", "EDITOR"] },
-  { label: "FAQs", href: "/admin/faq", icon: HelpCircle, role: ["ADMIN", "SUPER_ADMIN", "EDITOR"] },
-  { label: "Resources", href: "/admin/resources", icon: BookOpen, role: ["ADMIN", "SUPER_ADMIN", "EDITOR"] },
+  { label: "Theme & Layout", href: "/admin/theme", icon: Palette, role: ["ADMIN", "SUPER_ADMIN"] },
+  { label: "Navigation", href: "/admin/site-config", icon: Menu, role: ["ADMIN", "SUPER_ADMIN"] },
+  { label: "SEO", href: "/admin/seo", icon: Search, role: ["ADMIN", "SUPER_ADMIN", "EDITOR"] },
+  { label: "Forms & Leads", href: "/admin/forms", icon: FileText, role: ["ADMIN", "SUPER_ADMIN", "EDITOR"] },
   { label: "Users", href: "/admin/users", icon: Users, role: ["ADMIN", "SUPER_ADMIN"] },
-  { label: "Roles & Permissions", href: "/admin/roles", icon: Shield, role: ["SUPER_ADMIN"] },
   { label: "Settings", href: "/admin/settings", icon: Settings, role: ["ADMIN", "SUPER_ADMIN"] },
   { label: "Activity Logs", href: "/admin/activity-logs", icon: History, role: ["ADMIN", "SUPER_ADMIN"] },
+  { label: "Help & Guide", href: "/admin/help-guide", icon: HelpCircle, role: ["ADMIN", "SUPER_ADMIN", "EDITOR"] },
 ];
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {

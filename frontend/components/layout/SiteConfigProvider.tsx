@@ -17,6 +17,22 @@ interface FooterLink {
     href: string;
 }
 
+interface ThemeConfig {
+    preset?: string;
+    primary?: string;
+    accent?: string;
+    background?: string;
+    foreground?: string;
+    cardBg?: string;
+    fontFamily?: string;
+    fontSizeScale?: string;
+    radius?: string;
+    glassmorphism?: string;
+    navbarStyle?: string;
+    footerStyle?: string;
+    defaultTheme?: string;
+}
+
 interface SiteConfig {
     brand: {
         name: string;
@@ -43,6 +59,7 @@ interface SiteConfig {
     footer_bottom: {
         copyright: string;
     };
+    theme?: ThemeConfig;
 }
 
 // Fallback default config if API fails
@@ -111,6 +128,21 @@ const defaultConfig: SiteConfig = {
         {label: "Contact Studio", href: "/contact"}
     ],
     footer_bottom: { copyright: "© 2026 GurucraftPro. All rights reserved." },
+    theme: {
+        preset: "Classic Indigo",
+        primary: "#6366f1",
+        accent: "#a5b4fc",
+        background: "#020617",
+        foreground: "#f8fafc",
+        cardBg: "rgba(15, 23, 42, 0.4)",
+        fontFamily: "Sora",
+        fontSizeScale: "normal",
+        radius: "16px",
+        glassmorphism: "subtle",
+        navbarStyle: "glass",
+        footerStyle: "detailed",
+        defaultTheme: "dark"
+    }
 };
 
 const SiteConfigContext = createContext<{ config: SiteConfig; loading: boolean }>({
@@ -138,6 +170,10 @@ export function SiteConfigProvider({ children }: { children: React.ReactNode }) 
                         footer_explore: data.footer_explore || defaultConfig.footer_explore,
                         footer_support: data.footer_support || defaultConfig.footer_support,
                         footer_bottom: data.footer_bottom || defaultConfig.footer_bottom,
+                        theme: {
+                            ...defaultConfig.theme,
+                            ...(data.theme || {})
+                        }
                     });
                 }
             } catch (err) {
@@ -149,6 +185,94 @@ export function SiteConfigProvider({ children }: { children: React.ReactNode }) 
         
         fetchConfig();
     }, []);
+
+    // Dynamic Google Fonts and style variables injection
+    useEffect(() => {
+        if (!config.theme || !config.theme.fontFamily) return;
+        const fontName = config.theme.fontFamily;
+        
+        // Remove existing dynamic font link if present
+        const existingLink = document.getElementById("dynamic-google-font");
+        if (existingLink) {
+            existingLink.remove();
+        }
+
+        // Font URL map
+        const fontUrlMap: Record<string, string> = {
+            "Sora": "https://fonts.googleapis.com/css2?family=Sora:wght@100..800&display=swap",
+            "Inter": "https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap",
+            "Outfit": "https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap",
+            "Playfair Display": "https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap",
+            "Cinzel": "https://fonts.googleapis.com/css2?family=Cinzel:wght@400..900&display=swap",
+            "Syne": "https://fonts.googleapis.com/css2?family=Syne:wght@400..800&display=swap"
+        };
+
+        const fontUrl = fontUrlMap[fontName];
+        if (fontUrl) {
+            const link = document.createElement("link");
+            link.id = "dynamic-google-font";
+            link.rel = "stylesheet";
+            link.href = fontUrl;
+            document.head.appendChild(link);
+        }
+
+        // Dynamically inject variables
+        let existingStyle = document.getElementById("dynamic-theme-vars");
+        if (!existingStyle) {
+            existingStyle = document.createElement("style");
+            existingStyle.id = "dynamic-theme-vars";
+            document.head.appendChild(existingStyle);
+        }
+
+        const primary = config.theme.primary || "#6366f1";
+        const accent = config.theme.accent || "#a5b4fc";
+        const background = config.theme.background || "#020617";
+        const foreground = config.theme.foreground || "#f8fafc";
+        const cardBg = config.theme.cardBg || "rgba(15, 23, 42, 0.4)";
+        const radius = config.theme.radius || "16px";
+        const glassmorphism = config.theme.glassmorphism || "subtle";
+        
+        let blurVal = "8px";
+        if (glassmorphism === "none") blurVal = "0px";
+        else if (glassmorphism === "heavy") blurVal = "20px";
+
+        let fontStack = "Sora, sans-serif";
+        if (fontName === "Playfair Display" || fontName === "Cinzel") {
+            fontStack = `'${fontName}', Georgia, serif`;
+        } else {
+            fontStack = `'${fontName}', sans-serif`;
+        }
+
+        let baseFontSize = "16px";
+        if (config.theme.fontSizeScale === "small") baseFontSize = "14px";
+        else if (config.theme.fontSizeScale === "large") baseFontSize = "18px";
+
+        existingStyle.innerHTML = `
+            :root {
+                --primary: ${primary};
+                --accent: ${accent};
+                --background: ${background};
+                --foreground: ${foreground};
+                --card-bg: ${cardBg};
+                --radius: ${radius};
+                --glass-blur: ${blurVal};
+                --font-primary: ${fontStack};
+                --base-font-size: ${baseFontSize};
+            }
+            body {
+                font-family: var(--font-primary) !important;
+                background-color: var(--background) !important;
+                color: var(--foreground) !important;
+            }
+            /* Global card elements styling override */
+            .glass-card, [class*="glass-card"] {
+                border-radius: var(--radius) !important;
+                background: var(--card-bg) !important;
+                backdrop-filter: blur(var(--glass-blur)) !important;
+                -webkit-backdrop-filter: blur(var(--glass-blur)) !important;
+            }
+        `;
+    }, [config.theme]);
 
     return (
         <SiteConfigContext.Provider value={{ config, loading }}>

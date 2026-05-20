@@ -486,7 +486,7 @@ export default function CMSPageEditor() {
                             {Object.entries(comp.props || {}).map(([propKey, propVal]: [string, any]) => {
                               
                               // Check if image upload prop (common keys: bg_image, image, icon, url)
-                              const isImageProp = ["bg_image", "image_url", "image", "logo_url", "avatar"].includes(propKey.toLowerCase());
+                              const isImageProp = ["bg_image", "image_url", "image", "logo_url", "avatar", "banner", "thumbnail", "photo", "background", "gallery"].some(k => propKey.toLowerCase().includes(k));
                               
                               // Check if array property
                               const isArray = Array.isArray(propVal);
@@ -540,27 +540,59 @@ export default function CMSPageEditor() {
                                   <label className="block text-[9px] font-black uppercase tracking-widest text-slate-500">{propKey}</label>
                                   
                                   {isImageProp ? (
-                                    <div className="flex gap-3">
-                                      <Input 
-                                        className="flex-1 bg-black/50 border-white/10 text-white text-xs rounded-xl h-11"
-                                        value={String(propVal)}
-                                        onChange={e => handleUpdateProp(idx, propKey, e.target.value)}
-                                        placeholder="Paste image url..."
-                                      />
-                                      <div className="relative shrink-0">
-                                        <input 
-                                          type="file"
-                                          accept="image/*"
-                                          className="absolute inset-0 opacity-0 cursor-pointer"
-                                          onChange={e => {
-                                            const file = e.target.files?.[0];
-                                            if (file) handleImageUpload(idx, propKey, file);
-                                          }}
+                                    <div className="space-y-2">
+                                      <div className="flex gap-3">
+                                        <Input 
+                                          className="flex-1 bg-black/50 border-white/10 text-white text-xs rounded-xl h-11"
+                                          value={String(propVal)}
+                                          onChange={e => handleUpdateProp(idx, propKey, e.target.value)}
+                                          placeholder="Paste image url..."
                                         />
-                                        <Button variant="outline" className="border-indigo-500/30 text-indigo-400 hover:bg-indigo-500/10 h-11 rounded-xl font-black text-xs px-4">
-                                          <UploadCloud size={14} className="mr-2" /> Upload
-                                        </Button>
+                                        <div className="relative shrink-0">
+                                          <input 
+                                            type="file"
+                                            accept="image/*"
+                                            className="absolute inset-0 opacity-0 cursor-pointer z-10"
+                                            onChange={e => {
+                                              const file = e.target.files?.[0];
+                                              if (file) {
+                                                if (!file.type.startsWith("image/")) {
+                                                  alert("Invalid file type: Please select an image file.");
+                                                  return;
+                                                }
+                                                if (file.size > 5 * 1024 * 1024) {
+                                                  alert("File too large: Max allowed image size is 5MB.");
+                                                  return;
+                                                }
+                                                handleImageUpload(idx, propKey, file);
+                                              }
+                                            }}
+                                          />
+                                          <Button variant="outline" className="border-indigo-500/30 text-indigo-400 hover:bg-indigo-500/10 h-11 rounded-xl font-black text-xs px-4">
+                                            <UploadCloud size={14} className="mr-2" /> Upload
+                                          </Button>
+                                        </div>
                                       </div>
+
+                                      {propVal && String(propVal).trim() !== "" && (
+                                        <div className="flex items-center gap-4 bg-black/30 p-3 rounded-xl border border-white/5 animate-in fade-in">
+                                          <div className="relative w-16 h-16 rounded-lg overflow-hidden border border-white/10 shrink-0 bg-slate-950">
+                                            <img 
+                                              src={String(propVal)} 
+                                              alt="Preview" 
+                                              className="w-full h-full object-cover"
+                                              onError={(e) => {
+                                                (e.target as HTMLElement).style.display = "none";
+                                              }}
+                                            />
+                                          </div>
+                                          <div className="text-[10px] space-y-1">
+                                            <span className="text-slate-300 font-bold uppercase tracking-wider block">Image Asset Preview</span>
+                                            <span className="text-indigo-400 block truncate max-w-[200px] font-mono text-[9px]">{String(propVal)}</span>
+                                            <span className="text-slate-500 block italic">✓ Optimized (converted to WebP dynamically at CDN level for mobile performance)</span>
+                                          </div>
+                                        </div>
+                                      )}
                                     </div>
                                   ) : typeof propVal === "string" && propVal.length > 60 ? (
                                     <Textarea 

@@ -5,7 +5,7 @@ import {
   FileText, Plus, Search, Edit, Eye, Trash2, Globe, 
   Clock, ToggleLeft, ToggleRight, Sparkles, Settings,
   Home, Users, Layers, Mail, Shield, BookOpen, Cpu, Heart,
-  Terminal, FileImage, ShoppingBag, CheckCircle, AlertTriangle
+  Terminal, FileImage, ShoppingBag, CheckCircle, AlertTriangle, Copy
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -38,6 +38,22 @@ export default function CMSPageManager() {
   const [seoTitle, setSeoTitle] = useState("");
   const [seoDesc, setSeoDesc] = useState("");
   const [isSavingSeo, setIsSavingSeo] = useState(false);
+
+  // NEW PAGE BUILDER STATES
+  const [createModalOpen, setCreateModalOpen] = useState(false);
+  const [newTitle, setNewTitle] = useState("");
+  const [newSlug, setNewSlug] = useState("");
+  const [newSeoTitle, setNewSeoTitle] = useState("");
+  const [newSeoDesc, setNewSeoDesc] = useState("");
+  const [newLayout, setNewLayout] = useState("empty");
+  const [isCreatingPage, setIsCreatingPage] = useState(false);
+
+  // DUPLICATE PAGE STATES
+  const [duplicateModalOpen, setDuplicateModalOpen] = useState(false);
+  const [sourcePage, setSourcePage] = useState<any | null>(null);
+  const [dupTitle, setDupTitle] = useState("");
+  const [dupSlug, setDupSlug] = useState("");
+  const [isDuplicating, setIsDuplicating] = useState(false);
 
   useEffect(() => {
     fetchPages();
@@ -160,7 +176,158 @@ export default function CMSPageManager() {
     }
   };
 
-  const filteredPages = REQUIRED_PAGES.filter(p => 
+  const handleCreatePage = async () => {
+    if (!newTitle || !newSlug) {
+      alert("Title and Slug are required.");
+      return;
+    }
+    setIsCreatingPage(true);
+    try {
+      const res = await fetchWithAuth("/api/v1/cms/pages", {
+        method: "POST",
+        body: JSON.stringify({
+          title: newTitle,
+          slug: newSlug,
+          status: "draft",
+          meta_title: newSeoTitle || newTitle,
+          meta_description: newSeoDesc || "Dynamic visual page"
+        })
+      });
+
+      if (!res.ok) {
+        throw new Error("Failed to create page record.");
+      }
+
+      let seedComponents: any[] = [];
+      if (newLayout === "services") {
+        seedComponents = [
+          {
+            name: `hero_${Date.now().toString().slice(-4)}`,
+            type: "hero",
+            props: { title: newTitle, subtitle: "Specialized client service matrix", cta_text: "Consult Us", cta_link: "/contact", bg_image: "/images/hero-bg.jpg" },
+            order: 0
+          },
+          {
+            name: `features_${Date.now().toString().slice(-4)}`,
+            type: "features",
+            props: { title: "Custom Ecosystem Capabilities", items: [{ title: "Intelligent Customization", desc: "Instantly tailored brand designs." }] },
+            order: 1
+          }
+        ];
+      } else if (newLayout === "spiritual") {
+        seedComponents = [
+          {
+            name: `hero_${Date.now().toString().slice(-4)}`,
+            type: "hero",
+            props: { title: `${newTitle} Sacred Showcase`, subtitle: "Spiritual mandala visual design collection", cta_text: "View Gallery", cta_link: "/portfolio" },
+            order: 0
+          },
+          {
+            name: `testimonials_${Date.now().toString().slice(-4)}`,
+            type: "testimonials",
+            props: { title: "Sacred Endorsements", quotes: [{ author: "Visionary Seeker", role: "Spiritual Advisor", quote: "A sublime visual experience that communicates celestial peace." }] },
+            order: 1
+          }
+        ];
+      }
+
+      if (seedComponents.length > 0) {
+        await fetchWithAuth(`/api/v1/cms/${newSlug}`, {
+          method: "PUT",
+          body: JSON.stringify({
+            title: newTitle,
+            slug: newSlug,
+            meta: { title: newSeoTitle || newTitle, description: newSeoDesc || "Dynamic visual page" },
+            components: seedComponents
+          })
+        });
+      }
+
+      setCreateModalOpen(false);
+      setNewTitle("");
+      setNewSlug("");
+      setNewSeoTitle("");
+      setNewSeoDesc("");
+      setNewLayout("empty");
+      fetchPages();
+    } catch (e: any) {
+      alert("Error: " + e.message);
+    } finally {
+      setIsCreatingPage(false);
+    }
+  };
+
+  const handleDuplicatePage = async () => {
+    if (!sourcePage || !dupTitle || !dupSlug) {
+      alert("Title and Slug are required.");
+      return;
+    }
+    setIsDuplicating(true);
+    try {
+      const getRes = await fetchWithAuth(`/api/v1/cms/${sourcePage.slug}`);
+      if (!getRes.ok) throw new Error("Failed to fetch source page layouts");
+      const sourceData = await getRes.json();
+
+      const createRes = await fetchWithAuth("/api/v1/cms/pages", {
+        method: "POST",
+        body: JSON.stringify({
+          title: dupTitle,
+          slug: dupSlug,
+          status: "draft",
+          meta_title: sourcePage.meta_title || dupTitle,
+          meta_description: sourcePage.meta_description || "Duplicate layout"
+        })
+      });
+      if (!createRes.ok) throw new Error("Failed to create duplicate page record");
+
+      await fetchWithAuth(`/api/v1/cms/${dupSlug}`, {
+        method: "PUT",
+        body: JSON.stringify({
+          title: dupTitle,
+          slug: dupSlug,
+          meta: { title: sourcePage.meta_title || dupTitle, description: sourcePage.meta_description || "Duplicate layout" },
+          components: sourceData.components || []
+        })
+      });
+
+      setDuplicateModalOpen(false);
+      setSourcePage(null);
+      setDupTitle("");
+      setDupSlug("");
+      fetchPages();
+    } catch (e: any) {
+      alert("Duplication failed: " + e.message);
+    } finally {
+      setIsDuplicating(false);
+    }
+  };
+
+  // Merge REQUIRED_PAGES and dynamic dbPages not represented in REQUIRED_PAGES
+  const allPagesToDisplay = [...REQUIRED_PAGES];
+
+  dbPages.forEach((dbPage) => {
+    // See if this dbPage matches any required page normalized slug
+    const matchesRequired = REQUIRED_PAGES.some((req) => {
+      let targetSlug = req.slug;
+      if (req.slug === "guruji-darshan") targetSlug = "guru-ji-art";
+      else if (req.slug === "wedding-plan") targetSlug = "wedding-showcase";
+      else if (req.slug === "clothing-consultation") targetSlug = "7-day-clothing-consultation";
+      return targetSlug === dbPage.slug;
+    });
+
+    if (!matchesRequired) {
+      // Add it as a dynamic page!
+      allPagesToDisplay.push({
+        slug: dbPage.slug,
+        title: dbPage.title || `Dynamic: ${dbPage.slug}`,
+        desc: dbPage.meta_description || "Custom dynamic slug page builder canvas.",
+        icon: Globe,
+        isDynamic: true,
+      } as any);
+    }
+  });
+
+  const filteredPages = allPagesToDisplay.filter(p => 
     p.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
     p.slug.toLowerCase().includes(searchQuery.toLowerCase())
   );
@@ -169,14 +336,22 @@ export default function CMSPageManager() {
     <div className="space-y-12 max-w-7xl mx-auto text-left">
       {/* Action Header */}
       <div className="flex flex-wrap items-center justify-between gap-6">
-        <div className="relative w-full md:w-96">
-          <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 w-4 h-4" />
-          <Input 
-            placeholder="Search pages by title or slug..." 
-            className="pl-12 h-14 bg-white/5 border-white/10 rounded-2xl italic font-medium text-white placeholder:text-slate-500"
-            value={searchQuery}
-            onChange={e => setSearchQuery(e.target.value)}
-          />
+        <div className="flex flex-1 items-center gap-4 w-full md:w-auto max-w-2xl">
+          <div className="relative flex-1">
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 w-4 h-4" />
+            <Input 
+              placeholder="Search pages by title or slug..." 
+              className="pl-12 h-14 bg-white/5 border-white/10 rounded-2xl italic font-medium text-white placeholder:text-slate-500 focus:border-indigo-500/50"
+              value={searchQuery}
+              onChange={e => setSearchQuery(e.target.value)}
+            />
+          </div>
+          <Button 
+            onClick={() => setCreateModalOpen(true)}
+            className="h-14 rounded-2xl bg-indigo-600 hover:bg-indigo-700 text-white font-black text-xs uppercase tracking-wider px-6 gap-2 transition-all shadow-lg shadow-indigo-500/20 shrink-0"
+          >
+            <Plus size={16} /> Create Page
+          </Button>
         </div>
         <div className="flex items-center gap-4 text-xs font-bold text-slate-500 italic">
           <Clock size={16} className="text-indigo-400" />
@@ -231,13 +406,13 @@ export default function CMSPageManager() {
                 </div>
 
                 {/* Meta details */}
-                <h3 className="text-2xl font-black italic uppercase tracking-tighter text-white group-hover:text-indigo-400 transition-colors mb-2">
+                <h3 className="text-2xl font-black italic uppercase tracking-tighter text-white group-hover:text-indigo-400 transition-colors mb-2 truncate">
                   {reqPage.title}
                 </h3>
                 <p className="text-slate-500 text-xs font-mono mb-4 flex items-center gap-1.5">
                   <Globe size={11} /> /{dbPage?.slug || reqPage.slug}
                 </p>
-                <p className="text-slate-400 text-xs font-medium italic leading-relaxed mb-6">
+                <p className="text-slate-400 text-xs font-medium italic leading-relaxed mb-6 line-clamp-2">
                   {reqPage.desc}
                 </p>
               </div>
@@ -251,24 +426,39 @@ export default function CMSPageManager() {
                 )}
 
                 {isInitialized ? (
-                  <div className="flex gap-3">
+                  <div className="flex gap-2">
                     <Link href={`/admin/pages/${dbPage.slug}`} className="flex-1">
                       <Button className="w-full h-11 rounded-xl bg-white text-black hover:bg-indigo-600 hover:text-white font-black text-xs transition-all tracking-wider uppercase gap-1">
-                        <Edit size={12} /> Edit Page
+                        <Edit size={12} /> Edit
                       </Button>
                     </Link>
                     <Button 
                       variant="outline" 
                       onClick={() => openSeoEditor(dbPage)}
-                      className="h-11 rounded-xl border-white/5 hover:bg-indigo-500/10 hover:text-indigo-400 text-slate-400 transition-colors font-bold text-xs px-4"
+                      className="h-11 rounded-xl border-white/5 hover:bg-indigo-500/10 hover:text-indigo-400 text-slate-400 transition-colors font-bold text-xs px-3"
+                      title="Edit SEO Meta"
                     >
                       SEO
+                    </Button>
+                    <Button 
+                      variant="outline" 
+                      onClick={() => {
+                        setSourcePage(dbPage);
+                        setDupTitle(`${dbPage.title} Copy`);
+                        setDupSlug(`${dbPage.slug}-copy`);
+                        setDuplicateModalOpen(true);
+                      }}
+                      className="h-11 rounded-xl border-white/5 hover:bg-indigo-500/10 hover:text-indigo-400 text-slate-400 transition-colors font-bold text-xs px-3"
+                      title="Duplicate Layout"
+                    >
+                      <Copy size={13} />
                     </Button>
                     <Link href={`/${dbPage.slug}?preview=true`} target="_blank">
                       <Button 
                         variant="outline" 
                         size="icon"
                         className="h-11 w-11 rounded-xl border-white/5 hover:bg-indigo-500/10 hover:text-indigo-400 text-slate-400"
+                        title="Live Preview"
                       >
                         <Eye size={14} />
                       </Button>
@@ -279,6 +469,7 @@ export default function CMSPageManager() {
                         size="icon"
                         onClick={() => handleDeletePage(dbPage.slug)}
                         className="h-11 w-11 rounded-xl text-rose-500 hover:bg-rose-500/10 hover:text-rose-400"
+                        title="Delete Page"
                       >
                         <Trash2 size={14} />
                       </Button>
@@ -298,10 +489,170 @@ export default function CMSPageManager() {
         })}
       </div>
 
+      {/* Polish Create Page Dialog Modal */}
+      {createModalOpen && (
+        <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4">
+          <div className="glass-card w-full max-w-xl p-10 rounded-[3rem] border border-white/10 shadow-2xl relative animate-in zoom-in-95 duration-200 text-left">
+            <h3 className="text-3xl font-black italic uppercase tracking-tighter text-white mb-2">
+              Create Dynamic Page
+            </h3>
+            <p className="text-slate-500 text-sm italic mb-8">
+              Construct a custom slug page with a pre-seeded component structure.
+            </p>
+
+            <div className="space-y-6 mb-10">
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <label className="block text-[10px] font-black uppercase tracking-wider text-slate-400">Page Title</label>
+                  <Input 
+                    placeholder="e.g. My New Page"
+                    className="bg-black/50 border-white/10 h-12 text-white font-medium rounded-xl focus:border-indigo-500/50"
+                    value={newTitle}
+                    onChange={e => {
+                      setNewTitle(e.target.value);
+                      // Auto slugify
+                      setNewSlug(e.target.value.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, ""));
+                    }}
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <label className="block text-[10px] font-black uppercase tracking-wider text-slate-400">Page Slug</label>
+                  <Input 
+                    placeholder="e.g. my-new-page"
+                    className="bg-black/50 border-white/10 h-12 text-white font-medium rounded-xl focus:border-indigo-500/50"
+                    value={newSlug}
+                    onChange={e => setNewSlug(e.target.value)}
+                  />
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <label className="block text-[10px] font-black uppercase tracking-wider text-slate-400">Select Layout Preset</label>
+                <div className="grid grid-cols-3 gap-3">
+                  {["empty", "services", "spiritual"].map((preset) => (
+                    <button
+                      key={preset}
+                      type="button"
+                      onClick={() => setNewLayout(preset)}
+                      className={`h-20 rounded-xl border flex flex-col items-center justify-center p-3 transition-all ${
+                        newLayout === preset 
+                          ? "border-indigo-500 bg-indigo-500/10 text-white font-bold" 
+                          : "border-white/5 bg-black/30 hover:border-white/10 text-slate-400"
+                      }`}
+                    >
+                      <span className="text-xs uppercase tracking-widest font-black">{preset}</span>
+                      <span className="text-[9px] text-slate-500 mt-1 italic">
+                        {preset === "empty" ? "Blank canvas" : preset === "services" ? "Ecom features" : "Art exhibits"}
+                      </span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <label className="block text-[10px] font-black uppercase tracking-wider text-slate-400">Meta Title</label>
+                  <Input 
+                    placeholder="Search engine title tag"
+                    className="bg-black/50 border-white/10 h-12 text-white font-medium rounded-xl focus:border-indigo-500/50"
+                    value={newSeoTitle}
+                    onChange={e => setNewSeoTitle(e.target.value)}
+                  />
+                </div>
+                <div className="space-y-2">
+                  <label className="block text-[10px] font-black uppercase tracking-wider text-slate-400">Meta Description</label>
+                  <Input 
+                    placeholder="Search engine meta desc"
+                    className="bg-black/50 border-white/10 h-12 text-white font-medium rounded-xl focus:border-indigo-500/50"
+                    value={newSeoDesc}
+                    onChange={e => setNewSeoDesc(e.target.value)}
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div className="flex gap-4">
+              <Button 
+                onClick={handleCreatePage} 
+                disabled={isCreatingPage}
+                className="flex-1 h-12 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-black text-xs uppercase tracking-wider transition-all"
+              >
+                {isCreatingPage ? "Creating Page..." : "Instantiate Page"}
+              </Button>
+              <Button 
+                variant="outline"
+                onClick={() => setCreateModalOpen(false)}
+                className="h-12 rounded-xl border-white/10 text-slate-400 hover:bg-white/5 font-black text-xs uppercase tracking-wider px-6"
+              >
+                Cancel
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Polish Duplicate Page Dialog Modal */}
+      {duplicateModalOpen && (
+        <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4">
+          <div className="glass-card w-full max-w-xl p-10 rounded-[3rem] border border-white/10 shadow-2xl relative animate-in zoom-in-95 duration-200 text-left">
+            <h3 className="text-3xl font-black italic uppercase tracking-tighter text-white mb-2">
+              Duplicate Layout
+            </h3>
+            <p className="text-slate-500 text-sm italic mb-8">
+              Copying all components, themes, and configuration from <span className="text-indigo-400 font-extrabold font-mono">/{sourcePage?.slug}</span>
+            </p>
+
+            <div className="space-y-6 mb-10">
+              <div className="space-y-2">
+                <label className="block text-[10px] font-black uppercase tracking-wider text-slate-400">Target Page Title</label>
+                <Input 
+                  className="bg-black/50 border-white/10 h-12 text-white font-medium rounded-xl focus:border-indigo-500/50"
+                  value={dupTitle}
+                  onChange={e => {
+                    setDupTitle(e.target.value);
+                    setDupSlug(e.target.value.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, ""));
+                  }}
+                />
+              </div>
+
+              <div className="space-y-2">
+                <label className="block text-[10px] font-black uppercase tracking-wider text-slate-400">Target Slug</label>
+                <Input 
+                  className="bg-black/50 border-white/10 h-12 text-white font-medium rounded-xl focus:border-indigo-500/50"
+                  value={dupSlug}
+                  onChange={e => setDupSlug(e.target.value)}
+                />
+              </div>
+            </div>
+
+            <div className="flex gap-4">
+              <Button 
+                onClick={handleDuplicatePage} 
+                disabled={isDuplicating}
+                className="flex-1 h-12 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-black text-xs uppercase tracking-wider transition-all"
+              >
+                {isDuplicating ? "Duplicating Layout..." : "Duplicate Page Layout"}
+              </Button>
+              <Button 
+                variant="outline"
+                onClick={() => {
+                  setDuplicateModalOpen(false);
+                  setSourcePage(null);
+                }}
+                className="h-12 rounded-xl border-white/10 text-slate-400 hover:bg-white/5 font-black text-xs uppercase tracking-wider px-6"
+              >
+                Cancel
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Glassmorphic SEO editor Dialog Modal */}
       {selectedSeoPage && (
         <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4">
-          <div className="glass-card w-full max-w-xl p-10 rounded-[3rem] border border-white/10 shadow-2xl relative animate-in zoom-in-95 duration-200">
+          <div className="glass-card w-full max-w-xl p-10 rounded-[3rem] border border-white/10 shadow-2xl relative animate-in zoom-in-95 duration-200 text-left">
             <h3 className="text-3xl font-black italic uppercase tracking-tighter text-white mb-2">
               SEO Engine Override
             </h3>
