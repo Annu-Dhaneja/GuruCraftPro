@@ -84,7 +84,7 @@ export default function ApiLogsPage() {
         
         {/* LOGS LIST */}
         <div className="xl:col-span-2 space-y-6">
-          <div className="glass-card p-6 rounded-[2rem] border border-white/5 bg-slate-900/20 backdrop-blur-sm space-y-4">
+          <div className="glass-panel p-6 rounded-[2rem] border border-white/5 bg-slate-900/20 backdrop-blur-sm space-y-4">
             
             {/* FILTERS */}
             <div className="flex flex-col md:flex-row gap-4 items-center justify-between">
@@ -190,7 +190,7 @@ export default function ApiLogsPage() {
         {/* LOG DETAILS PANEL */}
         <div className="xl:col-span-1">
           {selectedLog ? (
-            <div className="glass-card p-8 rounded-[2rem] border border-indigo-500/20 bg-slate-900/30 backdrop-blur-sm space-y-6 animate-in slide-in-from-right-4 duration-500">
+            <div className="glass-panel p-8 rounded-[2rem] border border-indigo-500/20 bg-slate-900/30 backdrop-blur-sm space-y-6 animate-in slide-in-from-right-4 duration-500">
               <div className="flex justify-between items-center pb-4 border-b border-white/5">
                 <div>
                   <h3 className="text-xl font-bold uppercase italic tracking-tight">Transaction Detail</h3>
@@ -242,7 +242,7 @@ export default function ApiLogsPage() {
               </div>
             </div>
           ) : (
-            <div className="h-full min-h-[300px] glass-card p-8 rounded-[2rem] border border-white/5 bg-slate-900/10 backdrop-blur-sm flex flex-col items-center justify-center text-center text-slate-500 space-y-4">
+            <div className="h-full min-h-[300px] glass-panel p-8 rounded-[2rem] border border-white/5 bg-slate-900/10 backdrop-blur-sm flex flex-col items-center justify-center text-center text-slate-500 space-y-4">
               <ArrowLeftRight className="h-12 w-12 text-slate-700 animate-pulse" />
               <div>
                 <p className="font-bold text-slate-400 uppercase text-xs tracking-wider">Inspector Locked</p>

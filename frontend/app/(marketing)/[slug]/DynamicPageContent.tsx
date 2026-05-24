@@ -90,7 +90,33 @@ export function DynamicPageContent({ slug }: { slug: string }) {
             actualProps = actualProps.props;
           }
           
-          return <Renderer key={comp.id || idx} {...actualProps} />;
+          // Build layout, padding and margin overrides
+          const overrides: string[] = [];
+          if (actualProps.align) {
+            if (actualProps.align === "center") overrides.push("text-center flex flex-col items-center justify-center");
+            else if (actualProps.align === "right") overrides.push("text-right flex flex-col items-end justify-end");
+            else if (actualProps.align === "left") overrides.push("text-left flex flex-col items-start justify-start");
+          }
+          if (actualProps.padding_top && actualProps.padding_top !== "default") {
+            overrides.push(actualProps.padding_top);
+          }
+          if (actualProps.padding_bottom && actualProps.padding_bottom !== "default") {
+            overrides.push(actualProps.padding_bottom);
+          }
+          if (actualProps.margin_top && actualProps.margin_top !== "default") {
+            overrides.push(actualProps.margin_top);
+          }
+          if (actualProps.margin_bottom && actualProps.margin_bottom !== "default") {
+            overrides.push(actualProps.margin_bottom);
+          }
+          
+          const layoutClassName = overrides.join(" ");
+          
+          return (
+            <div key={comp.id || idx} className={layoutClassName}>
+              <Renderer {...actualProps} />
+            </div>
+          );
         })
       ) : (
         Object.entries(components).map(([name, props]: [string, any]) => {
@@ -103,7 +129,33 @@ export function DynamicPageContent({ slug }: { slug: string }) {
             actualProps = actualProps.props;
           }
           
-          return <Renderer key={name} {...actualProps} />;
+          // Build layout, padding and margin overrides
+          const overrides: string[] = [];
+          if (actualProps.align) {
+            if (actualProps.align === "center") overrides.push("text-center flex flex-col items-center justify-center");
+            else if (actualProps.align === "right") overrides.push("text-right flex flex-col items-end justify-end");
+            else if (actualProps.align === "left") overrides.push("text-left flex flex-col items-start justify-start");
+          }
+          if (actualProps.padding_top && actualProps.padding_top !== "default") {
+            overrides.push(actualProps.padding_top);
+          }
+          if (actualProps.padding_bottom && actualProps.padding_bottom !== "default") {
+            overrides.push(actualProps.padding_bottom);
+          }
+          if (actualProps.margin_top && actualProps.margin_top !== "default") {
+            overrides.push(actualProps.margin_top);
+          }
+          if (actualProps.margin_bottom && actualProps.margin_bottom !== "default") {
+            overrides.push(actualProps.margin_bottom);
+          }
+          
+          const layoutClassName = overrides.join(" ");
+          
+          return (
+            <div key={name} className={layoutClassName}>
+              <Renderer {...actualProps} />
+            </div>
+          );
         })
       )}
     </main>

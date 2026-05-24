@@ -60,15 +60,15 @@ export function AdminDashboard() {
 
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
                 {/* Recent Submissions */}
-                <div className="lg:col-span-8 glass-card rounded-[3rem] p-10 border border-white/5">
+                <div className="lg:col-span-8 glass-panel rounded-[3rem] p-10">
                     <div className="flex items-center justify-between mb-10">
                         <h3 className="text-2xl font-black italic uppercase tracking-tight">Recent Intelligence</h3>
-                        <Button variant="outline" size="sm" className="rounded-xl border-white/5 text-[10px] font-black uppercase tracking-widest">View All</Button>
+                        <Button variant="outline" size="sm" className="rounded-xl border-white/5 text-[10px] font-black uppercase tracking-widest hover:bg-indigo-600 hover:text-white transition-all">View All</Button>
                     </div>
-
+ 
                     <div className="space-y-4">
                         {stats?.recent_submissions?.map((sub: any, i: number) => (
-                            <div key={i} className="flex items-center justify-between p-6 rounded-3xl bg-white/5 border border-transparent hover:border-white/10 hover:bg-white/[0.07] transition-all group">
+                            <div key={i} className="flex items-center justify-between p-6 rounded-3xl bg-white/5 border border-transparent hover:border-indigo-500/20 hover:bg-white/[0.07] transition-all group">
                                 <div className="flex items-center gap-6">
                                     <div className="w-12 h-12 rounded-2xl bg-slate-800 flex items-center justify-center font-bold text-slate-400 group-hover:bg-indigo-600 group-hover:text-white transition-colors">
                                         {sub.name.slice(0,1)}
@@ -90,10 +90,10 @@ export function AdminDashboard() {
                         )}
                     </div>
                 </div>
-
+ 
                 {/* System Status */}
                 <div className="lg:col-span-4 space-y-8">
-                    <div className="glass-card rounded-[3rem] p-10 border border-white/5 bg-indigo-600/5">
+                    <div className="glass-panel rounded-[3rem] p-10 bg-indigo-600/5">
                          <h3 className="text-xl font-black italic uppercase tracking-tight mb-8">System Shield</h3>
                          <div className="space-y-6">
                             {[

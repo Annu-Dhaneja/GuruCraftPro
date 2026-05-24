@@ -95,6 +95,17 @@ def fix_schema():
                             conn.execute(text("ALTER TABLE users ADD COLUMN IF NOT EXISTS role_id INTEGER"))
                     except Exception: pass
 
+                if table in ["wedding_plans", "designs", "orders"]:
+                    try:
+                        if is_sqlite:
+                            res = conn.execute(text(f"PRAGMA table_info({table})"))
+                            existing = [row[1] for row in res.fetchall()]
+                            if "user_id" not in existing:
+                                conn.execute(text(f"ALTER TABLE {table} ADD COLUMN user_id INTEGER"))
+                        else:
+                            conn.execute(text(f"ALTER TABLE {table} ADD COLUMN IF NOT EXISTS user_id INTEGER"))
+                    except Exception: pass
+
                 if table == "media":
                     try:
                         if is_sqlite:

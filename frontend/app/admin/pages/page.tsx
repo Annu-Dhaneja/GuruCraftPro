@@ -492,7 +492,7 @@ export default function CMSPageManager() {
       {/* Polish Create Page Dialog Modal */}
       {createModalOpen && (
         <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4">
-          <div className="glass-card w-full max-w-xl p-10 rounded-[3rem] border border-white/10 shadow-2xl relative animate-in zoom-in-95 duration-200 text-left">
+          <div className="glass-panel w-full max-w-xl p-10 rounded-[3rem] border border-white/10 shadow-2xl relative animate-in zoom-in-95 duration-200 text-left">
             <h3 className="text-3xl font-black italic uppercase tracking-tighter text-white mb-2">
               Create Dynamic Page
             </h3>
@@ -595,7 +595,7 @@ export default function CMSPageManager() {
       {/* Polish Duplicate Page Dialog Modal */}
       {duplicateModalOpen && (
         <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4">
-          <div className="glass-card w-full max-w-xl p-10 rounded-[3rem] border border-white/10 shadow-2xl relative animate-in zoom-in-95 duration-200 text-left">
+          <div className="glass-panel w-full max-w-xl p-10 rounded-[3rem] border border-white/10 shadow-2xl relative animate-in zoom-in-95 duration-200 text-left">
             <h3 className="text-3xl font-black italic uppercase tracking-tighter text-white mb-2">
               Duplicate Layout
             </h3>
@@ -652,7 +652,7 @@ export default function CMSPageManager() {
       {/* Glassmorphic SEO editor Dialog Modal */}
       {selectedSeoPage && (
         <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4">
-          <div className="glass-card w-full max-w-xl p-10 rounded-[3rem] border border-white/10 shadow-2xl relative animate-in zoom-in-95 duration-200 text-left">
+          <div className="glass-panel w-full max-w-xl p-10 rounded-[3rem] border border-white/10 shadow-2xl relative animate-in zoom-in-95 duration-200 text-left">
             <h3 className="text-3xl font-black italic uppercase tracking-tighter text-white mb-2">
               SEO Engine Override
             </h3>

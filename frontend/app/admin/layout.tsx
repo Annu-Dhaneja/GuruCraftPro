@@ -35,10 +35,26 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   const router = useRouter();
   const [isAuthorized, setIsAuthorized] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
     // Make sure Zustand auth store checks identity
     checkAuth();
+  }, []);
+
+  useEffect(() => {
+    const handleResize = () => {
+      const mobile = window.innerWidth < 1024;
+      setIsMobile(mobile);
+      if (mobile) {
+        setIsSidebarOpen(false);
+      } else {
+        setIsSidebarOpen(true);
+      }
+    };
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
   }, []);
 
   useEffect(() => {
@@ -78,16 +94,32 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     <div className="flex h-screen overflow-hidden bg-slate-950 text-slate-200">
       <CentralizedSEO title="Admin Console | GuruCraftPro" />
       
+      {/* Sidebar Overlay for Mobile */}
+      {isMobile && isSidebarOpen && (
+        <div 
+          className="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 lg:hidden"
+          onClick={() => setIsSidebarOpen(false)}
+        />
+      )}
+
       {/* Sidebar */}
       <aside 
         className={cn(
-          "fixed inset-y-0 left-0 z-50 bg-slate-900/40 backdrop-blur-3xl border-r border-white/5 transition-all duration-300 flex flex-col h-full",
-          isSidebarOpen ? "w-72" : "w-20"
+          "fixed inset-y-0 left-0 z-50 bg-slate-900/80 lg:bg-slate-900/40 backdrop-blur-3xl border-r border-white/5 transition-all duration-300 flex flex-col h-full",
+          isMobile 
+            ? (isSidebarOpen ? "w-72 translate-x-0" : "w-72 -translate-x-full")
+            : (isSidebarOpen ? "w-72 translate-x-0" : "w-20 translate-x-0")
         )}
       >
         {/* Brand Header */}
         <div className="p-6 border-b border-white/5 flex items-center justify-between">
-          <Link href="/" className={cn("font-black tracking-tighter uppercase italic transition-opacity flex items-center gap-2", !isSidebarOpen && "opacity-0")}>
+          <Link 
+            href="/" 
+            className={cn(
+              "font-black tracking-tighter uppercase italic transition-opacity flex items-center gap-2", 
+              (!isSidebarOpen && !isMobile) && "opacity-0"
+            )}
+          >
             <span className="text-xl text-white">GURU</span>
             <span className="text-indigo-500 text-xl">PRO</span>
           </Link>
@@ -119,9 +151,14 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                     ? "bg-indigo-500/10 text-indigo-400 border border-indigo-500/20" 
                     : "hover:bg-white/5 text-slate-400 hover:text-white"
                 )}
+                onClick={() => {
+                  if (isMobile) {
+                    setIsSidebarOpen(false);
+                  }
+                }}
               >
                 <item.icon size={18} className={cn("shrink-0", isActive && "animate-pulse")} />
-                <span className={cn("font-bold text-xs tracking-wider uppercase transition-all duration-300", !isSidebarOpen && "opacity-0 translate-x-10")}>
+                <span className={cn("font-bold text-xs tracking-wider uppercase transition-all duration-300", (!isSidebarOpen && !isMobile) && "opacity-0 translate-x-10")}>
                   {item.label}
                 </span>
                 {isActive && (
@@ -134,7 +171,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
         {/* Sidebar footer user metadata */}
         <div className="p-4 border-t border-white/5 mt-auto bg-slate-900/20">
-          <div className={cn("p-4 rounded-2xl bg-slate-800/30 border border-white/5 mb-3 overflow-hidden transition-all duration-300", !isSidebarOpen && "opacity-0 h-0 p-0 mb-0")}>
+          <div className={cn("p-4 rounded-2xl bg-slate-800/30 border border-white/5 mb-3 overflow-hidden transition-all duration-300", (!isSidebarOpen && !isMobile) && "opacity-0 h-0 p-0 mb-0")}>
             <p className="text-[9px] font-black uppercase tracking-widest text-slate-600 mb-1">Authenticated</p>
             <p className="font-bold text-sm truncate text-white">{user.name || user.username}</p>
             <p className="text-[9px] font-black uppercase tracking-wider text-indigo-400 mt-0.5">{user.role}</p>
@@ -145,19 +182,29 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             onClick={handleLogout}
           >
             <LogOut size={18} />
-            <span className={cn("font-bold text-xs uppercase tracking-wider", !isSidebarOpen && "hidden")}>Logout Console</span>
+            <span className={cn("font-bold text-xs uppercase tracking-wider", (!isSidebarOpen && !isMobile) && "hidden")}>Logout Console</span>
           </Button>
         </div>
       </aside>
 
       {/* Main Panel Content Container */}
       <main className={cn(
-        "flex-1 flex flex-col transition-all duration-300 overflow-y-auto h-screen",
-        isSidebarOpen ? "ml-72" : "ml-20"
+        "flex-1 flex flex-col transition-all duration-300 overflow-y-auto h-screen ml-0",
+        isSidebarOpen ? "lg:ml-72" : "lg:ml-20"
       )}>
         {/* Responsive top header banner */}
         <header className="h-20 border-b border-white/5 flex items-center justify-between px-8 bg-slate-950/50 backdrop-blur-xl sticky top-0 z-40">
           <div className="flex items-center gap-4">
+            {!isSidebarOpen && (
+              <Button 
+                variant="ghost" 
+                size="icon" 
+                onClick={() => setIsSidebarOpen(true)} 
+                className="lg:hidden text-slate-400 hover:text-white rounded-xl mr-2"
+              >
+                <Menu size={20} />
+              </Button>
+            )}
             <span className="text-slate-600 font-bold uppercase text-[9px] tracking-widest">Platform Core</span>
             <ChevronRight className="text-slate-800 w-3.5 h-3.5" />
             <span className="font-black uppercase tracking-tighter italic text-indigo-400 text-sm">

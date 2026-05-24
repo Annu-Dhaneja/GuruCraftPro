@@ -56,18 +56,10 @@ export default function SignupPage() {
             const data = await response.json();
 
             if (response.ok) {
-                localStorage.setItem("token", data.access_token);
-                localStorage.setItem("username", formData.username);
-                localStorage.setItem("role", data.role || "user");
-                
-                toast.success("Account created successfully!");
-                
-                const normalizedRole = (data.role || "user").toLowerCase();
-                if (normalizedRole === "admin" || normalizedRole === "super_admin" || normalizedRole === "super-admin") {
-                    router.push("/admin");
-                } else {
-                    router.push("/ai-lab"); 
-                }
+                toast.success("Account created successfully! Redirecting to login...");
+                setTimeout(() => {
+                    router.push("/login");
+                }, 1500);
             } else {
                 toast.error(data.detail || "Signup failed. Please check your details.");
             }

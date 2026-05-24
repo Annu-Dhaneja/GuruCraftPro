@@ -83,7 +83,7 @@ export default function ActivityLogsPage() {
         <p className="text-slate-500 text-lg font-light italic">Auditing configuration changes, database inputs, and admin operations across modules.</p>
       </div>
 
-      <div className="glass-card p-8 rounded-[3rem] border border-white/5 bg-slate-900/20 backdrop-blur-sm space-y-8 max-w-5xl mx-auto">
+      <div className="glass-panel p-8 rounded-[3rem] border border-white/5 bg-slate-900/20 backdrop-blur-sm space-y-8 max-w-5xl mx-auto">
         
         {/* FILTERS */}
         <div className="flex flex-col md:flex-row gap-4 items-center justify-between">
@@ -148,7 +148,7 @@ export default function ActivityLogsPage() {
                   </div>
 
                   {/* Activity Details Card */}
-                  <div className="glass-card p-6 rounded-2xl border border-white/5 bg-black/30 hover:border-indigo-500/20 transition-all space-y-4">
+                  <div className="glass-panel p-6 rounded-2xl border border-white/5 bg-black/30 hover:border-indigo-500/20 transition-all space-y-4">
                     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                       <div className="flex items-center gap-3">
                         <div className="h-8 w-8 rounded-lg bg-indigo-500/10 flex items-center justify-center border border-indigo-500/20">

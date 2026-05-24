@@ -96,7 +96,7 @@ export default function AdminSettingsPage() {
                        >
                          <option value="default">Standard</option>
                          <option value="special">Highlighted (Indigo)</option>
-                         <option value="guru">Sacred (Orange)</option>
+                         <option value="guru">Celestial (Indigo/Violet)</option>
                        </select>
                     </div>
                   </div>

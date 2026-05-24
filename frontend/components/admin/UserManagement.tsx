@@ -70,7 +70,7 @@ export function UserManagement() {
                 </Button>
             </div>
 
-            <div className="glass-card rounded-[3rem] overflow-hidden border border-white/5">
+            <div className="glass-panel rounded-[3rem] overflow-hidden">
                 <Table>
                     <TableHeader className="bg-white/5">
                         <TableRow className="hover:bg-transparent border-white/5">

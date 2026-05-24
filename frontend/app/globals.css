@@ -289,6 +289,26 @@
       0 0 20px 0 color-mix(in srgb, var(--primary), transparent 90%);
   }
 
+  .glass-panel {
+    background: color-mix(in srgb, var(--card), transparent 65%);
+    backdrop-filter: blur(20px) saturate(180%);
+    border: 1px solid color-mix(in srgb, var(--border), transparent 85%);
+    box-shadow: 
+      0 4px 6px -1px rgb(0 0 0 / 0.1), 
+      0 2px 4px -2px rgb(0 0 0 / 0.1),
+      inset 0 1px 0 0 rgb(255 255 255 / 0.05);
+    transition: border-color 0.4s ease, background 0.4s ease, box-shadow 0.4s ease;
+  }
+
+  .glass-panel:hover {
+    border-color: color-mix(in srgb, var(--primary), transparent 75%);
+    background: color-mix(in srgb, var(--card), transparent 55%);
+    box-shadow: 
+      0 10px 15px -3px rgb(0 0 0 / 0.1),
+      0 4px 6px -4px rgb(0 0 0 / 0.1),
+      0 0 12px 0 color-mix(in srgb, var(--primary), transparent 95%);
+  }
+
   .text-shimmer {
     background: linear-gradient(
       90deg,

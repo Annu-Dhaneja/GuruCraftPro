@@ -216,7 +216,7 @@ export default function AdminThemeDashboard() {
         <div className="lg:col-span-7 space-y-8">
           
           {/* Preset templates */}
-          <div className="glass-card p-8 rounded-3xl border border-white/5 space-y-6">
+          <div className="glass-panel p-8 rounded-3xl border border-white/5 space-y-6">
             <h3 className="text-lg font-black uppercase tracking-widest text-indigo-300 flex items-center gap-2">
               <Sparkles size={16} /> Reusable Design Presets
             </h3>
@@ -257,7 +257,7 @@ export default function AdminThemeDashboard() {
           </div>
 
           {/* Hex Custom Palette */}
-          <div className="glass-card p-8 rounded-3xl border border-white/5 space-y-6">
+          <div className="glass-panel p-8 rounded-3xl border border-white/5 space-y-6">
             <h3 className="text-lg font-black uppercase tracking-widest text-indigo-300 flex items-center gap-2">
               <PaletteIcon size={16} /> Hex Color Core Vectors
             </h3>
@@ -346,7 +346,7 @@ export default function AdminThemeDashboard() {
           </div>
 
           {/* Typography & Spacing Options */}
-          <div className="glass-card p-8 rounded-3xl border border-white/5 space-y-6">
+          <div className="glass-panel p-8 rounded-3xl border border-white/5 space-y-6">
             <h3 className="text-lg font-black uppercase tracking-widest text-indigo-300 flex items-center gap-2">
               <Type size={16} /> Typography & Global Spacing Scale
             </h3>
@@ -444,7 +444,7 @@ export default function AdminThemeDashboard() {
           </div>
 
           {/* Navigation & Layout Components */}
-          <div className="glass-card p-8 rounded-3xl border border-white/5 space-y-6">
+          <div className="glass-panel p-8 rounded-3xl border border-white/5 space-y-6">
             <h3 className="text-lg font-black uppercase tracking-widest text-indigo-300 flex items-center gap-2">
               <Layout size={16} /> Component Style Overrides
             </h3>
@@ -510,7 +510,7 @@ export default function AdminThemeDashboard() {
         </div>
 
         {/* RIGHT PANEL: Live Visual Theme Preview Mockup (35%) */}
-        <div className="lg:col-span-5 glass-card rounded-[2.5rem] border border-white/5 bg-slate-900/20 flex flex-col overflow-hidden h-fit sticky top-28">
+        <div className="lg:col-span-5 glass-panel rounded-[2.5rem] border border-white/5 bg-slate-900/20 flex flex-col overflow-hidden h-fit sticky top-28">
           
           <div className="p-4 bg-slate-900/60 border-b border-white/5 flex items-center justify-between">
             <span className="text-[10px] font-black uppercase tracking-widest text-indigo-400 flex items-center gap-1.5">

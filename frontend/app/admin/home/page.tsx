@@ -811,7 +811,7 @@ export default function AdminHomePage() {
         {/* PIPELINE SYNC DIALOG MODAL */}
         {pipelineOpen && (
           <div className="fixed inset-0 z-50 bg-black/90 backdrop-blur-xl flex items-center justify-center p-4">
-            <div className="glass-card w-full max-w-2xl p-10 rounded-[3rem] border border-white/10 shadow-2xl relative text-center space-y-8 animate-in zoom-in-95 duration-200">
+            <div className="glass-panel w-full max-w-2xl p-10 rounded-[3rem] border border-white/10 shadow-2xl relative text-center space-y-8 animate-in zoom-in-95 duration-200">
               
               {/* status spinner/checkmark */}
               <div className="relative mx-auto w-24 h-24 flex items-center justify-center">

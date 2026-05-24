@@ -99,7 +99,7 @@ export function ServerWakeupPortal({ onSuccess, initialErrorMsg }: ServerWakeupP
 
   return (
     <div className="flex items-center justify-center p-6 min-h-[500px]">
-      <div className="glass-card w-full max-w-xl p-10 rounded-[3rem] border border-white/5 bg-slate-950/40 backdrop-blur-xl shadow-2xl relative text-center space-y-8 animate-in zoom-in-95 duration-300">
+      <div className="glass-panel w-full max-w-xl p-10 rounded-[3rem] border border-white/5 bg-slate-950/40 backdrop-blur-xl shadow-2xl relative text-center space-y-8 animate-in zoom-in-95 duration-300">
         
         {/* Glow Effects */}
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-48 h-48 bg-indigo-600/10 blur-[100px] rounded-full pointer-events-none -z-10" />

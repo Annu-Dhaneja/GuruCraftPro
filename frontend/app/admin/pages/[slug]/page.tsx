@@ -347,7 +347,7 @@ export default function CMSPageEditor() {
         <div className="lg:col-span-7 flex flex-col gap-6 overflow-y-auto pr-2 custom-scrollbar h-full pb-16">
           
           {/* Metadata/SEO Card */}
-          <div className="glass-card p-8 rounded-3xl border border-white/5 space-y-6">
+          <div className="glass-panel p-8 rounded-3xl border border-white/5 space-y-6">
             <h3 className="text-lg font-black uppercase tracking-widest text-indigo-300 flex items-center gap-2">
               <Globe size={16} /> Page Configuration & SEO
             </h3>
@@ -481,9 +481,92 @@ export default function CMSPageEditor() {
                             </div>
                           </div>
 
+                          {/* Layout, Padding & Margin Alignment Controls */}
+                          <div className="bg-indigo-500/5 p-5 rounded-2xl border border-indigo-500/10 space-y-4">
+                            <span className="text-[10px] font-black tracking-widest text-indigo-300 uppercase block">Layout & Spacing Config</span>
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                              <div className="space-y-1.5">
+                                <label className="text-[9px] font-black uppercase text-slate-500 block">Alignment</label>
+                                <select 
+                                  value={comp.props?.align || "left"} 
+                                  onChange={e => handleUpdateProp(idx, "align", e.target.value)}
+                                  className="w-full h-10 bg-black/50 border border-white/10 rounded-xl text-xs text-white px-3 focus:outline-none focus:border-indigo-500/50"
+                                >
+                                  <option value="left">Left Aligned</option>
+                                  <option value="center">Center Aligned</option>
+                                  <option value="right">Right Aligned</option>
+                                </select>
+                              </div>
+                              <div className="space-y-1.5">
+                                <label className="text-[9px] font-black uppercase text-slate-500 block">Padding (Top / Bottom)</label>
+                                <div className="grid grid-cols-2 gap-2">
+                                  <select 
+                                    value={comp.props?.padding_top || "default"} 
+                                    onChange={e => handleUpdateProp(idx, "padding_top", e.target.value)}
+                                    className="w-full h-10 bg-black/50 border border-white/10 rounded-xl text-xs text-white px-2 focus:outline-none focus:border-indigo-500/50"
+                                  >
+                                    <option value="default">Default PT</option>
+                                    <option value="pt-0">None (0)</option>
+                                    <option value="pt-4">Small (1rem)</option>
+                                    <option value="pt-8">Medium (2rem)</option>
+                                    <option value="pt-16">Large (4rem)</option>
+                                    <option value="pt-24">Extra Large (6rem)</option>
+                                    <option value="pt-32">Huge (8rem)</option>
+                                  </select>
+                                  <select 
+                                    value={comp.props?.padding_bottom || "default"} 
+                                    onChange={e => handleUpdateProp(idx, "padding_bottom", e.target.value)}
+                                    className="w-full h-10 bg-black/50 border border-white/10 rounded-xl text-xs text-white px-2 focus:outline-none focus:border-indigo-500/50"
+                                  >
+                                    <option value="default">Default PB</option>
+                                    <option value="pb-0">None (0)</option>
+                                    <option value="pb-4">Small (1rem)</option>
+                                    <option value="pb-8">Medium (2rem)</option>
+                                    <option value="pb-16">Large (4rem)</option>
+                                    <option value="pb-24">Extra Large (6rem)</option>
+                                    <option value="pb-32">Huge (8rem)</option>
+                                  </select>
+                                </div>
+                              </div>
+                              <div className="space-y-1.5">
+                                <label className="text-[9px] font-black uppercase text-slate-500 block">Margin (Top / Bottom)</label>
+                                <div className="grid grid-cols-2 gap-2">
+                                  <select 
+                                    value={comp.props?.margin_top || "default"} 
+                                    onChange={e => handleUpdateProp(idx, "margin_top", e.target.value)}
+                                    className="w-full h-10 bg-black/50 border border-white/10 rounded-xl text-xs text-white px-2 focus:outline-none focus:border-indigo-500/50"
+                                  >
+                                    <option value="default">Default MT</option>
+                                    <option value="mt-0">None (0)</option>
+                                    <option value="mt-4">Small (1rem)</option>
+                                    <option value="mt-8">Medium (2rem)</option>
+                                    <option value="mt-16">Large (4rem)</option>
+                                    <option value="mt-24">Extra Large (6rem)</option>
+                                    <option value="mt-32">Huge (8rem)</option>
+                                  </select>
+                                  <select 
+                                    value={comp.props?.margin_bottom || "default"} 
+                                    onChange={e => handleUpdateProp(idx, "margin_bottom", e.target.value)}
+                                    className="w-full h-10 bg-black/50 border border-white/10 rounded-xl text-xs text-white px-2 focus:outline-none focus:border-indigo-500/50"
+                                  >
+                                    <option value="default">Default MB</option>
+                                    <option value="mb-0">None (0)</option>
+                                    <option value="mb-4">Small (1rem)</option>
+                                    <option value="mb-8">Medium (2rem)</option>
+                                    <option value="mb-16">Large (4rem)</option>
+                                    <option value="mb-24">Extra Large (6rem)</option>
+                                    <option value="mb-32">Huge (8rem)</option>
+                                  </select>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+
                           {/* Loop through props */}
                           <div className="space-y-4">
-                            {Object.entries(comp.props || {}).map(([propKey, propVal]: [string, any]) => {
+                            {Object.entries(comp.props || {})
+                              .filter(([key]) => !["align", "padding_top", "padding_bottom", "margin_top", "margin_bottom"].includes(key))
+                              .map(([propKey, propVal]: [string, any]) => {
                               
                               // Check if image upload prop (common keys: bg_image, image, icon, url)
                               const isImageProp = ["bg_image", "image_url", "image", "logo_url", "avatar", "banner", "thumbnail", "photo", "background", "gallery"].some(k => propKey.toLowerCase().includes(k));
@@ -622,7 +705,7 @@ export default function CMSPageEditor() {
         </div>
 
         {/* RIGHT PANEL: Live Simulated Visual Preview Workspace (40%) */}
-        <div className="lg:col-span-5 glass-card rounded-[2.5rem] border border-white/5 bg-slate-900/20 flex flex-col overflow-hidden h-full">
+        <div className="lg:col-span-5 glass-panel rounded-[2.5rem] border border-white/5 bg-slate-900/20 flex flex-col overflow-hidden h-full">
           {/* Preview Tab Banner */}
           <div className="p-4 bg-slate-900/60 border-b border-white/5 flex items-center justify-between">
             <span className="text-[10px] font-black uppercase tracking-widest text-indigo-400 flex items-center gap-1.5">
@@ -657,15 +740,36 @@ export default function CMSPageEditor() {
               pageData.components.map((comp: any, cI: number) => {
                 const isSelected = selectedComponentIdx === cI;
                 
+                const alignClass = comp.props?.align === "center" ? "text-center flex flex-col items-center justify-center" : comp.props?.align === "right" ? "text-right flex flex-col items-end justify-end" : "text-left items-start justify-start";
+                
+                const overrides = [];
+                if (comp.props?.padding_top && comp.props.padding_top !== "default") {
+                  overrides.push(comp.props.padding_top);
+                }
+                if (comp.props?.padding_bottom && comp.props.padding_bottom !== "default") {
+                  overrides.push(comp.props.padding_bottom);
+                }
+                if (comp.props?.margin_top && comp.props.margin_top !== "default") {
+                  overrides.push(comp.props.margin_top);
+                }
+                if (comp.props?.margin_bottom && comp.props.margin_bottom !== "default") {
+                  overrides.push(comp.props.margin_bottom);
+                }
+                
+                const styleClasses = `${alignClass} ${overrides.join(" ")}`;
+                
                 return (
                   <div 
                     key={cI} 
                     onClick={() => setSelectedComponentIdx(cI)}
-                    className={`rounded-2xl border p-6 transition-all duration-300 relative group cursor-pointer ${
+                    className={`rounded-2xl border transition-all duration-300 relative group cursor-pointer ${styleClasses} ${
                       isSelected 
                         ? "border-indigo-500/40 bg-indigo-950/10 shadow-lg shadow-indigo-500/5 ring-1 ring-indigo-500/20" 
                         : "border-white/5 bg-slate-900/30 hover:border-white/10"
                     }`}
+                    style={{
+                      padding: (comp.props?.padding_top && comp.props.padding_top !== "default") || (comp.props?.padding_bottom && comp.props.padding_bottom !== "default") ? undefined : "1.5rem"
+                    }}
                   >
                     <div className="absolute top-2 right-2 text-[8px] font-mono text-slate-600 font-bold group-hover:text-indigo-400 transition-colors uppercase">
                       {comp.type}
@@ -773,7 +877,7 @@ export default function CMSPageEditor() {
       {/* Auto-Verification Pipeline Dialog Modal */}
       {verificationModalOpen && (
         <div className="fixed inset-0 z-50 bg-black/90 backdrop-blur-xl flex items-center justify-center p-4">
-          <div className="glass-card w-full max-w-2xl p-10 rounded-[3rem] border border-white/10 shadow-2xl relative text-center space-y-8 animate-in zoom-in-95 duration-200">
+          <div className="glass-panel w-full max-w-2xl p-10 rounded-[3rem] border border-white/10 shadow-2xl relative text-center space-y-8 animate-in zoom-in-95 duration-200">
             
             {/* status graphic banner */}
             <div className="relative mx-auto w-24 h-24 flex items-center justify-center">
