@@ -33,9 +33,14 @@ export default function CMSPageEditor() {
   const [saving, setSaving] = useState(false);
   const [selectedComponentIdx, setSelectedComponentIdx] = useState<number | null>(null);
 
-  // Responsive device simulator and Inspector tab states
+  // Responsive device simulator, mobile tabs, and Inspector tab states
   const [deviceMode, setDeviceMode] = useState<"desktop" | "tablet" | "mobile">("desktop");
   const [inspectorTab, setInspectorTab] = useState<"props" | "seo">("props");
+  const [activeEditorTab, setActiveEditorTab] = useState<"hierarchy" | "canvas" | "inspector">("hierarchy");
+
+  // Drag and Drop States
+  const [draggedIdx, setDraggedIdx] = useState<number | null>(null);
+  const [dragOverIdx, setDragOverIdx] = useState<number | null>(null);
 
   // AUTO-VERIFICATION PIPELINE STATES
   const [verificationModalOpen, setVerificationModalOpen] = useState(false);
@@ -43,6 +48,16 @@ export default function CMSPageEditor() {
   useEffect(() => {
     loadPage();
   }, [slug]);
+
+  // Smooth scroll visual mockup into view when component is selected
+  useEffect(() => {
+    if (selectedComponentIdx !== null) {
+      const element = document.getElementById(`preview-comp-${selectedComponentIdx}`);
+      if (element) {
+        element.scrollIntoView({ behavior: "smooth", block: "center", inline: "nearest" });
+      }
+    }
+  }, [selectedComponentIdx]);
 
   const loadPage = async () => {
     setLoading(true);
@@ -71,7 +86,43 @@ export default function CMSPageEditor() {
     }
   };
 
-  // Reorder component blocks
+  // Drag and Drop sorting handlers
+  const handleDragStart = (e: React.DragEvent, index: number) => {
+    setDraggedIdx(index);
+    e.dataTransfer.effectAllowed = "move";
+    e.dataTransfer.setData("text/plain", String(index));
+  };
+
+  const handleDragOver = (e: React.DragEvent, index: number) => {
+    e.preventDefault();
+    if (draggedIdx !== index) {
+      setDragOverIdx(index);
+    }
+  };
+
+  const handleDragLeave = (index: number) => {
+    if (dragOverIdx === index) {
+      setDragOverIdx(null);
+    }
+  };
+
+  const handleDrop = (e: React.DragEvent, index: number) => {
+    e.preventDefault();
+    if (draggedIdx !== null && draggedIdx !== index) {
+      const newComponents = [...pageData.components];
+      const [removed] = newComponents.splice(draggedIdx, 1);
+      newComponents.splice(index, 0, removed);
+
+      // Re-map order parameters
+      const remapped = newComponents.map((comp, i) => ({ ...comp, order: i }));
+      setPageData({ ...pageData, components: remapped });
+      setSelectedComponentIdx(index);
+    }
+    setDraggedIdx(null);
+    setDragOverIdx(null);
+  };
+
+  // Reorder component blocks manually via buttons
   const moveComponent = (index: number, direction: "up" | "down") => {
     if (!pageData?.components) return;
     const newComponents = [...pageData.components];
@@ -100,6 +151,7 @@ export default function CMSPageEditor() {
     setPageData({ ...pageData, components: updatedComps });
     setSelectedComponentIdx(updatedComps.length - 1);
     setInspectorTab("props"); // auto-switch to properties tab
+    setActiveEditorTab("inspector"); // auto-switch to inspector panel on mobile
   };
 
   // Remove Component block
@@ -366,13 +418,43 @@ export default function CMSPageEditor() {
         </div>
       </div>
 
+      {/* Mobile View Switcher Tab Bar (only visible on screens < lg) */}
+      <div className="flex lg:hidden bg-slate-900 border-b border-white/5 shrink-0 p-2 gap-2">
+        <button
+          onClick={() => setActiveEditorTab("hierarchy")}
+          className={`flex-1 py-2 rounded-xl text-[10px] font-black uppercase tracking-wider flex items-center justify-center gap-1.5 transition-all ${
+            activeEditorTab === "hierarchy" ? "bg-indigo-600/10 border border-indigo-500/30 text-indigo-400" : "bg-black/20 border border-transparent text-slate-500"
+          }`}
+        >
+          <Layers size={12} /> Outline
+        </button>
+        <button
+          onClick={() => setActiveEditorTab("canvas")}
+          className={`flex-1 py-2 rounded-xl text-[10px] font-black uppercase tracking-wider flex items-center justify-center gap-1.5 transition-all ${
+            activeEditorTab === "canvas" ? "bg-indigo-600/10 border border-indigo-500/30 text-indigo-400" : "bg-black/20 border border-transparent text-slate-500"
+          }`}
+        >
+          <Eye size={12} /> Canvas
+        </button>
+        <button
+          onClick={() => setActiveEditorTab("inspector")}
+          className={`flex-1 py-2 rounded-xl text-[10px] font-black uppercase tracking-wider flex items-center justify-center gap-1.5 transition-all ${
+            activeEditorTab === "inspector" ? "bg-indigo-600/10 border border-indigo-500/30 text-indigo-400" : "bg-black/20 border border-transparent text-slate-500"
+          }`}
+        >
+          <Sliders size={12} /> Inspector
+        </button>
+      </div>
+
       {/* Main 3-Column Split Workspace */}
       <div className="flex-1 flex overflow-hidden w-full relative">
         
         {/* LEFT COLUMN: Outline Tree & Component Template Add (w-80) */}
-        <div className="w-80 shrink-0 border-r border-white/5 bg-slate-900/10 flex flex-col h-full overflow-hidden">
+        <div className={`w-full lg:w-80 shrink-0 border-r border-white/5 bg-slate-900/10 flex-col h-full overflow-hidden ${
+          activeEditorTab === "hierarchy" ? "flex" : "hidden lg:flex"
+        }`}>
           {/* Quick Component Addition */}
-          <div className="p-5 border-b border-white/5 space-y-4">
+          <div className="p-5 border-b border-white/5 space-y-4 bg-slate-950/20">
             <div className="flex items-center gap-2">
               <Sparkles size={14} className="text-indigo-400 animate-pulse" />
               <h2 className="text-[10px] font-black uppercase tracking-wider text-slate-400">Add Section Block</h2>
@@ -404,7 +486,7 @@ export default function CMSPageEditor() {
             )}
           </div>
 
-          {/* Outline Tree List */}
+          {/* Outline Tree List (HTML5 Drag and Drop) */}
           <div className="flex-1 overflow-y-auto p-4 space-y-2 custom-scrollbar bg-slate-950/10">
             {(!pageData?.components || pageData.components.length === 0) ? (
               <div className="p-8 text-center border border-dashed border-white/5 rounded-2xl">
@@ -414,17 +496,44 @@ export default function CMSPageEditor() {
             ) : (
               pageData.components.map((comp: any, idx: number) => {
                 const isSelected = selectedComponentIdx === idx;
+                const isDragging = draggedIdx === idx;
+                const isDragOver = dragOverIdx === idx;
                 return (
                   <div
                     key={idx}
-                    onClick={() => { setSelectedComponentIdx(idx); setInspectorTab("props"); }}
-                    className={`flex items-center justify-between p-3 rounded-xl border transition-all duration-200 cursor-pointer ${
+                    draggable
+                    onDragStart={(e) => handleDragStart(e, idx)}
+                    onDragOver={(e) => handleDragOver(e, idx)}
+                    onDragLeave={() => handleDragLeave(idx)}
+                    onDrop={(e) => handleDrop(e, idx)}
+                    onDragEnd={() => { setDraggedIdx(null); setDragOverIdx(null); }}
+                    onClick={() => { 
+                      setSelectedComponentIdx(idx); 
+                      setInspectorTab("props");
+                      // Auto-switch mobile tab to show inspector settings
+                      setActiveEditorTab("inspector");
+                    }}
+                    className={`flex items-center justify-between p-3 rounded-xl border transition-all duration-200 cursor-grab active:cursor-grabbing ${
+                      isDragging ? "opacity-30 border-dashed border-indigo-500/50 bg-indigo-500/5" :
+                      isDragOver ? "border-indigo-500 bg-indigo-500/10 scale-[1.02]" :
                       isSelected
                         ? "border-indigo-500/40 bg-indigo-500/[0.04] text-white"
                         : "border-white/5 bg-slate-900/20 text-slate-400 hover:text-slate-200 hover:border-white/10"
                     }`}
                   >
                     <div className="flex items-center gap-2.5 truncate">
+                      {/* Grip Drag Handle visual cue */}
+                      <div className="text-slate-600 hover:text-slate-400 shrink-0">
+                        <svg width="10" height="15" viewBox="0 0 10 15" fill="currentColor">
+                          <circle cx="2" cy="2" r="1.2" />
+                          <circle cx="2" cy="7" r="1.2" />
+                          <circle cx="2" cy="12" r="1.2" />
+                          <circle cx="8" cy="2" r="1.2" />
+                          <circle cx="8" cy="7" r="1.2" />
+                          <circle cx="8" cy="12" r="1.2" />
+                        </svg>
+                      </div>
+                      
                       <span className={`w-5 h-5 rounded flex items-center justify-center text-[10px] font-black border transition-all ${
                         isSelected 
                           ? "bg-indigo-500/20 border-indigo-500/45 text-indigo-400" 
@@ -468,7 +577,9 @@ export default function CMSPageEditor() {
         </div>
 
         {/* CENTER COLUMN: Live Device Canvas (Interactive Preview) */}
-        <div className="flex-1 flex flex-col h-full bg-slate-950/40 overflow-hidden relative">
+        <div className={`flex-1 flex-col h-full bg-slate-950/40 overflow-hidden relative ${
+          activeEditorTab === "canvas" ? "flex" : "hidden lg:flex"
+        }`}>
           {/* Mockup Canvas Browser header */}
           <div className="h-10 border-b border-white/5 bg-slate-950/60 px-5 flex items-center justify-between text-[10px] text-slate-500 font-mono shrink-0">
             <span className="truncate">Canvas Endpoint: https://gurucraftpro-local/{slug}</span>
@@ -527,7 +638,13 @@ export default function CMSPageEditor() {
                     return (
                       <div
                         key={cI}
-                        onClick={() => { setSelectedComponentIdx(cI); setInspectorTab("props"); }}
+                        id={`preview-comp-${cI}`}
+                        onClick={() => { 
+                          setSelectedComponentIdx(cI); 
+                          setInspectorTab("props"); 
+                          // Auto-switch mobile view to inspector when selecting component
+                          setActiveEditorTab("inspector");
+                        }}
                         className={`rounded-2xl border transition-all duration-200 relative group cursor-pointer ${styleClasses} ${
                           isSelected
                             ? "border-indigo-500/50 bg-indigo-950/10 shadow-lg shadow-indigo-500/5 ring-1 ring-indigo-500/20"
@@ -642,7 +759,9 @@ export default function CMSPageEditor() {
         </div>
 
         {/* RIGHT COLUMN: Tabbed Properties Inspector (w-96) */}
-        <div className="w-96 shrink-0 border-l border-white/5 bg-slate-900/10 flex flex-col h-full overflow-hidden">
+        <div className={`w-full lg:w-96 shrink-0 border-l border-white/5 bg-slate-900/10 flex-col h-full overflow-hidden ${
+          activeEditorTab === "inspector" ? "flex" : "hidden lg:flex"
+        }`}>
           {/* Inspector Tabs */}
           <div className="flex border-b border-white/5 bg-slate-950/20 shrink-0">
             <button
@@ -994,7 +1113,7 @@ export default function CMSPageEditor() {
                   {verifySteps.map(step => (
                     <div key={step.id} className="flex justify-between items-center text-xs font-semibold">
                       <div className="flex flex-col">
-                        <span className={step.status === "success" ? "text-slate-200" : step.status === "loading" ? "text-indigo-400 animate-pulse font-bold" : "text-slate-500"}>
+                        <span className={step.status === "success" ? "text-slate-200" : step.status === "running" ? "text-indigo-400 animate-pulse font-bold" : "text-slate-500"}>
                           {step.label}
                         </span>
                       </div>
